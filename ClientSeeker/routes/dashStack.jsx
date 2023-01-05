@@ -8,9 +8,7 @@ import Explore from '../screens/explore';
 
 const Stack = createStackNavigator();
 
-
 export default function DashStack({ navigation }) {
-
   const header = ({
     headerRight: () => (
       <View style={{flexDirection:'row'}} >

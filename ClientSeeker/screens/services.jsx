@@ -23,6 +23,5 @@ export default function Services() {
     <ScrollView>
       <Grid listings = {services} />
     </ScrollView>
-    
   );
 }
