@@ -5,7 +5,7 @@ import AppLoading from 'expo-app-loading';
 import * as Font from "expo-font";
 
 import Navigator from './routes/mainStack';
-
+//test commit
 const getFonts = () => Font.loadAsync({
   'lexend': require('./assets/fonts/Lexend-Regular.ttf'),
   'lexend-light': require('./assets/fonts/Lexend-Light.ttf'),
