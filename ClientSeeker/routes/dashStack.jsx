@@ -25,12 +25,7 @@ export default function DashStack({ navigation }) {
     },
     headerTintColor: '#9C54D5',
     headerTitleStyle: {
-      fontFamily: 'lexend',
-      textTransform:'uppercase',
-      fontSize: 24,
-      color: '#9C54D5',
-      letterSpacing: -1,
-      marginLeft: -15,
+      display: "none"
     },
   })
 

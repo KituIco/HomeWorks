@@ -1,5 +1,6 @@
 import React from 'react';
-import { StyleSheet, ScrollView} from 'react-native';
+import { StyleSheet, ScrollView, View } from 'react-native';
+import ListHeader from '../components/listheader';
 import Listing from '../components/listing';
 
 export default function Featured() {
@@ -8,17 +9,19 @@ export default function Featured() {
     {key: 'Precious Trinidad', location: 'Los Baños', ratings: '4.6', service: 'House Cleaning', price: 'min Php 360', src: require("../assets/providers/provider-b.png")},
     {key: 'Fe Mercado', location: 'Antipolo', ratings: '4.2', service: 'Laundry', price: 'min Php 330', src: require("../assets/providers/provider-c.png")},
     {key: 'Edgardo Dela Cena', location: 'Bacoor City', ratings: '4.8', service: 'Roof Cleaning', price: 'min Php 410', src: require("../assets/providers/provider-d.png")},
-    {key: 'Ricardo Pollicar', location: 'Mandaluyong City', ratings: '4.4', service: 'Meal Prep Service', price: 'min Php 300', src: require("../assets/providers/provider-e.png")},
+    {key: 'Ricardo Pollicar', location: 'Mandaluyong City', ratings: '4.4', service: 'Meal Preparation', price: 'min Php 300', src: require("../assets/providers/provider-e.png")},
     {key: 'Ced Montenegro', location: 'Manila', ratings: '4.6', service: 'Plumbing', price: 'min Php 350', src: require("../assets/providers/provider-f.png")},
   ]
 
-  
-
   return (
-    <ScrollView style={styles.container}>
-      <Listing listings={featured} />
-    </ScrollView>
-    
+    <View style={{justifyContent: 'flex-end'}}>
+      <ListHeader title={"Featured"}/>
+      <ScrollView>
+        <View style={styles.container}>
+          <Listing listings={featured}/>
+        </View>
+      </ScrollView>
+  </View>
   );
 }
 

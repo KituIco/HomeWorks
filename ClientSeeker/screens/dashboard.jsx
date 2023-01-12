@@ -1,4 +1,4 @@
-import { StyleSheet, View, Text, Image, ScrollView, TouchableWithoutFeedback, Dimensions} from 'react-native';
+import { StyleSheet, View, Text, Image, ScrollView, } from 'react-native';
 import { EvilIcons  } from '@expo/vector-icons';
 import { StatusBar } from 'expo-status-bar';
 
@@ -6,7 +6,6 @@ import Grid  from '../components/grid';
 import Listing from '../components/listing';
 import Header from '../components/dashheader';
 
-const screenWidth = Dimensions.get('window').width;
 
 export default function Dashboard({navigation}) {
   const services = [
@@ -26,7 +25,7 @@ export default function Dashboard({navigation}) {
 
   const explore = [
     {key: 'Edgardo Dela Cena', location: 'Bacoor City', ratings: '4.8', service: 'Roof Cleaning', price: 'min Php 410', src: require("../assets/providers/provider-d.png")},
-    {key: 'Ricardo Pollicar', location: 'Mandaluyong City', ratings: '4.4', service: 'Meal Prep Service', price: 'min Php 300', src: require("../assets/providers/provider-e.png")},
+    {key: 'Ricardo Pollicar', location: 'Mandaluyong City', ratings: '4.4', service: 'Meal Preparation', price: 'min Php 300', src: require("../assets/providers/provider-e.png")},
     {key: 'Ced Montenegro', location: 'Manila', ratings: '4.6', service: 'Plumbing', price: 'min Php 350', src: require("../assets/providers/provider-f.png")},
   ]
 
@@ -43,7 +42,7 @@ export default function Dashboard({navigation}) {
 
       <View style={styles.sections.services}>
         <Header title={'Services'} navigation={navigation}/>
-        <Grid listings = {services}/>
+        <Grid listings={services} navigation={navigation}/>
       </View>
 
       <Header title={'Featured'} navigation={navigation}/>
