@@ -4,6 +4,7 @@ import { StyleSheet } from 'react-native';
 
 import HomeStack from './homeStack';
 import ProfileStack from './profileStack';
+import TransactStack from './transactStack';
 
 const Stack = createStackNavigator();
 
@@ -26,6 +27,12 @@ export default function Navigator() {
         <Stack.Screen 
           name='ProfileStack' 
           component={ProfileStack}
+          options={{ headerShown: false }}
+        />
+
+        <Stack.Screen 
+          name='TransactStack' 
+          component={TransactStack}
           options={{ headerShown: false }}
         />
 

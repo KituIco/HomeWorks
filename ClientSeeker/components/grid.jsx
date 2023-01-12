@@ -1,4 +1,4 @@
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View, Text, TouchableWithoutFeedback } from 'react-native';
 import { MaterialCommunityIcons  } from '@expo/vector-icons';
 
 export default function Grid( props ) {
@@ -7,8 +7,12 @@ export default function Grid( props ) {
   const iconsGrid = data => {
     return (
       <View style={styles.cards}>
-         <MaterialCommunityIcons name={data.icon} size={58}/>
-        <Text style={styles.item}>{data.key}</Text>
+        <TouchableWithoutFeedback onPress= {() => props.navigation.navigate('TransactStack', {service: data.key})}>
+          <View style={styles.touchables}>
+            <MaterialCommunityIcons name={data.icon} size={58}/>
+            <Text style={styles.item}>{data.key}</Text>
+          </View>
+        </TouchableWithoutFeedback>
       </View>
     );
   };
@@ -42,4 +46,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center'
   },
+  touchables: {
+    alignItems: 'center'
+  }
 })

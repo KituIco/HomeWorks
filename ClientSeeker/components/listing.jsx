@@ -38,7 +38,7 @@ export default function Listing( props ) {
 
   return (
     <View style={styles.sections}>
-      <View style={styles.grid} paddingBottom={20}>
+      <View style={styles.grid} paddingBottom={10}>
         {providers.map((value, index) => {
           return providersList(value);
         })}

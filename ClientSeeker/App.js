@@ -14,6 +14,7 @@ const getFonts = () => Font.loadAsync({
   'quicksand-bold': require('./assets/fonts/Quicksand-Bold.ttf'),
   'quicksand-medium': require('./assets/fonts/Quicksand-Medium.ttf'),
   'notosans': require('./assets/fonts/NotoSans-Regular.ttf'),
+  'notosans-medium': require('./assets/fonts/NotoSans-Medium.ttf'),
 });
 
 export default function App() {
