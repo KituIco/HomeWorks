@@ -7,7 +7,7 @@ WORKDIR /app
 COPY package*.json ./
  
 # install dependencies of the app
-RUN npm install
+RUN npm install && npm install -g expo-cli
 
 # copy the source code to the Docker image
 COPY . .

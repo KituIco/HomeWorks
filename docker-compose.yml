@@ -12,7 +12,7 @@ services:
         environment:
             - NODE_ENV=dev
             - EXPO_DEVTOOLS_LISTEN_ADDRESS=0.0.0.0
-            - REACT_NATIVE_PACKAGER_HOSTNAME=192.168.1.7
+            - REACT_NATIVE_PACKAGER_HOSTNAME=192.168.68.108
     
     react_provider_app:
         build: ./ClientProvider
@@ -25,7 +25,7 @@ services:
         environment:
             - NODE_ENV=dev
             - EXPO_DEVTOOLS_LISTEN_ADDRESS=0.0.0.0
-            - REACT_NATIVE_PACKAGER_HOSTNAME=192.168.1.7
+            - REACT_NATIVE_PACKAGER_HOSTNAME=192.168.68.108
 
     express_app:
         build: ./Server
