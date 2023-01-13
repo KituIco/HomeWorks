@@ -31,10 +31,10 @@ export default function Request({ route, navigation }) {
 
       <ScrollView style={styles.container}>
         <Text style={styles.heading}>Detected Address</Text>
-        <LinearGradient colors={['rgba(0,0,0,0.1)','rgba(0,0,0,0)'  ]} start={{ x:0, y:0 }} end={{ x:0, y:1 }} style={styles.shadow}/>
+        <LinearGradient colors={['rgba(0,0,0,0.1)','rgba(0,0,0,0)'  ]} start={{ x:0, y:0 }} end={{ x:0, y:1 }} style={{height:4}}/>
         <Image style={styles.image} source={require("../assets/map.png")} />
         <Image style={styles.pin} source={require("../assets/pin.png")} />
-        <LinearGradient colors={['rgba(0,0,0,0.1)','rgba(0,0,0,0)'  ]} start={{ x:0, y:1 }} end={{ x:0, y:0 }} style={styles.shadow}/>
+        <LinearGradient colors={['rgba(0,0,0,0.1)','rgba(0,0,0,0)'  ]} start={{ x:0, y:1 }} end={{ x:0, y:0 }} style={{height:4}}/>
 
         <View style={styles.address}>
           <Text style={styles.location}>UP AECH, P. Velasquez Street, Diliman, Quezon City, 1800 Metro Manila</Text>
@@ -94,9 +94,6 @@ const styles = StyleSheet.create({
     height: 40,
     marginTop: -140,
     marginBottom: 100
-  },
-  shadow: {
-    height: 4
   },
 
   address: {

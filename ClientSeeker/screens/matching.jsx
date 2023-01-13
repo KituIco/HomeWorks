@@ -1,9 +1,11 @@
 import React from 'react';
 import { StyleSheet, View, Text, ImageBackground, TouchableWithoutFeedback } from 'react-native';
 import { MaterialCommunityIcons  } from '@expo/vector-icons';
+import { StackActions } from '@react-navigation/native';
 
 import Header from '../components/transactheader';
 import Next from '../components/transactnext';
+
 
 export default function Matching({ route, navigation }) {
   const { service, icon }= route.params;
@@ -15,7 +17,10 @@ export default function Matching({ route, navigation }) {
       <View style={styles.container}>
         <ImageBackground source={require("../assets/map.png")} imageStyle= {{opacity:0.3}} resizeMode="cover">
             <View style={styles.map}>
-              <TouchableWithoutFeedback onPress= {() => navigation.navigate('SettleSpecs', {service: service, icon: icon})}>
+              <TouchableWithoutFeedback onPress= {() => {
+                  navigation.dispatch(StackActions.popToTop()), navigation.dispatch(StackActions.popToTop()),
+                  navigation.navigate('MatchStack', {service: service, icon: icon})
+                } }>
                 <MaterialCommunityIcons name={'account-search-outline'} size={140} color="#9C54D5" style={{marginTop:-60}}/>
               </TouchableWithoutFeedback>
                 

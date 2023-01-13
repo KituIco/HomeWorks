@@ -4,7 +4,6 @@ import { StyleSheet } from 'react-native';
 import Request from '../screens/request';
 import InitSpecs from '../screens/initspecs';
 import Matching from '../screens/matching';
-import SettleSpecs from '../screens/settlespecs';
 
 const Stack = createStackNavigator();
 
@@ -24,18 +23,6 @@ export default function TransactStack({ route }) {
     },
   }
 
-  const header2 = {
-    headerTransparent: true,
-    headerStyle: {
-      height: 100,
-      backgroundColor: 'rgba(0,0,0,0)',
-    },
-    headerTintColor: "#FFFFFF",
-    headerTitleStyle: {
-      display: "none"
-    },
-    headerLeft: null
-  }
 
   return (
       <Stack.Navigator initialRouteName='Request' >
@@ -57,12 +44,6 @@ export default function TransactStack({ route }) {
           name="Matching"
           component={Matching}
           options={() => header}
-        />
-
-        <Stack.Screen
-          name="SettleSpecs"
-          component={SettleSpecs}
-          options={() => header2}
         />
 
       </Stack.Navigator>

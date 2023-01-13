@@ -13,12 +13,18 @@ export default function Header ( props ) {
 
   return (
     <View style={{backgroundColor:'#F9F9F9'}}>
+      { !props.compressed &&
       <LinearGradient colors={['#462964', '#9C54D5' ]} start={{ x:0, y:1.4 }} end={{ x:0, y:0 }} style={styles.header}>
         <View style={styles.iconbg}>
           <MaterialCommunityIcons name={props.icon} color={'#462964'} size={100}/>
         </View>
         <Text style={styles.title}>{props.service}</Text>
       </LinearGradient> 
+      }
+
+      { props.compressed &&
+      <LinearGradient colors={['#462964', '#9C54D5' ]} start={{ x:0, y:1.4 }} end={{ x:0, y:0 }} style={styles.header2}/>
+      }
 
       <View style={styles.progress}>
         <View style={{backgroundColor:'#9C54D5', width: bar, height: '100%'}} />
@@ -49,6 +55,11 @@ const styles = StyleSheet.create({
     header:{
       height: 190,
       alignItems: 'center',
+    },
+    header2:{
+      height: 90,
+      alignItems: 'center',
+      marginBottom: -8,
     },
     title: {
       fontFamily: 'lexend',   

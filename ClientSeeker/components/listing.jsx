@@ -10,7 +10,7 @@ export default function Listing( props ) {
 
   const providersList = data => {
     return (
-      <View style={styles.lists}>
+      <View style={styles.lists} key={data.key}>
         <Image style={styles.image} source={data.src} />
         <View style={styles.details}>
 
