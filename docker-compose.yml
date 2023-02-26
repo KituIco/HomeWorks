@@ -38,7 +38,9 @@ services:
             - DB_HOST=db_server
             - DB_PORT=3306
             - DB_USER=root
-            - DB_PASSWORD=password
+            - DB_PASSWORD=3b172029a3bee21713c341febff1895678085e052f91773480d945f062acdabceaab7532ebb2c89e3602e8d8498160c8511194007f7f9bcf855fc14392441fbe
+            - ACCESS_TOKEN_SECRET=381dea54778369fc8d06690eee459abaf07b16083bc83b9272cb02dc219d8c04aaa526a4bbdfa174411b6832a660ccd4b518dfe45dacc10fd6338687ae52c1e3
+            - REFRESH_TOKEN_SECRET=eee213d89f01f481020ede6d94f7ec206c4aea0d0666b99f1dec9aa2a10d3f9dc62aec445942b23bd500d9042a4b15a24627fb8ec62448172df593374601552d
         depends_on:
             - db_server
         command: "bash start.sh db_server:3306"
@@ -48,7 +50,7 @@ services:
         ports:
             - "3306:3306"
         environment:
-            - MYSQL_ROOT_PASSWORD=password
+            - MYSQL_ROOT_PASSWORD=3b172029a3bee21713c341febff1895678085e052f91773480d945f062acdabceaab7532ebb2c89e3602e8d8498160c8511194007f7f9bcf855fc14392441fbe
             - MYSQL_DATABASE=HomeWorksDB
 
     redis:
