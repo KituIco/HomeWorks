@@ -141,7 +141,7 @@ class TransactionReportsController {
             let {keyword} = req.query;
 
             if (keyword == null) {
-                next();
+                return next();
             }
 
             let transactionReports = await this.transactionReportsRepo.getTransactionReportsByKeywords(keyword);

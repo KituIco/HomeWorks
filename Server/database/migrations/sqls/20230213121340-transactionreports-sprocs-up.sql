@@ -160,24 +160,24 @@ CREATE PROCEDURE `get_transaction_reports_by_keywords`(
 )
 BEGIN
     SELECT DISTINCT
-        report_id AS reportID,
-        booking_id AS bookingID,
-        payment_id AS paymentID,
-        specs_id AS specsID,
-        seeker_id AS seekerID,
-        provider_id AS providerID,
-        service_id AS serviceID,
-        transaction_stat AS transactionStat
+        TransactionReports.report_id AS reportID,
+        TransactionReports.booking_id AS bookingID,
+        TransactionReports.payment_id AS paymentID,
+        TransactionReports.specs_id AS specsID,
+        TransactionReports.seeker_id AS seekerID,
+        TransactionReports.provider_id AS providerID,
+        TransactionReports.service_id AS serviceID,
+        TransactionReports.transaction_stat AS transactionStat
     FROM
         TransactionReports
         INNER JOIN 
-        Bookings ON TransactionReports.booking_id = Bookings.booking_id
+        Booking ON TransactionReports.booking_id = Booking.booking_id
         INNER JOIN
         Provider ON TransactionReports.provider_id = Provider.provider_id
         INNER JOIN
         Service ON TransactionReports.service_id = Service.service_id
     WHERE
-        Bookings.booking_id LIKE CONCAT('%', keywds, '%') 
+        Booking.booking_id LIKE CONCAT('%', keywds, '%') 
             OR
         Service.type_name LIKE CONCAT('%', keywds, '%')
             OR

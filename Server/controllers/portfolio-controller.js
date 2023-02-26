@@ -136,7 +136,7 @@ class PortfolioController {
                 // validate if serviceID exists
 
             if (sortedByPrice == null) {
-                next();
+                return next();
             }
 
             let portfolios = undefined;

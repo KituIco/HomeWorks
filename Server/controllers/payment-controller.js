@@ -171,7 +171,7 @@ class PaymentController {
                 // validate if paymentStatus is valid
 
             if (paymentStatus == null) {
-                next();
+                 return next();
             }
 
             let payments = await this.paymentRepo.getSeekerPaymentsByStatus(seekerID, paymentStatus);
@@ -220,7 +220,7 @@ class PaymentController {
                 // validate if paymentStatus is valid
             
             if (paymentStatus == null) {
-                next();
+                return next();
             }
 
             let payments = await this.paymentRepo.getProviderPaymentsByStatus(providerID, paymentStatus);

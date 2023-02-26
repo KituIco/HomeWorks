@@ -144,7 +144,7 @@ class MessageController {
                 // Validate if keyword is not null
 
             if (keyword == null) {
-                next();
+                return next();
             }
 
             let messages = await this.messageRepo.getBookingMessagesByKeyword(bookingID, keyword);

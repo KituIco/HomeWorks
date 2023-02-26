@@ -145,7 +145,7 @@ class ServiceController {
                 // validate if providerID exists
 
             if (!searchKey) {
-                next();
+                return next();
             }
 
             let services = await this.serviceRepo.getProviderServiceByKeyword(providerID, searchKey);
@@ -171,7 +171,7 @@ class ServiceController {
                 // validate if providerID exists
 
             if (!sorted) {
-                next();
+                return next();
             }
 
             let services = null;

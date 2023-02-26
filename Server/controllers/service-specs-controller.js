@@ -154,7 +154,7 @@ class ServiceSpecsController {
                 // Validate if seekerID exists in database
 
             if (!sorted) {
-                next();
+                return next();
             }
 
             let seekerSpecs = null
