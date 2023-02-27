@@ -7,6 +7,8 @@ import ProfileStack from './profileStack';
 import RequestStack from './requestStack';
 import MatchStack from './matchStack';
 import ServeStack from './serveStack';
+import CompleteStack from './completeStack';
+import LogoutStack from './logoutStack';
 
 const Stack = createStackNavigator();
 
@@ -48,6 +50,18 @@ export default function Navigator() {
           name='ServeStack' 
           component={ServeStack}
           options={{ headerShown: false }}
+        />
+
+        <Stack.Screen 
+          name='CompleteStack' 
+          component={CompleteStack}
+          options={{ headerShown: false }}
+        />
+
+        <Stack.Screen 
+          name='LogoutStack' 
+          component={LogoutStack}
+          options={{  headerShown: false }}
         />
 
       </Stack.Navigator>

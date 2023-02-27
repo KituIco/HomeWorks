@@ -13,8 +13,7 @@ export default function DashStack({ navigation }) {
     headerRight: () => (
       <View style={{flexDirection:'row'}} >
         <TouchableWithoutFeedback onPress= {() => navigation.navigate('ProfileStack')}>
-          {/* <Image style={styles.profileIcon} source={require('../assets/sample-user-icon.webp')} /> */}
-          <Image style={styles.profileIcon} source={require("../assets/my-icon.png")} />
+          <Image style={styles.profileIcon} source={require("../assets/angel-aquino.jpg")} />
         </TouchableWithoutFeedback>
       </View>
     ),
@@ -45,8 +44,7 @@ export default function DashStack({ navigation }) {
         headerRight: () => (
           <View style={{flexDirection:'row'}} >
             <TouchableWithoutFeedback onPress= {() => navigation.navigate('ProfileStack')}>
-              {/* <Image style={styles.profileIcon} source={require('../assets/sample-user-icon.webp')} /> */}
-              <Image style={styles.profileIcon} source={require("../assets/my-icon.png")} />
+              <Image style={styles.profileIcon} source={require("../assets/angel-aquino.jpg")} />
             </TouchableWithoutFeedback>
           </View>
         ),

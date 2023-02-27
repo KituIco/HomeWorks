@@ -7,10 +7,17 @@ const screenWidth = Dimensions.get('window').width;
 
 export default function Listing( props ) {
   const providers = props.listings
+  let listing = styles.lists
+  let sectioning = styles.sections
+
+  if (props.solo) {
+    listing = styles.sololist
+    sectioning = styles.solosection
+  }
 
   const providersList = data => {
     return (
-      <View style={styles.lists} key={data.key}>
+      <View style={listing} key={data.key}>
         <Image style={styles.image} source={data.src} />
         <View style={styles.details}>
 
@@ -28,7 +35,11 @@ export default function Listing( props ) {
             <LinearGradient colors={['#9C54D5', '#462964']} start={{ x:0.6, y:-1 }} end={{ x:0.1, y:1 }} style={styles.tag}>
               <Text style={styles.serve}>{data.service}</Text>
             </LinearGradient>
-            <Text style={styles.price}>{data.price}</Text>  
+            
+            { !props.solo && <Text style={styles.price}>{data.price}</Text> }
+            { props.solo && 
+              <Text style={[styles.price,{textDecorationLine: 'underline'}]}>View Provider</Text> 
+            }
           </View>
           
         </View>
@@ -37,8 +48,8 @@ export default function Listing( props ) {
   };
 
   return (
-    <View style={styles.sections}>
-      <View style={styles.grid} paddingBottom={10}>
+    <View style={sectioning}>
+      <View paddingBottom={10}>
         {providers.map((value, index) => {
           return providersList(value);
         })}
@@ -51,6 +62,10 @@ const styles = StyleSheet.create({
   sections:{
     paddingVertical: 30,
   },
+  solosection:{
+    paddingTop: 4,
+    marginHorizontal: 22,
+  },
   lists: {
     flexDirection: 'row',
     padding: 6,
@@ -58,6 +73,9 @@ const styles = StyleSheet.create({
     borderWidth: 0.6,
     borderColor: "#323941",
     margin: 8
+  },
+  sololist: {
+    flexDirection: 'row',
   },
   image: {
     height: 90,

@@ -1,5 +1,5 @@
 import { StyleSheet, View, Text, TouchableWithoutFeedback } from 'react-native';
-import { MaterialCommunityIcons  } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 export default function Grid( props ) {
   const services = props.listings

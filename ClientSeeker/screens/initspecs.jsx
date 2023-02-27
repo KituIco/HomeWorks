@@ -1,19 +1,19 @@
 import React, {useState,} from 'react';
 import { StyleSheet, View, Text, ScrollView, Image, TextInput, TouchableWithoutFeedback } from 'react-native';
 import { MaterialCommunityIcons  } from '@expo/vector-icons';
+import { Dimensions } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 
 import Header from '../components/transactheader';
 import Next from '../components/transactnext';
-import { Dimensions } from 'react-native';
+
 
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
 
 export default function InitSpecs({ route, navigation }) {
   const { service, icon }= route.params;
-  let content = '';
-  const [value, onChangeText] = React.useState(content);
+  const [value, onChangeText] = React.useState('');
 
   const [image1, setImage1] = useState(null);
   const [image2, setImage2] = useState(null);

@@ -1,30 +1,33 @@
 import { createStackNavigator } from '@react-navigation/stack';
-import { StyleSheet, } from 'react-native';
+import { StyleSheet } from 'react-native';
 
-import Profile from '../screens/profile'
+import Complete from '../screens/complete';
 
 const Stack = createStackNavigator();
 
 
-export default function ProfileStack({ navigation }) {
+export default function CompleteStack({ route }) {
+  const { service, icon } = route.params;
 
-  const header = ({
+  const header = {
     headerTransparent: true,
     headerStyle: {
-      height: 120,
+      height: 100,
+      backgroundColor: 'rgba(0,0,0,0)',
     },
-    headerTintColor: '#462964',
+    headerTintColor: "#FFFFFF",
     headerTitleStyle: {
       display: "none"
     },
-  })
+  }
 
   return (
-      <Stack.Navigator initialRouteName='Profile' >
+      <Stack.Navigator initialRouteName='Complete' >
 
         <Stack.Screen 
-          name='Profile' 
-          component={Profile}
+          name='Complete' 
+          component={Complete}
+          initialParams={{ service: service, icon: icon}}
           options={() => header}
         />
 
@@ -43,6 +46,6 @@ const styles = StyleSheet.create({
     width: 40, 
     height: 40, 
     borderRadius: 40/2,
-    marginRight: 15,
+    marginRight: 15
   }
 });

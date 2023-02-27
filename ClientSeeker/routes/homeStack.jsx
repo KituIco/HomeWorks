@@ -1,8 +1,7 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { StyleSheet, View, Image, TouchableWithoutFeedback } from 'react-native';
+import { StyleSheet } from 'react-native';
 
-import Dashboard from '../screens/dashboard';
 import DashStack from './dashStack';
 import History from '../screens/history';
 import Notifications from '../screens/notifications';
