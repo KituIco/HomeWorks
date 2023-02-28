@@ -62,7 +62,7 @@ export default function Serving({route, navigation}) {
       <LinearGradient colors={['rgba(0,0,0,0.4)','rgba(0,0,0,0)'  ]} start={{ x:0, y:0.2 }} end={{ x:0, y:0 }}>
         <TouchableWithoutFeedback onPress= {() => {
           navigation.dispatch(StackActions.popToTop()),
-          navigation.navigate('CompleteStack', {service: service, icon: icon})
+          navigation.navigate('HistoryStack', {service: service, icon: icon})
         }}>
         <View style={styles.bottom}>
           <MaterialCommunityIcons name={'check-circle-outline'} size={26} style={{color:'#462964'}}/>

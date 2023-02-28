@@ -7,7 +7,7 @@ import ProfileStack from './profileStack';
 import RequestStack from './requestStack';
 import MatchStack from './matchStack';
 import ServeStack from './serveStack';
-import CompleteStack from './completeStack';
+import HistoryStack from './historyStack';
 import AuthStack from './authStack';
 
 const Stack = createStackNavigator();
@@ -53,8 +53,8 @@ export default function Navigator() {
         />
 
         <Stack.Screen 
-          name='CompleteStack' 
-          component={CompleteStack}
+          name='HistoryStack' 
+          component={HistoryStack}
           options={{ headerShown: false }}
         />
 

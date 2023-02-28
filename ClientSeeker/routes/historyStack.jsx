@@ -6,7 +6,7 @@ import Complete from '../screens/transaction/complete';
 const Stack = createStackNavigator();
 
 
-export default function CompleteStack({ route }) {
+export default function HistoryStack({ route }) {
   const { service, icon } = route.params;
 
   const header = {
