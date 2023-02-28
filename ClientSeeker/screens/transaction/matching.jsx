@@ -3,8 +3,8 @@ import { StyleSheet, View, Text, ImageBackground, TouchableWithoutFeedback } fro
 import { MaterialCommunityIcons  } from '@expo/vector-icons';
 import { StackActions } from '@react-navigation/native';
 
-import Header from '../components/transactheader';
-import Next from '../components/transactnext';
+import Header from '../../components/transactheader';
+import Next from '../../components/transactnext';
 
 
 export default function Matching({ route, navigation }) {
@@ -15,7 +15,7 @@ export default function Matching({ route, navigation }) {
       <Header service={service} icon={icon} phase={2}/>
 
       <View style={styles.container}>
-        <ImageBackground source={require("../assets/map.png")} imageStyle= {{opacity:0.3}} resizeMode="cover">
+        <ImageBackground source={require("../../assets/map.png")} imageStyle= {{opacity:0.3}} resizeMode="cover">
             <View style={styles.map}>
               <TouchableWithoutFeedback onPress= {() => {
                   navigation.dispatch(StackActions.popToTop()), navigation.dispatch(StackActions.popToTop()),

@@ -4,8 +4,8 @@ import { MaterialCommunityIcons  } from '@expo/vector-icons';
 import { Dimensions } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 
-import Header from '../components/transactheader';
-import Next from '../components/transactnext';
+import Header from '../../components/transactheader';
+import Next from '../../components/transactnext';
 
 
 const screenWidth = Dimensions.get('window').width;

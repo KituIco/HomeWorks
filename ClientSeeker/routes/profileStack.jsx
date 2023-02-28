@@ -1,7 +1,7 @@
 import { createStackNavigator } from '@react-navigation/stack';
 import { StyleSheet, } from 'react-native';
 
-import Profile from '../screens/profile'
+import Profile from '../screens/profile/profile'
 
 const Stack = createStackNavigator();
 

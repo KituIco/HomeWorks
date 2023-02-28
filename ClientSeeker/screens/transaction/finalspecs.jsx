@@ -3,7 +3,7 @@ import React from 'react';
 import { StyleSheet, View, Text, ScrollView, Image, TouchableWithoutFeedback } from 'react-native';
 import { StackActions } from '@react-navigation/native';
 
-import Header from '../components/transactheader';
+import Header from '../../components/transactheader';
 
 
 export default function FinalSpecs({ route, navigation }) {

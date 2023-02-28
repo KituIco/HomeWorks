@@ -3,8 +3,8 @@ import React from 'react';
 import { StyleSheet, View, Text, ScrollView, Image } from 'react-native';
 import { MaterialCommunityIcons  } from '@expo/vector-icons';
 
-import Header from '../components/transactheader';
-import Next from '../components/transactnext';
+import Header from '../../components/transactheader';
+import Next from '../../components/transactnext';
 
 export default function Request({ route, navigation }) {
   const { service }= route.params;

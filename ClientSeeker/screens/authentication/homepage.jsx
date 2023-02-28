@@ -3,13 +3,17 @@ import React from 'react';
 import { StyleSheet, View, Text, Image, TouchableWithoutFeedback } from 'react-native';
 import { Dimensions } from 'react-native';
 
+import Back from '../../hooks/back';
+
 const screenHeight = Dimensions.get('window').height;
 
 export default function Home({ navigation }) {
   return (
     <View style={styles.container}>
+      <Back navigation={navigation}/>
+
       <View style={{alignItems: 'center'}}>
-        <Image style={styles.homeIcon} source={require('../assets/HomeWorks-Icon.png')} />
+        <Image style={styles.homeIcon} source={require('../../assets/HomeWorks-Icon.png')} />
         <Text style={styles.title}>Home<Text style={{color:'#1E1E1E'}}>Works</Text></Text>
         <Text style={styles.subtitle}>Household and Wellness Services App</Text>
       </View>

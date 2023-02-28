@@ -17,7 +17,7 @@ export default function Profile({ navigation }) {
       </View>
       <ScrollView style={styles.info}>
         <View style={styles.holder}>
-          <Image style={styles.icon} source={require("../assets/angel-aquino.jpg")} />
+          <Image style={styles.icon} source={require("../../assets/angel-aquino.jpg")} />
           <View style={styles.editicon}>
             <MaterialCommunityIcons name={'camera-flip'} size={26} style={{color:'#9C54D5'}}/>
           </View>

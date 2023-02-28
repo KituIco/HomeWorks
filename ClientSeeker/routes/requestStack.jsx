@@ -1,9 +1,9 @@
 import { createStackNavigator } from '@react-navigation/stack';
 import { StyleSheet } from 'react-native';
 
-import Request from '../screens/request';
-import InitSpecs from '../screens/initspecs';
-import Matching from '../screens/matching';
+import Request from '../screens/transaction/request';
+import InitSpecs from '../screens/transaction/initspecs';
+import Matching from '../screens/transaction/matching';
 
 const Stack = createStackNavigator();
 

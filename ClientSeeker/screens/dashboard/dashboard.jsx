@@ -2,9 +2,9 @@ import { StyleSheet, View, Text, Image, ScrollView, } from 'react-native';
 import { EvilIcons  } from '@expo/vector-icons';
 import { StatusBar } from 'expo-status-bar';
 
-import Grid  from '../components/grid';
-import Listing from '../components/listing';
-import Header from '../components/dashheader';
+import Grid  from '../../components/grid';
+import Listing from '../../components/listing';
+import Header from '../../components/dashheader';
 
 
 export default function Dashboard({navigation}) {

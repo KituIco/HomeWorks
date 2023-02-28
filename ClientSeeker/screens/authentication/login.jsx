@@ -14,7 +14,7 @@ export default function Home({ navigation }) {
 
       <ScrollView style={{width: '100%'}}>
       <View style={{alignItems: 'center'}}>
-        <Image style={styles.homeIcon} source={require('../assets/HomeWorks-Icon.png')} />
+        <Image style={styles.homeIcon} source={require('../../assets/HomeWorks-Icon.png')} />
         <Text style={styles.title}>Home<Text style={{color:'#1E1E1E'}}>Works</Text></Text>
         <Text style={styles.subtitle}>Household and Wellness Services App</Text>
       </View>

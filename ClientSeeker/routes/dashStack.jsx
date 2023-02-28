@@ -1,10 +1,10 @@
 import { createStackNavigator } from '@react-navigation/stack';
 import { StyleSheet, View, Image, TouchableWithoutFeedback } from 'react-native';
 
-import Dashboard from '../screens/dashboard';
-import Services from '../screens/services';
-import Featured from '../screens/featured';
-import Explore from '../screens/explore';
+import Dashboard from '../screens/dashboard/dashboard';
+import Services from '../screens/dashboard/services';
+import Featured from '../screens/dashboard/featured';
+import Explore from '../screens/dashboard/explore';
 
 const Stack = createStackNavigator();
 

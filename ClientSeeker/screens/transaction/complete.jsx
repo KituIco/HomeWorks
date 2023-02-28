@@ -3,8 +3,8 @@ import { StyleSheet, View, Text, TouchableWithoutFeedback, ScrollView, TextInput
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 
-import Header from '../components/transactheader';
-import Listing from '../components/listing';
+import Header from '../../components/transactheader';
+import Listing from '../../components/listing';
 
 export default function Complete({route, navigation}) {
   const { service, icon } = route.params;
@@ -16,7 +16,7 @@ export default function Complete({route, navigation}) {
   const [stars, setStars] = useState(starList);
 
   const provider = [
-    {key: 'Alex Guerrero', location: 'Taguig City', ratings: '4.3', service: 'Car Mechanic', price: 'min Php 420', src: require("../assets/providers/provider-a.png")},
+    {key: 'Alex Guerrero', location: 'Taguig City', ratings: '4.3', service: 'Car Mechanic', price: 'min Php 420', src: require("../../assets/providers/provider-a.png")},
   ]
   const price = '520.00'
 

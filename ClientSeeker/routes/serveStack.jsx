@@ -1,8 +1,8 @@
 import { createStackNavigator } from '@react-navigation/stack';
 import { StyleSheet } from 'react-native';
 
-import Serving from '../screens/serving';
-import Payment from '../screens/payment';
+import Serving from '../screens/transaction/serving';
+import Payment from '../screens/transaction/payment';
 
 const Stack = createStackNavigator();
 
