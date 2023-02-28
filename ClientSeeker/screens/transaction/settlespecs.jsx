@@ -17,7 +17,7 @@ export default function SettleSpecs({ route, navigation }) {
       <View style={styles.container}>
         <View style={styles.header}>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <Image style={styles.profileIcon} source={require("../assets/providers/provider-f.png")} />
+            <Image style={styles.profileIcon} source={require("../../assets/providers/provider-f.png")} />
             <Text style={styles.names}>Cedric Protacio</Text>
           </View>
           <MaterialCommunityIcons name={'dots-vertical'} color={'#575757'} size={24}/>

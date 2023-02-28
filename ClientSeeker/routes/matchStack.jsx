@@ -1,8 +1,8 @@
 import { createStackNavigator } from '@react-navigation/stack';
 import { StyleSheet } from 'react-native';
 
-import SettleSpecs from '../screens/settlespecs';
-import FinalSpecs from '../screens/finalspecs';
+import SettleSpecs from '../screens/transaction/settlespecs';
+import FinalSpecs from '../screens/transaction/finalspecs';
 
 const Stack = createStackNavigator();
 

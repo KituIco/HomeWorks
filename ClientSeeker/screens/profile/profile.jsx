@@ -54,7 +54,7 @@ export default function Profile({ navigation }) {
 
         <TouchableWithoutFeedback onPress= {() => {
           navigation.dispatch(StackActions.popToTop()),
-          navigation.navigate('LogoutStack')
+          navigation.navigate('AuthStack')
         }}>
           <LinearGradient colors={['rgba(10,10,10,0.7)','rgba(10,10,10,0)'  ]} start={{ x:0, y:0.65 }} end={{ x:0, y:0.98 }} style={styles.shadow}>
             <LinearGradient colors={['#9C54D5', '#462964']} start={{ x:0.4, y:1 }} end={{ x:0, y:1 }} style={styles.logout}>

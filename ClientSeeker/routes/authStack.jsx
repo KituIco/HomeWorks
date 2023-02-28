@@ -7,7 +7,7 @@ import Register from '../screens/authentication/register';
 
 const Stack = createStackNavigator();
 
-export default function LogoutStack({ navigation }) {
+export default function AuthStack({ navigation }) {
   const header = {
     headerTransparent: true,
     headerStyle: {

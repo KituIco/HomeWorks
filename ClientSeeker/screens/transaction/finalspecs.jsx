@@ -20,8 +20,8 @@ export default function FinalSpecs({ route, navigation }) {
           <Text style={[styles.content,{fontFamily: 'quicksand-bold', fontSize: 16}]}>Php 420</Text>
         </View>
         <LinearGradient colors={['rgba(0,0,0,0.1)','rgba(0,0,0,0)'  ]} start={{ x:0, y:0 }} end={{ x:0, y:1 }} style={{height:4}}/>
-        <Image style={styles.image} source={require("../assets/map.png")} />
-        <Image style={styles.pin} source={require("../assets/pin.png")} />
+        <Image style={styles.image} source={require("../../assets/map.png")} />
+        <Image style={styles.pin} source={require("../../assets/pin.png")} />
         <LinearGradient colors={['rgba(0,0,0,0.1)','rgba(0,0,0,0)'  ]} start={{ x:0, y:1 }} end={{ x:0, y:0 }} style={{height:4}}/>
 
         <View style={styles.address}>

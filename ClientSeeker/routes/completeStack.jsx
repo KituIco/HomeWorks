@@ -1,7 +1,7 @@
 import { createStackNavigator } from '@react-navigation/stack';
 import { StyleSheet } from 'react-native';
 
-import Complete from '../../screens/complete';
+import Complete from '../screens/transaction/complete';
 
 const Stack = createStackNavigator();
 
