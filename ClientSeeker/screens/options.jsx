@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, View, Text, } from 'react-native';
 
+// to be placed in folder
 export default function Options() {
   return (
     <View style={styles.container}>
