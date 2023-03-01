@@ -138,7 +138,7 @@ class ServiceController {
     getProviderServiceByKeyword = async (req, res, next) => {
         try {
             let { providerID } = req.params;
-            let { searchKey } = req.query;
+            let { searchKey, sorted } = req.query;
 
             // TODO: Pre-query validation
                 // validate if providerID is not null
@@ -147,6 +147,8 @@ class ServiceController {
             if (!searchKey) {
                 return next();
             }
+
+            // TODO: Validate if sorted is not null otherwise throw error
 
             let services = await this.serviceRepo.getProviderServiceByKeyword(providerID, searchKey);
 
