@@ -3,6 +3,8 @@ import React, { useState } from 'react';
 import { StyleSheet, View, Text, Image, TouchableWithoutFeedback, TextInput, ScrollView } from 'react-native';
 import { Dimensions } from 'react-native';
 
+import SeekerServices from '../../services/user/seeker-services.js'
+
 const screenHeight = Dimensions.get('window').height;
 
 export default function Home({ navigation }) {
@@ -31,7 +33,8 @@ export default function Home({ navigation }) {
           <TextInput style={styles.input} onChangeText={setPassword} value={password} placeholder="Password" secureTextEntry={true}/>
         </View>
 
-        <TouchableWithoutFeedback onPress= {() => { navigation.navigate('Dashboard') }}>
+        <TouchableWithoutFeedback onPress= {() => { 
+          navigation.navigate('Dashboard') }}>
           <LinearGradient colors={['rgba(10,10,10,0.7)','rgba(10,10,10,0.1)'  ]} start={{ x:0, y:0.65 }} end={{ x:0, y:0.98 }} style={styles.shadow}>
             <View style={styles.button}>
               <Text style={styles.register}>Login</Text>

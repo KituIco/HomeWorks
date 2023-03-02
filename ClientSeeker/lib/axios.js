@@ -1,11 +1,13 @@
 import axios from 'axios';
+import {REACT_NATIVE_PACKAGER_HOSTNAME} from '@env';
 
 const instance = axios.create({
-    baseURL: 'http://localhost:3000'
+    baseURL: `http://${REACT_NATIVE_PACKAGER_HOSTNAME}:3000`
 });
 
 postAxios = async(url, data = {}) => {
     try {
+        console.log(REACT_NATIVE_PACKAGER_HOSTNAME)
         let res = await instance(
             {
                 method: 'post',
