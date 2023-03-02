@@ -29,7 +29,7 @@ class ServiceController {
                 // validate if providerID exists in the database
                 // validate if typeID exists in the database
 
-            let serviceID = this.nanoid.nanoid(14);
+            let serviceID = this.nanoid(14);
 
             await this.serviceRepo.createService(
                 serviceID,

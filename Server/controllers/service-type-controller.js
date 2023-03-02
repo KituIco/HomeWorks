@@ -21,7 +21,7 @@ class ServiceTypeController {
                 typeDesc
             } = req.body;
 
-            let typeID = this.nanoid.nanoid(14);
+            let typeID = this.nanoid(14);
 
             // TODO: Pre-query validation
                 // Validate if typeName is not null

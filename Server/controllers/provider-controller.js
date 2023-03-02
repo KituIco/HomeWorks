@@ -50,12 +50,12 @@ class ProviderController {
                 password = await this.bcrypt.hash(password, 10);
             }
 
-            let providerID = this.nanoid.nanoid(14);
+            let providerID = this.nanoid(14);
 
             await this.userRepo.createUser(providerID);
 
             if (email !== null) {
-                let credentialsID = this.nanoid.nanoid(14);
+                let credentialsID = this.nanoid(14);
                 await this.credentialsRepo.createCredentials(
                     credentialsID,
                     providerID,
@@ -65,7 +65,7 @@ class ProviderController {
             }
 
             if (phoneNumber !== null) {
-                let credentialsID = this.nanoid.nanoid(14);
+                let credentialsID = this.nanoid(14);
                 await this.credentialsRepo.createCredentials(
                     credentialsID,
                     providerID,
@@ -75,7 +75,7 @@ class ProviderController {
             }
 
             if (username !== null) {
-                let credentialsID = this.nanoid.nanoid(14);
+                let credentialsID = this.nanoid(14);
                 await this.credentialsRepo.createCredentials(
                     credentialsID,
                     providerID,

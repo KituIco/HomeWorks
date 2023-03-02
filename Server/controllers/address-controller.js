@@ -34,7 +34,7 @@ class AddressController{
                 // Validate if necessary fields are not null
                 // Validate if userID exists in database
             
-            let addressID = this.nanoid.nanoid(14);
+            let addressID = this.nanoid(14);
 
             await this.addressRepo.createAddress(
                 addressID,

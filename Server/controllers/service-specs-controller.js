@@ -32,7 +32,7 @@ class ServiceSpecsController {
                 // Validate if typeID exists in database
                 // Validate if addressID exists in database
             
-            let specsID = this.nanoid.nanoid(14);
+            let specsID = this.nanoid(14);
 
             await this.serviceSpecsRepo.createServiceSpecs(
                 specsID,

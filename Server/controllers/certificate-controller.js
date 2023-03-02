@@ -26,7 +26,7 @@ class CertificateController{
                 // Validate if necessary fields are not null
                 // Validate if providerID exists in database
 
-            let certificateID = this.nanoid.nanoid(14);
+            let certificateID = this.nanoid(14);
 
             await this.certificateRepo.createCertificate(
                 certificateID, 

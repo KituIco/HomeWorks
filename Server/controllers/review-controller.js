@@ -30,7 +30,7 @@ class ReviewController {
                 // validate if serviceID exists
                 // validate if seekerID exists
 
-            let reviewID = this.nanoid.nanoid(14);
+            let reviewID = this.nanoid(14);
 
             await this.reviewRepo.createReview(
                 reviewID,

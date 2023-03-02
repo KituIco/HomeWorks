@@ -29,7 +29,7 @@ class MessageController {
                 // Validate if bookingID exists in database
                 // Validate if userID exists in database
 
-            let messageID = this.nanoid.nanoid(14);
+            let messageID = this.nanoid(14);
 
             await this.messageRepo.createMessage(
                 messageID,

@@ -46,13 +46,13 @@ class SeekerController {
                 password = await this.bcrypt.hash(password, 10);
             }
 
-            let seekerID = this.nanoid.nanoid(14);
+            let seekerID = this.nanoid(14);
 
             await this.userRepo.createUser(seekerID,);
 
             if (email !== null) {
                 // TODO: Validate if email already exists in the database
-                let credentialsID = this.nanoid.nanoid(14);
+                let credentialsID = this.nanoid(14);
                 await this.credentialsRepo.createCredentials(
                     credentialsID,
                     seekerID,
@@ -63,7 +63,7 @@ class SeekerController {
 
             if (username !== null) {
                 // TODO: Validate if username already exists in the database
-                let credentialsID = this.nanoid.nanoid(14);
+                let credentialsID = this.nanoid(14);
                 await this.credentialsRepo.createCredentials(
                     credentialsID,
                     seekerID,
@@ -74,7 +74,7 @@ class SeekerController {
 
             if (phoneNumber !== null) {
                 // TODO: Validate if phoneNumber already exists in the database
-                let credentialsID = this.nanoid.nanoid(14);
+                let credentialsID = this.nanoid(14);
                 await this.credentialsRepo.createCredentials(
                     credentialsID,
                     seekerID,

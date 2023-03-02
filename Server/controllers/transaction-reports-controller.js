@@ -35,7 +35,7 @@ class TransactionReportsController {
                 // Validate if providerID exists in the database
                 // Validate if serviceID exists in the database
 
-            let reportID = this.nanoid.nanoid(14);
+            let reportID = this.nanoid(14);
 
             await this.transactionReportsRepo.createTransactionReport(
                 reportID,

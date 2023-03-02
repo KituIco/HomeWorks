@@ -31,7 +31,7 @@ class PaymentController {
                 // validate if providerID exists
                 // validate if serviceID exists
 
-            let paymentID = this.nanoid.nanoid(14);
+            let paymentID = this.nanoid(14);
 
             await this.paymentRepo.createPayment(
                 paymentID,

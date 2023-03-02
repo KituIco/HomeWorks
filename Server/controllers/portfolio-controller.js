@@ -27,7 +27,7 @@ class PortfolioController {
                 // validate if necessary fields are not null
                 // validate if serviceID exists
 
-            let portfolioID = this.nanoid.nanoid(14);
+            let portfolioID = this.nanoid(14);
 
             await this.portfolioRepo.createPortfolio(
                 portfolioID,

@@ -27,7 +27,7 @@ class AgencyController {
             // TODO: Pre-query validations
                 // Validate if necessary fields are not null
             
-            let agencyID = this.nanoid.nanoid(14);
+            let agencyID = this.nanoid(14);
 
             await this.agencyRepo.createAgency(
                 agencyID,

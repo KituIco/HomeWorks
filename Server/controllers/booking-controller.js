@@ -29,7 +29,7 @@ class BookingController {
                 // Validate if seekerID exists in database
                 // Validate if serviceID exists in databas
 
-            let bookingID = this.nanoid.nanoid(14);
+            let bookingID = this.nanoid(14);
 
             await this.bookingRepo.createBooking(
                 bookingID,

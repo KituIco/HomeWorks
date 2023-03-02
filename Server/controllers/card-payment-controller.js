@@ -30,7 +30,7 @@ class CardPaymentController {
                 // Validate if necessary fields are not null
                 // Validate if userID exists in database
 
-            let cardID = this.nanoid.nanoid(14);
+            let cardID = this.nanoid(14);
 
             await this.cardPaymentRepo.createCardPayment(
                 cardID,

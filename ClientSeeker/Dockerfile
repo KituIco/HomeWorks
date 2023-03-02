@@ -1,10 +1,10 @@
-FROM node:lts-alpine
+FROM node
 
 # set working directory
 WORKDIR /app
 
 # copy package.json & package-lock.json to ./ inside the Docker image
-COPY package*.json ./
+COPY package.json .
  
 # install dependencies of the app
 RUN npm install && npm install -g expo-cli
