@@ -12,6 +12,7 @@ const getFonts = () => Font.loadAsync({
   'montserrat': require('./assets/fonts/Montserrat-Regular.ttf'),
   'quicksand': require('./assets/fonts/Quicksand-Regular.ttf'),
   'quicksand-light': require('./assets/fonts/Quicksand-Light.ttf'),
+  'quicksand-semibold': require('./assets/fonts/Quicksand-SemiBold.ttf'),
   'quicksand-bold': require('./assets/fonts/Quicksand-Bold.ttf'),
   'quicksand-medium': require('./assets/fonts/Quicksand-Medium.ttf'),
   'notosans': require('./assets/fonts/NotoSans-Regular.ttf'),

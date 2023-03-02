@@ -7,8 +7,8 @@ export default function ListHeader ( props ) {
   return (
     <View style={styles.container}>
     <LinearGradient colors={['#9C54D5', '#462964']} start={{ x:0.6, y:-1 }} end={{ x:0.1, y:1 }} style={styles.header}>
-     <LinearGradient colors={['rgba(0, 0, 0, 0.4)','rgba(0, 0, 0, 0)']} start={{ x: 0.5, y: 0.01 }} end={{ x: 0.5, y: 0.09 }} style={styles.shadow}>
-      <Text style={styles.title}>{title}</Text>
+      <LinearGradient colors={['rgba(0, 0, 0, 0.4)','rgba(0, 0, 0, 0)']} start={{ x: 0.5, y: 0.01 }} end={{ x: 0.5, y: 0.09 }} style={styles.shadow}>
+        <Text style={styles.title}>{title}</Text>
       </LinearGradient>
     </LinearGradient> 
     </View>
