@@ -10,7 +10,11 @@ export default function Details({navigation}) {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>{service}</Text>
+      <View style={{alignItems:'center'}}>
+        <Text style={styles.header}>{service}</Text>
+        <Text style={[styles.content,{marginBottom:0}]}>scroll down for more info</Text>
+      </View>
+      
 
       <View style={{width:'100%', height: '70%'}}>
         <LinearGradient colors={['rgba(255,255,255,0.9)','rgba(255,255,255,0.5)'  ]} start={{ x:0, y:0 }} end={{ x:0, y:1 }} style={{height:14, zIndex:5}}/>
@@ -41,7 +45,7 @@ export default function Details({navigation}) {
           </View>
         </TouchableWithoutFeedback>
 
-        <TouchableWithoutFeedback onPress={() => navigation.navigate('')}>
+        <TouchableWithoutFeedback onPress={() => navigation.navigate('Chat')}>
           <LinearGradient colors={['rgba(0,0,0,0.7)','rgba(0,0,0,0.1)'  ]} start={{ x:0, y:0.65 }} end={{ x:0, y:0.98 }} style={styles.shadow}>
             <LinearGradient colors={['#9C54D5', '#462964']} start={{ x:0.4, y:1 }} end={{ x:0, y:1 }} style={styles.button}>
               <Text style={styles.next}>Settle Request via Chat</Text>
@@ -60,7 +64,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingTop: 80,
+    paddingTop: 70,
   },
   header: {
     fontFamily: 'lexend',
@@ -85,7 +89,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width:'100%',
   },
-
   next: {
     textAlign: 'center',
     fontFamily: 'lexend-light',

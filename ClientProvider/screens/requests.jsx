@@ -32,7 +32,7 @@ export default function Requests({navigation}) {
   }
 
   const [services, setServices] = useState(baseServices);
-  const [waiting, setWaiting] = useState(true)
+  const [waiting, setWaiting] = useState(false)
 
   return (
     <View style={styles.container}>

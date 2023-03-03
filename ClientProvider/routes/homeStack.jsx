@@ -32,7 +32,7 @@ export default function HomeStack({ navigation }) {
           tabBarInactiveTintColor: '#2F2D2E',
           tabBarActiveBackgroundColor: '#E9E9E9',
 
-          tabBarStyle: { height: 70, backgroundColor: '#E4E4E4',},
+          tabBarStyle: { height: 70, backgroundColor: '#E9E9E9',},
           tabBarLabelStyle: { display: "none" },
         })}
       >

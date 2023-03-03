@@ -1,10 +1,15 @@
 import { createStackNavigator } from '@react-navigation/stack';
 import { StyleSheet } from 'react-native';
+import { useState } from 'react';
 
 import Dashboard from '../screens/dashboard';
 import Requests from '../screens/requests';
 import Details from '../screens/details';
-import { useState } from 'react';
+import Chat from '../screens/chat';
+import Specs from '../screens/specs';
+import Arriving from '../screens/arriving';
+import Serving from '../screens/serving';
+
 
 const Stack = createStackNavigator();
 
@@ -67,6 +72,30 @@ export default function DashStack({ navigation }) {
         name='Details' 
         component={Details}
         options={() => header}
+      />
+
+      <Stack.Screen 
+        name='Chat' 
+        component={Chat}
+        options={{ headerShown: false }}
+      />
+
+      <Stack.Screen 
+        name='Specs' 
+        component={Specs}
+        options={() => header}
+      />
+
+      <Stack.Screen 
+        name='Arriving' 
+        component={Arriving}
+        options={{ headerShown: false }}
+      />
+
+      <Stack.Screen 
+        name='Serving' 
+        component={Serving}
+        options={{ headerShown: false }}
       />
 
     </Stack.Navigator>

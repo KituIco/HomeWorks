@@ -20,7 +20,7 @@ export default function SettleSpecs({ route, navigation }) {
             <Image style={styles.profileIcon} source={require("../../assets/providers/provider-f.png")} />
             <Text style={styles.names}>Cedric Protacio</Text>
           </View>
-          <MaterialCommunityIcons name={'dots-vertical'} color={'#575757'} size={24}/>
+          <MaterialCommunityIcons name={'magnify-remove-outline'} color={'#000000'} size={24} style={{marginRight:8}}/>
         </View>
 
         <LinearGradient colors={['rgba(0,0,0,0.1)','rgba(0,0,0,0)'  ]} start={{ x:0, y:0 }} end={{ x:0, y:1 }} style={{height:4}}/>
