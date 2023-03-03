@@ -40,9 +40,17 @@ class CredentialsController {
             }
 
             let accessToken = this.jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '15m' });
+            let refreshToken = this.jwt.sign(user, process.env.REFRESH_TOKEN_SECRET, { expiresIn: '7d' });
 
-            res.cookie('token', accessToken, {
+            res.cookie('access_token', accessToken, {
                 maxAge: 900000
+                // httpOnly: true,
+                // secure: true
+                // domain: 'correct domain'
+            });
+
+            res.cookie('refresh_token', refreshToken, {
+                maxAge: 604800000
                 // httpOnly: true,
                 // secure: true
                 // domain: 'correct domain'
@@ -61,7 +69,8 @@ class CredentialsController {
     logout = async (req, res) => {
         try {
             // TODO: Validate if token exists in cookies
-            res.clearCookie('token');
+            res.clearCookie('access_token');
+            res.clearCookie('refresh_token');
             res.status(200).json({
                 message: "Logout successful",
             });

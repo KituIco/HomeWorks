@@ -114,12 +114,23 @@ class ProviderController {
                 userID: providerID,
             }
 
-            let token = this.jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {
+            let accessToken = this.jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {
                 expiresIn: '15m'
             })
 
-            res.cookie('token', token, {
+            let refreshToken = this.jwt.sign(user, process.env.REFRESH_TOKEN_SECRET, {
+                expiresIn: '7d'
+            })
+
+            res.cookie('access_token', accessToken, {
                 maxAge: 900000,
+                // httpOnly: true,
+                // secure: true
+                // domain: 'correct domain'
+            });
+
+            res.cookie('refresh_token', refreshToken, {
+                maxAge: 604800000,
                 // httpOnly: true,
                 // secure: true
                 // domain: 'correct domain'

@@ -1,4 +1,5 @@
 import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const instance = axios.create({
     baseURL: 'http://localhost:3000'
@@ -6,13 +7,27 @@ const instance = axios.create({
 
 postAxios = async(url, data = {}) => {
     try {
+        let access_token = await AsyncStorage.getItem('access_token');
+        let refresh_token = await AsyncStorage.getItem('refresh_token');
         let res = await instance(
             {
                 method: 'post',
                 url: url,
-                data: data
+                data: data,
+                headers: {
+                    Cookie: access_token && refresh_token && `access_token=${access_token}; refresh_token=${refresh_token}`
+                }
             }
         )
+        let tokens = {}
+        res.headers['set-cookie'].forEach(
+            async (cookie) => {
+                let [key, value] = cookie.split('=');
+                tokens[key] = value.split(';')[0];
+            } 
+        )
+        await AsyncStorage.setItem('access_token', tokens['access_token']);
+        await AsyncStorage.setItem('refresh_token', tokens['refresh_token']);
         return res.data;
     } catch (error) {
         if (error.response) {
@@ -29,11 +44,17 @@ postAxios = async(url, data = {}) => {
 
 patchAxios = async(url, data = {}) => {
     try {
+        let access_token = await AsyncStorage.getItem('access_token');
+        let refresh_token = await AsyncStorage.getItem('refresh_token');
+        console.log(refresh_token)
         let res = await instance(
             {
                 method: 'patch',
                 url: url,
-                data: data
+                data: data,
+                headers: {
+                    Cookie: access_token && refresh_token && `access_token=${access_token}; refresh_token=${refresh_token}`
+                }
             }
         )
         return res.data;
@@ -52,10 +73,15 @@ patchAxios = async(url, data = {}) => {
 
 deleteAxios = async(url) => {
     try {
+        let access_token = await AsyncStorage.getItem('access_token');
+        let refresh_token = await AsyncStorage.getItem('refresh_token');
         let res = await instance(
             {
                 method: 'delete',
-                url: url
+                url: url,
+                headers : {
+                    Cookie: access_token && refresh_token && `access_token=${access_token}; refresh_token=${refresh_token}`
+                }
             }
         )
         return res.data;
@@ -74,10 +100,15 @@ deleteAxios = async(url) => {
 
 getAxios = async(url) => {
     try {
+        let access_token = await AsyncStorage.getItem('access_token');
+        let refresh_token = await AsyncStorage.getItem('refresh_token');
         let res = await instance(
             {
                 method: 'get',
-                url: url
+                url: url,
+                headers : {
+                    Cookie: access_token && refresh_token && `access_token=${access_token}; refresh_token=${refresh_token}`
+                }
             }
         )
         return res.data;
@@ -96,11 +127,16 @@ getAxios = async(url) => {
 
 putAxios = async(url, data = {}) => {
     try {
+        let access_token = await AsyncStorage.getItem('access_token');
+        let refresh_token = await AsyncStorage.getItem('refresh_token');
         let res = await instance(
             {
                 method: 'put',
                 url: url,
-                data: data
+                data: data,
+                headers : {
+                    Cookie: access_token && refresh_token && `access_token=${access_token}; refresh_token=${refresh_token}`
+                }
             }
         )
         return res.data;
@@ -114,6 +150,15 @@ putAxios = async(url, data = {}) => {
         } else {
             console.log('Error', error.message);
         }
+    }
+}
+
+expoGet = async(key) => {
+    try {
+        let value = await SecureStore.getItemAsync(key);
+        return value;
+    } catch (error) {
+        console.log(error);
     }
 }
 
