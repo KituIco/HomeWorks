@@ -2,6 +2,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import React, { useState } from 'react';
 import { StyleSheet, View, Text, Image, TouchableWithoutFeedback, TextInput, ScrollView } from 'react-native';
 import { Dimensions } from 'react-native';
+import { StackActions } from '@react-navigation/native';
 
 import CredentialsServices from '../../services/user/credentials-services'
 
@@ -16,7 +17,8 @@ export default function Login({ navigation }) {
       identifier: mail,
       password: password,
     })
-    navigation.navigate('Dashboard') 
+    navigation.dispatch(StackActions.popToTop()),
+    navigation.navigate('HomeStack') 
   }
 
   return (

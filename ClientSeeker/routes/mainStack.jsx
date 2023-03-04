@@ -1,6 +1,7 @@
 import { NavigationContainer } from '@react-navigation/native'; 
 import { createStackNavigator } from '@react-navigation/stack';
 import { StyleSheet } from 'react-native';
+import { useState } from 'react';
 
 import HomeStack from './homeStack';
 import ProfileStack from './profileStack';
@@ -12,12 +13,12 @@ import AuthStack from './authStack';
 
 const Stack = createStackNavigator();
 
-
-export default function Navigator() {
-
+export default function Navigator( props ) {
+  const [initialRoute, setInitialRoute] = useState(props.route);
+  
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName='HomeStack' >
+      <Stack.Navigator initialRouteName={initialRoute}>
 
         <Stack.Screen 
           name='HomeStack' 

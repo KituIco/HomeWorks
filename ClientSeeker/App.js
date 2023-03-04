@@ -3,6 +3,7 @@ import { StyleSheet } from 'react-native';
 
 import AppLoading from 'expo-app-loading';
 import * as Font from "expo-font";
+import * as SecureStore from 'expo-secure-store';
 
 import Navigator from './routes/mainStack';
 
@@ -20,12 +21,24 @@ const getFonts = () => Font.loadAsync({
   'notosans-medium': require('./assets/fonts/NotoSans-Medium.ttf'),
 });
 
+async function getValueFor(key) {
+  let result = await SecureStore.getItemAsync(key);
+  return result;
+}
+
 export default function App() {
   const [fontsLoaded, setFontsLoaded] = useState(false);
+  const [initialRoute, setInitialRoute] = useState('AuthStack')
+  getValueFor('access_token')
+    .then(result => {
+      if(result) {
+        setInitialRoute('HomeStack')
+      }
+    })
   
   if (fontsLoaded) {
     return (
-      <Navigator />
+      <Navigator route={initialRoute}/>
     );
   } else {
     return (
@@ -34,6 +47,8 @@ export default function App() {
         onFinish={() => setFontsLoaded(true)}
         onError={() => {}} 
       />
+
+      
     )
   }
 
