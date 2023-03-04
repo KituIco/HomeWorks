@@ -1,6 +1,7 @@
 import axios from 'axios';
 import * as SecureStore from 'expo-secure-store';
 import {REACT_NATIVE_PACKAGER_HOSTNAME} from '@env';
+var jwtDecode = require('jwt-decode');
 
 const instance = axios.create({
     baseURL: `http://${REACT_NATIVE_PACKAGER_HOSTNAME}:3000`
@@ -27,8 +28,15 @@ postAxios = async(url, data = {}) => {
                 tokens[key] = value.split(';')[0];
             } 
         )
-        await SecureStore.setItemAsync('access_token', String(tokens['access_token']));
-        await SecureStore.setItemAsync('refresh_token', String(tokens['refresh_token']));
+
+        if (tokens.keys().length > 0) {
+            if ('access_token' in tokens) {
+                let user = jwtDecode(tokens['access_token']);
+                await SecureStore.setItemAsync('user', JSON.stringify(user));
+            }
+            await SecureStore.setItemAsync('access_token', String(tokens['access_token']));
+            await SecureStore.setItemAsync('refresh_token', String(tokens['refresh_token']));
+        }
         return res.data;
     } catch (error) {
         if (error.response) {
