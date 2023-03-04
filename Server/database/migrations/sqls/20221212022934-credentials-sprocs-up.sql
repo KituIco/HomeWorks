@@ -122,7 +122,7 @@ CREATE PROCEDURE `get_hashed_password`(
 BEGIN
     SELECT
         user_id AS userID,
-        password
+        password AS hashedPassword
     FROM
         Credentials
     WHERE
