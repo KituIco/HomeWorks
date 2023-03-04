@@ -15,6 +15,17 @@ export default function Register({ navigation }) {
   const [lastname, setLastname] = useState('')
   const [confirm, setConfirm] = useState('')
 
+  const onRegister = () => {
+    let res = SeekerServices.createSeeker({
+      email: mail,
+      password: password,
+      firstName: firstname,
+      lastName: lastname,
+    })
+    console.log(res)
+    navigation.navigate('Dashboard') 
+  }
+
   return (
     <View style={{flex:1, backgroundColor: '#E9E9E9'}}>
     <View style={{width:'100%', height:40, backgroundColor: '#E9E9E9'}}/>
@@ -44,15 +55,7 @@ export default function Register({ navigation }) {
         </View>
 
 
-        <TouchableWithoutFeedback onPress= {() => { 
-          SeekerServices.createSeeker({
-            email: mail,
-            password: password,
-            firstName: firstname,
-            lastName: lastname,
-          }),
-          navigation.navigate('Dashboard') 
-        }}>
+        <TouchableWithoutFeedback onPress= {() => { onRegister() }}>
           <LinearGradient colors={['rgba(10,10,10,0.2)','rgba(10,10,10,0)'  ]} start={{ x:0, y:0.4 }} end={{ x:0, y:0 }} style={styles.shadow}>
             <LinearGradient colors={['#9C54D5', '#462964']} start={{ x:0.5, y:0 }} end={{ x:0, y:0.8 }} style={styles.button}>
               <Text style={styles.register}>Register</Text>
