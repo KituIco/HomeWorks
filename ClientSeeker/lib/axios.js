@@ -1,5 +1,6 @@
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as SecureStore from 'expo-secure-store';
 import {REACT_NATIVE_PACKAGER_HOSTNAME} from '@env';
 
 const instance = axios.create({
@@ -8,8 +9,8 @@ const instance = axios.create({
 
 postAxios = async(url, data = {}) => {
     try {
-        let access_token = await AsyncStorage.getItem('access_token');
-        let refresh_token = await AsyncStorage.getItem('refresh_token');
+        let access_token = await SecureStore.getItemAsync('access_token');
+        let refresh_token = await SecureStore.getItemAsync('refresh_token');
         let res = await instance(
             {
                 method: 'post',
@@ -27,8 +28,8 @@ postAxios = async(url, data = {}) => {
                 tokens[key] = value.split(';')[0];
             } 
         )
-        await AsyncStorage.setItem('access_token', tokens['access_token']);
-        await AsyncStorage.setItem('refresh_token', tokens['refresh_token']);
+        await SecureStore.setItemAsync('access_token', tokens['access_token']);
+        await SecureStore.setItemAsync('refresh_token', tokens['refresh_token']);
         return res.data;
     } catch (error) {
         if (error.response) {
@@ -45,8 +46,8 @@ postAxios = async(url, data = {}) => {
 
 patchAxios = async(url, data = {}) => {
     try {
-        let access_token = await AsyncStorage.getItem('access_token');
-        let refresh_token = await AsyncStorage.getItem('refresh_token');
+        let access_token = await SecureStore.getItemAsync('access_token');
+        let refresh_token = await SecureStore.getItemAsync('refresh_token');
         console.log(refresh_token)
         let res = await instance(
             {
@@ -74,8 +75,8 @@ patchAxios = async(url, data = {}) => {
 
 deleteAxios = async(url) => {
     try {
-        let access_token = await AsyncStorage.getItem('access_token');
-        let refresh_token = await AsyncStorage.getItem('refresh_token');
+        let access_token = await SecureStore.getItemAsync('access_token');
+        let refresh_token = await SecureStore.getItemAsync('refresh_token');
         let res = await instance(
             {
                 method: 'delete',
@@ -101,8 +102,8 @@ deleteAxios = async(url) => {
 
 getAxios = async(url) => {
     try {
-        let access_token = await AsyncStorage.getItem('access_token');
-        let refresh_token = await AsyncStorage.getItem('refresh_token');
+        let access_token = await SecureStore.getItemAsync('access_token');
+        let refresh_token = await SecureStore.getItemAsync('refresh_token');
         let res = await instance(
             {
                 method: 'get',
@@ -128,8 +129,8 @@ getAxios = async(url) => {
 
 putAxios = async(url, data = {}) => {
     try {
-        let access_token = await AsyncStorage.getItem('access_token');
-        let refresh_token = await AsyncStorage.getItem('refresh_token');
+        let access_token = await SecureStore.getItemAsync('access_token');
+        let refresh_token = await SecureStore.getItemAsync('refresh_token');
         let res = await instance(
             {
                 method: 'put',
@@ -151,15 +152,6 @@ putAxios = async(url, data = {}) => {
         } else {
             console.log('Error', error.message);
         }
-    }
-}
-
-expoGet = async(key) => {
-    try {
-        let value = await SecureStore.getItemAsync(key);
-        return value;
-    } catch (error) {
-        console.log(error);
     }
 }
 
