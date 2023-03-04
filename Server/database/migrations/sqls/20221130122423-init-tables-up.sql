@@ -22,7 +22,7 @@ CREATE TABLE IF NOT EXISTS `Seeker`(
     `seeker_id` VARCHAR(14) NOT NULL,
     `first_name` VARCHAR(64) NOT NULL,
     `last_name` VARCHAR(64) NOT NULL,
-    `birthdate` BIGINT NOT NULL,
+    `birthdate` BIGINT,
     `gender` VARCHAR(10),
     `seeker_dp` VARCHAR(255),
     PRIMARY KEY (`seeker_id`),

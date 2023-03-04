@@ -87,7 +87,7 @@ class SeekerController {
                 seekerID,
                 firstName,
                 lastName,
-                birthdate,
+                birthdate || null,
                 gender,
                 seekerDp
             );
