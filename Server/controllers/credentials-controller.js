@@ -5,6 +5,7 @@ class CredentialsController {
         serverErrors,
         credentialsValidator = null,
         nanoid,
+        jwt,
         bcrypt
     ) {
         this.credentialsRepo = credentialsRepo;
@@ -12,6 +13,7 @@ class CredentialsController {
         this.serverErrors = serverErrors;
         this.credentialsValidator = credentialsValidator;
         this.nanoid = nanoid;
+        this.jwt = jwt;
         this.bcrypt = bcrypt;
     }
 
@@ -23,7 +25,7 @@ class CredentialsController {
             // Validate if email is not null
                 // validate if email exists in the database
             // Validate if password is not null
-
+            
             let result = await this.credentialsRepo.getHashedPassword(identifier);
 
             let {hashedPassword, userID} = result;

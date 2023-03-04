@@ -7,6 +7,7 @@ var clientErrors = require('../error/client-error-handler.js');
 var serverErrors = require('../error/server-error-handler.js');
 var { nanoid } = require('nanoid');
 var bcrypt = require('bcryptjs');
+var jwt = require('jsonwebtoken');
 var CredentialsController = require('../controllers/credentials-controller.js');
 
 var credentialsRepo = new CredentialsRepo(db);
@@ -16,6 +17,7 @@ var credentialsController = new CredentialsController(
     serverErrors,
     null,
     nanoid,
+    jwt,
     bcrypt
 );
 
