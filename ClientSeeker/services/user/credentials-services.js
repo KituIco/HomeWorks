@@ -1,4 +1,5 @@
 import { postAxios, patchAxios, deleteAxios } from '../../lib/axios';
+import * as SecureStore from 'expo-secure-store';
 
 let url = '/credentials';
 
@@ -17,6 +18,8 @@ let CredentialsService = {
         try {
             let queryURL = `${url}/logout`;
             let res = await deleteAxios(queryURL);
+            await SecureStore.deleteItemAsync('access_token');
+            await SecureStore.deleteItemAsync('refresh_token');
             return res;
         } catch (error) {
             console.log(error);
