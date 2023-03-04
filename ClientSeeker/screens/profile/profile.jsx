@@ -4,11 +4,19 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { StackActions } from '@react-navigation/native';
 
+import CredentialsServices from '../../services/user/credentials-services'
+
 export default function Profile({ navigation }) {
   const name = 'Felizidad Fiero-Pavia';
   const mail = 'fyfiero@gmail.com';
   const location = 'San Pablo City, Laguna';
   const contact = '+63 966 132 3091';
+
+  const onLogout = () => {
+    let res = CredentialsServices.logout()
+    navigation.dispatch(StackActions.popToTop()),
+    navigation.navigate('AuthStack')
+  }
 
   return (
     <View style={styles.container}>
@@ -52,10 +60,7 @@ export default function Profile({ navigation }) {
             </View>
         </TouchableWithoutFeedback>
 
-        <TouchableWithoutFeedback onPress= {() => {
-          navigation.dispatch(StackActions.popToTop()),
-          navigation.navigate('AuthStack')
-        }}>
+        <TouchableWithoutFeedback onPress= {() => { onLogout() }}>
           <LinearGradient colors={['rgba(10,10,10,0.7)','rgba(10,10,10,0)'  ]} start={{ x:0, y:0.65 }} end={{ x:0, y:0.98 }} style={styles.shadow}>
             <LinearGradient colors={['#9C54D5', '#462964']} start={{ x:0.4, y:1 }} end={{ x:0, y:1 }} style={styles.logout}>
               <Text style={[styles.content, {color: '#FFF'}]}>Log Out</Text>

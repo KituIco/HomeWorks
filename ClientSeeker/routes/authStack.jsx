@@ -4,6 +4,7 @@ import { StyleSheet, View, Image, TouchableWithoutFeedback } from 'react-native'
 import Homepage from '../screens/authentication/homepage';
 import Login from '../screens/authentication/login';
 import Register from '../screens/authentication/register';
+import Credentials from '../screens/authentication/credentials';
 
 const Stack = createStackNavigator();
 
@@ -37,6 +38,12 @@ export default function AuthStack({ navigation }) {
     <Stack.Screen 
       name='Register' 
       component={Register}
+      options={() => header}
+    />
+
+    <Stack.Screen 
+      name='Credentials' 
+      component={Credentials}
       options={() => header}
     />
 

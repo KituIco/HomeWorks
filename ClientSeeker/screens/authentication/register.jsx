@@ -1,9 +1,9 @@
 import { LinearGradient } from 'expo-linear-gradient';
 import React, { useState } from 'react';
-import { StyleSheet, View, Text, Image, TouchableWithoutFeedback, TextInput, ScrollView } from 'react-native';
+import { StyleSheet, View, Text, Image, TouchableWithoutFeedback, TextInput, ScrollView, Alert } from 'react-native';
 import { Dimensions } from 'react-native';
 
-import SeekerServices from '../../services/user/seeker-services.js'
+import SeekerServices from '../../services/user/seeker-services'
 
 const screenHeight = Dimensions.get('window').height;
 
@@ -15,15 +15,39 @@ export default function Register({ navigation }) {
   const [lastname, setLastname] = useState('')
   const [confirm, setConfirm] = useState('')
 
+  const passwordError = () =>
+    Alert.alert('Check your Password', 
+    'Your password input and confirmation of password input did not match', [
+      {
+        text: 'Cancel',
+        onPress: () => console.log('Cancel Pressed'),
+        style: 'cancel',
+      },
+      {text: 'OK', onPress: () => console.log('OK Pressed')},
+    ]);
+
   const onRegister = () => {
-    let res = SeekerServices.createSeeker({
-      email: mail,
-      password: password,
-      firstName: firstname,
-      lastName: lastname,
-    })
-    console.log(res)
-    navigation.navigate('Dashboard') 
+   
+    if (password == confirm) {
+      // navigation.navigate('Credentials', {
+      //   firstname: firstname, 
+      //   lastname: lastname,
+      //   mail: mail,
+      //   password: password,
+      // });
+
+      let res = SeekerServices.createSeeker({
+        email: mail,
+        password: password,
+        firstName: firstname,
+        lastName: lastname,
+      })
+      navigation.navigate('Dashboard') 
+    }
+
+    else {
+      passwordError()
+    }
   }
 
   return (
