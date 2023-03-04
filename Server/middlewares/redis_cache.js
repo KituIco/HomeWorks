@@ -33,7 +33,7 @@ class RedisCache {
     async deleteCache(key) {
         try {
             let data = await this.client.get(key);
-            if (data !== null) {
+            if (data != null) {
                 let deleted = await this.client.del(key);
                 return deleted
             }

@@ -42,7 +42,7 @@ class SeekerController {
                 // validate if email, username, or phoneNumber already exists in database
             
             // TODO: refactor line 39-41 when validation is implemented
-            if (password !== null) {
+            if (password != null) {
                 password = await this.bcrypt.hash(password, 10);
             }
 
@@ -50,7 +50,7 @@ class SeekerController {
 
             await this.userRepo.createUser(seekerID,);
 
-            if (email !== null) {
+            if (email != null) {
                 // TODO: Validate if email already exists in the database
                 let credentialsID = this.nanoid(14);
                 await this.credentialsRepo.createCredentials(
@@ -61,7 +61,7 @@ class SeekerController {
                 );
             };
 
-            if (username !== null) {
+            if (username != null) {
                 // TODO: Validate if username already exists in the database
                 let credentialsID = this.nanoid(14);
                 await this.credentialsRepo.createCredentials(
@@ -72,7 +72,7 @@ class SeekerController {
                 );
             };
 
-            if (phoneNumber !== null) {
+            if (phoneNumber != null) {
                 // TODO: Validate if phoneNumber already exists in the database
                 let credentialsID = this.nanoid(14);
                 await this.credentialsRepo.createCredentials(

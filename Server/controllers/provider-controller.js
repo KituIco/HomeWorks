@@ -46,7 +46,7 @@ class ProviderController {
                 // validate if email, username, or phoneNumber already exists in database
 
             // TODO: refactor line 45-47 when validation is implemented
-            if (password !== null) {
+            if (password != null) {
                 password = await this.bcrypt.hash(password, 10);
             }
 
@@ -54,7 +54,7 @@ class ProviderController {
 
             await this.userRepo.createUser(providerID);
 
-            if (email !== null) {
+            if (email != null) {
                 let credentialsID = this.nanoid(14);
                 await this.credentialsRepo.createCredentials(
                     credentialsID,
@@ -64,7 +64,7 @@ class ProviderController {
                 );
             }
 
-            if (phoneNumber !== null) {
+            if (phoneNumber != null) {
                 let credentialsID = this.nanoid(14);
                 await this.credentialsRepo.createCredentials(
                     credentialsID,
@@ -74,7 +74,7 @@ class ProviderController {
                 );
             }
 
-            if (username !== null) {
+            if (username != null) {
                 let credentialsID = this.nanoid(14);
                 await this.credentialsRepo.createCredentials(
                     credentialsID,
