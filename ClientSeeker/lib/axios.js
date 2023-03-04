@@ -28,8 +28,10 @@ postAxios = async(url, data = {}) => {
                 tokens[key] = value.split(';')[0];
             } 
         )
-        await SecureStore.setItemAsync('access_token', tokens['access_token']);
-        await SecureStore.setItemAsync('refresh_token', tokens['refresh_token']);
+
+        console.log(typeof(tokens['access_token']))
+        await SecureStore.setItemAsync('access_token', String(tokens['access_token']));
+        await SecureStore.setItemAsync('refresh_token', String(tokens['refresh_token']));
         return res.data;
     } catch (error) {
         if (error.response) {
