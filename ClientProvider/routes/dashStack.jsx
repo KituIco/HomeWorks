@@ -44,6 +44,20 @@ export default function DashStack({ navigation }) {
         routes: [{ name: 'Requests' }],
       });
     }
+    else if (route === 'Chat' && initialRoute !== 'Chat') {
+      setInitialRoute('Chat');
+      navigation.reset({
+        index: 0,
+        routes: [{ name: 'Chat' }],
+      });
+    }
+    else if (route === 'Arriving' && initialRoute !== 'Arriving') {
+      setInitialRoute('Arriving');
+      navigation.reset({
+        index: 0,
+        routes: [{ name: 'Arriving' }],
+      });
+    }
   }
 
   return (

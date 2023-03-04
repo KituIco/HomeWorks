@@ -1,8 +1,9 @@
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {REACT_NATIVE_PACKAGER_HOSTNAME} from '@env';
 
 const instance = axios.create({
-    baseURL: 'http://localhost:3000'
+    baseURL: `http://${REACT_NATIVE_PACKAGER_HOSTNAME}:3000`
 });
 
 postAxios = async(url, data = {}) => {

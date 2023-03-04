@@ -7,7 +7,7 @@ import SeekerServices from '../../services/user/seeker-services.js'
 
 const screenHeight = Dimensions.get('window').height;
 
-export default function Home({ navigation }) {
+export default function Register({ navigation }) {
   const [mail, setMail] = useState('')
   const [password, setPassword] = useState('')
 

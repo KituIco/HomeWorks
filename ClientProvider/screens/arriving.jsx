@@ -3,6 +3,8 @@ import { LinearGradient, } from 'expo-linear-gradient';
 import { useState } from 'react';
 import { MaterialCommunityIcons  } from '@expo/vector-icons';
 
+import Back from '../hooks/back';
+
 export default function Arriving({navigation}){
   const address = 'UP AECH, P. Velasquez Street, Diliman, Quezon City, 1800 Metro Manila';
   const [opacity, setOpacity] = useState(0.1)
@@ -32,7 +34,8 @@ export default function Arriving({navigation}){
   }
 
   return (
-    <View style={styles.container}>      
+    <View style={styles.container}>
+      <Back navigation={navigation}/>   
       <View style={{width: '100%'}}>
         <Text style={styles.address}><Text style={{fontFamily:'quicksand-medium', color: '#9C54D5'}}>Destination: </Text>{address}</Text>
       </View>

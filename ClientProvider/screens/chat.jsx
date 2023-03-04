@@ -3,11 +3,14 @@ import { StyleSheet, View, Text, Image, ScrollView, TextInput, TouchableWithoutF
 import { MaterialCommunityIcons  } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 
+import Back from '../hooks/back';
+
 export default function Chat({ navigation }) {
   const [value, onChangeText] = React.useState();
   
   return (
     <View style={{justifyContent: 'flex-end', flex:1}}>
+      <Back navigation={navigation}/>
 
       <View style={styles.container}>
         <View style={styles.header}>

@@ -3,6 +3,8 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { useState } from 'react';
 import { MaterialCommunityIcons } from '@expo/vector-icons'; 
 
+import Back from '../hooks/back';
+
 
 export default function Dashboard({navigation}) {
   const name = 'Marcus Galang';
@@ -17,6 +19,7 @@ export default function Dashboard({navigation}) {
       <TouchableWithoutFeedback onPress={() => changeRegister()}>
         <Text style={styles.heading}>Hello, {name}!</Text>
       </TouchableWithoutFeedback>
+      <Back navigation={navigation}/>
 
       { registered &&
       <View>

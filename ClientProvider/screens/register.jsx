@@ -2,29 +2,34 @@ import { LinearGradient } from 'expo-linear-gradient';
 import React, { useState } from 'react';
 import { StyleSheet, View, Text, Image, TouchableWithoutFeedback, TextInput, ScrollView } from 'react-native';
 import { Dimensions } from 'react-native';
-
-import SeekerServices from '../../services/user/seeker-services.js'
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 const screenHeight = Dimensions.get('window').height;
 
-export default function Login({ navigation }) {
+export default function Register({ navigation }) {
   const [mail, setMail] = useState('')
   const [password, setPassword] = useState('')
 
-  return (
-    <View style={styles.container}>
+  const [firstname, setFirstname] = useState('')
+  const [lastname, setLastname] = useState('')
+  const [confirm, setConfirm] = useState('')
 
-      <ScrollView style={{width: '100%'}}>
+  return (
+    <View style={{flex:1, backgroundColor: '#E9E9E9'}}>
+    <View style={{width:'100%', height:40, backgroundColor: '#E9E9E9'}}/>
+    
+    <ScrollView style={{width: '100%', backgroundColor: '#E9E9E9'}}>
+      <MaterialCommunityIcons name="account-hard-hat" size={160} color='#9C54D5' style={{alignSelf:'center', marginTop:50, marginBottom:-20}}/>
       <View style={{alignItems: 'center'}}>
-        <Image style={styles.homeIcon} source={require('../../assets/HomeWorks-Icon.png')} />
         <Text style={styles.title}>Home<Text style={{color:'#1E1E1E'}}>Works</Text></Text>
         <Text style={styles.subtitle}>Household and Wellness Services App</Text>
-      </View>
-      </ScrollView>
 
-      <LinearGradient colors={['#9C54D5', '#462964']} start={{ x:0.5, y:0 }} end={{ x:0, y:0.8 }} style={styles.bottom}>
-        <Text style={styles.botheader}>Hello, Dear Customer!</Text>
-        <Text style={styles.content}>Welcome to HomeWorks, your provider of the finest household services.</Text>
+        <View style={styles.textbox}>
+          <TextInput style={styles.input} onChangeText={setFirstname} value={firstname} placeholder="First Name"/>
+        </View>
+        <View style={styles.textbox}>
+          <TextInput style={styles.input} onChangeText={setLastname} value={lastname} placeholder="Last Name"/>
+        </View>
 
         <View style={styles.textbox}>
           <TextInput style={styles.input} onChangeText={setMail} value={mail} placeholder="Email Address"/>
@@ -32,38 +37,32 @@ export default function Login({ navigation }) {
         <View style={styles.textbox}>
           <TextInput style={styles.input} onChangeText={setPassword} value={password} placeholder="Password" secureTextEntry={true}/>
         </View>
+        <View style={styles.textbox}>
+          <TextInput style={styles.input} onChangeText={setConfirm} value={confirm} placeholder="Confirm Password" secureTextEntry={true}/>
+        </View>
 
-        <TouchableWithoutFeedback onPress= {() => { 
-          navigation.navigate('Dashboard') }}>
-          <LinearGradient colors={['rgba(10,10,10,0.7)','rgba(10,10,10,0.1)'  ]} start={{ x:0, y:0.65 }} end={{ x:0, y:0.98 }} style={styles.shadow}>
-            <View style={styles.button}>
-              <Text style={styles.register}>Login</Text>
-            </View>
+        <TouchableWithoutFeedback onPress= {() => { navigation.navigate( 'Credentials', {firstname:firstname, lastname:lastname} )}}>
+          <LinearGradient colors={['rgba(10,10,10,0.2)','rgba(10,10,10,0)'  ]} start={{ x:0, y:0.4 }} end={{ x:0, y:0 }} style={styles.shadow}>
+            <LinearGradient colors={['#9C54D5', '#462964']} start={{ x:0.5, y:0 }} end={{ x:0, y:0.8 }} style={styles.button}>
+              <Text style={styles.register}>Create Account</Text>
+            </LinearGradient>
           </LinearGradient>
         </TouchableWithoutFeedback>
 
-        <TouchableWithoutFeedback onPress= {() => { navigation.navigate('Register') }}>
-          <Text style={styles.login}>Don't have an account? <Text style={{fontFamily:'quicksand-bold', textDecorationLine: 'underline',}}>Register</Text></Text>
+        <TouchableWithoutFeedback onPress= {() => { navigation.navigate('Login') }}>
+          <Text style={styles.login}>Already have an account? <Text style={{fontFamily:'quicksand-bold', textDecorationLine: 'underline',}}>Login</Text></Text>
         </TouchableWithoutFeedback>
-
-      </LinearGradient>
+      </View>
+    </ScrollView>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'space-between'
-  },
-
-
-  homeIcon: {
+    homeIcon: {
     width: 100,
     height: 100,
-    marginTop: '35%'
+    marginTop: '25%'
   },
   title: {
     fontFamily: 'lexend',
@@ -77,7 +76,8 @@ const styles = StyleSheet.create({
     fontSize: 15,
     letterSpacing: -0.6,
     marginTop: -6,
-    color: '#1E1E1E'
+    color: '#1E1E1E',
+    marginBottom: 30,
   },
 
   bottom: {
@@ -109,8 +109,8 @@ const styles = StyleSheet.create({
   shadow: {
     marginHorizontal: 30,
     borderRadius: 30,
-    height: 48,
-    width: 300,
+    height: 42,
+    width: 320,
     marginTop: 40,
     justifyContent:'center',
     
@@ -122,24 +122,25 @@ const styles = StyleSheet.create({
     marginBottom: 8,
     backgroundColor:'#FFF', 
     alignItems: 'center',
-    width: 300,
+    width: 320,
   },
   register: {
     fontFamily: 'lexend',
     fontSize: 20,
-    color: '#1E1E1E',
-    letterSpacing: -0.5
+    color: '#FFF',
+    letterSpacing: -0.5,
   },
   login: {
     fontFamily: 'quicksand-light',
     fontSize: 14,
     marginTop: 12,
-    color: '#FFF'
+    color: '#1E1E1E',
+    marginBottom: 30
   },
 
   textbox: {
     height: 52,
-    width: 290,
+    width: 300,
     backgroundColor: '#FFF',
     borderRadius: 3,
     padding: 10,
@@ -147,7 +148,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   input: {
-    fontFamily: 'notosans-light',
+    fontFamily: 'notosans',
     fontSize: 16,
+    letterSpacing: -0.5
   }
 });
