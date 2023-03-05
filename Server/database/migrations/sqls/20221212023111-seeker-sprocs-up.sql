@@ -4,7 +4,7 @@ CREATE PROCEDURE `create_seeker`(
     IN `skrID` VARCHAR(14),
     IN `frstName` VARCHAR(64),
     IN `lstName` VARCHAR(64),
-    IN `bdy` BIGINT,
+    IN `bdy` VARCHAR(30),
     IN `gendr` VARCHAR(10),
     IN `skrDP` VARCHAR(255)
 )
@@ -34,7 +34,7 @@ CREATE PROCEDURE `patch_seeker`(
     IN `skrID` VARCHAR(14),
     IN `frstName` VARCHAR(64),
     IN `lstName` VARCHAR(64),
-    IN `bdy` BIGINT,
+    IN `bdy` VARCHAR(30),
     IN `gendr` VARCHAR(10),
     IN `skrDP` VARCHAR(255)
 )
