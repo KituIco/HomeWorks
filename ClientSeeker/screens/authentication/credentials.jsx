@@ -7,9 +7,9 @@ import { StackActions } from '@react-navigation/native';
 
 import * as ImagePicker from 'expo-image-picker';
 import { dateHandler } from '../../utils/dateHandler';
-import { contactHandler } from '../../utils/contactHandler'
+import { contactHandler } from '../../utils/contactHandler';
 import DatePicker from 'react-native-modern-datepicker';
-import SeekerServices from '../../services/user/seeker-services'
+import SeekerServices from '../../services/user/seeker-services';
 
 const screenHeight = Dimensions.get('window').height;
 
@@ -51,9 +51,10 @@ export default function Credentials( props ) {
       password: password,
       firstName: firstname,
       lastName: lastname,
-      userName: username,
+      username: username,
       phoneNumber: contact,
       birthdate: dateHandler(birthday),
+      seekerDp: image,
     })
 
     props.navigation.dispatch(StackActions.popToTop()),

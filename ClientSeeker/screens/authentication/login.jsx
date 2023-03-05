@@ -4,7 +4,7 @@ import { StyleSheet, View, Text, Image, TouchableWithoutFeedback, TextInput, Scr
 import { Dimensions } from 'react-native';
 import { StackActions } from '@react-navigation/native';
 
-import CredentialsServices from '../../services/user/credentials-services'
+import CredentialsServices from '../../services/user/credentials-services';
 
 const screenHeight = Dimensions.get('window').height;
 

@@ -1,6 +1,6 @@
 import { LinearGradient } from 'expo-linear-gradient';
 import React, { useState } from 'react';
-import { StyleSheet, View, Text, Image, TouchableWithoutFeedback, TextInput, ScrollView } from 'react-native';
+import { StyleSheet, View, Text, Alert, TouchableWithoutFeedback, TextInput, ScrollView } from 'react-native';
 import { Dimensions } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
@@ -13,6 +13,31 @@ export default function Register({ navigation }) {
   const [firstname, setFirstname] = useState('')
   const [lastname, setLastname] = useState('')
   const [confirm, setConfirm] = useState('')
+
+  const passwordError = () =>
+    Alert.alert('Check your Password', 
+    'Your password input and confirmation of password input did not match', [
+      {
+        text: 'Cancel',
+        onPress: () => console.log('Cancel Pressed'),
+        style: 'cancel',
+      },
+      {text: 'OK', onPress: () => console.log('OK Pressed')},
+    ]);
+
+  const onRegister = () => {
+    if (password == confirm) {
+      navigation.navigate('BasicInfo', {
+        firstname: firstname, 
+        lastname: lastname,
+        mail: mail,
+        password: password,
+      });
+    }
+    else {
+      passwordError()
+    }
+  }
 
   return (
     <View style={{flex:1, backgroundColor: '#E9E9E9'}}>
@@ -41,7 +66,7 @@ export default function Register({ navigation }) {
           <TextInput style={styles.input} onChangeText={setConfirm} value={confirm} placeholder="Confirm Password" secureTextEntry={true}/>
         </View>
 
-        <TouchableWithoutFeedback onPress= {() => { navigation.navigate( 'Credentials', {firstname:firstname, lastname:lastname} )}}>
+        <TouchableWithoutFeedback onPress= {() => onRegister()}>
           <LinearGradient colors={['rgba(10,10,10,0.2)','rgba(10,10,10,0)'  ]} start={{ x:0, y:0.4 }} end={{ x:0, y:0 }} style={styles.shadow}>
             <LinearGradient colors={['#9C54D5', '#462964']} start={{ x:0.5, y:0 }} end={{ x:0, y:0.8 }} style={styles.button}>
               <Text style={styles.register}>Create Account</Text>

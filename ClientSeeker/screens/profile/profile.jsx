@@ -1,16 +1,27 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text, ScrollView, Image, TouchableWithoutFeedback } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { StackActions } from '@react-navigation/native';
 
-import CredentialsServices from '../../services/user/credentials-services'
+import CredentialsServices from '../../services/user/credentials-services';
+import SeekerServices from '../../services/user/seeker-services';
+
+import { getUserID } from '../../utils/getUserID';
 
 export default function Profile({ navigation }) {
-  const name = 'Felizidad Fiero-Pavia';
-  const mail = 'fyfiero@gmail.com';
-  const birthday = 'December 09, 2000';
-  const contact = '+63 966 132 3091';
+  const [name, setName] = useState('Felizidad Fiero-Pavia');
+  const [mail, setMail] = useState('fyfiero@gmail.com');
+  const [birthday, setBirthday] = useState('December 09, 2000');
+  const [contact, setContact] = useState('+63 966 132 3091');
+
+  useEffect(() => {
+    getUserID().then( userID => {
+      SeekerServices.getSeeker(userID).then( data => {
+        console.log(data)
+      })
+    })
+  })
 
   const onLogout = () => {
     let res = CredentialsServices.logout()

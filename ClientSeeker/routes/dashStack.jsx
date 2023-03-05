@@ -1,14 +1,25 @@
 import { createStackNavigator } from '@react-navigation/stack';
 import { StyleSheet, View, Image, TouchableWithoutFeedback } from 'react-native';
+import { useEffect, useState } from 'react';
 
 import Dashboard from '../screens/dashboard/dashboard';
 import Services from '../screens/dashboard/services';
 import Featured from '../screens/dashboard/featured';
 import Explore from '../screens/dashboard/explore';
 
+import { getUserID } from '../utils/getUserID';
+
 const Stack = createStackNavigator();
 
 export default function DashStack({ navigation }) {
+  const [userID, setID] = useState('')
+
+  useEffect(() => {
+    getUserID().then( result => {
+      setID(result);
+    })
+  })
+
   const header = ({
     headerRight: () => (
       <View style={{flexDirection:'row'}} >

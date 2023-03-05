@@ -29,7 +29,7 @@ postAxios = async(url, data = {}) => {
             } 
         )
 
-        if (tokens.keys().length > 0) {
+        if (tokens) {
             if ('access_token' in tokens) {
                 let user = jwtDecode(tokens['access_token']);
                 await SecureStore.setItemAsync('user', JSON.stringify(user));

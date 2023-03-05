@@ -1,7 +1,7 @@
 import { createStackNavigator } from '@react-navigation/stack';
 import { StyleSheet } from 'react-native';
 
-import Options from '../screens/options';
+import Options from '../screens/options/options';
 
 const Stack = createStackNavigator();
 

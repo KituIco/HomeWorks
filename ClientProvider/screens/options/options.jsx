@@ -3,8 +3,16 @@ import { StyleSheet, View, Text, ScrollView, Image, TouchableWithoutFeedback } f
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 
-export default function Profile({ navigation }) {
+import CredentialsServices from '../../services/user/credential-services';
+
+export default function Options({ navigation }) {
   const name = 'Marcus Galang';
+
+  const onLogout = () => {
+    let res = CredentialsServices.logout();
+    navigation.replace('HomeStack');
+    navigation.navigate('AuthStack');
+  }
 
   return (
     <View style={styles.container}>
@@ -15,7 +23,7 @@ export default function Profile({ navigation }) {
       <LinearGradient colors={['rgba(255,255,255,1)','rgba(255,255,255,0)'  ]} start={{ x:0, y:0 }} end={{ x:0, y:1 }} style={{height:10, zIndex:5}}/>
       <ScrollView style={{marginVertical:-10}}>
         <View style={styles.holder}>
-          <Image style={styles.icon} source={require("../assets/provider-g.png")} />
+          <Image style={styles.icon} source={require("../../assets/provider-g.png")} />
           <View style={styles.editicon}>
             <MaterialCommunityIcons name={'camera-flip'} size={26} style={{color:'#9C54D5'}}/>
           </View>
@@ -48,9 +56,7 @@ export default function Profile({ navigation }) {
             </View>
         </TouchableWithoutFeedback>
 
-        <TouchableWithoutFeedback onPress= {() => {
-          navigation.navigate('AuthStack')
-        }}>
+        <TouchableWithoutFeedback onPress= {() => onLogout()}>
           <LinearGradient colors={['rgba(10,10,10,0.7)','rgba(10,10,10,0)'  ]} start={{ x:0, y:0.65 }} end={{ x:0, y:0.98 }} style={styles.shadow}>
             <LinearGradient colors={['#9C54D5', '#462964']} start={{ x:0.4, y:1 }} end={{ x:0, y:1 }} style={styles.logout}>
               <Text style={[styles.content, {color: '#FFF'}]}>Log Out</Text>

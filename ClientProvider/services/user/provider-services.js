@@ -2,7 +2,7 @@ import { postAxios, patchAxios, deleteAxios, getAxios } from '../../lib/axios';
 
 let url = '/provider';
 
-let SeekerServices = {
+let ProviderServices = {
     createProvider: async(data) => {
         try {
             let res = await postAxios(url, data);
@@ -52,4 +52,4 @@ let SeekerServices = {
     }
 }
 
-module.exports = SeekerServices;
+module.exports = ProviderServices;
