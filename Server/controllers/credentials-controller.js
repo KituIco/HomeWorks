@@ -205,6 +205,63 @@ class CredentialsController {
             console.log(error);
         }
     };
+
+    // GET: "/user/:userID"
+    getUserCredentials = async (req, res) => {
+        try {
+            let {userID} = req.params;
+                // let {userID} = req.user;
+
+            // Validate if userID is not null
+                // validate if userID exists in the database
+
+            let result = await this.credentialsRepo.getUserCredentials(userID);
+            let emailRegex = new RegExp(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/);
+            let phoneNumberRegex = new RegExp(/^\+639[0-9]{9}/);
+
+            let email = result.reduce(
+                (email, credential) => {
+                    if (emailRegex.test(credential.identifier)) {
+                        email = credential.identifier;
+                    }
+                    return email;
+                }, null
+            )
+
+            let phoneNumber = result.reduce(
+                (phoneNumber, credential) => {
+                    if (phoneNumberRegex.test(credential.identifier)) {
+                        phoneNumber = credential.identifier;
+                    }
+                    return phoneNumber;
+                }, null
+            )
+
+            let userName = result.reduce(
+                (userName, credential) => {
+                    if (!emailRegex.test(credential.identifier) && !phoneNumberRegex.test(credential.identifier)) {
+                        userName = credential.identifier;
+                        
+                    }
+                    return userName;
+                }, null
+            )
+
+            let responseBody = {
+                email: email,
+                phoneNumber: phoneNumber,
+                username: userName
+            }
+
+            res.status(200).json({
+                message: `User with ID ${userID} credentials retrieved successfully`,
+                body: responseBody
+            });
+        } catch (error) {
+            // TODO: Handle error
+            console.log(error);
+        }
+    };
 }
 
 module.exports = CredentialsController;

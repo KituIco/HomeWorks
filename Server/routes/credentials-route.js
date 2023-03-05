@@ -28,5 +28,6 @@ router.delete('/logout', [cookieJwtAuth], credentialsController.logout);
 router.patch('/user/:userID/email', [cookieJwtAuth], credentialsController.patchEmail);
 router.patch('/user/:userID/phone-number', [cookieJwtAuth], credentialsController.patchPhoneNumber);
 router.patch('/user/:userID/password', [cookieJwtAuth], credentialsController.patchPassword);
+router.get('/user/:userID', credentialsController.getUserCredentials);
 
 module.exports = router;
