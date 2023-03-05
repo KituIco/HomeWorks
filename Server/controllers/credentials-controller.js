@@ -97,14 +97,14 @@ class CredentialsController {
                 // validate if userID exists in the database
 
             let result = await this.credentialsRepo.getUserCredentials(userID);
-            let emailRegex = new RegExp(/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/);
+            let emailRegex = new RegExp(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/);
 
             let credentialsID = result.reduce(
                 (emailCredential, credential) => {
                     if (emailRegex.test(credential.identifier)) {
                         emailCredential = credential.credentialsID;
-                        return emailCredential;
                     }
+                    return emailCredential;
                 }, null
             )
 
@@ -144,14 +144,14 @@ class CredentialsController {
                 // validate if userID exists in the database
 
             let result = await this.credentialsRepo.getUserCredentials(userID);
-            let phoneNumberRegex = new RegExp(/(\+?\d{2}?\s?\d{3}\s?\d{3}\s?\d{4})|([0]\d{3}\s?\d{3}\s?\d{4})/);
+            let phoneNumberRegex = new RegExp(/^\+639[0-9]{9}/);
 
             let credentialsID = result.reduce(
                 (phoneNumberCredential, credential) => {
                     if (phoneNumberRegex.test(credential.identifier)) {
                         phoneNumberCredential = credential.credentialsID;
-                        return phoneNumberCredential;
                     }
+                    return phoneNumberCredential;
                 }, null
             )
 

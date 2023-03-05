@@ -54,6 +54,16 @@ let CredentialsService = {
         } catch (error) {
             console.log(error);
         }
+    },
+
+    getUserCredentai: async (userID) => {
+        try {
+            let queryURL = `${url}/user/${userID}`;
+            let res = await getAxios(queryURL);
+            return res;
+        } catch (error) {
+            console.log(error);
+        }
     }
 
 }
