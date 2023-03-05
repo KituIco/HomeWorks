@@ -1,20 +1,29 @@
 import { LinearGradient } from 'expo-linear-gradient';
 import React, { useState } from 'react';
-import { StyleSheet, View, Text, Image, TouchableWithoutFeedback, TextInput, ScrollView } from 'react-native';
+import { StyleSheet, View, Text, Image, TouchableWithoutFeedback, TextInput, ScrollView, Modal } from 'react-native';
 import { Dimensions } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { StackActions } from '@react-navigation/native';
+
 import * as ImagePicker from 'expo-image-picker';
+import { dateHandler } from '../../utils/dateHandler';
+import { contactHandler } from '../../utils/contactHandler'
+import DatePicker from 'react-native-modern-datepicker';
+import SeekerServices from '../../services/user/seeker-services'
 
 const screenHeight = Dimensions.get('window').height;
 
-export default function Credentials( navigation ) {
-  const firstname = navigation.route.params.firstname;
-  const lastname = navigation.route.params.lastname;
+export default function Credentials( props ) {
+  const firstname = props.route.params.firstname;
+  const lastname = props.route.params.lastname;
+  const mail = props.route.params.mail;
+  const password = props.route.params.password;
 
-  const [contact, setContact] = useState('')
-  const [birthday, setBirthday] = useState('')
-  const [gender, setGender] = useState('')
+  const [username, setUsername] = useState('');
+  const [contact, setContact] = useState('');
+  const [birthday, setBirthday] = useState('');
 
+  const [open, setOpen] = useState(false);
   const [image, setImage] = useState(null);
   
   const pickImage = async () => {
@@ -31,7 +40,26 @@ export default function Credentials( navigation ) {
   const removeImage = () => {
     setImage();
   };
+  
+  const onOpen = () => {
+    setOpen(!open);
+  }
 
+  const onRegister = () => {
+    let bday = 1
+    let res = SeekerServices.createSeeker({
+      email: mail,
+      password: password,
+      firstName: firstname,
+      lastName: lastname,
+      userName: username,
+      phoneNumber: contact,
+      birthdate: bday,
+    })
+
+    props.navigation.dispatch(StackActions.popToTop()),
+    props.navigation.navigate('HomeStack') 
+  }
   return (
     <View style={{flex:1, backgroundColor: '#E9E9E9'}}>
     <View style={{width:'100%', height:40, backgroundColor: '#E9E9E9'}}/>
@@ -43,16 +71,31 @@ export default function Credentials( navigation ) {
         <Text style={styles.subheading}>Fill up the fields below to complete the creation of your account.</Text>
 
         <View style={styles.textbox}>
-          <TextInput style={styles.input} onChangeText={setContact} value={contact} placeholder="Contact Number"/>
+          <TextInput style={styles.input} onChangeText={setUsername} value={username} placeholder="Username"/>
         </View>
         <View style={styles.textbox}>
-          <TextInput style={styles.input} onChangeText={setBirthday} value={birthday} placeholder="Birthday"/>
+          <TextInput numberOfLines={1} style={styles.input} onChangeText={setContact} value={contactHandler(contact)} placeholder="Contact Number"
+            onFocus={() => { if(!contact) setContact('+63') }} onBlur={() => {if(contact == '+63' || contact == '+6') setContact('')} }/>
         </View>
-        <View style={styles.textbox}>
-          <TextInput style={styles.input} onChangeText={setGender} value={gender} placeholder="Gender"/>
-        </View>
+        <TouchableWithoutFeedback onPress={() => onOpen()}>
+          <View style={styles.textbox}>
+            { !birthday && <Text style={[styles.input,{color:'#A0A0A0'}]}>Birthday</Text>}
+            { birthday && <Text style={styles.input}>{dateHandler(birthday)}</Text>}
+          </View>
+        </TouchableWithoutFeedback>
 
-        <Text style={styles.govID}>Government ID</Text>
+        <Modal visible={open} transparent={true} animationType='slide'>
+          <View style={styles.centered}>
+            <View style={styles.modal}>
+              <DatePicker mode='calendar' selected={birthday} onDateChange={setBirthday}/>
+              <TouchableWithoutFeedback onPress= {() => onOpen()}>
+                <Text style={styles.enter}>Enter Date</Text>
+              </TouchableWithoutFeedback>
+            </View>
+          </View>
+        </Modal>
+
+        <Text style={styles.govID}>Diplay Picture (Optional)</Text>
         { !image &&
         <TouchableWithoutFeedback onPress={() => pickImage()}>
           <View style={styles.uploader}>
@@ -74,9 +117,7 @@ export default function Credentials( navigation ) {
         </View>
         }
         
-        <TouchableWithoutFeedback onPress= {() => { 
-          navigation.navigate('Dashboard') 
-        }}>
+        <TouchableWithoutFeedback onPress= {() => onRegister() }>
           <LinearGradient colors={['rgba(10,10,10,0.2)','rgba(10,10,10,0)'  ]} start={{ x:0, y:0.4 }} end={{ x:0, y:0 }} style={styles.shadow}>
             <LinearGradient colors={['#9C54D5', '#462964']} start={{ x:0.5, y:0 }} end={{ x:0, y:0.8 }} style={styles.button}>
               <Text style={styles.register}>Submit Profile</Text>
@@ -193,6 +234,28 @@ const styles = StyleSheet.create({
   input: {
     fontFamily: 'notosans',
     fontSize: 16,
+    letterSpacing: -0.5,
+    maxWidth: 280,
+  },
+
+  centered: {
+    flex:1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modal: {
+    borderRadius: 20,
+    backgroundColor: 'white',
+    width: '90%',
+    padding: 10
+  },
+  enter: {
+    fontSize:16,
+    color:'#000', 
+    alignSelf:'center', 
+    marginTop:-34, 
+    fontFamily: 'lexend',
+    marginBottom: 10,
     letterSpacing: -0.5
   }
 });

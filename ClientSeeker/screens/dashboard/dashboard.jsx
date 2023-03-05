@@ -5,6 +5,7 @@ import { StatusBar } from 'expo-status-bar';
 import Grid  from '../../components/grid';
 import Listing from '../../components/listing';
 import Header from '../../components/dashheader';
+import Back from '../../hooks/back';
 
 
 export default function Dashboard({navigation}) {
@@ -32,6 +33,7 @@ export default function Dashboard({navigation}) {
 
   return (
     <ScrollView style={styles.container}>
+      <Back navigation={navigation}/>
       <View style={styles.search}>
         <View style={styles.searchbar}>
           <EvilIcons name='search' color='#616161' size={32}/>

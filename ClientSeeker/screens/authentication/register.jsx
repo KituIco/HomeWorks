@@ -30,21 +30,22 @@ export default function Register({ navigation }) {
   const onRegister = () => {
    
     if (password == confirm) {
-      // navigation.navigate('Credentials', {
-      //   firstname: firstname, 
-      //   lastname: lastname,
-      //   mail: mail,
-      //   password: password,
-      // });
-
-      let res = SeekerServices.createSeeker({
-        email: mail,
+      navigation.navigate('Credentials', {
+        firstname: firstname, 
+        lastname: lastname,
+        mail: mail,
         password: password,
-        firstName: firstname,
-        lastName: lastname,
-      })
-      navigation.dispatch(StackActions.popToTop()),
-      navigation.navigate('HomeStack') 
+      });
+
+      // let res = SeekerServices.createSeeker({
+      //   email: mail,
+      //   password: password,
+      //   firstName: firstname,
+      //   lastName: lastname,
+      // })
+
+      // navigation.dispatch(StackActions.popToTop()),
+      // navigation.navigate('HomeStack') 
     }
 
     else {
