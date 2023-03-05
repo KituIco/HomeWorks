@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "spheric-method-379716",
+  "private_key_id": "483a5cebd2e862de9ead5f95a82943566ee7ee8f",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC4NcDvpw4JflL7\nH5vivkiz29a8zJ5l7N+0BcW45Jt1iM2Rchxc+i1zq5fK6f0n8R9BN4q8BFe6vYxy\nfpmIxVxgWOOmx+8bRka7hV3ENgXBLqx6OnIWZjxfzE+48a+J9l4ebEhjjiNQ/eEh\nx69sU4utRn57wSd5SNzB14WtWAPR0dEuPikFMEu2fMRpR8QkfpUYrbIl8eSnc1DO\n6B+Rrq/X1md0O6tGPHco90rX6G5J7qFXVN5Ll90uTCNy6OhpmI57TiQSs6tbSh6o\n0VEbVOYljFvLvFyfOJ0mqOe/m470oPDYv7l+LPBKNOnqAsxmyWuihOs9OveddnZG\nT1Fx0/1vAgMBAAECggEARfTAAyMtjQRozg6YfDkoUgmsWMHaa7nT0MGab5d9xFqC\nOvibdeHajgF94WUQK3GCHZnSuYlqqbPfWQHkG9Fbvgkz1zw5fWGobgF9dQzRDabE\ngJyehAwqZHUqV4GNWPbzklkr+obZuaHYtCPp5lkqA9FwKl5Vt9UoZQMMtKJmvPDs\n9YIQnGiIEd9ibTl3V2BF8znM9ue3QGv6lpwcqhbKUWLqBdBm2AFcP2BK9zmNoxW7\n6povwbixmm/abfpoMxSeDH6YL+XPzcT4jfVwCsLx3HkkMIgTGuP058ogme5LMuBK\nL5b5F+WSlfk+gb0NkcNv7qMY14J2LmjfhiNVjnQc0QKBgQDk3GzErC3WE5E8u4yf\nLmydyKjapjeDSLny6uX51MFOrbsvNulcWGtAU+Ivme3TwgmJBdCzM3LwYipoHPL/\nUf3Af4yzgZrX/ju3ppIvQ5RCuTw4BrnSslrrvDcTAB07OItWyJGsAnyAYF7xfnmn\nDAqDNj2MFftw57cPWeVtTRuNMQKBgQDODdk/yW14BhI6PtXA1cGEUldH97yUdWL7\nEXWo/SR3bSr34jRyYVSmTuhubH3Pyihn3v4Gy+FQBh0awSLNJ+jiJIBru4VlaBsJ\nBbaJKD6njcCdNT3UjgZB6hTszQqBvd59TMxN2n9fq+qmfPRJGtwvRCNLUN85BaXV\nALgremkMnwKBgBMFewjRorGjSLP6hpKIYkCu99HMdNq1hbb57QlZtINcjy06bCTf\nuHJNRoRcT9cEzpQT5qeuRARUtF+Y4F12LBf+wev9fqgrGj2GW6oP/Nea27VwYatw\nZXwoVY9/t+4/Id2hp/Ha9wwYdmut7mCC8LC9JlppTU+yApYFC7uM6BhRAoGBAJ8T\nO+wtslBdx4al6dmUbHCeLPnHfRPTyBVyNja/L37vjaOPQ9Ql5fb6piBRq5NWS3ld\nQxm2HnzsK13zSs29iOHFMkt5mpNeGrkNaw1aP3yVR+VWLCTDfHs4nuztorXlAjYT\nqwpTq9ANZfsgLmudy+zFmsXTanGYNZ1Kj+Qo/Z6bAoGAQMf6PjhdjTPbdBr74tAD\n4MK7sOgH3G72eEIwuDFKybor4IpLwGKfpsJm/u7rcMaaJBhDnin9QcMCvnHtDIyS\nPhnKCBkWZ5VrIFn6odfTFGhqGaXMasRXHPSZk8cVsV1Owd7L0nE7LjlYlUbrYp0l\nx+KieiSHHJvo7cnsGDTtHWM=\n-----END PRIVATE KEY-----\n",
+  "client_email": "homeworks-googleserviceaccount@spheric-method-379716.iam.gserviceaccount.com",
+  "client_id": "102549768677365423429",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/homeworks-googleserviceaccount%40spheric-method-379716.iam.gserviceaccount.com"
+}

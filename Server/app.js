@@ -24,6 +24,7 @@ var serviceSpecsRouter = require('./routes/service-specs-route');
 var serviceTypeRouter = require('./routes/service-type-route');
 var transactionReportRouter = require('./routes/transaction-reports-route');
 var userRouter = require('./routes/users-route');
+var uploadRouter = require('./routes/upload-route');
 
 var app = express();
 
@@ -57,6 +58,7 @@ app.use('/service-specs', serviceSpecsRouter);
 app.use('/service-type', serviceTypeRouter);
 app.use('/transaction-report', transactionReportRouter);
 app.use('/user', userRouter);
+app.use('/upload', uploadRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -14,6 +14,7 @@
     "debug": "~2.6.9",
     "ejs": "~2.6.1",
     "express": "~4.16.1",
+    "googleapis": "^112.0.0",
     "http-errors": "~1.6.3",
     "ioredis": "^5.2.4",
     "jsonwebtoken": "^9.0.0",
