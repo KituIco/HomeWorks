@@ -1,53 +1,54 @@
-import { StyleSheet, View, Text, Image, ScrollView, TouchableWithoutFeedback,TextInput } from 'react-native';
+import { StyleSheet, View, Text, Image, ScrollView, TouchableWithoutFeedback, } from 'react-native';
 import { LinearGradient, } from 'expo-linear-gradient';
 import { MaterialCommunityIcons } from '@expo/vector-icons'; 
 import { useState } from 'react';
 
-export default function Specs({navigation}) {
+export default function Details({navigation}) {
   const service = 'Carpentry';
   const address = 'UP AECH, P. Velasquez Street, Diliman, Quezon City, 1800 Metro Manila';
-  
-  const [cost, setCost] = useState('');
-  const [specs, setSpecs] = useState('');
-  const [lines, setLines] = useState(4);
+  const specs = 'One of my closet doors fell of the track. I am requesting to replace both of the closet doors since the other door seems to be detached soon as well. \n\n I am looking for a carpenter that can create customized closet doors. I will only provide the door materials.'
 
   return (
     <View style={styles.container}>
       <View style={{alignItems:'center'}}>
         <Text style={styles.header}>{service}</Text>
+        <Text style={[styles.content,{marginBottom:0}]}>scroll down for more info</Text>
       </View>
       
 
-      <View style={{width:'100%', height: '80%'}}>
+      <View style={{width:'100%', height: '70%'}}>
         <LinearGradient colors={['rgba(255,255,255,0.9)','rgba(255,255,255,0.5)'  ]} start={{ x:0, y:0 }} end={{ x:0, y:1 }} style={{height:14, zIndex:5}}/>
         <ScrollView style={{marginVertical:-10}}>
           <LinearGradient colors={['rgba(0,0,0,0.1)','rgba(0,0,0,0)'  ]} start={{ x:0, y:0 }} end={{ x:0, y:1 }} style={{height:4, zIndex:5, marginTop:10}}/>
-          <Image style={styles.image} source={require("../assets/map.png")} />
-          <Image style={styles.pin} source={require("../assets/pin.png")} />
+          <Image style={styles.image} source={require("../../assets/map.png")} />
+          <Image style={styles.pin} source={require("../../assets/pin.png")} />
           <LinearGradient colors={['rgba(0,0,0,0.1)','rgba(0,0,0,0)'  ]} start={{ x:0, y:1 }} end={{ x:0, y:0 }} style={{height:4, zIndex:5, marginTop:-4}}/>
 
           <Text style={styles.address}>{address}</Text>
-          
 
-          <Text style={styles.heading}>Service Cost</Text>
-          <TextInput onChangeText={text => setCost(text)} value={cost} style={[styles.text,{marginBottom:4, height:40}]}
-            placeholder='Enter Service Cost (ie. 420.00)'/>
+          <Text style={styles.heading}>Minimum Service Cost</Text>
+          <View style={styles.details}>
+            <Text style={styles.content}>{service} Service</Text>
+            <Text style={styles.content}>Starts at <Text style={{fontFamily: 'quicksand-bold'}}>Php 320</Text></Text>
+          </View>
 
           <Text style={styles.heading}>Service Specs</Text>
-          <TextInput multiline numberOfLines={lines} onChangeText={text => setSpecs(text)} value={specs} style={styles.text}
-            onContentSizeChange={(e) => {if(e.nativeEvent.contentSize.height/18>lines) setLines(lines+1)}} placeholder='Enter Service Details'/>
-          
+          <Text style={styles.content}>{specs}</Text>
         </ScrollView>
         <LinearGradient colors={['rgba(255,255,255,0.9)','rgba(255,255,255,0.5)'  ]} start={{ x:0, y:1 }} end={{ x:0, y:0 }} style={{height:14, zIndex:5}}/>
       </View>
       
-      <View style={{marginBottom:38, marginTop:6, width:'80%', alignItems:'center'}}>
-        <TouchableWithoutFeedback onPress={() => navigation.navigate('Arriving')}>
+      <View style={{marginBottom:30, marginTop:12, width:'80%', alignItems:'center'}}>
+        <TouchableWithoutFeedback onPress={() => navigation.goBack()}>
+          <View style={[styles.button, {borderWidth:1, borderColor: '#606060', height:32}]}>
+            <Text style={[styles.next, {color: '#606060', fontSize:14}]}>Go Back to Requests Page</Text>
+          </View>
+        </TouchableWithoutFeedback>
+
+        <TouchableWithoutFeedback onPress={() => navigation.navigate('Chat')}>
           <LinearGradient colors={['rgba(0,0,0,0.7)','rgba(0,0,0,0.1)'  ]} start={{ x:0, y:0.65 }} end={{ x:0, y:0.98 }} style={styles.shadow}>
             <LinearGradient colors={['#9C54D5', '#462964']} start={{ x:0.4, y:1 }} end={{ x:0, y:1 }} style={styles.button}>
-            <LinearGradient colors={['rgba(0, 0, 0, 0.4)','rgba(0, 0, 0, 0)']} start={{ x: 0.5, y: 0.01 }} end={{ x: 0.5, y: 0.15 }} style={styles.ledge}>
-              <Text style={styles.next}>Submit Service Cost and Specs</Text>
-            </LinearGradient>
+              <Text style={styles.next}>Settle Request via Chat</Text>
             </LinearGradient>
           </LinearGradient>
         </TouchableWithoutFeedback>
@@ -63,7 +64,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingTop: 72,
+    paddingTop: 70,
   },
   header: {
     fontFamily: 'lexend',
@@ -76,6 +77,7 @@ const styles = StyleSheet.create({
   shadow: {
     borderRadius: 10,
     height: 34,
+    marginTop: 10,
     width:'100%',
   },
   button: {
@@ -93,13 +95,6 @@ const styles = StyleSheet.create({
     letterSpacing: -0.5,
     fontSize: 16,
     color: '#FFF'
-  },
-  ledge: {
-    height: 34,
-    borderRadius: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: '100%'
   },
 
   image: {
@@ -131,7 +126,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: '#9C54D5',
     letterSpacing: -0.8,
-    marginTop: 6,
+    marginTop: 12,
     marginHorizontal: 20,
   },
   details: {
@@ -145,20 +140,6 @@ const styles = StyleSheet.create({
     letterSpacing: -0.5,
     fontSize: 13,
     marginBottom: 10,
-  },
-
-  text: {
-    marginHorizontal: 20,
-    padding: 10,
-    borderWidth: 1,
-    borderRadius: 10,
-    borderColor: '#888486',
-    placeholderTextColor: '#888486',
-    fontFamily: 'quicksand',
-    textAlignVertical: 'top',
-    letterSpacing: -0.5,
-    marginBottom: 16,
-    fontSize: 14,
   },
 
 });

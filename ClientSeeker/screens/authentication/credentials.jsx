@@ -46,7 +46,6 @@ export default function Credentials( props ) {
   }
 
   const onRegister = () => {
-    let bday = 1
     let res = SeekerServices.createSeeker({
       email: mail,
       password: password,
@@ -54,7 +53,7 @@ export default function Credentials( props ) {
       lastName: lastname,
       userName: username,
       phoneNumber: contact,
-      birthdate: bday,
+      birthdate: dateHandler(birthday),
     })
 
     props.navigation.dispatch(StackActions.popToTop()),
@@ -100,18 +99,18 @@ export default function Credentials( props ) {
         <TouchableWithoutFeedback onPress={() => pickImage()}>
           <View style={styles.uploader}>
             <MaterialCommunityIcons name={'cloud-upload'} size={40}/>
-            <Text style={styles.title}><Text style={{color:'#9C54D5', fontFamily:'quicksand-bold'}}>Click to Upload</Text> your Government ID.</Text>
-            <Text style={styles.subtitle}>make sure it's clear and visible</Text>
+            <Text style={styles.title}><Text style={{color:'#9C54D5', fontFamily:'quicksand-bold'}}>Click to Upload</Text> your Picture.</Text>
+            <Text style={styles.subtitle}>this is an optional field</Text>
           </View>
         </TouchableWithoutFeedback>
         }
 
         { image &&
-        <View style={{marginHorizontal:24}}>
+        <View style={styles.holder}>
           <Image source={{ uri: image }} style={styles.image} />
           <TouchableWithoutFeedback onPress={() => removeImage()}>
             <View style={styles.close}>
-              <MaterialCommunityIcons name={'close-box'} size={20} color={'#323941'}/> 
+              <MaterialCommunityIcons name={'close-box'} size={20} color={'#9C54D5'}/> 
             </View>
           </TouchableWithoutFeedback>
         </View>
@@ -154,7 +153,7 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
     marginLeft: 20,
     marginTop: 30,
-    marginBottom: 10
+    marginBottom: 20
   },
   uploader: {
     height: screenHeight/4,
@@ -176,18 +175,6 @@ const styles = StyleSheet.create({
     letterSpacing: -0.5,
     fontSize: 12,
     marginTop: -2,
-  },
-
-  image: {
-    height: 200, 
-    borderRadius: 4, 
-    marginBottom: 10,
-  },
-  close: {
-    marginTop: -200, 
-    marginLeft:'85%',
-    marginBottom: 220-55, 
-    backgroundColor: '#9C54D5'
   },
 
   shadow: {
@@ -257,5 +244,26 @@ const styles = StyleSheet.create({
     fontFamily: 'lexend',
     marginBottom: 10,
     letterSpacing: -0.5
-  }
+  },
+
+  holder: {
+    width: 200, 
+    alignSelf: 'center',
+    marginTop: 6,
+  },
+  image: {
+    width: 200, 
+    height: 200, 
+    borderRadius: 200/2,    
+  },
+  close: {
+    marginLeft: 160,
+    marginTop: -40,
+    borderRadius: 36/2,
+    height: 36,
+    width: 36,
+    backgroundColor: '#E9E9E9',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
 });

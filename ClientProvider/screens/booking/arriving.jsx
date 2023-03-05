@@ -3,7 +3,7 @@ import { LinearGradient, } from 'expo-linear-gradient';
 import { useState } from 'react';
 import { MaterialCommunityIcons  } from '@expo/vector-icons';
 
-import Back from '../hooks/back';
+import Back from '../../hooks/back';
 
 export default function Arriving({navigation}){
   const address = 'UP AECH, P. Velasquez Street, Diliman, Quezon City, 1800 Metro Manila';
@@ -43,7 +43,7 @@ export default function Arriving({navigation}){
       <View style={{flex:1, width:'100%'}}>
         <LinearGradient colors={['rgba(255,255,255,1)','rgba(255,255,255,0)'  ]} start={{ x:0, y:0 }} end={{ x:0, y:1 }} style={{height:14, zIndex:5}}/>
           <ScrollView style={{marginVertical:-14}}>
-            <Image style={[styles.image,{opacity: opacity}]} source={require("../assets/map.png")} />     
+            <Image style={[styles.image,{opacity: opacity}]} source={require("../../assets/map.png")} />     
           </ScrollView>
         <LinearGradient colors={['rgba(255,255,255,1)','rgba(255,255,255,0)'  ]} start={{ x:0, y:1 }} end={{ x:0, y:0 }} style={{height:14, zIndex:5}}/>
       </View>

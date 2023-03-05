@@ -2,9 +2,6 @@ import { LinearGradient } from 'expo-linear-gradient';
 import React, { useState } from 'react';
 import { StyleSheet, View, Text, Image, TouchableWithoutFeedback, TextInput, ScrollView, Alert } from 'react-native';
 import { Dimensions } from 'react-native';
-import { StackActions } from '@react-navigation/native';
-
-import SeekerServices from '../../services/user/seeker-services'
 
 const screenHeight = Dimensions.get('window').height;
 
@@ -28,7 +25,6 @@ export default function Register({ navigation }) {
     ]);
 
   const onRegister = () => {
-   
     if (password == confirm) {
       navigation.navigate('Credentials', {
         firstname: firstname, 
@@ -36,18 +32,7 @@ export default function Register({ navigation }) {
         mail: mail,
         password: password,
       });
-
-      // let res = SeekerServices.createSeeker({
-      //   email: mail,
-      //   password: password,
-      //   firstName: firstname,
-      //   lastName: lastname,
-      // })
-
-      // navigation.dispatch(StackActions.popToTop()),
-      // navigation.navigate('HomeStack') 
     }
-
     else {
       passwordError()
     }

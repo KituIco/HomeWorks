@@ -2,13 +2,13 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { StyleSheet } from 'react-native';
 import { useState } from 'react';
 
-import Dashboard from '../screens/dashboard';
-import Requests from '../screens/requests';
-import Details from '../screens/details';
-import Chat from '../screens/chat';
-import Specs from '../screens/specs';
-import Arriving from '../screens/arriving';
-import Serving from '../screens/serving';
+import Dashboard from '../screens/dashboard/dashboard';
+import Requests from '../screens/dashboard/requests';
+import Details from '../screens/dashboard/details';
+import Chat from '../screens/booking/chat';
+import Specs from '../screens/booking/specs';
+import Arriving from '../screens/booking/arriving';
+import Serving from '../screens/booking/serving';
 
 
 const Stack = createStackNavigator();

@@ -1,9 +1,9 @@
 import { createStackNavigator } from '@react-navigation/stack';
 import { StyleSheet, View, Image, TouchableWithoutFeedback } from 'react-native';
 
-import Login from '../screens/login';
-import Register from '../screens/register';
-import Credentials from '../screens/credentials';
+import Login from '../screens/authentication/login';
+import Register from '../screens/authentication/register';
+import Credentials from '../screens/authentication/credentials';
 
 const Stack = createStackNavigator();
 

@@ -9,7 +9,7 @@ import CredentialsServices from '../../services/user/credentials-services'
 export default function Profile({ navigation }) {
   const name = 'Felizidad Fiero-Pavia';
   const mail = 'fyfiero@gmail.com';
-  const location = 'San Pablo City, Laguna';
+  const birthday = 'December 09, 2000';
   const contact = '+63 966 132 3091';
 
   const onLogout = () => {
@@ -31,20 +31,20 @@ export default function Profile({ navigation }) {
           </View>
         </View>
         
-      <Text style={styles.nameheader}>Name</Text>
-      <View style={styles.nameholder}>
-        <MaterialCommunityIcons name={'pencil-outline'} size={26} style={{color:'#FFF', marginTop: 4}}/>
-        <Text style={styles.name}>{name}</Text>
-        <MaterialCommunityIcons name={'pencil-outline'} size={26} style={{color:'#9C54D5', marginTop: 4}}/>
-      </View>
+        <Text style={styles.nameheader}>Name</Text>
+        <View style={styles.nameholder}>
+          <MaterialCommunityIcons name={'pencil-outline'} size={26} style={{color:'#FFF', marginTop: 4}}/>
+          <Text style={styles.name}>{name}</Text>
+          <MaterialCommunityIcons name={'pencil-outline'} size={26} style={{color:'#9C54D5', marginTop: 4}}/>
+        </View>
 
 
         <Text style={styles.subheader}>E-mail</Text>
         <Text style={styles.subcontent}>{mail}</Text>
 
-        <Text style={styles.subheader}>Location</Text>
+        <Text style={styles.subheader}>Birthday</Text>
         <View style={styles.subholder}>
-          <Text style={styles.subcontent}>{location}</Text>
+          <Text style={styles.subcontent}>{birthday}</Text>
           <MaterialCommunityIcons name={'pencil-outline'} size={26} style={{color:'#9C54D5', marginTop: 4}}/>
         </View>
 

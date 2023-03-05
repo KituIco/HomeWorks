@@ -3,7 +3,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { useState } from 'react';
 import { MaterialCommunityIcons } from '@expo/vector-icons'; 
 
-import Back from '../hooks/back';
+import Back from '../../hooks/back';
 
 
 export default function Dashboard({navigation}) {

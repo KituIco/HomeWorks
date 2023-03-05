@@ -3,7 +3,7 @@ import { StyleSheet, View, Text, Image, ScrollView, TextInput, TouchableWithoutF
 import { MaterialCommunityIcons  } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 
-import Back from '../hooks/back';
+import Back from '../../hooks/back';
 
 export default function Chat({ navigation }) {
   const [value, onChangeText] = React.useState();
@@ -15,7 +15,7 @@ export default function Chat({ navigation }) {
       <View style={styles.container}>
         <View style={styles.header}>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <Image style={styles.profileIcon} source={require("../assets/angel-aquino.jpg")} />
+            <Image style={styles.profileIcon} source={require("../../assets/angel-aquino.jpg")} />
             <Text style={styles.names}>Felizidad Fiero-Pavia</Text>
           </View>
           <TouchableWithoutFeedback onPress={() => navigation.navigate('Requests')}>
