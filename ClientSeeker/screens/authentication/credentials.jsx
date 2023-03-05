@@ -1,6 +1,6 @@
 import { LinearGradient } from 'expo-linear-gradient';
 import React, { useState } from 'react';
-import { StyleSheet, View, Text, Image, TouchableWithoutFeedback, TextInput, ScrollView, Modal } from 'react-native';
+import { StyleSheet, View, Text, Image, TouchableWithoutFeedback, TextInput, ScrollView, Modal, Alert } from 'react-native';
 import { Dimensions } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { StackActions } from '@react-navigation/native';
@@ -23,15 +23,17 @@ export default function Credentials( props ) {
   const [contact, setContact] = useState('');
   const [birthday, setBirthday] = useState('');
 
+  const [usernameCHK, setUsernameCHK] = useState();
+  const [contactCHK, setContactCHK] = useState();
+  const [birthdayCHK, setBirthdayCHK] = useState();
+
   const [open, setOpen] = useState(false);
   const [image, setImage] = useState(null);
   
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      quality: 1,
+      mediaTypes: ImagePicker.MediaTypeOptions.All, quality: 1,
     });
-    
     if (!result.canceled) {
       setImage(result.assets[0].uri);
     }
@@ -42,24 +44,41 @@ export default function Credentials( props ) {
   };
   
   const onOpen = () => {
+    onCheck('birthday');
     setOpen(!open);
   }
 
   const onRegister = () => {
-    let res = SeekerServices.createSeeker({
-      email: mail,
-      password: password,
-      firstName: firstname,
-      lastName: lastname,
-      username: username,
-      phoneNumber: contact,
-      birthdate: dateHandler(birthday),
-      seekerDp: image,
-    })
-
-    props.navigation.dispatch(StackActions.popToTop()),
-    props.navigation.navigate('HomeStack') 
+    if(new Set([usernameCHK, contactCHK, birthdayCHK]).has(styles.warning) || !usernameCHK || !contactCHK || !birthdayCHK ){
+      Alert.alert('Check your Inputs', 
+        'Valid inputs have input boxes with light green border.', [
+        {text: 'OK'},
+      ]);
+    } 
+    
+    else {
+      let res = SeekerServices.createSeeker({
+        email: mail,
+        password: password,
+        firstName: firstname,
+        lastName: lastname,
+        username: username,
+        phoneNumber: contact,
+        birthdate: dateHandler(birthday),
+        seekerDp: image,
+      })
+      props.navigation.dispatch(StackActions.popToTop());
+      props.navigation.navigate('HomeStack'); 
+    }
   }
+
+  const onCheck = (type) => {
+    let regex = new RegExp(/^\+639[0-9]{9}/);
+    if (type == 'username') setUsernameCHK( username ? styles.accepted : styles.warning);
+    else if (type == 'contact') setContactCHK( regex.test(contact) ? styles.accepted : styles.warning);
+    else if (type == 'birthday') setBirthdayCHK( birthday ? styles.accepted : styles.warning);
+  }
+
   return (
     <View style={{flex:1, backgroundColor: '#E9E9E9'}}>
     <View style={{width:'100%', height:40, backgroundColor: '#E9E9E9'}}/>
@@ -70,15 +89,15 @@ export default function Credentials( props ) {
         <Text style={styles.heading}>Hello, {firstname} {lastname}!</Text>
         <Text style={styles.subheading}>Fill up the fields below to complete the creation of your account.</Text>
 
-        <View style={styles.textbox}>
-          <TextInput style={styles.input} onChangeText={setUsername} value={username} placeholder="Username"/>
+        <View style={[styles.textbox, usernameCHK]}>
+          <TextInput style={styles.input} onChangeText={setUsername} value={username} placeholder="Username" onBlur={() => onCheck('username')}/>
         </View>
-        <View style={styles.textbox}>
+        <View style={[styles.textbox, contactCHK]}>
           <TextInput numberOfLines={1} style={styles.input} onChangeText={setContact} value={contactHandler(contact)} placeholder="Contact Number"
-            onFocus={() => { if(!contact) setContact('+63') }} onBlur={() => {if(contact == '+63' || contact == '+6') setContact('')} }/>
+            onFocus={() => { if(!contact) setContact('+63') }} onBlur={() => { onCheck('contact'); if(contact == '+63' || contact == '+6') setContact('')} }/>
         </View>
         <TouchableWithoutFeedback onPress={() => onOpen()}>
-          <View style={styles.textbox}>
+          <View style={[styles.textbox, birthdayCHK]}>
             { !birthday && <Text style={[styles.input,{color:'#A0A0A0'}]}>Birthday</Text>}
             { birthday && <Text style={styles.input}>{dateHandler(birthday)}</Text>}
           </View>
@@ -135,7 +154,7 @@ const styles = StyleSheet.create({
     fontFamily: 'quicksand-medium',
     fontSize: 20,
     letterSpacing: -1,
-    marginTop: '20%'
+    marginTop: '15%'
   },
   subheading: {
     fontFamily: 'quicksand-light',
@@ -266,5 +285,14 @@ const styles = StyleSheet.create({
     backgroundColor: '#E9E9E9',
     justifyContent: 'center',
     alignItems: 'center'
+  },
+
+  warning: {
+    borderColor: '#FF0000',
+    borderWidth: 1,
+  },
+  accepted: {
+    borderColor: '#00FF00',
+    borderWidth: 1,
   },
 });

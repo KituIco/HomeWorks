@@ -7,24 +7,32 @@ import Services from '../screens/dashboard/services';
 import Featured from '../screens/dashboard/featured';
 import Explore from '../screens/dashboard/explore';
 
+import SeekerServices from '../services/user/seeker-services';
 import { getUserID } from '../utils/getUserID';
 
 const Stack = createStackNavigator();
 
 export default function DashStack({ navigation }) {
-  const [userID, setID] = useState('')
+  const [image, setImage] = useState(require("../assets/default.jpg"));
+  const [init, setInit] = useState(0);
 
   useEffect(() => {
-    getUserID().then( result => {
-      setID(result);
+    getUserID().then( userID => {
+      if(userID) {
+        SeekerServices.getSeeker(userID).then( data => {
+          setImage({uri : data.body.seekerDp})
+        })
+      } else {
+        setInit(init+1);
+      }
     })
-  })
+  }, [init]);
 
   const header = ({
     headerRight: () => (
       <View style={{flexDirection:'row'}} >
         <TouchableWithoutFeedback onPress= {() => navigation.navigate('ProfileStack')}>
-          <Image style={styles.profileIcon} source={require("../assets/angel-aquino.jpg")} />
+          <Image style={styles.profileIcon} source={image} />
         </TouchableWithoutFeedback>
       </View>
     ),
@@ -55,7 +63,7 @@ export default function DashStack({ navigation }) {
         headerRight: () => (
           <View style={{flexDirection:'row'}} >
             <TouchableWithoutFeedback onPress= {() => navigation.navigate('ProfileStack')}>
-              <Image style={styles.profileIcon} source={require("../assets/angel-aquino.jpg")} />
+              <Image style={styles.profileIcon} source={image} />
             </TouchableWithoutFeedback>
           </View>
         ),

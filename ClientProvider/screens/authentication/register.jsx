@@ -7,26 +7,28 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 const screenHeight = Dimensions.get('window').height;
 
 export default function Register({ navigation }) {
-  const [mail, setMail] = useState('')
-  const [password, setPassword] = useState('')
+  const [mail, setMail] = useState('');
+  const [password, setPassword] = useState('');
+  const [firstname, setFirstname] = useState('');
+  const [lastname, setLastname] = useState('');
+  const [confirm, setConfirm] = useState('');
 
-  const [firstname, setFirstname] = useState('')
-  const [lastname, setLastname] = useState('')
-  const [confirm, setConfirm] = useState('')
-
-  const passwordError = () =>
-    Alert.alert('Check your Password', 
-    'Your password input and confirmation of password input did not match', [
-      {
-        text: 'Cancel',
-        onPress: () => console.log('Cancel Pressed'),
-        style: 'cancel',
-      },
-      {text: 'OK', onPress: () => console.log('OK Pressed')},
-    ]);
+  const [mailCHK, setMailCHK] = useState();
+  const [passwordCHK, setPasswordCHK] = useState();
+  const [firstnameCHK, setFirstnameCHK] = useState();
+  const [confirmCHK, setConfirmCHK] = useState();
+  const [lastnameCHK, setLastnameCHK] = useState();
 
   const onRegister = () => {
-    if (password == confirm) {
+    if(new Set([firstnameCHK, lastnameCHK, mailCHK, passwordCHK, confirmCHK]).has(styles.warning) 
+      || !firstnameCHK || !mailCHK || !passwordCHK || !confirmCHK){
+      Alert.alert('Check your Inputs', 
+        'Valid inputs have input boxes with light green border surrounding the field.', [
+        {text: 'OK'},
+      ]);
+    } 
+    
+    else {
       navigation.navigate('BasicInfo', {
         firstname: firstname, 
         lastname: lastname,
@@ -34,9 +36,15 @@ export default function Register({ navigation }) {
         password: password,
       });
     }
-    else {
-      passwordError()
-    }
+  }
+
+  const onCheck = (type) => {
+    let regex = new RegExp(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/)
+    if (type == 'pw'|| type == 'confirm') setConfirmCHK( (password == confirm) ? styles.accepted : styles.warning);
+    else if (type == 'first') setFirstnameCHK( firstname ? styles.accepted : styles.warning);
+    else if (type == 'last') setLastnameCHK( lastname ? styles.accepted : styles.warning);
+    else if (type == 'mail') setMailCHK( regex.test(mail) ? styles.accepted : styles.warning);
+    if (type == 'pw' ) setPasswordCHK( password ? styles.accepted : styles.warning) 
   }
 
   return (
@@ -49,21 +57,21 @@ export default function Register({ navigation }) {
         <Text style={styles.title}>Home<Text style={{color:'#1E1E1E'}}>Works</Text></Text>
         <Text style={styles.subtitle}>Household and Wellness Services App</Text>
 
-        <View style={styles.textbox}>
-          <TextInput style={styles.input} onChangeText={setFirstname} value={firstname} placeholder="First Name"/>
+        <View style={[styles.textbox,firstnameCHK]}>
+          <TextInput style={styles.input} onChangeText={setFirstname} value={firstname} placeholder="First Name" onBlur={() => onCheck('first')}/>
         </View>
-        <View style={styles.textbox}>
-          <TextInput style={styles.input} onChangeText={setLastname} value={lastname} placeholder="Last Name"/>
+        <View style={[styles.textbox,lastnameCHK]}>
+          <TextInput style={styles.input} onChangeText={setLastname} value={lastname} placeholder="Last Name" onBlur={() => onCheck('last')}/>
         </View>
 
-        <View style={styles.textbox}>
-          <TextInput style={styles.input} onChangeText={setMail} value={mail} placeholder="Email Address"/>
+        <View style={[styles.textbox,mailCHK]}>
+          <TextInput style={styles.input} onChangeText={setMail} value={mail} placeholder="Email Address" onBlur={() => onCheck('mail')}/>
         </View>
-        <View style={styles.textbox}>
-          <TextInput style={styles.input} onChangeText={setPassword} value={password} placeholder="Password" secureTextEntry={true}/>
+        <View style={[styles.textbox,passwordCHK]}>
+          <TextInput style={styles.input} onChangeText={setPassword} value={password} placeholder="Password" secureTextEntry={true} onBlur={() => onCheck('pw')}/>
         </View>
-        <View style={styles.textbox}>
-          <TextInput style={styles.input} onChangeText={setConfirm} value={confirm} placeholder="Confirm Password" secureTextEntry={true}/>
+        <View style={[styles.textbox,confirmCHK]}>
+          <TextInput style={styles.input} onChangeText={setConfirm} value={confirm} placeholder="Confirm Password" secureTextEntry={true} onBlur={() => onCheck('confirm')}/>
         </View>
 
         <TouchableWithoutFeedback onPress= {() => onRegister()}>
@@ -176,5 +184,14 @@ const styles = StyleSheet.create({
     fontFamily: 'notosans',
     fontSize: 16,
     letterSpacing: -0.5
-  }
+  },
+
+  warning: {
+    borderColor: '#FF0000',
+    borderWidth: 1,
+  },
+  accepted: {
+    borderColor: '#00FF00',
+    borderWidth: 1,
+  },
 });

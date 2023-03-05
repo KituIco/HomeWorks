@@ -8,25 +8,39 @@ import CredentialsServices from '../../services/user/credentials-services';
 import SeekerServices from '../../services/user/seeker-services';
 
 import { getUserID } from '../../utils/getUserID';
+import { contactHandler } from '../../utils/contactHandler';
 
 export default function Profile({ navigation }) {
-  const [name, setName] = useState('Felizidad Fiero-Pavia');
-  const [mail, setMail] = useState('fyfiero@gmail.com');
-  const [birthday, setBirthday] = useState('December 09, 2000');
-  const [contact, setContact] = useState('+63 966 132 3091');
+  const [name, setName] = useState('');
+  const [mail, setMail] = useState('');
+  const [birthday, setBirthday] = useState('');
+  const [contact, setContact] = useState('');
+
+  const [image, setImage] = useState(require("../../assets/default.jpg"));
+  const [init, setInit] = useState(0);
 
   useEffect(() => {
     getUserID().then( userID => {
-      SeekerServices.getSeeker(userID).then( data => {
-        console.log(data)
-      })
+      if(userID) {
+        SeekerServices.getSeeker(userID).then( data => {
+          setName(`${data.body.firstName} ${data.body.lastName}`)
+          setBirthday(data.body.birthdate)
+          setImage({uri : data.body.seekerDp})
+        })
+        CredentialsServices.getUserCredentials(userID).then( data => {
+          setMail(data.body.email);
+          setContact(contactHandler(data.body.phoneNumber));
+        })
+      } else {
+        setInit(init+1);
+      }
     })
-  })
+  }, [init]);
 
   const onLogout = () => {
-    let res = CredentialsServices.logout()
     navigation.dispatch(StackActions.popToTop()),
     navigation.navigate('AuthStack')
+    let res = CredentialsServices.logout()
   }
 
   return (
@@ -36,7 +50,7 @@ export default function Profile({ navigation }) {
       </View>
       <ScrollView style={styles.info}>
         <View style={styles.holder}>
-          <Image style={styles.icon} source={require("../../assets/angel-aquino.jpg")} />
+          <Image style={styles.icon} source={image} />
           <View style={styles.editicon}>
             <MaterialCommunityIcons name={'camera-flip'} size={26} style={{color:'#9C54D5'}}/>
           </View>

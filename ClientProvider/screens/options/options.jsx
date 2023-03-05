@@ -1,17 +1,34 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text, ScrollView, Image, TouchableWithoutFeedback } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 
 import CredentialsServices from '../../services/user/credential-services';
+import ProviderServices from '../../services/user/provider-services';
+import { getUserID } from '../../utils/getUserID';
 
 export default function Options({ navigation }) {
-  const name = 'Marcus Galang';
+  const [name, setName] = useState('');
+  const [image, setImage] = useState(require("../../assets/default.jpg"));
+  const [init, setInit] = useState(0);
+
+  useEffect(() => {
+    getUserID().then( userID => {
+      if(userID) {
+        ProviderServices.getProvider(userID).then( data => {
+          setName(`${data.body.firstName} ${data.body.lastName}`)
+          setImage({uri : data.body.providerDp})
+        })
+      } else {
+        setInit(init+1);
+      }
+    })
+  }, [init]);
 
   const onLogout = () => {
-    let res = CredentialsServices.logout();
     navigation.replace('HomeStack');
     navigation.navigate('AuthStack');
+    let res = CredentialsServices.logout();
   }
 
   return (
@@ -23,7 +40,7 @@ export default function Options({ navigation }) {
       <LinearGradient colors={['rgba(255,255,255,1)','rgba(255,255,255,0)'  ]} start={{ x:0, y:0 }} end={{ x:0, y:1 }} style={{height:10, zIndex:5}}/>
       <ScrollView style={{marginVertical:-10}}>
         <View style={styles.holder}>
-          <Image style={styles.icon} source={require("../../assets/provider-g.png")} />
+          <Image style={styles.icon} source={ image } />
           <View style={styles.editicon}>
             <MaterialCommunityIcons name={'camera-flip'} size={26} style={{color:'#9C54D5'}}/>
           </View>

@@ -1,14 +1,28 @@
 import { StyleSheet, View, Text, Image, ScrollView, TouchableWithoutFeedback, } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { MaterialCommunityIcons } from '@expo/vector-icons'; 
 
+import ProviderServices from '../../services/user/provider-services';
+import { getUserID } from '../../utils/getUserID';
 import Back from '../../hooks/back';
 
-
 export default function Dashboard({navigation}) {
-  const name = 'Marcus Galang';
   const [registered, setRegistered] = useState(true);
+  const [name, setName] = useState('');
+  const [init, setInit] = useState(0);
+
+  useEffect(() => {
+    getUserID().then( userID => {
+      if(userID) {
+        ProviderServices.getProvider(userID).then( data => {
+          setName(`${data.body.firstName} ${data.body.lastName}`)
+        })
+      } else {
+        setInit(init+1);
+      }
+    })
+  }, [init]);
 
   const changeRegister = () => {
     setRegistered(!registered);

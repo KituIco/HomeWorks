@@ -16,20 +16,10 @@ export default function Login({ navigation }) {
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
 
   useEffect(() => {
-    const keyboardDidShowListener = 
-      Keyboard.addListener(
-    'keyboardDidShow',
-    () => {
-      setKeyboardVisible(true);
-    }
-  );
-  const keyboardDidHideListener = Keyboard.addListener(
-    'keyboardDidHide',
-    () => {
-      setKeyboardVisible(false);
-    }
-  );
-
+    const keyboardDidShowListener = Keyboard.addListener(
+    'keyboardDidShow', () => { setKeyboardVisible(true); });
+    const keyboardDidHideListener = Keyboard.addListener(
+    'keyboardDidHide', () => { setKeyboardVisible(false); });
   return () => {
     keyboardDidHideListener.remove();
     keyboardDidShowListener.remove();
@@ -37,12 +27,14 @@ export default function Login({ navigation }) {
   }, []);
 
   const onLogin = () => {
-    let res = CredentialsServices.login({
-      identifier: mail,
-      password: password,
-    })
-    navigation.replace('HomeStack');
-    navigation.navigate('HomeStack');
+    if( mail && password) {
+      let res = CredentialsServices.login({
+        identifier: mail,
+        password: password,
+      })
+      navigation.replace('HomeStack');
+      navigation.navigate('HomeStack');
+    }
   }
 
   return (

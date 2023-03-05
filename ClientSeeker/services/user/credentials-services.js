@@ -56,7 +56,7 @@ let CredentialsService = {
         }
     },
 
-    getUserCredentai: async (userID) => {
+    getUserCredentials: async (userID) => {
         try {
             let queryURL = `${url}/user/${userID}`;
             let res = await getAxios(queryURL);

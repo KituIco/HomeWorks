@@ -13,12 +13,14 @@ export default function Login({ navigation }) {
   const [password, setPassword] = useState('')
 
   const onLogin = () => {
-    let res = CredentialsServices.login({
-      identifier: mail,
-      password: password,
-    })
-    navigation.dispatch(StackActions.popToTop()),
-    navigation.navigate('HomeStack') 
+    if( mail && password) {
+      let res = CredentialsServices.login({
+        identifier: mail,
+        password: password,
+      })
+      navigation.dispatch(StackActions.popToTop()),
+      navigation.navigate('HomeStack');
+    } 
   }
 
   return (
@@ -158,5 +160,5 @@ const styles = StyleSheet.create({
   input: {
     fontFamily: 'notosans-light',
     fontSize: 16,
-  }
+  },
 });
