@@ -38,9 +38,12 @@ export default function Profile({ navigation }) {
   }, [init]);
 
   const onLogout = () => {
-    navigation.dispatch(StackActions.popToTop()),
-    navigation.navigate('AuthStack')
-    let res = CredentialsServices.logout()
+    CredentialsServices.logout()
+    .then(() => {
+      navigation.dispatch(StackActions.popToTop()),
+      navigation.navigate('AuthStack')
+    })
+    .catch((err) => console.log(err))
   }
 
   return (

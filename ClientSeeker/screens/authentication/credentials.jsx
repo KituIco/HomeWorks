@@ -15,13 +15,8 @@ import ImageService from '../../services/image/image-services'
 const screenHeight = Dimensions.get('window').height;
 
 async function onSubmit( data ) {
-  console.log('image:', data.seekerDp);
-  // const image = new FormData();
-  // image.append('name', 'Image Upload');
-  // image.append('file_attachment', fileToUpload);
   let res = await ImageService.uploadFile(data.seekerDp);
   
-  console.log('result:'. res)
 }
 
 export default function Credentials( props ) {

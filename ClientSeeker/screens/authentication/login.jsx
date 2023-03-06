@@ -14,12 +14,14 @@ export default function Login({ navigation }) {
 
   const onLogin = () => {
     if( mail && password) {
-      let res = CredentialsServices.login({
+      CredentialsServices.login({
         identifier: mail,
         password: password,
-      })
-      navigation.dispatch(StackActions.popToTop()),
-      navigation.navigate('HomeStack');
+      }).then(() => {
+          navigation.dispatch(StackActions.popToTop()),
+          navigation.navigate('HomeStack');
+        })
+        .catch((err) => console.log(err))   
     } 
   }
 
