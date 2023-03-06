@@ -65,15 +65,18 @@ patchAxios = async(url, data = {}) => {
     try {
         let access_token = await SecureStore.getItemAsync('access_token');
         let refresh_token = await SecureStore.getItemAsync('refresh_token');
-        console.log(refresh_token)
+        let headers = {};
+
+        if (access_token && refresh_token) {
+            headers['Cookie'] = `access_token=${access_token}; refresh_token=${refresh_token}`;
+        }
+
         let res = await instance(
             {
                 method: 'patch',
                 url: url,
                 data: data,
-                headers: {
-                    Cookie: access_token && refresh_token && `access_token=${access_token}; refresh_token=${refresh_token}`
-                }
+                headers: headers
             }
         )
         return res.data;
@@ -94,13 +97,17 @@ deleteAxios = async(url) => {
     try {
         let access_token = await SecureStore.getItemAsync('access_token');
         let refresh_token = await SecureStore.getItemAsync('refresh_token');
+        let headers = {};
+
+        if (access_token && refresh_token) {
+            headers['Cookie'] = `access_token=${access_token}; refresh_token=${refresh_token}`;
+        }
+
         let res = await instance(
             {
                 method: 'delete',
                 url: url,
-                headers : {
-                    Cookie: access_token && refresh_token && `access_token=${access_token}; refresh_token=${refresh_token}`
-                }
+                headers : headers
             }
         )
         return res.data;
@@ -121,13 +128,17 @@ getAxios = async(url) => {
     try {
         let access_token = await SecureStore.getItemAsync('access_token');
         let refresh_token = await SecureStore.getItemAsync('refresh_token');
+        let headers = {};
+
+        if (access_token && refresh_token) {
+            headers['Cookie'] = `access_token=${access_token}; refresh_token=${refresh_token}`;
+        }
+
         let res = await instance(
             {
                 method: 'get',
                 url: url,
-                headers : {
-                    Cookie: access_token && refresh_token && `access_token=${access_token}; refresh_token=${refresh_token}`
-                }
+                headers : headers
             }
         )
         return res.data;
@@ -148,14 +159,18 @@ putAxios = async(url, data = {}) => {
     try {
         let access_token = await SecureStore.getItemAsync('access_token');
         let refresh_token = await SecureStore.getItemAsync('refresh_token');
+        let headers = {};
+
+        if (access_token && refresh_token) {
+            headers['Cookie'] = `access_token=${access_token}; refresh_token=${refresh_token}`;
+        }
+
         let res = await instance(
             {
                 method: 'put',
                 url: url,
                 data: data,
-                headers : {
-                    Cookie: access_token && refresh_token && `access_token=${access_token}; refresh_token=${refresh_token}`
-                }
+                headers : headers
             }
         )
         return res.data;
