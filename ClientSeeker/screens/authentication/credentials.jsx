@@ -9,8 +9,9 @@ import * as ImagePicker from 'expo-image-picker';
 import { dateHandler } from '../../utils/dateHandler';
 import { contactHandler } from '../../utils/contactHandler';
 import DatePicker from 'react-native-modern-datepicker';
+
 import SeekerServices from '../../services/user/seeker-services';
-import ImageService from '../../services/image/image-services'
+import ImageService from '../../services/image/image-services';
 
 const screenHeight = Dimensions.get('window').height;
 
@@ -22,8 +23,8 @@ async function onSubmit( props, data ) {
 
       SeekerServices.createSeeker(data)
         .then((res) => {
-        // props.navigation.dispatch(StackActions.popToTop());
-        // props.navigation.navigate('HomeStack'); 
+        props.navigation.dispatch(StackActions.popToTop());
+        props.navigation.navigate('HomeStack'); 
       }).catch((err) => console.log(err)) 
 
     }).catch((err) => console.log('test', err)) 

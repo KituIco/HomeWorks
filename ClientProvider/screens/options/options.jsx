@@ -6,6 +6,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import CredentialsServices from '../../services/user/credential-services';
 import ProviderServices from '../../services/user/provider-services';
 import { getUserID } from '../../utils/getUserID';
+import { getImageURL } from '../../utils/getImageURL';
 
 export default function Options({ navigation }) {
   const [name, setName] = useState('');
@@ -17,7 +18,7 @@ export default function Options({ navigation }) {
       if(userID) {
         ProviderServices.getProvider(userID).then( data => {
           setName(`${data.body.firstName} ${data.body.lastName}`)
-          setImage({uri : data.body.providerDp})
+          setImage({uri : getImageURL(data.body.providerDp)})
         })
       } else {
         setInit(init+1);

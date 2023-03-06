@@ -9,8 +9,8 @@ export const getUserID = async() => {
   let token = await getValueFor('access_token').then( result => {
     return result
   })
+  
   if (!token) return null;
-
   let result = await getValueFor('user').then( result => {
     if(result) {
       parsed = JSON.parse(result);

@@ -9,6 +9,7 @@ import SeekerServices from '../../services/user/seeker-services';
 
 import { getUserID } from '../../utils/getUserID';
 import { contactHandler } from '../../utils/contactHandler';
+import { getImageURL } from '../../utils/getImageURL';
 
 export default function Profile({ navigation }) {
   const [name, setName] = useState('');
@@ -25,7 +26,7 @@ export default function Profile({ navigation }) {
         SeekerServices.getSeeker(userID).then( data => {
           setName(`${data.body.firstName} ${data.body.lastName}`)
           setBirthday(data.body.birthdate)
-          setImage({uri : data.body.seekerDp})
+          setImage({uri : getImageURL(data.body.seekerDp)})
         })
         CredentialsServices.getUserCredentials(userID).then( data => {
           setMail(data.body.email);

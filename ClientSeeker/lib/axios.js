@@ -38,7 +38,7 @@ postAxios = async(url, data = {}, imageFile = null) => {
             parsedToken.forEach(
                 (token) => {
                     let [key, value] = token.split('=');
-                    if (key !== 'Expires') {
+                    if (key == 'access_token' || key == 'refresh_token') {
                         tokens[key] = value.split(';')[0];
                     }
                 }

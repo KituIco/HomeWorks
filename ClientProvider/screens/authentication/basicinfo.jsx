@@ -11,8 +11,31 @@ import { contactHandler } from '../../utils/contactHandler';
 import DatePicker from 'react-native-modern-datepicker';
 
 import ProviderServices from '../../services/user/provider-services';
+import ImageService from '../../services/image/image-services';
 
 const screenHeight = Dimensions.get('window').height;
+
+async function onSubmit( props, data ) {
+  ImageService.uploadFile(data.urlDp)
+    .then((res) => {
+      data['providerDp'] = res;
+      delete data['urlDp'];
+
+      ImageService.uploadFile(data.urlID)
+      .then((res) => {
+        data['validID'] = res;
+        delete data['urlID'];
+
+        ProviderServices.createProvider(data)
+          .then((res) => {
+          props.navigation.dispatch(StackActions.popToTop());
+          props.navigation.navigate('HomeStack'); 
+        }).catch((err) => console.log(err)) 
+
+      }).catch((err) => console.log('test', err)) 
+    }).catch((err) => console.log('test', err)) 
+}
+
 
 export default function BasicInfo( props ) {
   const firstname = props.route.params.firstname;
@@ -61,7 +84,7 @@ export default function BasicInfo( props ) {
     } 
     
     else {
-      let res = ProviderServices.createProvider({
+      onSubmit( props, {
         email: mail,
         password: password,
         firstName: firstname,
@@ -69,11 +92,9 @@ export default function BasicInfo( props ) {
         username: username,
         phoneNumber: contact,
         birthdate: dateHandler(birthday),
-        providerDp: image,
-        validID: id,
+        urlDp: image,
+        urlID: id,
       })
-      props.navigation.dispatch(StackActions.popToTop());
-      props.navigation.navigate('HomeStack'); 
     }
   }
 

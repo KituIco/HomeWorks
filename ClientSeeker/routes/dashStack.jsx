@@ -9,6 +9,7 @@ import Explore from '../screens/dashboard/explore';
 
 import SeekerServices from '../services/user/seeker-services';
 import { getUserID } from '../utils/getUserID';
+import { getImageURL } from '../utils/getImageURL';
 
 const Stack = createStackNavigator();
 
@@ -20,7 +21,8 @@ export default function DashStack({ navigation }) {
     getUserID().then( userID => {
       if(userID) {
         SeekerServices.getSeeker(userID).then( data => {
-          setImage({uri : data.body.seekerDp})
+          let url = getImageURL(data.body.seekerDp)
+          setImage({uri : url})
         })
       } else {
         setInit(init+1);
