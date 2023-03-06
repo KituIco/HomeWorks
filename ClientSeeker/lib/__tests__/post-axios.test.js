@@ -3,9 +3,9 @@ import {postAxios} from '../axios';
 test('postAxios', async () => {
     let url = '/seeker';
     let data = {
-        email: 'a@b.c',
+        email: 'a@b.com',
         username: 'abc',
-        phoneNumber: '1234567890',
+        phoneNumber: '+639053113401',
         password: 'password',
         firstName: 'first',
         lastName: 'last',

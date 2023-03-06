@@ -30,14 +30,20 @@ postAxios = async(url, data = {}, imageFile = null) => {
             }
         )
         let tokens = {}
-        if( res.headers['set-cookie']){
-            res.headers['set-cookie'].forEach(
-                async (cookie) => {
-                    let [key, value] = cookie.split('=');
-                    tokens[key] = value.split(';')[0];
-                } 
+        if(res.headers['set-cookie']){
+            let cookie = res.headers['set-cookie'][0];
+            let tokens = cookie.split(', ');
+            tokens.forEach(
+                (token) => {
+                    let [key, value] = token.split('=');
+                    if (key !== 'Expires') {
+                        tokens[key] = value.split(';')[0];
+                    }
+                }
             )
         }
+
+        console.log(tokens);
 
         if ('access_token' in tokens && 'refresh_token' in tokens) {
             let user = jwtDecode(tokens['access_token']);

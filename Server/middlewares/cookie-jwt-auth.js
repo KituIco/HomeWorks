@@ -2,7 +2,6 @@ const jwt = require('jsonwebtoken');
 
 cookieJwtAuth = (req, res, next) => {
     try {
-        console.log(req.cookies);
         let {access_token, refresh_token} = req.cookies;
         if (!access_token) {
             if (!refresh_token) {
