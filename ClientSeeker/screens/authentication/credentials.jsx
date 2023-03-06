@@ -16,7 +16,7 @@ const screenHeight = Dimensions.get('window').height;
 
 async function onSubmit( data ) {
   let res = await ImageService.uploadFile(data.seekerDp);
-  
+  console.log(res)
 }
 
 export default function Credentials( props ) {

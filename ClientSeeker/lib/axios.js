@@ -23,13 +23,14 @@ postAxios = async(url, data = {}, imageFile = null) => {
             }
         )
         let tokens = {}
-        res.headers['set-cookie'].forEach(
-            async (cookie) => {
-                let [key, value] = cookie.split('=');
-                tokens[key] = value.split(';')[0];
-            } 
-        )
-
+        if( res.headers['set-cookie']){
+            res.headers['set-cookie'].forEach(
+                async (cookie) => {
+                    let [key, value] = cookie.split('=');
+                    tokens[key] = value.split(';')[0];
+                } 
+            )
+        }
         if (tokens) {
             if ('access_token' in tokens) {
                 let user = jwtDecode(tokens['access_token']);
