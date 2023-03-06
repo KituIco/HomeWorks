@@ -7,7 +7,7 @@ const instance = axios.create({
     baseURL: `http://${REACT_NATIVE_PACKAGER_HOSTNAME}:3000`
 });
 
-postAxios = async(url, data = {}) => {
+postAxios = async(url, data = {}, imageFile = null) => {
     try {
         let access_token = await SecureStore.getItemAsync('access_token');
         let refresh_token = await SecureStore.getItemAsync('refresh_token');
@@ -17,7 +17,8 @@ postAxios = async(url, data = {}) => {
                 url: url,
                 data: data,
                 headers: {
-                    Cookie: access_token && refresh_token && `access_token=${access_token}; refresh_token=${refresh_token}`
+                    Cookie: access_token && refresh_token && `access_token=${access_token}; refresh_token=${refresh_token}`,
+                    'Content-Type': imageFile && 'multipart/form-data'
                 }
             }
         )
