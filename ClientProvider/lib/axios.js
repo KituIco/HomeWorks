@@ -32,8 +32,8 @@ postAxios = async(url, data = {}, imageFile = null) => {
         let tokens = {}
         if(res.headers['set-cookie']){
             let cookie = res.headers['set-cookie'][0];
-            let tokens = cookie.split(', ');
-            tokens.forEach(
+            let parsedToken = cookie.split(', ');
+            parsedToken.forEach(
                 (token) => {
                     let [key, value] = token.split('=');
                     if (key !== 'Expires') {
