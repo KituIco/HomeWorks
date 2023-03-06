@@ -10,8 +10,19 @@ import { dateHandler } from '../../utils/dateHandler';
 import { contactHandler } from '../../utils/contactHandler';
 import DatePicker from 'react-native-modern-datepicker';
 import SeekerServices from '../../services/user/seeker-services';
+import ImageService from '../../services/image/image-services'
 
 const screenHeight = Dimensions.get('window').height;
+
+async function onSubmit( data ) {
+  console.log('image:', data.seekerDp);
+  // const image = new FormData();
+  // image.append('name', 'Image Upload');
+  // image.append('file_attachment', fileToUpload);
+  let res = await ImageService.uploadFile(data.seekerDp);
+  
+  console.log('result:'. res)
+}
 
 export default function Credentials( props ) {
   const firstname = props.route.params.firstname;
@@ -57,7 +68,19 @@ export default function Credentials( props ) {
     } 
     
     else {
-      let res = SeekerServices.createSeeker({
+      // let res = SeekerServices.createSeeker({
+      //   email: mail,
+      //   password: password,
+      //   firstName: firstname,
+      //   lastName: lastname,
+      //   username: username,
+      //   phoneNumber: contact,
+      //   birthdate: dateHandler(birthday),
+      //   seekerDp: image,
+      // })
+      // props.navigation.dispatch(StackActions.popToTop());
+      // props.navigation.navigate('HomeStack'); 
+      onSubmit({
         email: mail,
         password: password,
         firstName: firstname,
@@ -67,8 +90,6 @@ export default function Credentials( props ) {
         birthdate: dateHandler(birthday),
         seekerDp: image,
       })
-      props.navigation.dispatch(StackActions.popToTop());
-      props.navigation.navigate('HomeStack'); 
     }
   }
 
