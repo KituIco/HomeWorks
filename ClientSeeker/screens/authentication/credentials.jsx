@@ -14,9 +14,19 @@ import ImageService from '../../services/image/image-services'
 
 const screenHeight = Dimensions.get('window').height;
 
-async function onSubmit( data ) {
-  let res = await ImageService.uploadFile(data.seekerDp);
-  console.log(res)
+async function onSubmit( props, data ) {
+  ImageService.uploadFile(data.urlDp)
+    .then((res) => {
+      data['seekerDp'] = res;
+      delete data['urlDp'];
+
+      SeekerServices.createSeeker(data)
+        .then((res) => {
+        // props.navigation.dispatch(StackActions.popToTop());
+        // props.navigation.navigate('HomeStack'); 
+      }).catch((err) => console.log(err)) 
+
+    }).catch((err) => console.log('test', err)) 
 }
 
 export default function Credentials( props ) {
@@ -63,19 +73,7 @@ export default function Credentials( props ) {
     } 
     
     else {
-      // let res = SeekerServices.createSeeker({
-      //   email: mail,
-      //   password: password,
-      //   firstName: firstname,
-      //   lastName: lastname,
-      //   username: username,
-      //   phoneNumber: contact,
-      //   birthdate: dateHandler(birthday),
-      //   seekerDp: image,
-      // })
-      // props.navigation.dispatch(StackActions.popToTop());
-      // props.navigation.navigate('HomeStack'); 
-      onSubmit({
+      onSubmit(props, {
         email: mail,
         password: password,
         firstName: firstname,
@@ -83,7 +81,7 @@ export default function Credentials( props ) {
         username: username,
         phoneNumber: contact,
         birthdate: dateHandler(birthday),
-        seekerDp: image,
+        urlDp: image,
       })
     }
   }

@@ -11,17 +11,32 @@ postAxios = async(url, data = {}, imageFile = null) => {
     try {
         let access_token = await SecureStore.getItemAsync('access_token');
         let refresh_token = await SecureStore.getItemAsync('refresh_token');
-        let res = await instance(
-            {
-                method: 'post',
-                url: url,
-                data: data,
-                headers: {
-                    Cookie: access_token && refresh_token && `access_token=${access_token}; refresh_token=${refresh_token}`,
-                    'Content-Type': imageFile && 'multipart/form-data'
+        let res;
+        if(imageFile){
+            res = await instance(
+                {
+                    method: 'post',
+                    url: url,
+                    data: data,
+                    headers: {
+                        Cookie: access_token && refresh_token && `access_token=${access_token}; refresh_token=${refresh_token}`,
+                        'Content-Type': 'multipart/form-data'
+                    }
                 }
-            }
-        )
+            )
+        }
+        else {
+            res = await instance(
+                {
+                    method: 'post',
+                    url: url,
+                    data: data,
+                    headers: {
+                        Cookie: access_token && refresh_token && `access_token=${access_token}; refresh_token=${refresh_token}`
+                    }
+                }
+            )
+        } 
         let tokens = {}
         if( res.headers['set-cookie']){
             res.headers['set-cookie'].forEach(

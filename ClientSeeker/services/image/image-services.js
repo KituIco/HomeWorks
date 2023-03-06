@@ -7,7 +7,6 @@ let ImageService = {
             var bodyFormData = new FormData();
             let file = data.split("/");
             let name = file[file.length-1];
-
             let type = `image/${name.split(".")[1]}`;
 
             bodyFormData.append('image',{
