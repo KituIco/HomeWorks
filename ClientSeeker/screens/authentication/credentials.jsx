@@ -25,6 +25,7 @@ async function onSubmit( props, data ) {
       SeekerServices.createSeeker(data)
         .then((res) => {
         props.navigation.dispatch(StackActions.popToTop());
+        props.navigation.replace('HomeStack');
         props.navigation.navigate('HomeStack'); 
       }).catch((err) => console.log(err)) 
 

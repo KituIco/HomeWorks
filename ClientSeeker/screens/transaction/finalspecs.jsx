@@ -1,13 +1,43 @@
 import { LinearGradient } from 'expo-linear-gradient';
-import React from 'react';
-import { StyleSheet, View, Text, ScrollView, Image, TouchableWithoutFeedback } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, View, Text, ScrollView, Image, TouchableWithoutFeedback, Alert } from 'react-native';
 import { StackActions } from '@react-navigation/native';
+import MapView from 'react-native-maps';
 
 import Header from '../../components/transactheader';
-
+import * as Location from 'expo-location';
 
 export default function FinalSpecs({ route, navigation }) {
   const { service, icon }= route.params;
+  let region = {
+      latitude: 14.595987,
+      longitude: 121.142957,
+      latitudeDelta: 0.0050,
+      longitudeDelta: 0.0050,
+  };
+
+  const [location, setLocation] = useState(null);
+  const [errorMsg, setErrorMsg] = useState(null);
+
+  useEffect(() => {
+    (async () => {
+      
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        setErrorMsg('Permission to access location was denied');
+        Alert.alert('Permission Denied', 
+          'This application requires location permission for certain features. To allow this app, you may check app info.', [
+          {text: 'OK'},
+        ]);
+        navigation.goBack();
+        return;
+      }
+
+      let location = await Location.getCurrentPositionAsync({});
+      setLocation(location);
+      console.log(location)
+    })();
+  }, []);
 
   return (
     <View style={{justifyContent: 'flex-end', flex:1}}>
@@ -19,10 +49,16 @@ export default function FinalSpecs({ route, navigation }) {
           <Text style={styles.content}>{service} Service</Text>
           <Text style={[styles.content,{fontFamily: 'quicksand-bold', fontSize: 16}]}>Php 420</Text>
         </View>
-        <LinearGradient colors={['rgba(0,0,0,0.1)','rgba(0,0,0,0)'  ]} start={{ x:0, y:0 }} end={{ x:0, y:1 }} style={{height:4}}/>
-        <Image style={styles.image} source={require("../../assets/map.png")} />
-        <Image style={styles.pin} source={require("../../assets/pin.png")} />
-        <LinearGradient colors={['rgba(0,0,0,0.1)','rgba(0,0,0,0)'  ]} start={{ x:0, y:1 }} end={{ x:0, y:0 }} style={{height:4}}/>
+        <LinearGradient colors={['rgba(0,0,0,0.1)','rgba(0,0,0,0)'  ]} start={{ x:0, y:0 }} end={{ x:0, y:1 }} style={{height:4, zIndex:5}}/>
+        
+        <View style={{width:'100%', height: 200, marginVertical:-4}}>
+          <MapView style={{flex:1}} initialRegion={region}/>
+          <View style={{top:'50%',left:'50%',position:'absolute',marginTop:-15,marginLeft:-11}}>
+            <Image style={{height:30,width:22}} source={require("../../assets/pin.png")} />
+          </View>
+        </View>
+
+        <LinearGradient colors={['rgba(0,0,0,0.1)','rgba(0,0,0,0)'  ]} start={{ x:0, y:1 }} end={{ x:0, y:0 }} style={{height:4, zIndex:5}}/>
 
         <View style={styles.address}>
           <Text style={styles.location}>UP AECH, P. Velasquez Street, Diliman, Quezon City, 1800 Metro Manila</Text>
@@ -51,7 +87,7 @@ export default function FinalSpecs({ route, navigation }) {
           </LinearGradient>
         </TouchableWithoutFeedback>
 
-        <TouchableWithoutFeedback onPress= {() => navigation.goBack(null)}>
+        <TouchableWithoutFeedback onPress= {() => { navigation.goBack(null)}}>
           <LinearGradient colors={['rgba(10,10,10,0.4)','rgba(10,10,10,0)'  ]} start={{ x:0, y:0.65 }} end={{ x:0, y:0.98 }} style={styles.shadow}>
             <View style={styles.decline}>
               <Text style={[styles.prompt, {color:'#462964', fontSize: 14}]}>Go Back to Chat</Text>
@@ -96,7 +132,7 @@ const styles = StyleSheet.create({
   address: {
     marginHorizontal: 24,
     marginVertical: 10,
-    paddingBottom: 8,
+    
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -121,7 +157,7 @@ const styles = StyleSheet.create({
     fontFamily: 'quicksand',
     letterSpacing: -0.5,
     fontSize: 13,
-    marginBottom: 10,
+    marginBottom: 6,
   },
   subcontent: {
     fontFamily: 'quicksand',

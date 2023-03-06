@@ -22,6 +22,7 @@ export default function Login({ navigation }) {
         password: password,
       }).then(() => {
           navigation.dispatch(StackActions.popToTop()),
+          navigation.replace('HomeStack');
           navigation.navigate('HomeStack');
         })
         .catch((err) => console.log(err))   

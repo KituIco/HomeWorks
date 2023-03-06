@@ -47,17 +47,8 @@ export default function App() {
         onFinish={() => setFontsLoaded(true)}
         onError={() => {}} 
       />
-
-      
     )
   }
-
-  // return (
-  //   // <Navigator onLayout={onLayoutRootView} />
-  //   <View style={styles.container}>
-  //     <Text style={styles.content}> Open up App.js to start working!</Text>
-  //   </View>
-  // )
 }
 
 const styles = StyleSheet.create({
