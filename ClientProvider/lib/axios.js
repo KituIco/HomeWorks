@@ -11,30 +11,37 @@ postAxios = async(url, data = {}, imageFile = null) => {
     try {
         let access_token = await SecureStore.getItemAsync('access_token');
         let refresh_token = await SecureStore.getItemAsync('refresh_token');
+        let headers = {};
+
+        if (access_token && refresh_token) {
+            headers['Cookie'] = `access_token=${access_token}; refresh_token=${refresh_token}`;
+        }
+        
+        if (imageFile) {
+            headers['Content-Type'] = 'multipart/form-data';
+        }
+
         let res = await instance(
             {
                 method: 'post',
                 url: url,
                 data: data,
-                headers: {
-                    Cookie: access_token && refresh_token && `access_token=${access_token}; refresh_token=${refresh_token}`,
-                    'Content-Type': imageFile && 'multipart/form-data'
-                }
+                headers: headers
             }
         )
         let tokens = {}
-        res.headers['set-cookie'].forEach(
-            async (cookie) => {
-                let [key, value] = cookie.split('=');
-                tokens[key] = value.split(';')[0];
-            } 
-        )
+        if( res.headers['set-cookie']){
+            res.headers['set-cookie'].forEach(
+                async (cookie) => {
+                    let [key, value] = cookie.split('=');
+                    tokens[key] = value.split(';')[0];
+                } 
+            )
+        }
 
-        if (tokens) {
-            if ('access_token' in tokens) {
-                let user = jwtDecode(tokens['access_token']);
-                await SecureStore.setItemAsync('user', JSON.stringify(user));
-            }
+        if ('access_token' in tokens && 'refresh_token' in tokens) {
+            let user = jwtDecode(tokens['access_token']);
+            await SecureStore.setItemAsync('user', JSON.stringify(user));
             await SecureStore.setItemAsync('access_token', String(tokens['access_token']));
             await SecureStore.setItemAsync('refresh_token', String(tokens['refresh_token']));
         }
