@@ -5,20 +5,24 @@ import { LinearGradient } from 'expo-linear-gradient';
 
 import CredentialsServices from '../../services/user/credential-services';
 import ProviderServices from '../../services/user/provider-services';
+
 import { getUserID } from '../../utils/getUserID';
 import { getImageURL } from '../../utils/getImageURL';
+import Loading from '../../hooks/loading';
 
 export default function Options({ navigation }) {
   const [name, setName] = useState('');
   const [image, setImage] = useState(require("../../assets/default.jpg"));
   const [init, setInit] = useState(0);
-
+  const [loading, setLoading] = useState(false);
+  
   useEffect(() => {
     getUserID().then( userID => {
       if(userID) {
         ProviderServices.getProvider(userID).then( data => {
           setName(`${data.body.firstName} ${data.body.lastName}`)
-          setImage({uri : getImageURL(data.body.providerDp)})
+          if (data.body.providerDp)
+            setImage({uri : getImageURL(data.body.providerDp)})
         })
       } else {
         setInit(init+1);
@@ -27,13 +31,18 @@ export default function Options({ navigation }) {
   }, [init]);
 
   const onLogout = () => {
-    navigation.replace('HomeStack');
-    navigation.navigate('AuthStack');
-    let res = CredentialsServices.logout();
+    setLoading(true);
+    CredentialsServices.logout()
+    .then(() => {
+      navigation.replace('HomeStack');
+      navigation.navigate('AuthStack');
+    })
+    .catch(() => setLoading(false))
   }
 
   return (
     <View style={styles.container}>
+      { loading && <Loading/> }
       <View style={styles.header}>
         <Text style={styles.heading}>Options</Text>
       </View>

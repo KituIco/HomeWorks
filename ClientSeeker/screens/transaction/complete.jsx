@@ -176,7 +176,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 10,
     borderColor: '#888486',
-    placeholderTextColor: '#888486',
+    // placeholderTextColor: '#888486',
     fontFamily: 'quicksand',
     textAlignVertical: 'top',
     letterSpacing: -0.5,

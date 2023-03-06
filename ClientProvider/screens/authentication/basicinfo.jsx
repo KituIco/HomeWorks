@@ -12,6 +12,7 @@ import DatePicker from 'react-native-modern-datepicker';
 
 import ProviderServices from '../../services/user/provider-services';
 import ImageService from '../../services/image/image-services';
+import Loading from '../../hooks/loading';
 
 const screenHeight = Dimensions.get('window').height;
 
@@ -54,6 +55,7 @@ export default function BasicInfo( props ) {
   const [open, setOpen] = useState(false);
   const [image, setImage] = useState(null);
   const [id, setId] = useState(null);
+  const [loading, setLoading] = useState(false);
   
   const pickImage = async (type) => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -84,6 +86,7 @@ export default function BasicInfo( props ) {
     } 
     
     else {
+      setLoading(true);
       onSubmit( props, {
         email: mail,
         password: password,
@@ -94,7 +97,7 @@ export default function BasicInfo( props ) {
         birthdate: dateHandler(birthday),
         urlDp: image,
         urlID: id,
-      })
+      }).catch(() => setLoading(false))
     }
   }
 
@@ -108,6 +111,7 @@ export default function BasicInfo( props ) {
   return (
     <View style={{flex:1, backgroundColor: '#E9E9E9'}}>
     <View style={{width:'100%', height:40, backgroundColor: '#E9E9E9'}}/>
+    { loading && <Loading/> }
     
     <ScrollView style={{width: '100%', backgroundColor: '#E9E9E9'}}>
       

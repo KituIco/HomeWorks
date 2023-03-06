@@ -5,15 +5,18 @@ import { Dimensions } from 'react-native';
 import { StackActions } from '@react-navigation/native';
 
 import CredentialsServices from '../../services/user/credentials-services';
+import Loading from '../../hooks/loading';
 
 const screenHeight = Dimensions.get('window').height;
 
 export default function Login({ navigation }) {
   const [mail, setMail] = useState('')
   const [password, setPassword] = useState('')
+  const [loading, setLoading] = useState(false);
 
   const onLogin = () => {
     if( mail && password) {
+      // setLoading(true);
       CredentialsServices.login({
         identifier: mail,
         password: password,
@@ -27,6 +30,7 @@ export default function Login({ navigation }) {
 
   return (
     <View style={styles.container}>
+      { loading && <Loading/> }
 
       <ScrollView style={{width: '100%'}}>
       <View style={{alignItems: 'center'}}>

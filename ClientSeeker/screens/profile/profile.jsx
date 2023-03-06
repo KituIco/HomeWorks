@@ -10,6 +10,7 @@ import SeekerServices from '../../services/user/seeker-services';
 import { getUserID } from '../../utils/getUserID';
 import { contactHandler } from '../../utils/contactHandler';
 import { getImageURL } from '../../utils/getImageURL';
+import Loading from '../../hooks/loading';
 
 export default function Profile({ navigation }) {
   const [name, setName] = useState('');
@@ -19,6 +20,7 @@ export default function Profile({ navigation }) {
 
   const [image, setImage] = useState(require("../../assets/default.jpg"));
   const [init, setInit] = useState(0);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     getUserID().then( userID => {
@@ -26,7 +28,8 @@ export default function Profile({ navigation }) {
         SeekerServices.getSeeker(userID).then( data => {
           setName(`${data.body.firstName} ${data.body.lastName}`)
           setBirthday(data.body.birthdate)
-          setImage({uri : getImageURL(data.body.seekerDp)})
+          if(data.body.seekerDp)
+            setImage({uri : getImageURL(data.body.seekerDp)})
         })
         CredentialsServices.getUserCredentials(userID).then( data => {
           setMail(data.body.email);
@@ -39,19 +42,23 @@ export default function Profile({ navigation }) {
   }, [init]);
 
   const onLogout = () => {
+    setLoading(true);
     CredentialsServices.logout()
     .then(() => {
       navigation.dispatch(StackActions.popToTop()),
       navigation.navigate('AuthStack')
     })
-    .catch((err) => console.log(err))
+    .catch(() => setLoading(false))
   }
 
   return (
     <View style={styles.container}>
+      { loading && <Loading/> }
       <View style={styles.header}>
         <Text style={styles.heading}>My Profile</Text>
       </View>
+      
+
       <ScrollView style={styles.info}>
         <View style={styles.holder}>
           <Image style={styles.icon} source={image} />

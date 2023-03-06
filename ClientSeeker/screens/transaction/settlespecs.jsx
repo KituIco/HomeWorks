@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
   text: {
     height: 50,
     width: '85%',
-    placeholderTextColor: '#888486',
+    // placeholderTextColor: '#888486',
     fontFamily: 'quicksand',
     letterSpacing: -0.5,
     fontSize: 16

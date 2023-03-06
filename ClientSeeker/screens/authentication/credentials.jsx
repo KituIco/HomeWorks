@@ -12,6 +12,7 @@ import DatePicker from 'react-native-modern-datepicker';
 
 import SeekerServices from '../../services/user/seeker-services';
 import ImageService from '../../services/image/image-services';
+import Loading from '../../hooks/loading';
 
 const screenHeight = Dimensions.get('window').height;
 
@@ -27,7 +28,7 @@ async function onSubmit( props, data ) {
         props.navigation.navigate('HomeStack'); 
       }).catch((err) => console.log(err)) 
 
-    }).catch((err) => console.log('test', err)) 
+    }).catch((err) => console.log(err)) 
 }
 
 export default function Credentials( props ) {
@@ -46,6 +47,7 @@ export default function Credentials( props ) {
 
   const [open, setOpen] = useState(false);
   const [image, setImage] = useState(null);
+  const [loading, setLoading] = useState(false);
   
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -74,6 +76,7 @@ export default function Credentials( props ) {
     } 
     
     else {
+      setLoading(true);
       onSubmit(props, {
         email: mail,
         password: password,
@@ -83,7 +86,7 @@ export default function Credentials( props ) {
         phoneNumber: contact,
         birthdate: dateHandler(birthday),
         urlDp: image,
-      })
+      }).catch(() => setLoading(false))
     }
   }
 
@@ -97,6 +100,7 @@ export default function Credentials( props ) {
   return (
     <View style={{flex:1, backgroundColor: '#E9E9E9'}}>
     <View style={{width:'100%', height:40, backgroundColor: '#E9E9E9'}}/>
+    { loading && <Loading/> }
     
     <ScrollView style={{width: '100%', backgroundColor: '#E9E9E9'}}>
       
@@ -310,4 +314,6 @@ const styles = StyleSheet.create({
     borderColor: '#00FF00',
     borderWidth: 1,
   },
+
+  
 });

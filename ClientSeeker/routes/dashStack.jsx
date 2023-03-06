@@ -21,8 +21,8 @@ export default function DashStack({ navigation }) {
     getUserID().then( userID => {
       if(userID) {
         SeekerServices.getSeeker(userID).then( data => {
-          let url = getImageURL(data.body.seekerDp)
-          setImage({uri : url})
+          if(data.body.seekerDp)
+            setImage({uri : getImageURL(data.body.seekerDp)})
         })
       } else {
         setInit(init+1);

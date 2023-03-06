@@ -28,12 +28,14 @@ export default function Login({ navigation }) {
 
   const onLogin = () => {
     if( mail && password) {
-      let res = CredentialsServices.login({
+      CredentialsServices.login({
         identifier: mail,
         password: password,
+      }).then(() => {
+        navigation.replace('HomeStack');
+        navigation.navigate('HomeStack');
       })
-      navigation.replace('HomeStack');
-      navigation.navigate('HomeStack');
+        .catch((err) => console.log(err)) 
     }
   }
 
