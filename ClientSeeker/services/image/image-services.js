@@ -4,7 +4,9 @@ let url = '/upload';
 let ImageService = {
     uploadFile: async (data) => {
         try {
-            let res = await postAxios(url, data, true);
+            var bodyFormData = new FormData();
+            bodyFormData.append('image', data);
+            let res = await postAxios(url, bodyFormData, true);
             return res.url;
         } catch (error) {
             console.log(error);
