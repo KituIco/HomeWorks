@@ -8,8 +8,8 @@ import Matching from '../screens/transaction/matching';
 const Stack = createStackNavigator();
 
 
-export default function TransactStack({ route }) {
-  const { service } = route.params;
+export default function RequesttStack({ route }) {
+  const { service, typeID, icon } = route.params;
 
   const header = {
     headerTransparent: true,
@@ -30,7 +30,7 @@ export default function TransactStack({ route }) {
         <Stack.Screen
           name="Request"
           component={Request}
-          initialParams={{ service: service }}
+          initialParams={{ service, typeID, icon }}
           options={() => header}
         />
 

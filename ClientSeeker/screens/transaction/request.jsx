@@ -3,42 +3,29 @@ import React, { useState, useEffect }  from 'react';
 import { StyleSheet, View, Text, ScrollView, Image, Alert } from 'react-native';
 import { MaterialCommunityIcons  } from '@expo/vector-icons';
 import MapView, {Marker} from 'react-native-maps';
+import * as Location from 'expo-location';
 
 import Header from '../../components/transactheader';
 import Next from '../../components/transactnext';
-import * as Location from 'expo-location';
+import Loading from '../../hooks/loading';
+
+import { addressHandler } from '../../utils/addressHandler';
 
 export default function Request({ route, navigation }) {
-  const { service }= route.params;
-  let icon = 'hammer-screwdriver';
+  const { service, typeId, icon } = route.params;
+  const [processing, setProcessing] = useState(true);
+  const [location, setLocation] = useState('UP AECH, P. Velasquez Street, Diliman, Quezon City, 1800 Metro Manila');
+
   const [region, setRegion] = useState({
     latitude: 14.6487, longitude: 121.0687,
     latitudeDelta: 0.0080, longitudeDelta: 0.0060,
   })
 
-  if(service=='Carpentry') icon = 'hammer-screwdriver';
-  else if(service=='Car Mechanic') icon = 'car-wrench'
-  else if(service=='Plumbing') icon = 'water-pump'
-  else if(service=='House Cleaning') icon = 'broom'
-  else if(service=='Baby Sitting') icon = 'human-baby-changing-table'
-  else if(service=='Electrician') icon = 'power-plug'
-  else if(service=='Laundry') icon = 'tshirt-crew'
-  else if(service=='Appliance Repair') icon = 'television'
-  else if(service=='Roof Cleaning') icon = 'home-roof'
-  else if(service=='Carpet Cleaning') icon = 'rug'
-  else if(service=='Meal Preparation') icon = 'silverware-clean'
-  else if(service=='Manicurists') icon = 'hand-clap'
-  else if(service=='Hair Dresser') icon = 'face-woman-shimmer'
-
-  const [location, setLocation] = useState(null);
-  const [errorMsg, setErrorMsg] = useState(null);
-
   useEffect(() => {
+    if(processing)
     (async () => {
-      
       let { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== 'granted') {
-        setErrorMsg('Permission to access location was denied');
         Alert.alert('Permission Denied', 
           'This application requires location permission for certain features. To allow this app, you may check app info.', [
           {text: 'OK'},
@@ -46,21 +33,29 @@ export default function Request({ route, navigation }) {
         navigation.goBack();
         return;
       }
+      
       let { coords } = await Location.getCurrentPositionAsync({});
       let { latitude, longitude } = coords
+      // latitude = 14.57593; longitude = 121.04118;
       let response = await Location.reverseGeocodeAsync({
        latitude, longitude
       });
-      console.log(latitude);
-      console.log('myloc', response);
-
-      let test = await Location.reverseGeocodeAsync({
-        latitude:14.64870 , longitude:121.06870
-       });
-       console.log('dcs ', test)
+      setRegion({latitude, longitude, latitudeDelta: 0.0080, longitudeDelta: 0.0060,})
+      setLocation(addressHandler(response[0]))
+      setProcessing(false);
     })();
   }, []);
 
+  const regionChange = async(data) => {
+    Location.reverseGeocodeAsync({
+      latitude: data.latitude, longitude: data.longitude
+     }).then((res) => {
+      setLocation(addressHandler(res[0]))
+    });
+  }
+
+  if (processing) 
+    return <Loading preload={true}/>
 
   return (
     <View style={{justifyContent: 'flex-end', flex:1}}>
@@ -71,7 +66,7 @@ export default function Request({ route, navigation }) {
 
         <LinearGradient colors={['rgba(0,0,0,0.1)','rgba(0,0,0,0)'  ]} start={{ x:0, y:0 }} end={{ x:0, y:1 }} style={{height:4, zIndex:5}}/>
         <View style={{width:'100%', height: 260, marginVertical:-4}}>
-          <MapView style={{flex:1}} initialRegion={region}/>
+          <MapView style={{flex:1}} initialRegion={region} onRegionChangeComplete={(data) => regionChange(data)}/>
           <View style={{top:'50%',left:'50%',position:'absolute',marginTop:-22,marginLeft:-16.15}}>
             <Image style={{height:44,width:32.3}} source={require("../../assets/pin.png")} />
           </View>
@@ -79,7 +74,7 @@ export default function Request({ route, navigation }) {
         <LinearGradient colors={['rgba(0,0,0,0.1)','rgba(0,0,0,0)']} start={{ x:0, y:1 }} end={{ x:0, y:0 }} style={{height:4, zIndex:5}}/>
 
         <View style={styles.address}>
-          <Text style={styles.location}>UP AECH, P. Velasquez Street, Diliman, Quezon City, 1800 Metro Manila</Text>
+          <Text style={styles.location} numberOfLines={2}>{location}</Text>
           <MaterialCommunityIcons name={'pencil-outline'} size={30} color="#9C54D5"/>
         </View>
 

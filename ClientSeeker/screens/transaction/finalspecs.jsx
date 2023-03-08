@@ -11,35 +11,6 @@ export default function FinalSpecs({ route, navigation }) {
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
 
-  useEffect(() => {
-    (async () => {
-      
-      let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== 'granted') {
-        setErrorMsg('Permission to access location was denied');
-        Alert.alert('Permission Denied', 
-          'This application requires location permission for certain features. To allow this app, you may check app info.', [
-          {text: 'OK'},
-        ]);
-        navigation.goBack();
-        return;
-      }
-      let { coords } = await Location.getCurrentPositionAsync({});
-      let { latitude, longitude } = coords
-      let response = await Location.reverseGeocodeAsync({
-       latitude, longitude
-      });
-      console.log(latitude);
-      console.log('myloc', response);
-
-      let test = await Location.reverseGeocodeAsync({
-        latitude:14.64870 , longitude:121.06870
-       });
-       console.log('dcs ', test)
-    })();
-  }, []);
-
-
   const { service, icon }= route.params;
   let region = {
       latitude: 14.595987,
