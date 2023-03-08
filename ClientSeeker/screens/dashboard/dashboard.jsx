@@ -1,22 +1,30 @@
 import { StyleSheet, View, Text, Image, ScrollView, } from 'react-native';
 import { EvilIcons  } from '@expo/vector-icons';
 import { StatusBar } from 'expo-status-bar';
+import { useEffect, useState } from 'react';
 
 import Grid  from '../../components/grid';
 import Listing from '../../components/listing';
 import Header from '../../components/dashheader';
 import Back from '../../hooks/back';
 
+import ServiceTypeServices from '../../services/service/service-type-services';
+import Loading from '../../hooks/loading';
+import { typeHandler } from '../../utils/typeHandler';
 
 export default function Dashboard({navigation}) {
-  const services = [
-    {key: 'Carpentry', icon: 'hammer-screwdriver'},
-    {key: 'Car Mechanic', icon: 'car-wrench'},
-    {key: 'Plumbing', icon: 'water-pump'},
-    {key: 'House Cleaning', icon: 'broom'},
-    {key: 'Baby Sitting', icon: 'human-baby-changing-table'},
-    {key: 'Electrician', icon: 'power-plug'},
-  ]
+  const [processing, setProcessing] = useState(true);
+  const [services, setServices] = useState([]);
+
+  useEffect(() => {
+    if(processing)
+      ServiceTypeServices.getServiceTypes()
+        .then((data) => {
+          let patched = typeHandler(data.body);
+          setServices(patched)
+          setProcessing(false);
+        })
+  });
 
   const featured = [
     {key: 'Alex Guerrero', location: 'Taguig City', ratings: '4.3', service: 'Car Mechanic', price: 'min Php 420', src: require("../../assets/providers/provider-a.png")},
@@ -29,6 +37,9 @@ export default function Dashboard({navigation}) {
     {key: 'Ricardo Pollicar', location: 'Mandaluyong City', ratings: '4.4', service: 'Meal Preparation', price: 'min Php 300', src: require("../../assets/providers/provider-e.png")},
     {key: 'Ced Montenegro', location: 'Manila', ratings: '4.6', service: 'Plumbing', price: 'min Php 350', src: require("../../assets/providers/provider-f.png")},
   ]
+
+  if (processing) 
+    return <Loading preload={true}/>
 
 
   return (
@@ -43,8 +54,8 @@ export default function Dashboard({navigation}) {
       
 
       <View style={styles.sections.services}>
-        <Header title={'Services'} navigation={navigation}/>
-        <Grid listings={services} navigation={navigation}/>
+        <Header title={'Services'} listings={services} navigation={navigation}/>
+        <Grid listings={services.slice(0,6)} navigation={navigation}/>
       </View>
 
       <Header title={'Featured'} navigation={navigation}/>

@@ -21,20 +21,21 @@ export default function Profile({ navigation }) {
   const [image, setImage] = useState(require("../../assets/default.jpg"));
   const [init, setInit] = useState(0);
   const [loading, setLoading] = useState(false);
+  const [processing, setProcessing] = useState(true);
 
   useEffect(() => {
     getUserID().then( userID => {
       if(userID) {
-        SeekerServices.getSeeker(userID).then( data => {
-          setName(`${data.body.firstName} ${data.body.lastName}`)
-          setBirthday(data.body.birthdate)
-          if(data.body.seekerDp)
-            setImage({uri : getImageURL(data.body.seekerDp)})
-        })
-        CredentialsServices.getUserCredentials(userID).then( data => {
-          setMail(data.body.email);
-          setContact(contactHandler(data.body.phoneNumber));
-        })
+        Promise.all([SeekerServices.getSeeker(userID), CredentialsServices.getUserCredentials(userID)])
+          .then(data => {
+            if(data[0].body.seekerDp)
+              setImage({uri : getImageURL(data[0].body.seekerDp)})
+            setName(`${data[0].body.firstName} ${data[0].body.lastName}`);
+            setBirthday(data[0].body.birthdate);
+            setMail(data[1].body.email);
+            setContact(contactHandler(data[1].body.phoneNumber));
+            setProcessing(false);
+          })
       } else {
         setInit(init+1);
       }
@@ -51,6 +52,9 @@ export default function Profile({ navigation }) {
     .catch(() => setLoading(false))
   }
 
+  if (processing) 
+    return <Loading preload={true}/>
+   
   return (
     <View style={styles.container}>
       { loading && <Loading/> }

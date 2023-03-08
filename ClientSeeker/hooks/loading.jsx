@@ -10,7 +10,7 @@ export default function Loading ( props ) {
       spinValue,
       {
         toValue: 1,
-        duration: 1200,
+        duration: 1000,
         easing: Easing.linear,
         useNativeDriver: true
       }
@@ -21,11 +21,6 @@ export default function Loading ( props ) {
     inputRange: [0, 1],
     outputRange: ['0deg', '360deg']
   })
-
-  const changeStatus = () => {
-    setAccepted(true);
-    setOpacity(0.8);
-  }
 
   return (
     <View style={styles.waiting}>

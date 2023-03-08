@@ -2,20 +2,12 @@ import { LinearGradient } from 'expo-linear-gradient';
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text, ScrollView, Image, TouchableWithoutFeedback, Alert } from 'react-native';
 import { StackActions } from '@react-navigation/native';
-import MapView from 'react-native-maps';
+import MapView, {Marker} from 'react-native-maps';
 
 import Header from '../../components/transactheader';
 import * as Location from 'expo-location';
 
 export default function FinalSpecs({ route, navigation }) {
-  const { service, icon }= route.params;
-  let region = {
-      latitude: 14.595987,
-      longitude: 121.142957,
-      latitudeDelta: 0.0050,
-      longitudeDelta: 0.0050,
-  };
-
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
 
@@ -32,12 +24,29 @@ export default function FinalSpecs({ route, navigation }) {
         navigation.goBack();
         return;
       }
+      let { coords } = await Location.getCurrentPositionAsync({});
+      let { latitude, longitude } = coords
+      let response = await Location.reverseGeocodeAsync({
+       latitude, longitude
+      });
+      console.log(latitude);
+      console.log('myloc', response);
 
-      let location = await Location.getCurrentPositionAsync({});
-      setLocation(location);
-      console.log(location)
+      let test = await Location.reverseGeocodeAsync({
+        latitude:14.64870 , longitude:121.06870
+       });
+       console.log('dcs ', test)
     })();
   }, []);
+
+
+  const { service, icon }= route.params;
+  let region = {
+      latitude: 14.595987,
+      longitude: 121.142957,
+      latitudeDelta: 0.0050,
+      longitudeDelta: 0.0050,
+  };
 
   return (
     <View style={{justifyContent: 'flex-end', flex:1}}>
@@ -49,16 +58,16 @@ export default function FinalSpecs({ route, navigation }) {
           <Text style={styles.content}>{service} Service</Text>
           <Text style={[styles.content,{fontFamily: 'quicksand-bold', fontSize: 16}]}>Php 420</Text>
         </View>
-        <LinearGradient colors={['rgba(0,0,0,0.1)','rgba(0,0,0,0)'  ]} start={{ x:0, y:0 }} end={{ x:0, y:1 }} style={{height:4, zIndex:5}}/>
-        
-        <View style={{width:'100%', height: 200, marginVertical:-4}}>
-          <MapView style={{flex:1}} initialRegion={region}/>
-          <View style={{top:'50%',left:'50%',position:'absolute',marginTop:-15,marginLeft:-11}}>
-            <Image style={{height:30,width:22}} source={require("../../assets/pin.png")} />
-          </View>
-        </View>
 
-        <LinearGradient colors={['rgba(0,0,0,0.1)','rgba(0,0,0,0)'  ]} start={{ x:0, y:1 }} end={{ x:0, y:0 }} style={{height:4, zIndex:5}}/>
+        <LinearGradient colors={['rgba(0,0,0,0.1)','rgba(0,0,0,0)'  ]} start={{ x:0, y:0 }} end={{ x:0, y:1 }} style={{height:4, zIndex:5}}/>
+        <View style={{width:'100%', height: 200, marginVertical:-4}}>
+          <MapView style={{flex:1}} initialRegion={region}>
+            <Marker coordinate={{latitude: 14.595987, longitude: 121.142957}}>
+              <Image style={{height:38.2,width:28}} source={require("../../assets/pin.png")}/>
+            </Marker>
+          </MapView>
+        </View>
+        <LinearGradient colors={['rgba(0,0,0,0.1)','rgba(0,0,0,0)']} start={{ x:0, y:1 }} end={{ x:0, y:0 }} style={{height:4, zIndex:5}}/>
 
         <View style={styles.address}>
           <Text style={styles.location}>UP AECH, P. Velasquez Street, Diliman, Quezon City, 1800 Metro Manila</Text>
@@ -73,14 +82,14 @@ export default function FinalSpecs({ route, navigation }) {
       </ScrollView>
 
 
-      <LinearGradient colors={['rgba(0,0,0,0.4)','rgba(0,0,0,0)'  ]} start={{ x:0, y:0.2 }} end={{ x:0, y:0 }}>
+      <LinearGradient colors={['rgba(0,0,0,0.4)','rgba(0,0,0,0)']} start={{ x:0, y:0.2 }} end={{ x:0, y:0 }}>
 			<View style={styles.footer}>
 
         <TouchableWithoutFeedback onPress= {() => {
             navigation.dispatch(StackActions.popToTop()), navigation.dispatch(StackActions.popToTop()),
             navigation.navigate('ServeStack', {service: service, icon: icon})
           }}>
-          <LinearGradient colors={['rgba(10,10,10,0.7)','rgba(10,10,10,0)'  ]} start={{ x:0, y:0.65 }} end={{ x:0, y:0.98 }} style={styles.shadow}>
+          <LinearGradient colors={['rgba(10,10,10,0.7)','rgba(10,10,10,0)']} start={{ x:0, y:0.65 }} end={{ x:0, y:0.98 }} style={styles.shadow}>
             <LinearGradient colors={['#9C54D5', '#462964']} start={{ x:0.4, y:1 }} end={{ x:0, y:1 }} style={styles.accept}>
               <Text style={styles.prompt}>Accept Service Specs</Text>
             </LinearGradient>      

@@ -1,14 +1,20 @@
 import { LinearGradient } from 'expo-linear-gradient';
-import React from 'react';
-import { StyleSheet, View, Text, ScrollView, Image } from 'react-native';
+import React, { useState, useEffect }  from 'react';
+import { StyleSheet, View, Text, ScrollView, Image, Alert } from 'react-native';
 import { MaterialCommunityIcons  } from '@expo/vector-icons';
+import MapView, {Marker} from 'react-native-maps';
 
 import Header from '../../components/transactheader';
 import Next from '../../components/transactnext';
+import * as Location from 'expo-location';
 
 export default function Request({ route, navigation }) {
   const { service }= route.params;
   let icon = 'hammer-screwdriver';
+  const [region, setRegion] = useState({
+    latitude: 14.6487, longitude: 121.0687,
+    latitudeDelta: 0.0080, longitudeDelta: 0.0060,
+  })
 
   if(service=='Carpentry') icon = 'hammer-screwdriver';
   else if(service=='Car Mechanic') icon = 'car-wrench'
@@ -24,6 +30,37 @@ export default function Request({ route, navigation }) {
   else if(service=='Manicurists') icon = 'hand-clap'
   else if(service=='Hair Dresser') icon = 'face-woman-shimmer'
 
+  const [location, setLocation] = useState(null);
+  const [errorMsg, setErrorMsg] = useState(null);
+
+  useEffect(() => {
+    (async () => {
+      
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        setErrorMsg('Permission to access location was denied');
+        Alert.alert('Permission Denied', 
+          'This application requires location permission for certain features. To allow this app, you may check app info.', [
+          {text: 'OK'},
+        ]);
+        navigation.goBack();
+        return;
+      }
+      let { coords } = await Location.getCurrentPositionAsync({});
+      let { latitude, longitude } = coords
+      let response = await Location.reverseGeocodeAsync({
+       latitude, longitude
+      });
+      console.log(latitude);
+      console.log('myloc', response);
+
+      let test = await Location.reverseGeocodeAsync({
+        latitude:14.64870 , longitude:121.06870
+       });
+       console.log('dcs ', test)
+    })();
+  }, []);
+
 
   return (
     <View style={{justifyContent: 'flex-end', flex:1}}>
@@ -31,10 +68,15 @@ export default function Request({ route, navigation }) {
 
       <ScrollView style={styles.container}>
         <Text style={styles.heading}>Detected Address</Text>
-        <LinearGradient colors={['rgba(0,0,0,0.1)','rgba(0,0,0,0)'  ]} start={{ x:0, y:0 }} end={{ x:0, y:1 }} style={{height:4}}/>
-        <Image style={styles.image} source={require("../../assets/map.png")} />
-        <Image style={styles.pin} source={require("../../assets/pin.png")} />
-        <LinearGradient colors={['rgba(0,0,0,0.1)','rgba(0,0,0,0)'  ]} start={{ x:0, y:1 }} end={{ x:0, y:0 }} style={{height:4}}/>
+
+        <LinearGradient colors={['rgba(0,0,0,0.1)','rgba(0,0,0,0)'  ]} start={{ x:0, y:0 }} end={{ x:0, y:1 }} style={{height:4, zIndex:5}}/>
+        <View style={{width:'100%', height: 260, marginVertical:-4}}>
+          <MapView style={{flex:1}} initialRegion={region}/>
+          <View style={{top:'50%',left:'50%',position:'absolute',marginTop:-22,marginLeft:-16.15}}>
+            <Image style={{height:44,width:32.3}} source={require("../../assets/pin.png")} />
+          </View>
+        </View>
+        <LinearGradient colors={['rgba(0,0,0,0.1)','rgba(0,0,0,0)']} start={{ x:0, y:1 }} end={{ x:0, y:0 }} style={{height:4, zIndex:5}}/>
 
         <View style={styles.address}>
           <Text style={styles.location}>UP AECH, P. Velasquez Street, Diliman, Quezon City, 1800 Metro Manila</Text>
