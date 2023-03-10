@@ -6,6 +6,7 @@ var AddressRepo = require('../repositiories/address-repo.js');
 var clientErrors = require('../error/client-error-handler.js');
 var serverErrors = require('../error/server-error-handler.js');
 var { nanoid } = require('nanoid');
+var axios = require('axios');
 var AddressController = require('../controllers/address-controller.js');
 
 var addressRepo = new AddressRepo(db);
@@ -14,7 +15,8 @@ var addressController = new AddressController(
     clientErrors,
     serverErrors,
     null,
-    nanoid
+    nanoid,
+    axios
 );
 var cookieJwtAuth = require('../middlewares/cookie-jwt-auth.js');
 

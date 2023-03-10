@@ -7,31 +7,43 @@ class AddressRepository {
     createAddress = async(
         addressID,
         userID,
-        userFullNAme,
+        userFullName,
         userNum,
-        region,
-        province,
+        latitude,
+        longitude,
         city,
-        barangay,
+        country,
+        district,
+        isoCountryCode,
+        name,
         postalCode,
-        streetName,
-        unitNum,
+        region,
+        street,
+        streetNumber,
+        subRegion,
+        timeZone,
         isDefault
     ) => {
         try {
-            let sqlQuery = `CALL create_address(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+            let sqlQuery = `CALL create_address(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
             await this.db.query(sqlQuery, [
-                addressID, 
-                userID, 
-                userFullNAme, 
-                userNum, 
-                region, 
-                province, 
-                city, 
-                barangay, 
-                postalCode, 
-                streetName, 
-                unitNum, 
+                addressID,
+                userID,
+                userFullName,
+                userNum,
+                latitude,
+                longitude,
+                city,
+                country,
+                district,
+                isoCountryCode,
+                name,
+                postalCode,
+                region,
+                street,
+                streetNumber,
+                subRegion,
+                timeZone,
                 isDefault
             ]);
         } catch (error) {
@@ -44,31 +56,43 @@ class AddressRepository {
     patchAddress = async(
         addressID,
         userID,
-        userFullNAme,
+        userFullName,
         userNum,
-        region,
-        province,
+        latitude,
+        longitude,
         city,
-        barangay,
+        country,
+        district,
+        isoCountryCode,
+        name,
         postalCode,
-        streetName,
-        unitNum,
+        region,
+        street,
+        streetNumber,
+        subRegion,
+        timeZone,
         isDefault
     ) => {
         try {
-            let sqlQuery = `CALL patch_address(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+            let sqlQuery = `CALL patch_address(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
             await this.db.query(sqlQuery, [
                 addressID,
                 userID,
-                userFullNAme,
+                userFullName,
                 userNum,
-                region,
-                province,
+                latitude,
+                longitude,
                 city,
-                barangay,
+                country,
+                district,
+                isoCountryCode,
+                name,
                 postalCode,
-                streetName,
-                unitNum,
+                region,
+                street,
+                streetNumber,
+                subRegion,
+                timeZone,
                 isDefault
             ]);
         } catch (error) {
@@ -135,6 +159,28 @@ class AddressRepository {
             throw error;
         }
     };
+
+    getAllDefaultProviderAddress = async() => {
+        try {
+            let sqlQuery = `CALL get_all_default_provider_address()`;
+            let [result, _] = await this.db.query(sqlQuery);
+            return result[0];
+        } catch (error) {
+            console.log(error);
+            throw error;
+        }
+    };
+
+    getAllDefaultSeekerAddress = async() => {
+        try {
+            let sqlQuery = `CALL get_all_default_seeker_address()`;
+            let [result, _] = await this.db.query(sqlQuery);
+            return result[0];
+        } catch (error) {
+            console.log(error);
+            throw error;
+        }
+    }
 }
 
 module.exports = AddressRepository;

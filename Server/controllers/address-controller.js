@@ -4,13 +4,15 @@ class AddressController{
         clientErrors,
         serverErrors,
         addressValidator = null,
-        nanoid
+        nanoid,
+        axios
     ) {
         this.addressRepo = addressRepo;
         this.clientErrors = clientErrors;
         this.serverErrors = serverErrors;
         this.addressValidator = addressValidator;
         this.nanoid = nanoid;
+        this.axios = axios;
     }
 
     // POST: "" && need middleware to validate if user is logged in
@@ -20,13 +22,19 @@ class AddressController{
                 userID,
                 userFullName,
                 userNum,
-                region,
-                province,
+                latitude,
+                longitude,
                 city,
-                barangay,
+                country,
+                district,
+                isoCountryCode,
+                name,
                 postalCode,
-                streetName,
-                unitNum,
+                region,
+                street,
+                streetNumber,
+                subRegion,
+                timeZone,
                 isDefault
             } = req.body;
 
@@ -41,13 +49,19 @@ class AddressController{
                 userID,
                 userFullName,
                 userNum,
-                region,
-                province,
+                latitude,
+                longitude,
                 city,
-                barangay,
+                country,
+                district,
+                isoCountryCode,
+                name,
                 postalCode,
-                streetName,
-                unitNum,
+                region,
+                street,
+                streetNumber,
+                subRegion,
+                timeZone,
                 isDefault
             );
 
@@ -77,13 +91,19 @@ class AddressController{
                 userID,
                 userFullName,
                 userNum,
-                region,
-                province,
+                latitude,
+                longitude,
                 city,
-                barangay,
+                country,
+                district,
+                isoCountryCode,
+                name,
                 postalCode,
-                streetName,
-                unitNum,
+                region,
+                street,
+                streetNumber,
+                subRegion,
+                timeZone,
                 isDefault
             } = req.body;
 
@@ -98,13 +118,19 @@ class AddressController{
                 userID,
                 userFullName,
                 userNum,
-                region,
-                province,
+                latitude,
+                longitude,
                 city,
-                barangay,
+                country,
+                district,
+                isoCountryCode,
+                name,
                 postalCode,
-                streetName,
-                unitNum,
+                region,
+                street,
+                streetNumber,
+                subRegion,
+                timeZone,
                 isDefault
             );
 
@@ -202,6 +228,36 @@ class AddressController{
             });
         } catch (error) {
             //TODO: Handle error
+            console.log(error);
+        }
+    };
+
+    // GET: "/default/providers"
+    getAllDefaultProviderAddress = async(req, res) => {
+        try {
+            let addresses = await this.addressRepo.getAllDefaultProviderAddress();
+
+            res.status(200).json({
+                message: 'Default provider addresses retrieved successfully',
+                body: addresses
+            });
+        } catch (error) {
+            // TODO: Handle error
+            console.log(error);
+        }
+    };
+
+    // GET: "/default/seekers"
+    getAllDefaultSeekerAddress = async(req, res) => {
+        try {
+            let addresses = await this.addressRepo.getAllDefaultSeekerAddress();
+
+            res.status(200).json({
+                message: 'Default seeker addresses retrieved successfully',
+                body: addresses
+            });
+        } catch (error) {
+            // TODO: Handle error
             console.log(error);
         }
     };

@@ -20,7 +20,10 @@ class BookingController {
                 seekerID,
                 serviceID,
                 bookingStatus,
-                dateTimestamp
+                dateTimestamp,
+                description,
+                cost,
+                specsID
             } = req.body;
 
             // Client Errors
@@ -36,7 +39,10 @@ class BookingController {
                 seekerID,
                 serviceID,
                 bookingStatus,
-                dateTimestamp
+                dateTimestamp,
+                description,
+                cost,
+                specsID
             );
 
             let newBooking = {
@@ -61,7 +67,10 @@ class BookingController {
                 seekerID,
                 serviceID,
                 bookingStatus,
-                dateTimestamp
+                dateTimestamp,
+                description,
+                cost,
+                specsID
             } = req.body;
             
             let {bookingID} = req.params;
@@ -79,7 +88,10 @@ class BookingController {
                 seekerID,
                 serviceID,
                 bookingStatus,
-                dateTimestamp
+                dateTimestamp,
+                description,
+                cost,
+                specsID
             );
 
             let updatedBooking = {

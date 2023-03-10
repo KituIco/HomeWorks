@@ -5,7 +5,7 @@ CREATE PROCEDURE `create_portfolio`(
     IN `srvceID` VARCHAR(14),
     IN `portImg` TEXT,
     IN `portDesc` TEXT,
-    IN `portPrice` DECIMAL(6, 2)
+    IN `portPrice` DECIMAL(10,2)
 )
 BEGIN
     INSERT INTO 
@@ -32,7 +32,7 @@ CREATE PROCEDURE `patch_portfolio`(
     IN `srvceID` VARCHAR(14),
     IN `portImg` TEXT,
     IN `portDesc` TEXT,
-    IN `portPrice` DECIMAL(6, 2)
+    IN `portPrice` DECIMAL(10,2)
 )
 BEGIN
     UPDATE 

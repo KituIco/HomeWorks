@@ -5,13 +5,19 @@ CREATE PROCEDURE create_address(
     IN usrID VARCHAR(14),
     IN usrFullName VARCHAR(128),
     IN usrNum VARCHAR(20),
-    IN reg VARCHAR(50),
-    IN prov VARCHAR(25),
+    IN lat DOUBLE,
+    IN lon DOUBLE,
     IN ct VARCHAR(25),
-    IN brgy VARCHAR(30),
+    IN cntry VARCHAR(60),
+    IN dstrct VARCHAR(90),
+    IN isoCntryCode VARCHAR(3),
+    IN nem VARCHAR(90),
     IN zip VARCHAR(6),
-    IN street VARCHAR(25),
-    IN untNum VARCHAR(6),
+    IN reg VARCHAR(50),
+    IN strt VARCHAR(50),
+    IN strtNum VARCHAR(10),
+    IN subReg VARCHAR(50),
+    IN tzone VARCHAR(50),
     IN dflt TINYINT
 )
 BEGIN
@@ -21,13 +27,19 @@ BEGIN
             user_id, 
             user_full_name, 
             user_num, 
-            region, 
-            province, 
-            city, 
-            barangay, 
-            postal_code, 
-            street_name, 
-            unit_num, 
+            latitude,
+            longitude,
+            city,
+            country,
+            district,
+            iso_country_code,
+            name,
+            postal_code,
+            region,
+            street,
+            street_number,
+            sub_region,
+            time_zone,
             is_default
         )
     VALUES(
@@ -35,13 +47,19 @@ BEGIN
         usrID, 
         usrFullName, 
         usrNum, 
-        reg, 
-        prov, 
-        ct, 
-        brgy, 
-        zip, 
-        street, 
-        untNum, 
+        lat,
+        lon,
+        ct,
+        cntry,
+        dstrct,
+        isoCntryCode,
+        nem,
+        zip,
+        reg,
+        strt,
+        strtNum,
+        subReg,
+        tzone,
         dflt
     );
 END;
@@ -53,13 +71,19 @@ CREATE PROCEDURE patch_address(
     IN usrID VARCHAR(14),
     IN usrFullName VARCHAR(128),
     IN usrNum VARCHAR(20),
-    IN reg VARCHAR(50),
-    IN prov VARCHAR(25),
+    IN lat DOUBLE,
+    IN lon DOUBLE,
     IN ct VARCHAR(25),
-    IN brgy VARCHAR(30),
+    IN cntry VARCHAR(60),
+    IN dstrct VARCHAR(90),
+    IN isoCntryCode VARCHAR(3),
+    IN nem VARCHAR(90),
     IN zip VARCHAR(6),
-    IN street VARCHAR(25),
-    IN untNum VARCHAR(6),
+    IN reg VARCHAR(50),
+    IN strt VARCHAR(50),
+    IN strtNum VARCHAR(10),
+    IN subReg VARCHAR(50),
+    IN tzone VARCHAR(50),
     IN dflt TINYINT
 )
 BEGIN
@@ -69,13 +93,19 @@ BEGIN
         user_id = COALESCE(usrID, user_id),
         user_full_name = COALESCE(usrFullName, user_full_name),
         user_num = COALESCE(usrNum, user_num),
-        region = COALESCE(reg, region),
-        province = COALESCE(prov, province),
+        latitude = COALESCE(lat, latitude),
+        longitude = COALESCE(lon, longitude),
         city = COALESCE(ct, city),
-        barangay = COALESCE(brgy, barangay),
+        country = COALESCE(cntry, country),
+        district = COALESCE(dstrct, district),
+        iso_country_code = COALESCE(isoCntryCode, iso_country_code),
+        name = COALESCE(nem, name),
         postal_code = COALESCE(zip, postal_code),
-        street_name = COALESCE(street, street_name),
-        unit_num = COALESCE(untNum, unit_num),
+        region = COALESCE(reg, region),
+        street = COALESCE(strt, street),
+        street_number = COALESCE(strtNum, street_number),
+        sub_region = COALESCE(subReg, sub_region),
+        time_zone = COALESCE(tzone, time_zone),
         is_default = COALESCE(dflt, is_default)
     WHERE
         address_id = addID;
@@ -123,14 +153,20 @@ BEGIN
         user_id AS userID,
         user_full_name AS userFullName,
         user_num AS userNum,
-        region,
-        province,
+        latitude,
+        longitude,
         city,
-        barangay,
+        country,
+        district,
+        iso_country_code AS isoCountryCode,
+        name,
         postal_code AS postalCode,
-        street_name AS streetName,
-        unit_num AS unitNum,
-        is_default AS isDefault
+        region,
+        street,
+        street_number AS streetNumber,
+        sub_region as subRegion,
+        time_zone as timeZone,
+        is_default as isDefault
     FROM
         Address;
 END;
@@ -146,14 +182,20 @@ BEGIN
         user_id AS userID,
         user_full_name AS userFullName,
         user_num AS userNum,
-        region,
-        province,
+        latitude,
+        longitude,
         city,
-        barangay,
+        country,
+        district,
+        iso_country_code AS isoCountryCode,
+        name,
         postal_code AS postalCode,
-        street_name AS streetName,
-        unit_num AS unitNum,
-        is_default AS isDefault
+        region,
+        street,
+        street_number AS streetNumber,
+        sub_region as subRegion,
+        time_zone as timeZone,
+        is_default as isDefault
     FROM
         Address
     WHERE
@@ -171,16 +213,84 @@ BEGIN
         user_id AS userID,
         user_full_name AS userFullName,
         user_num AS userNum,
-        region,
-        province,
+        latitude,
+        longitude,
         city,
-        barangay,
+        country,
+        district,
+        iso_country_code AS isoCountryCode,
+        name,
         postal_code AS postalCode,
-        street_name AS streetName,
-        unit_num AS unitNum,
-        is_default AS isDefault
+        region,
+        street,
+        street_number AS streetNumber,
+        sub_region as subRegion,
+        time_zone as timeZone,
+        is_default as isDefault
     FROM
         Address
     WHERE
         address_id = addID;
+END;
+
+-- Get default addresses of all providers
+DROP PROCEDURE IF EXISTS get_all_default_provider_address;
+CREATE PROCEDURE get_all_default_provider_address()
+BEGIN
+    SELECT DISTINCT
+        Address.address_id AS addressID,
+        Address.user_id AS userID,
+        Address.user_full_name AS userFullName,
+        Address.user_num AS userNum,
+        Address.latitude AS latitude,
+        Address.longitude AS longitude,
+        Address.city AS city,
+        Address.country AS country,
+        Address.district AS district,
+        Address.iso_country_code AS isoCountryCode,
+        Address.name AS name,
+        Address.postal_code AS postalCode,
+        Address.region AS region,
+        Address.street AS street,
+        Address.street_number AS streetNumber,
+        Address.sub_region as subRegion,
+        Address.time_zone as timeZone,
+        Address.is_default as isDefault
+    FROM
+        Address
+            INNER JOIN
+        Provider ON Address.user_id = Provider.provider_id
+    WHERE
+        Address.is_default = 1;
+END;
+
+-- Get default addresses of all seekers
+DROP PROCEDURE IF EXISTS get_all_default_seeker_address;
+CREATE PROCEDURE get_all_default_seeker_address()
+BEGIN
+    SELECT DISTINCT
+        Address.address_id AS addressID,
+        Address.user_id AS userID,
+        Address.user_full_name AS userFullName,
+        Address.user_num AS userNum,
+        Address.latitude AS latitude,
+        Address.longitude AS longitude,
+        Address.city AS city,
+        Address.country AS country,
+        Address.district AS district,
+        Address.iso_country_code AS isoCountryCode,
+        Address.name AS name,
+        Address.postal_code AS postalCode,
+        Address.region AS region,
+        Address.street AS street,
+        Address.street_number AS streetNumber,
+        Address.sub_region as subRegion,
+        Address.time_zone as timeZone,
+        Address.is_default as isDefault
+    FROM
+        Address
+            INNER JOIN
+        Seeker ON Address.user_id = Seeker.seeker_id
+    WHERE
+        Address.is_default = 1;
 END;

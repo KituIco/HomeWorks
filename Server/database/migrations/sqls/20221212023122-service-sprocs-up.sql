@@ -5,7 +5,7 @@ CREATE PROCEDURE `create_service`(
     IN `prov_id` VARCHAR(14),
     IN `typ_id` VARCHAR (14),
     IN `typ_name` VARCHAR(50),
-    IN `init_cost` DECIMAL(6, 2),
+    IN `init_cost` DECIMAL(10,2),
     IN `srvce_rating` FLOAT
 )
 BEGIN
@@ -35,7 +35,7 @@ CREATE PROCEDURE `patch_service`(
     IN `prov_id` VARCHAR(14),
     IN `typ_id` VARCHAR (14),
     IN `typ_name` VARCHAR(50),
-    IN `init_cost` DECIMAL(6, 2),
+    IN `init_cost` DECIMAL(10,2),
     IN `srvce_rating` FLOAT
 )
 BEGIN

@@ -5,7 +5,10 @@ CREATE PROCEDURE create_booking(
     IN skerID VARCHAR(14),
     IN srviceID VARCHAR(14),
     IN bkingStatus INT,
-    IN dtTimestamp BIGINT
+    IN dtTimestamp BIGINT,
+    IN descrpt TEXT,
+    IN cst DECIMAL(10,2),
+    IN spcsID VARCHAR(14)
 )
 BEGIN
     INSERT INTO 
@@ -14,14 +17,20 @@ BEGIN
             seeker_id, 
             service_id, 
             booking_status, 
-            date_timestamp
+            date_timestamp,
+            description,
+            cost,
+            specs_id
         )
     VALUES(
         bkingID, 
         skerID, 
         srviceID, 
         bkingStatus, 
-        dtTimestamp
+        dtTimestamp,
+        descrpt,
+        cst,
+        spcsID
     );
 END;
 
@@ -32,7 +41,10 @@ CREATE PROCEDURE patch_booking(
     IN skerID VARCHAR(14),
     IN srviceID VARCHAR(14),
     IN bkingStatus INT,
-    IN dtTimestamp BIGINT
+    IN dtTimestamp BIGINT,
+    IN descrpt TEXT,
+    IN cst DECIMAL(10,2),
+    IN spcsID VARCHAR(14)
 )
 BEGIN
     UPDATE 
@@ -41,7 +53,10 @@ BEGIN
         seeker_id = COALESCE(skerID, seeker_id),
         service_id = COALESCE(srviceID, service_id),
         booking_status = COALESCE(bkingStatus, booking_status),
-        date_timestamp = COALESCE(dtTimestamp, date_timestamp)
+        date_timestamp = COALESCE(dtTimestamp, date_timestamp),
+        description = COALESCE(descrpt, description),
+        cost = COALESCE(cst, cost),
+        specs_id = COALESCE(spcsID, specs_id)
     WHERE 
         booking_id = bkingID;
 END;
@@ -67,7 +82,10 @@ BEGIN
         seeker_id AS seekerID,
         service_id AS serviceID,
         booking_status AS bookingStatus,
-        date_timestamp AS dateTimestamp
+        date_timestamp AS dateTimestamp,
+        description,
+        cost,
+        specs_id AS specsID
     FROM 
         Booking;
 END;
@@ -83,7 +101,10 @@ BEGIN
         seeker_id AS seekerID,
         service_id AS serviceID,
         booking_status AS bookingStatus,
-        date_timestamp AS dateTimestamp
+        date_timestamp AS dateTimestamp,
+        description,
+        cost,
+        specs_id AS specsID
     FROM 
         Booking
     WHERE 
@@ -101,7 +122,10 @@ BEGIN
         Booking.seeker_id AS seekerID,
         Booking.service_id AS serviceID,
         Booking.booking_status AS bookingStatus,
-        Booking.date_timestamp AS dateTimestamp
+        Booking.date_timestamp AS dateTimestamp,
+        Booking.description,
+        Booking.cost,
+        Booking.specs_id AS specsID
     FROM 
         Booking 
             INNER JOIN
@@ -122,7 +146,10 @@ BEGIN
         seeker_id AS seekerID,
         service_id AS serviceID,
         booking_status AS bookingStatus,
-        date_timestamp AS dateTimestamp
+        date_timestamp AS dateTimestamp,
+        description,
+        cost,
+        specs_id AS specsID
     FROM 
         Booking
     WHERE 

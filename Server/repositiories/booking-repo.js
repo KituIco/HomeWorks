@@ -9,16 +9,22 @@ class BookingRepository {
         seekerID,
         serviceID,
         bookingStatus,
-        dateTimestamp
+        dateTimestamp,
+        description,
+        cost,
+        specsID
     ) => {
         try {
-            let sqlQuery = `CALL create_booking(?, ?, ?, ?, ?)`;
+            let sqlQuery = `CALL create_booking(?, ?, ?, ?, ?, ?, ?, ?)`;
             await this.db.query(sqlQuery, [
                 bookingID,
                 seekerID,
                 serviceID,
                 bookingStatus,
-                dateTimestamp
+                dateTimestamp,
+                description,
+                cost,
+                specsID
             ]);
         } catch (error) {
             //TODO: Handle SQL error
@@ -32,16 +38,22 @@ class BookingRepository {
         seekerID,
         serviceID,
         bookingStatus,
-        dateTimestamp
+        dateTimestamp,
+        description,
+        cost,
+        specsID
     ) => {
         try {
-            let sqlQuery = `CALL patch_booking(?, ?, ?, ?, ?)`;
+            let sqlQuery = `CALL patch_booking(?, ?, ?, ?, ?, ?, ?, ?)`;
             await this.db.query(sqlQuery, [
                 bookingID,
                 seekerID,
                 serviceID,
                 bookingStatus,
-                dateTimestamp
+                dateTimestamp,
+                description,
+                cost,
+                specsID
             ]);
         } catch (error) {
             //TODO: Handle SQL error

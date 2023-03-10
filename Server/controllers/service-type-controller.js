@@ -18,7 +18,8 @@ class ServiceTypeController {
         try {
             let {
                 typeName,
-                typeDesc
+                typeDesc,
+                minServiceCost
             } = req.body;
 
             let typeID = this.nanoid(14);
@@ -30,7 +31,8 @@ class ServiceTypeController {
             await this.serviceTypeRepo.createServiceType(
                 typeID,
                 typeName,
-                typeDesc
+                typeDesc,
+                minServiceCost
             );
 
             let createServiceType = {
@@ -54,7 +56,8 @@ class ServiceTypeController {
         try {
             let {
                 typeName,
-                typeDesc
+                typeDesc,
+                minServiceCost
             } = req.body;
 
             let {typeID} = req.params;
@@ -68,7 +71,8 @@ class ServiceTypeController {
             await this.serviceTypeRepo.patchServiceType(
                 typeID,
                 typeName,
-                typeDesc
+                typeDesc,
+                minServiceCost
             );
 
             let patchServiceType = {
