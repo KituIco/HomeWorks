@@ -56,6 +56,16 @@ let AddressService = {
         } catch (error) {
             console.log(error);
         }
+    },
+
+    getAllDefaultProviderAddress: async () => {
+        try {
+            let queryURL = `${url}/default/providers`
+            let res = await getAxios(queryURL);
+            return res;
+        } catch (error) {
+            console.log(error);
+        }
     }
 }
 

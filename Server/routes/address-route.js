@@ -26,5 +26,7 @@ router.delete('/:addressID', [cookieJwtAuth], addressController.deleteAddress);
 router.get('', addressController.getAllAddress);
 router.get('/user/:userID', addressController.getAllAddressOfUser);
 router.get('/:addressID', addressController.getAddressByID)
+router.get('/default/seekers', addressController.getAllDefaultSeekerAddress);
+router.get('/default/providers', addressController.getAllDefaultProviderAddress);
 
 module.exports = router;
