@@ -116,7 +116,7 @@ END;
 
 -- Get hashed password by identifier of seeker
 DROP PROCEDURE IF EXISTS `get_seeker_hashed_password`;
-CREATE PROCEDURE `get_hashed_password`(
+CREATE PROCEDURE `get_seeker_hashed_password`(
     IN `idntfier` VARCHAR(320)
 )
 BEGIN
@@ -126,7 +126,7 @@ BEGIN
     FROM
         Credentials
             INNER JOIN
-        Seekers ON Seekers.seeker_id = Credentials.user_id
+        Seeker ON Seeker.seeker_id = Credentials.user_id
     WHERE
         Credentials.identifier = idntfier;
 END;
@@ -143,7 +143,7 @@ BEGIN
     FROM
         Credentials
             INNER JOIN
-        Providers ON Providers.provider_id = Credentials.user_id
+        `Provider` ON Provider.provider_id = Credentials.user_id
     WHERE
         Credentials.identifier = idntfier;
 END;

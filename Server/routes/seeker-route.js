@@ -33,6 +33,6 @@ router.post('', seekerController.createSeeker);
 router.patch('/:seekerID', [cookieJwtAuth], seekerController.patchSeeker);
 router.delete('/:seekerID', [cookieJwtAuth],seekerController.deleteSeeker);
 router.get('', seekerController.getSeekers);
-router.get('/:seekerID', seekerController.getSeeker);
+router.get('/:seekerID', [cookieJwtAuth], seekerController.getSeeker);
 
 module.exports = router;

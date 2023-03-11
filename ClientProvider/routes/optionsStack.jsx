@@ -2,17 +2,38 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { StyleSheet } from 'react-native';
 
 import Options from '../screens/options/options';
+import Services from '../screens/options/services';
 
 const Stack = createStackNavigator();
 
 export default function OptionsStack({ navigation }) {
 
+  const header = {
+    headerTransparent: true,
+    headerStyle: {
+      height: 100,
+      backgroundColor: 'rgba(0,0,0,0)',
+    },
+    headerTintColor: "#9C54D5",
+    headerTitleStyle: {
+      display: "none"
+    },
+  }
+
   return (
-    <Stack.Navigator initialRouteName='Dashboard' >
+    <Stack.Navigator initialRouteName='Dashboard' 
+      screenOptions={{ animationEnabled: false }}>
+        
       <Stack.Screen 
         name='Options' 
         component={Options}
         options={{ headerShown: false }}
+      />
+
+      <Stack.Screen 
+        name='Services' 
+        component={Services}
+        options={() => header}
       />
     </Stack.Navigator>
   );

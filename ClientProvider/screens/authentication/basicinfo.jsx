@@ -17,25 +17,25 @@ import Loading from '../../hooks/loading';
 const screenHeight = Dimensions.get('window').height;
 
 async function onSubmit( props, data ) {
-  ImageService.uploadFile(data.urlDp)
+  await ImageService.uploadFile(data.urlDp)
     .then((res) => {
       data['providerDp'] = res;
       delete data['urlDp'];
-
-      ImageService.uploadFile(data.urlID)
-      .then((res) => {
-        data['validID'] = res;
-        delete data['urlID'];
-
-        ProviderServices.createProvider(data)
-          .then((res) => {
-          props.navigation.dispatch(StackActions.popToTop());
-          props.navigation.replace('HomeStack');
-          props.navigation.navigate('HomeStack'); 
-        }).catch((err) => console.log(err)) 
-
-      }).catch((err) => console.log('test', err)) 
     }).catch((err) => console.log('test', err)) 
+
+  await ImageService.uploadFile(data.urlID)
+  .then((res) => {
+    data['validID'] = res;
+    delete data['urlID'];
+  }).catch((err) => console.log('test', err)) 
+
+  data['verified'] = false;
+  ProviderServices.createProvider(data)
+    .then((res) => {
+    props.navigation.dispatch(StackActions.popToTop());
+    props.navigation.replace('HomeStack');
+    props.navigation.navigate('HomeStack'); 
+  }).catch((err) => console.log(err)) 
 }
 
 

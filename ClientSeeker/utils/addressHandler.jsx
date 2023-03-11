@@ -22,4 +22,4 @@ export const addressHandler = ({
     if (region) address = address + region + " ";
     if (isoCountryCode) address = address + isoCountryCode;
     return address
-  }
+}

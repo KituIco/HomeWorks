@@ -13,22 +13,19 @@ import Loading from '../../hooks/loading';
 export default function Options({ navigation }) {
   const [name, setName] = useState('');
   const [image, setImage] = useState(require("../../assets/default.jpg"));
-  const [init, setInit] = useState(0);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   
   useEffect(() => {
-    getUserID().then( userID => {
-      if(userID) {
+    if(loading) 
+      getUserID().then( userID => {
         ProviderServices.getProvider(userID).then( data => {
-          setName(`${data.body.firstName} ${data.body.lastName}`)
+          setLoading(false)
+          setName(`${data.body.firstName} ${data.body.lastName}`);
           if (data.body.providerDp)
-            setImage({uri : getImageURL(data.body.providerDp)})
+            setImage({uri : getImageURL(data.body.providerDp)});
         })
-      } else {
-        setInit(init+1);
-      }
-    })
-  }, [init]);
+      })
+  });
 
   const onLogout = () => {
     setLoading(true);
@@ -40,9 +37,11 @@ export default function Options({ navigation }) {
     .catch(() => setLoading(false))
   }
 
+  if (loading)
+    return <Loading/>
+  
   return (
     <View style={styles.container}>
-      { loading && <Loading/> }
       <View style={styles.header}>
         <Text style={styles.heading}>Options</Text>
       </View>
@@ -62,14 +61,16 @@ export default function Options({ navigation }) {
           <Text style={styles.tabs}>Manage Profile</Text>
         </View>
 
-        <View style={styles.options}>
-          <MaterialCommunityIcons name={'book-clock'} size={36}/>
-          <Text style={styles.tabs}>View Services History</Text>
-        </View>
+        <TouchableWithoutFeedback onPress={() => navigation.navigate('Services')}>
+          <View style={styles.options}>
+            <MaterialCommunityIcons name={'account-hard-hat'} size={36}/>
+            <Text style={styles.tabs}>View Services and Reviews </Text>
+          </View>
+        </TouchableWithoutFeedback>
         
         <View style={styles.options}>
-          <MaterialCommunityIcons name={'message-draw'} size={36}/>
-          <Text style={styles.tabs}>See Personal Reviews</Text>
+          <MaterialCommunityIcons name={'book-clock'} size={36}/>
+          <Text style={styles.tabs}>Visit Transaction History</Text>
         </View>
         
         <View style={styles.options}>
@@ -93,6 +94,7 @@ export default function Options({ navigation }) {
          
       </ScrollView>
       <LinearGradient colors={['rgba(255,255,255,1)','rgba(255,255,255,0)'  ]} start={{ x:0, y:1 }} end={{ x:0, y:0 }} style={{height:10, zIndex:5}}/>
+      <View style={{height:20}}/>
     </View>
   );
 }
@@ -171,7 +173,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 30,
     borderRadius: 10,
     height: 34,
-    marginBottom: 40
+    marginBottom: 22,
   },
   logout: {
     height: 34,

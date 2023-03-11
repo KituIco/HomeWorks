@@ -1,7 +1,7 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { StyleSheet, Animated, Easing, View } from 'react-native';
 
-export default function Loading ( props ) {
+export default function Waiting ( props ) {
   const spinValue = new Animated.Value(0);
 
   Animated.loop(
@@ -24,7 +24,7 @@ export default function Loading ( props ) {
   return (
     <View style={styles.waiting}>
       <Animated.View style={{transform:[{rotate:spin}]}}>
-        <MaterialCommunityIcons name={'loading'} size={60} color={'#9C54D5'}/>
+        <MaterialCommunityIcons name={'loading'} size={40} color={'#9C54D5'}/>
       </Animated.View>
     </View>
   );

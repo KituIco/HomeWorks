@@ -23,7 +23,7 @@ export default function DashStack({ navigation }) {
         SeekerServices.getSeeker(userID).then( data => {
           if(data.body.seekerDp)
             setImage({uri : getImageURL(data.body.seekerDp)})
-        })
+        }).catch(() => navigation.navigate('AuthStack'))
       } else {
         setInit(init+1);
       }

@@ -1,9 +1,7 @@
 import { StyleSheet, View, ScrollView, Text, Image, TouchableWithoutFeedback } from 'react-native';
 import { MaterialCommunityIcons  } from '@expo/vector-icons';
-import { Dimensions } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
-const screenWidth = Dimensions.get('window').width;
 
 export default function Listing( props ) {
   const services = props.listings;
@@ -27,7 +25,7 @@ export default function Listing( props ) {
           <TouchableWithoutFeedback onPress={() => props.navigation.navigate('Details')}>
             <LinearGradient colors={['#9C54D5', '#462964']} start={{ x:0.6, y:-1 }} end={{ x:0.1, y:1 }} style={styles.button}>
               <LinearGradient colors={['rgba(0, 0, 0, 0.4)','rgba(0, 0, 0, 0)']} start={{ x: 0.5, y: 0.01 }} end={{ x: 0.5, y: 0.15 }} style={styles.ledge}>
-                <Text style={styles.details}>View Service Details</Text>
+                <Text style={styles.details}>View Request Details</Text>
               </LinearGradient>
             </LinearGradient> 
           </TouchableWithoutFeedback>

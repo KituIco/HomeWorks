@@ -34,8 +34,7 @@ export default function Login({ navigation }) {
       }).then(() => {
         navigation.replace('HomeStack');
         navigation.navigate('HomeStack');
-      })
-        .catch((err) => console.log(err)) 
+      }).catch((err) => console.log(err)) 
     }
   }
 
