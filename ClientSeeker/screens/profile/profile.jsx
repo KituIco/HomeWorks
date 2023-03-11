@@ -52,8 +52,7 @@ export default function Profile({ navigation }) {
     .catch(() => setLoading(false))
   }
 
-  if (processing) 
-    return <Loading preload={true}/>
+  if (processing) return <Loading/>
    
   return (
     <View style={styles.container}>

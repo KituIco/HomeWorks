@@ -3,7 +3,7 @@ import { StyleSheet, View, Text, ScrollView, Image, TouchableWithoutFeedback } f
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 
-import CredentialsServices from '../../services/user/credential-services';
+import CredentialsServices from '../../services/user/credentials-services';
 import ProviderServices from '../../services/user/provider-services';
 
 import { getUserID } from '../../utils/getUserID';

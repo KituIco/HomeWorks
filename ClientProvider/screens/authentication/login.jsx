@@ -5,7 +5,7 @@ import { Dimensions } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import Back from '../../hooks/back';
-import CredentialsServices from '../../services/user/credential-services';
+import CredentialsServices from '../../services/user/credentials-services';
 
 const screenHeight = Dimensions.get('window').height;
 

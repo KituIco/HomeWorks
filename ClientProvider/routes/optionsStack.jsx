@@ -3,6 +3,7 @@ import { StyleSheet } from 'react-native';
 
 import Options from '../screens/options/options';
 import Services from '../screens/options/services';
+import Address from '../screens/options/address';
 
 const Stack = createStackNavigator();
 
@@ -21,13 +22,19 @@ export default function OptionsStack({ navigation }) {
   }
 
   return (
-    <Stack.Navigator initialRouteName='Dashboard' 
+    <Stack.Navigator initialRouteName='Options' 
       screenOptions={{ animationEnabled: false }}>
         
       <Stack.Screen 
         name='Options' 
         component={Options}
         options={{ headerShown: false }}
+      />
+
+      <Stack.Screen 
+        name='Address' 
+        component={Address}
+        options={() => header}
       />
 
       <Stack.Screen 

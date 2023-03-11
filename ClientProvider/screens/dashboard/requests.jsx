@@ -4,7 +4,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useState } from 'react';
 
 import Back from '../../hooks/back';
-import Listing from '../../components/request-listing';
+import Listing from '../../components/requestListing';
 
 export default function Requests({navigation}) {
 

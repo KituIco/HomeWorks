@@ -23,7 +23,7 @@ export default function AddService( props ) {
 
   const [initCost, setInitialCost] = useState('');
   const [costCHK, setCostCHK] = useState();
-  const [done, setDone] = useState(false)
+  const [done, setDone] = useState(false);
   let regex = /^-?\d+(?:[.,]\d*?)?$/;
 
   useEffect(() =>{
@@ -39,9 +39,11 @@ export default function AddService( props ) {
 
   useEffect(() => {
     if(done){
-      props.navigation.replace('HomeStack');
-      props.navigation.navigate('HomeStack', { screen:'OptionsStack', 
-        params: { screen: 'Services', initial:false} })
+      setTimeout(() => {
+        props.navigation.replace('HomeStack');
+        props.navigation.navigate('HomeStack', { screen:'OptionsStack', 
+         params: { screen: 'Services', initial:false} })
+      }, 1000)
     }
   }, [done]);
 
@@ -52,7 +54,7 @@ export default function AddService( props ) {
     setTypeDesc(desc)
   }
 
-  const onFinalAdd = (ID, name, desc) => {
+  const onFinalAdd = () => {
     if(regex.test(initCost)) {
       setLoading(true);
       let initialCost = parseFloat(initCost).toFixed(2);
@@ -75,7 +77,7 @@ export default function AddService( props ) {
     return (
       <View style={{flex:1, justifyContent:'center', alignItems:'center' }}>
         <Text style={[styles.service, {fontSize:24, marginTop:-20}]}>Service Added</Text>
-        <Text style={[styles.desc, {marginBottom:20, marginTop:-6}]}>Close this Form to See your Services.</Text>
+        <Text style={[styles.desc, {marginBottom:20, marginTop:-6}]}>This form will be closed.</Text>
         <MaterialCommunityIcons name={'book-check'} size={160} color={'#9C54D5'}/>
       </View>
     )

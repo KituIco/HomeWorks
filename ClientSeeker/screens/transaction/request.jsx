@@ -55,8 +55,7 @@ export default function Request({ route, navigation }) {
     });
   }
 
-  if (processing) 
-    return <Loading preload={true}/>
+  if (processing) return <Loading/>
 
   return (
     <View style={{justifyContent: 'flex-end', flex:1}}>

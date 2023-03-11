@@ -55,8 +55,6 @@ export default function Dashboard({navigation}) {
 
   const changeRegister = () => {
     setVerified(!verified);
-    setNoAddress(!noAddress)
-    setNoService(!noService)
   };
 
   if (loading)
@@ -97,7 +95,7 @@ export default function Dashboard({navigation}) {
 
       <View style={{marginTop:'25%', width:'100%'}}>
         { noAddress &&
-        <TouchableWithoutFeedback onPress={() => navigation.navigate('OptionsStack', { screen:'Services', initial:false })}>
+        <TouchableWithoutFeedback onPress={() => navigation.navigate('OptionsStack', { screen:'Address', initial:false })}>
           <View style={[styles.touchables, {borderWidth:1, borderColor: '#9C54D5', marginHorizontal:40}]}>
               <Text style={[styles.next, {color:'#9C54D5'}]}>Add an Address</Text>
           </View>

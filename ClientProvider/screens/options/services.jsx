@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Text, ScrollView, Modal, TouchableWithoutFeedback } from 'react-native';
+import { StyleSheet, View, Text, ScrollView, Modal, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 
@@ -8,8 +8,8 @@ import ServiceServices from '../../services/service/service-services';
 
 import { getUserID } from '../../utils/getUserID';
 import { typeHandler } from '../../utils/typeHandler';
-import Listing from '../../components/service-listing';
-import AddService from '../../components/add-service';
+import Listing from '../../components/serviceListing';
+import AddService from '../../components/addService';
 import Loading from '../../hooks/loading';
 
 export default function Services({ navigation }) {
@@ -19,6 +19,7 @@ export default function Services({ navigation }) {
 
   const [services, setServices] = useState([]);
   const [noService, setNoService] = useState(false);
+  const [isKeyboardVisible, setKeyboardVisible] = useState(false);
   
   useEffect(() => {
     if(loading) 
@@ -34,6 +35,17 @@ export default function Services({ navigation }) {
         })
       })
   });
+
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener(
+    'keyboardDidShow', () => { setKeyboardVisible(true); });
+    const keyboardDidHideListener = Keyboard.addListener(
+    'keyboardDidHide', () => { setKeyboardVisible(false); });
+  return () => {
+    keyboardDidHideListener.remove();
+    keyboardDidShowListener.remove();
+  };
+  }, []);
 
   const onClose = () => {
     setOpen(!open);
@@ -65,19 +77,21 @@ export default function Services({ navigation }) {
 
       { open && <View style={styles.overlay}/> }
       <Modal visible={open} transparent={true} animationType='slide'>
-          <View style={styles.centered}>
-            <View style={styles.modal}>
-            
-              <LinearGradient colors={['rgba(255,255,255,1)','rgba(255,255,255,0)'  ]} start={{ x:0, y:0 }} end={{ x:0, y:1 }} style={{height:10, zIndex:5, marginTop:20}}/>        
-                <AddService listings={services} providerID={userID} navigation={navigation}/>
-              <LinearGradient colors={['rgba(255,255,255,1)','rgba(255,255,255,0)'  ]} start={{ x:0, y:1 }} end={{ x:0, y:0 }} style={{height:10, zIndex:5, marginBottom:20}}/>
+        <View style={styles.centered}>
+          <View style={styles.modal}>
+          
+            <LinearGradient colors={['rgba(255,255,255,1)','rgba(255,255,255,0)'  ]} start={{ x:0, y:0 }} end={{ x:0, y:1 }} style={{height:11, zIndex:5, marginTop:20}}/>        
+              <AddService listings={services} providerID={userID} navigation={navigation}/>
+            <LinearGradient colors={['rgba(255,255,255,1)','rgba(255,255,255,0)'  ]} start={{ x:0, y:1 }} end={{ x:0, y:0 }} style={{height:11, zIndex:5, marginBottom:20}}/>
 
-              <TouchableWithoutFeedback onPress= {() => onClose()}>
-                <Text style={styles.enter}>CLOSE</Text>
-              </TouchableWithoutFeedback>
-            </View>
+            { !isKeyboardVisible &&
+            <TouchableWithoutFeedback onPress= {() => onClose()}>
+              <Text style={styles.enter}>CLOSE</Text>
+            </TouchableWithoutFeedback>
+            }
           </View>
-        </Modal>
+        </View>
+      </Modal>
 
       { noService && <Text style={styles.instructions}>You may add a Service by clicking the Add Button on the Lower Right of the Screen</Text> }
 
@@ -162,8 +176,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center', 
     alignItems: 'center',
     zIndex: 15,
-    height: '100%',
-    width: '100%',
     backgroundColor: '#E9E9E9A0'
   },
 

@@ -3,7 +3,7 @@ import * as SecureStore from 'expo-secure-store';
 
 let url = '/credentials';
 
-let CredentialsService = {
+let CredentialsServices = {
     login: async (data) => {
         try {
             let queryURL = `${url}/login?userType=Provider`;
@@ -68,4 +68,4 @@ let CredentialsService = {
 
 }
 
-module.exports = CredentialsService;
+module.exports = CredentialsServices;

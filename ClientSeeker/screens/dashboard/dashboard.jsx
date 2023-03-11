@@ -38,8 +38,7 @@ export default function Dashboard({navigation}) {
     {key: 'Ced Montenegro', location: 'Manila', ratings: '4.6', service: 'Plumbing', price: 'min Php 350', src: require("../../assets/providers/provider-f.png")},
   ]
 
-  if (processing) 
-    return <Loading preload={true}/>
+  if (processing) return <Loading/>
 
 
   return (
