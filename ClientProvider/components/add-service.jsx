@@ -30,13 +30,20 @@ export default function AddService( props ) {
     if(loading){
       ServiceTypesServices.getServiceTypes()
         .then((data) => {
-          console.log(existing)
           let list = removeExisting(data.body,existing);
           setServices(typeHandler(list));
           setLoading(false)
         })
     }
   })
+
+  useEffect(() => {
+    if(done){
+      props.navigation.replace('HomeStack');
+      props.navigation.navigate('HomeStack', { screen:'OptionsStack', 
+        params: { screen: 'Services', initial:false} })
+    }
+  }, [done]);
 
   const onAdd = (ID, name, desc) => {
     setTypeID(ID);

@@ -16,34 +16,33 @@ export default function Services({ navigation }) {
   const [userID, setUserID] = useState('');
   const [loading, setLoading] = useState(true);
   const [open, setOpen] = useState(false);
+
   const [services, setServices] = useState([]);
+  const [noService, setNoService] = useState(false);
   
   useEffect(() => {
     if(loading) 
       getUserID().then( userID => {
+        setLoading(false);
         ProviderServices.getProvider(userID).then( data => {
           ServiceServices.getProviderServices(userID)
             .then((data) => {
               setServices(typeHandler(data.body));
-              setLoading(false);
               setUserID(userID);
+              if(data.body.length == 0) setNoService(true);
             })
         })
       })
   });
 
-  const baseServices = [
-    { typeID:'1', typeName: 'Car Mechanic', initialCost: 320.00, serviceRating: 4.8},
-    { typeID:'5', typeName: 'Electrician', initialCost: 320.00, serviceRating: 4.2},
-    { typeID:'6', typeName: 'Laundry', initialCost: 320.00, serviceRating: 4.4},
-  ]
-
-  const onClose = () => {;
+  const onClose = () => {
+    setOpen(!open);
     ProviderServices.getProvider(userID).then( data => {
       ServiceServices.getProviderServices(userID)
         .then((data) => {
           setServices(typeHandler(data.body));
-          setOpen(!open);
+          if(data.body.length == 0) setNoService(true);
+          else setNoService(false)
         })
     })
   }
@@ -70,7 +69,7 @@ export default function Services({ navigation }) {
             <View style={styles.modal}>
             
               <LinearGradient colors={['rgba(255,255,255,1)','rgba(255,255,255,0)'  ]} start={{ x:0, y:0 }} end={{ x:0, y:1 }} style={{height:10, zIndex:5, marginTop:20}}/>        
-                <AddService listings={services} providerID={userID}/>
+                <AddService listings={services} providerID={userID} navigation={navigation}/>
               <LinearGradient colors={['rgba(255,255,255,1)','rgba(255,255,255,0)'  ]} start={{ x:0, y:1 }} end={{ x:0, y:0 }} style={{height:10, zIndex:5, marginBottom:20}}/>
 
               <TouchableWithoutFeedback onPress= {() => onClose()}>
@@ -79,6 +78,8 @@ export default function Services({ navigation }) {
             </View>
           </View>
         </Modal>
+
+      { noService && <Text style={styles.instructions}>You may add a Service by clicking the Add Button on the Lower Right of the Screen</Text> }
 
       <LinearGradient colors={['rgba(255,255,255,1)','rgba(255,255,255,0)'  ]} start={{ x:0, y:0 }} end={{ x:0, y:1 }} style={{height:10, zIndex:5}}/>
       <ScrollView style={{marginVertical:-10}}>
@@ -96,7 +97,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#FFF',
-     },
+  },
   header: {
     height: 120,
     alignItems: 'center',
@@ -109,85 +110,6 @@ const styles = StyleSheet.create({
     color: '#462964',
     marginBottom: 10,
     letterSpacing: -0.8
-  },
-
-  holder: {
-    width: 160, 
-    marginTop: 16,
-    alignSelf: 'center',
-  },
-  icon: {
-    width: 160, 
-    height: 160, 
-    borderRadius: 160/2,    
-  },
-  editicon: {
-    marginLeft: 120,
-    marginTop: -40,
-    borderRadius: 36/2,
-    height: 36,
-    width: 36,
-    backgroundColor: '#FFF',
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-
- 
-  name: {
-    fontFamily: 'notosans',
-    fontSize: 20,
-    fontVariant: ['small-caps'],
-    alignSelf:'center',
-    marginTop: 10,
-    marginBottom: 40
-  },
-  
-  changepw: {
-    height: 34,
-    borderRadius: 10,
-    justifyContent: 'center',
-    marginBottom: 8,
-    backgroundColor:'#FFF', 
-    borderWidth:1, 
-    borderColor: '#462964', 
-    marginTop: 40,
-    marginHorizontal: 30,
-    marginBottom: 12
-  },
-  content: {
-    textAlign: 'center',
-    fontFamily: 'lexend',
-    color: '#E9E9E9',
-    letterSpacing: -1,
-    fontSize: 16
-  },
-
-  shadow: {
-    marginHorizontal: 30,
-    borderRadius: 10,
-    height: 34,
-    marginBottom: 22,
-  },
-  logout: {
-    height: 34,
-    borderRadius: 10,
-    justifyContent: 'center',
-    marginBottom: 8,
-    backgroundColor:'#FFF', 
-    marginTop: -4,
-  },
-
-  options: {
-    flexDirection:'row',
-    alignItems:'center',
-    marginVertical:6,
-    marginHorizontal: 30
-  },
-  tabs:{
-    fontFamily: 'quicksand-medium',
-    fontSize: 18,
-    marginLeft: 10,
-    letterSpacing: -0.5,
   },
 
   add: {
@@ -231,7 +153,7 @@ const styles = StyleSheet.create({
     alignSelf:'center', 
     fontFamily: 'lexend',
     marginBottom: 10,
-    letterSpacing: -0.5
+    letterSpacing: -0.5,
   },
 
   overlay: {
@@ -244,4 +166,18 @@ const styles = StyleSheet.create({
     width: '100%',
     backgroundColor: '#E9E9E9A0'
   },
+
+  instructions: {
+    position: 'absolute', 
+    top: '50%', 
+    fontSize:14,
+    color:'#000', 
+    alignSelf:'center', 
+    fontFamily: 'quicksand-medium',
+    marginBottom: 10,
+    letterSpacing: -0.5,
+    marginHorizontal: 40,
+    textAlign: 'center'
+  },
+
 });

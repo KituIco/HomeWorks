@@ -36,7 +36,7 @@ export default function Dashboard({navigation}) {
               if(data[0].body.length == 0) setNoAddress(true);
               else setMessage1('The admins are verifying your profile.')
               if(data[1].body.length == 0) setNoService(true);
-              else setMessage2('You may manage your profile via Options.')
+              else setMessage2('You may manage your profile in Options.')
               setVerified(false);
               setName(fullname);
               setLoading(false);
@@ -92,14 +92,12 @@ export default function Dashboard({navigation}) {
             <MaterialCommunityIcons name="account-hard-hat" size={190} color='#9C54D5' style={styles.icons}/>
           </View>
         </LinearGradient>
-
       </View>
-      
       }
 
       <View style={{marginTop:'25%', width:'100%'}}>
         { noAddress &&
-        <TouchableWithoutFeedback onPress={() => navigation.navigate('Chat')}>
+        <TouchableWithoutFeedback onPress={() => navigation.navigate('OptionsStack', { screen:'Services', initial:false })}>
           <View style={[styles.touchables, {borderWidth:1, borderColor: '#9C54D5', marginHorizontal:40}]}>
               <Text style={[styles.next, {color:'#9C54D5'}]}>Add an Address</Text>
           </View>

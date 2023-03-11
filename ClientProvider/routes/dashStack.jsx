@@ -73,6 +73,7 @@ export default function DashStack({ navigation }) {
         name='Dashboard' 
         component={Dashboard}
         options={{ headerShown: false }}
+        initialParams ={{changed: true}}
         
       />
 

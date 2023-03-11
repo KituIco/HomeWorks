@@ -31,10 +31,12 @@ export default function HomeStack({ navigation }) {
           tabBarActiveTintColor: '#9C54D5',
           tabBarInactiveTintColor: '#2F2D2E',
           tabBarActiveBackgroundColor: '#E9E9E9',
+          animationEnabled: false,
 
           tabBarStyle: { height: 70, backgroundColor: '#E9E9E9',},
           tabBarLabelStyle: { display: "none" },
         })}
+        
       >
 
         <Stack.Screen 
