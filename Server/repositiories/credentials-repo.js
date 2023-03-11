@@ -107,14 +107,26 @@ class CredentialsRepository {
         }
     };
 
-    getHashedPassword = async (identifier) => {
+    getSeekerHashedPassword = async (identifier) => {
         try {
-            let sqlQuery = `CALL get_hashed_password(?)`;
+            let sqlQuery = `CALL get_seeker_hashed_password(?)`;
             let [result, _] = await this.db.query(sqlQuery, [identifier]);
             return result[0][0];
         } catch (error) {
             // TODO: Handle SQL error
             console.log(error);
+            throw error;
+        }
+    };
+
+    getProviderHashedPassword = async (identifier) => {
+        try {
+            let sqlQuery = `CALL get_provider_hashed_password(?)`;
+            let [result, _] = await this.db.query(sqlQuery, [identifier]);
+            return result[0][0];
+        } catch (error) {
+            console.log(error);
+            throw error;
         }
     };
 }

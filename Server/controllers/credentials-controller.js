@@ -21,12 +21,23 @@ class CredentialsController {
     login = async (req, res) => {
         try {
             let {identifier, password} = req.body;
+            let { userType } = req.query;
 
             // Validate if email is not null
                 // validate if email exists in the database
             // Validate if password is not null
-            
-            let result = await this.credentialsRepo.getHashedPassword(identifier);
+            // Validate if userType is not null
+
+            let result;
+
+            if (userType == 'Seeker') {
+                result = await this.credentialsRepo.getSeekerHashedPassword(identifier);
+            } else if (userType == 'Provider') {
+                result = await this.credentialsRepo.getProviderHashedPassword(identifier);
+            } else {
+                // TODO: Implement error handling
+                console.log('User type is not specified or is incorrect')
+            }
 
             let {hashedPassword, userID} = result;
 

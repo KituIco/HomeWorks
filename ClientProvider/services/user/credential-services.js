@@ -6,7 +6,7 @@ let url = '/credentials';
 let CredentialsService = {
     login: async (data) => {
         try {
-            let queryURL = `${url}/login`;
+            let queryURL = `${url}/login?userType=Provider`;
             let res = await postAxios(queryURL, data);
             return res;
         } catch (error) {

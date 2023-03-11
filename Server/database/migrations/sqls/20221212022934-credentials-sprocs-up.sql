@@ -114,20 +114,40 @@ BEGIN
         user_id = usrID;
 END;
 
--- Get hashed password by identifier
-DROP PROCEDURE IF EXISTS `get_hashed_password`;
+-- Get hashed password by identifier of seeker
+DROP PROCEDURE IF EXISTS `get_seeker_hashed_password`;
 CREATE PROCEDURE `get_hashed_password`(
     IN `idntfier` VARCHAR(320)
 )
 BEGIN
-    SELECT
-        user_id AS userID,
-        password AS hashedPassword
+    SELECT DISTINCT
+        Credentials.user_id AS userID,
+        Credentials.password AS hashedPassword
     FROM
         Credentials
+            INNER JOIN
+        Seekers ON Seekers.seeker_id = Credentials.user_id
     WHERE
-        identifier = idntfier;
+        Credentials.identifier = idntfier;
 END;
+
+-- Get hashed password by identifier of provider
+DROP PROCEDURE IF EXISTS `get_provider_hashed_password`;
+CREATE PROCEDURE `get_provider_hashed_password`(
+    IN `idntfier` VARCHAR(320)
+)
+BEGIN
+    SELECT DISTINCT
+        Credentials.user_id AS userID,
+        Credentials.password AS hashedPassword
+    FROM
+        Credentials
+            INNER JOIN
+        Providers ON Providers.provider_id = Credentials.user_id
+    WHERE
+        Credentials.identifier = idntfier;
+END;
+
 
 -- Login Validation via username or email or phone number
 DROP PROCEDURE IF EXISTS `login_validation`;
