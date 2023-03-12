@@ -13,7 +13,7 @@ cookieJwtAuth = (req, res, next) => {
             jwt.verify(refresh_token, process.env.REFRESH_TOKEN_SECRET).then(
                 (user) => {
                     let token = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {
-                        expiresIn: '15m'
+                        expiresIn: '1m'
                     });
                     res.cookie('access_token', token, {
                         maxAge: 900000,

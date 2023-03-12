@@ -52,7 +52,7 @@ class CredentialsController {
                 userID: userID,
             }
 
-            let accessToken = this.jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '15m' });
+            let accessToken = this.jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1m' });
             let refreshToken = this.jwt.sign(user, process.env.REFRESH_TOKEN_SECRET, { expiresIn: '7d' });
 
             res.cookie('access_token', accessToken, {
