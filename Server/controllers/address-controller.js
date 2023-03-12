@@ -126,7 +126,7 @@ class AddressController{
             }
 
             if(userID) {
-                let user = await this.userRepo.getUserByID(userID);
+                let user = await this.userRepo.getUser(userID);
                 if (user == null) {
                     throw new this.clientErrors.Api404Error(`User with ID ${userID} does not exist`);
                 }
@@ -219,7 +219,7 @@ class AddressController{
                 // Validate if userID is not null
             this.addressValidator.checkRequiredParameters(req.params, ['userID']);
                 // Validate if userID exists in database
-            let user = await this.userRepo.getUserByID(userID);
+            let user = await this.userRepo.getUserBy(userID);
             if (user == null) {
                 throw new this.clientErrors.Api404Error(`User with ID ${userID} does not exist`);
             }
