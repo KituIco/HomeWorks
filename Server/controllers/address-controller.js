@@ -4,11 +4,12 @@ class AddressController{
         userRepo,
         clientErrors,
         serverErrors,
-        addressValidator = null,
+        addressValidator,
         nanoid,
         axios
     ) {
         this.addressRepo = addressRepo;
+        this.userRepo = userRepo;
         this.clientErrors = clientErrors;
         this.serverErrors = serverErrors;
         this.addressValidator = addressValidator;

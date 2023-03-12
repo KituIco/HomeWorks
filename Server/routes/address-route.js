@@ -3,18 +3,23 @@ var router = express.Router();
 
 var db = require('../middlewares/mysql_data_access.js');
 var AddressRepo = require('../repositiories/address-repo.js');
+var UserRepo = require('../repositiories/user-repo.js');
 var clientErrors = require('../error/client-error-handler.js');
 var serverErrors = require('../error/server-error-handler.js');
+var AddressValidator = require('../validators/address-validator.js');
 var { nanoid } = require('nanoid');
 var axios = require('axios');
 var AddressController = require('../controllers/address-controller.js');
 
 var addressRepo = new AddressRepo(db);
+var userRepo = new UserRepo(db);
+var addressValidator = new AddressValidator(clientErrors);
 var addressController = new AddressController(
     addressRepo,
+    userRepo,
     clientErrors,
     serverErrors,
-    null,
+    addressValidator,
     nanoid,
     axios
 );
