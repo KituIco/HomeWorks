@@ -1,3 +1,5 @@
+const Validator = require('./validator');
+
 class AddressValidator extends Validator {
     constructor(clientErrors) {
         super(clientErrors);
