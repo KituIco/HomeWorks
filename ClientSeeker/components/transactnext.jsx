@@ -10,7 +10,9 @@ import Waiting from '../hooks/waiting';
 // import { getUserID } from '../utils/getUserID';
 
 export default function Next ( props ) {
-  const { service, icon, title, screen } = props
+  const { data } = props;
+
+  const { service, icon, title, screen } = props;
   const { typeID, price } = props 
   const address = 'UP AECH, P. Velasquez Street, Diliman, Quezon City, 1800 Metro Manila';
 
@@ -38,12 +40,7 @@ export default function Next ( props ) {
   // });
 
   const onPress = () => {
-    if(screen == 'InitSpecs') {
-      let addressID = "[" + props.latitude.toFixed(6).toString() + ", " + props.longitude.toFixed(6).toString() + "]";
-      props.navigation.navigate(screen, {service, icon, addressID, typeID});
-    } else {
-      props.navigation.navigate(screen, {service, icon});
-    }
+    props.navigation.navigate(screen, {service, icon});
   }
 
   return (

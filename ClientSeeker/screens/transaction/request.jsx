@@ -1,6 +1,6 @@
 import { LinearGradient } from 'expo-linear-gradient';
 import React, { useState, useEffect }  from 'react';
-import { StyleSheet, View, Text, ScrollView, Image, Alert } from 'react-native';
+import { StyleSheet, View, Text, ScrollView, Image, Alert, TouchableWithoutFeedback } from 'react-native';
 import { MaterialCommunityIcons  } from '@expo/vector-icons';
 import MapView, {Marker} from 'react-native-maps';
 import * as Location from 'expo-location';
@@ -12,8 +12,9 @@ import Loading from '../../hooks/loading';
 import { addressHandler } from '../../utils/addressHandler';
 
 export default function Request({ route, navigation }) {
-  const { service, typeID, icon } = route.params;
+  const { typeName, icon, minServiceCost } = route.params.data;
   const [processing, setProcessing] = useState(true);
+  const [waiting,setWaiting] = useState(false)
 
   const [region, setRegion] = useState({
     latitude: 14.6487, longitude: 121.0687,
@@ -55,11 +56,24 @@ export default function Request({ route, navigation }) {
     });
   }
 
+  const onRequest = async() => {
+    setWaiting(true);
+    let addressID = "[" + region.latitude.toFixed(6).toString() + ", " + region.longitude.toFixed(6).toString() + "]";
+    let {icon, minServiceCost, typeID, typeName} = route.params.data;
+    let { location } = region
+    
+    setTimeout(() => {
+      setWaiting(false)
+      navigation.navigate('InitSpecs', { addressID, icon, minServiceCost, typeID, typeName, location });
+    }, 200);
+  }
+
   if (processing) return <Loading/>
 
   return (
     <View style={{justifyContent: 'flex-end', flex:1}}>
-      <Header service={service} icon={icon} phase={1}/>
+      {waiting && <Loading/>}
+      <Header service={typeName} icon={icon} phase={1}/>
 
       <ScrollView style={styles.container}>
         <Text style={styles.heading}>Detected Address</Text>
@@ -81,8 +95,8 @@ export default function Request({ route, navigation }) {
 
         <Text style={styles.heading}>Minimum Service Cost</Text>
         <View style={styles.details}>
-          <Text style={styles.content}>{service} Service</Text>
-          <Text style={styles.content}>Starts at <Text style={{fontFamily: 'quicksand-bold'}}>Php 320</Text></Text>
+          <Text style={styles.content}>{typeName} Service</Text>
+          <Text style={styles.content}>Starts at <Text style={{fontFamily: 'quicksand-bold'}}>Php {minServiceCost}</Text></Text>
         </View>
         <Text style={styles.subcontent}>Note: Price variation depends on the skill of service provider, the load of your request, the proximity from your location, etc. </Text>
 
@@ -100,8 +114,13 @@ export default function Request({ route, navigation }) {
       
       </ScrollView>
 
-      <Next icon={icon} service={service} typeID={typeID} navigation={navigation} title={'Request a Booking'} screen={'InitSpecs'}
-        latitude={region.latitude} longitude={region.longitude} raw={region.raw}/>
+      <View style={styles.holder}>
+        <TouchableWithoutFeedback onPress={() => onRequest()}>
+          <View style={styles.ghost}/>
+        </TouchableWithoutFeedback>
+      </View>
+
+      <Next title={'Request a Booking'}/>
     </View>
   );
 }
@@ -171,5 +190,20 @@ const styles = StyleSheet.create({
     marginTop: -6,
     marginHorizontal: 24,
     color: '#888486'
+  },
+
+  holder: {
+    position: 'absolute',
+    bottom: 0, left: 0,
+    width: '100%',
+    height: 90,
+    zIndex: 5,
+    justifyContent: 'center',
+  },
+  ghost: {
+    height: 50,
+    zIndex: 5,
+    marginHorizontal: 30,
+    marginBottom: 8
   }
 });

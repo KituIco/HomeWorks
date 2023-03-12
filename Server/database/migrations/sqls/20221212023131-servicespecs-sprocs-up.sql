@@ -18,7 +18,7 @@ BEGIN
             type_id,
             address_id,
             specs_desc,
-            specs_images,
+            images,
             specs_status,
             specs_timestamp
         )
@@ -54,7 +54,7 @@ BEGIN
         type_id = COALESCE(typ_id, type_id),
         address_id = COALESCE(addr_id, address_id),
         specs_desc = COALESCE(spcs_desc, specs_desc),
-        images = COALESCE(spcs_images, specs_images),
+        images = COALESCE(spcs_images, images),
         specs_status = COALESCE(stat, specs_status),
         specs_timestamp = COALESCE(spcs_date, specs_timestamp)
     WHERE

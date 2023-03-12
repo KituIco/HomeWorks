@@ -8,7 +8,7 @@ export default function Grid( props ) {
     return (
       <View style={styles.cards}  key={data.typeName}>
         <TouchableWithoutFeedback onPress= {() => 
-        props.navigation.navigate('RequestStack', {service:data.typeName, typeID:data.typeID, icon:data.icon})}>
+        props.navigation.navigate('RequestStack', { data })}>
           <View style={styles.touchables}>
             <MaterialCommunityIcons name={data.icon} size={58}/>
             <Text style={styles.item}>{data.typeName}</Text>

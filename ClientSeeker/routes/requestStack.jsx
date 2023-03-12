@@ -9,7 +9,7 @@ const Stack = createStackNavigator();
 
 
 export default function RequesttStack({ route }) {
-  const { service, typeID, icon } = route.params;
+  const { data } = route.params;
 
   const header = {
     headerTransparent: true,
@@ -30,7 +30,7 @@ export default function RequesttStack({ route }) {
         <Stack.Screen
           name="Request"
           component={Request}
-          initialParams={{ service, typeID, icon }}
+          initialParams={{ data }}
           options={() => header}
         />
 

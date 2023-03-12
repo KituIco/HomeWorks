@@ -1,24 +1,37 @@
-import React, {useState,} from 'react';
+import React, {useState, useEffect} from 'react';
 import { StyleSheet, View, Text, ScrollView, Image, TextInput, TouchableWithoutFeedback } from 'react-native';
 import { MaterialCommunityIcons  } from '@expo/vector-icons';
 import { Dimensions } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 
+import ServiceSpecsServices from '../../services/service-specs/service-specs-services';
+import ImageService from '../../services/image/image-services';
+import { getUserID } from '../../utils/getUserID';
+
 import Header from '../../components/transactheader';
 import Next from '../../components/transactnext';
+import Loading from '../../hooks/loading';
 
 
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
 
 export default function InitSpecs({ route, navigation }) {
-  const { service, icon }= route.params;
-  const [value, onChangeText] = React.useState('');
+  const { typeID, addressID, typeName, icon, minServiceCost, location }= route.params;
+  const [seekerID, setSeekerID] = useState('');
+  const [waiting,setWaiting] = useState(false);
+  const [specsDesc, onChangeText] = useState('');
 
   const [image1, setImage1] = useState(null);
   const [image2, setImage2] = useState(null);
   const [image3, setImage3] = useState(null);
   const [image4, setImage4] = useState(null);
+
+  useEffect(() => {
+    (async () => {
+      setSeekerID(await getUserID())
+    })();
+  }, []);
 
   const pickImage = async (number) => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -40,17 +53,40 @@ export default function InitSpecs({ route, navigation }) {
     if(number<=3) setImage3(image4);
     if(number<=4) setImage4();
   };
+
+  const onSubmit = async() => {
+    setWaiting(true);
+
+    let images = [];
+    if(image1) images.push(await ImageService.uploadFile(image1));
+    if(image2) images.push(await ImageService.uploadFile(image2));
+    if(image3) images.push(await ImageService.uploadFile(image3));
+    if(image4) images.push(await ImageService.uploadFile(image4));
+    images = JSON.stringify(images);
+    
+    let specsStatus = 1;
+    let specsTimeStamp = Date.now();
+
+    let res = await ServiceSpecsServices.createServiceSpecs({
+      seekerID, typeID, addressID, specsDesc, images, specsStatus, specsTimeStamp, 
+    })
+
+    setWaiting(false);
+    navigation.navigate('Matching', { res, icon, typeName, addressID, minServiceCost, location});
+  }
   
   return (
     <View style={{justifyContent: 'flex-end', flex:1}}>
-      <Header service={service} icon={icon} phase={1}/>
+      <Header service={typeName} icon={icon} phase={1}/>
+
+      {waiting && <Loading/>}
 
       <ScrollView style={styles.container}>
-        <Text style={styles.heading}>Initial Service Specs</Text>
-        <TextInput multiline numberOfLines={5} onChangeText={text => onChangeText(text)} value={value} style={styles.text}
-          placeholder='Help our providers gauge your request by indicating certain specifications of the service you need.'/>
+        <Text style={styles.heading}>Specifications (Required)</Text>
+        <TextInput multiline numberOfLines={5} onChangeText={text => onChangeText(text)} value={specsDesc} style={styles.text}
+          placeholder='This field is required. Help our providers gauge your request by indicating your service specifications.'/>
 
-        <Text style={styles.heading}>Supporting Images</Text>
+        <Text style={styles.heading}>Images (Optional)</Text>
 
 
         {!image1 && 
@@ -137,10 +173,16 @@ export default function InitSpecs({ route, navigation }) {
           }
 
         </View>
-   
       </ScrollView>
 
-      <Next icon={icon} service={service} navigation={navigation} title={'Submit Initial Specs'} screen={'Matching'}/>
+      <View style={styles.holder}>
+        <TouchableWithoutFeedback onPress={() => onSubmit()}>
+          <View style={styles.ghost}/>
+        </TouchableWithoutFeedback>
+      </View>
+
+      { !specsDesc && <View style={styles.overlay}/> }
+      <Next title={'Submit Initial Specs'}/>
     </View>
   );
 }
@@ -165,7 +207,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 10,
     borderColor: '#888486',
-    // placeholderTextColor: '#888486',
     fontFamily: 'quicksand',
     textAlignVertical: 'top',
     letterSpacing: -0.5,
@@ -220,5 +261,28 @@ const styles = StyleSheet.create({
     marginLeft:'85%',
      marginBottom: screenWidth/2-55, 
      backgroundColor: '#9C54D5'
+  },
+
+  overlay: {
+    backgroundColor: '#E9E9E990',
+    position: 'absolute',
+    bottom: 0, left: 0,
+    width: '100%',
+    height: 90,
+    zIndex: 10
+  },
+  holder: {
+    position: 'absolute',
+    bottom: 0, left: 0,
+    width: '100%',
+    height: 90,
+    zIndex: 5,
+    justifyContent: 'center',
+  },
+  ghost: {
+    height: 50,
+    zIndex: 5,
+    marginHorizontal: 30,
+    marginBottom: 8
   }
 });
