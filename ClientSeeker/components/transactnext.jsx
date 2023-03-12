@@ -2,42 +2,17 @@ import { StyleSheet, View, Text, TouchableWithoutFeedback  } from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient';
 import { useEffect, useState } from 'react';
 
-import Waiting from '../hooks/waiting';
-
 // import CredentialsServices from '../services/user/credentials-services';
 // import SeekerServices from '../services/user/seeker-services';
 // import { contactHandler } from '../utils/contactHandler';
 // import { getUserID } from '../utils/getUserID';
 
 export default function Next ( props ) {
-  const { data } = props;
-
-  const { service, icon, title, screen } = props;
-  const { typeID, price } = props 
-  const address = 'UP AECH, P. Velasquez Street, Diliman, Quezon City, 1800 Metro Manila';
-
+  const { service, icon, title, screen, price, address } = props;
   let container = styles.container;
   if (price) {
     container = styles.container2
   }
-
-  const [waiting, setWaiting] = useState(false);
-  // const [processing, setProcessing] = useState(true);
-  // const [name, setName] = useState('');
-  // const [contact, setContact] = useState('');
-
-  // useEffect(() => {
-  //   if(processing) {
-  //     setProcessing(false);
-  //     getUserID().then( userID => {
-  //       Promise.all([SeekerServices.getSeeker(userID), CredentialsServices.getUserCredentials(userID)])
-  //         .then(data => {
-  //           setName(`${data[0].body.firstName} ${data[0].body.lastName}`);
-  //           setContact(contactHandler(data[1].body.phoneNumber));
-  //         })
-  //     })
-  //   }
-  // });
 
   const onPress = () => {
     props.navigation.navigate(screen, {service, icon});
@@ -46,10 +21,9 @@ export default function Next ( props ) {
   return (
     <LinearGradient colors={['rgba(0,0,0,0.4)','rgba(0,0,0,0)'  ]} start={{ x:0, y:0.2 }} end={{ x:0, y:0 }}>
 			<View style={container}>
-        { waiting && <Waiting/> }
         {price && 
         <View style={styles.subheading}>
-          <Text style={{width: '70%', fontFamily: 'quicksand', fontSize: 11, color: '#888486'}}>{address}</Text>
+          <Text numberOfLines={2} style={{width: '60%', fontFamily: 'quicksand', fontSize: 11, color: '#888486'}}>{address}</Text>
           <Text style={{fontFamily: 'quicksand', fontSize: 12}}> Starts at <Text style={{fontFamily: 'quicksand-bold'}}>Php {price}</Text></Text>
         </View>
         }

@@ -43,7 +43,7 @@ export default function RequesttStack({ route }) {
         <Stack.Screen
           name="Matching"
           component={Matching}
-          options={() => header}
+          options={{ headerShown: false }}
         />
 
       </Stack.Navigator>

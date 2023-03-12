@@ -72,7 +72,7 @@ export default function InitSpecs({ route, navigation }) {
     })
 
     setWaiting(false);
-    navigation.navigate('Matching', { res, icon, typeName, addressID, minServiceCost, location});
+    navigation.navigate('Matching', { specsID:res.body.specsID, icon, typeName, addressID, minServiceCost, location});
   }
   
   return (
