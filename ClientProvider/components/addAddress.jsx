@@ -22,7 +22,7 @@ export default function AddAddress( props ) {
   const [loading, setLoading] = useState(false);
   const [done, setDone] = useState(false);
   const {userID, userFullName, userNum, latitude, longitude} = props;
-  let isDefault = 0;
+  let isDefault = 1;
   
   useEffect(() => {
     setAddress(addressHandler({

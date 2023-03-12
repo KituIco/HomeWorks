@@ -1,13 +1,20 @@
 import { StyleSheet, View, Text, Image, ScrollView, TouchableWithoutFeedback, } from 'react-native';
 import { LinearGradient, } from 'expo-linear-gradient';
 import { MaterialCommunityIcons } from '@expo/vector-icons'; 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import Back from '../../hooks/back';
+import { getUserID } from '../../utils/getUserID';
 import Listing from '../../components/requestListing';
+import { requestHelper } from '../../utils/requestHelper';
+
+import ServiceSpecsServices from '../../services/service-specs/service-specs-services';
+import ServiceServices from '../../services/service/service-services';
+
+
 
 export default function Requests({navigation}) {
-
+  const [waiting, setWaiting] = useState(true);
   const baseServices = [
     { id:'0', service: 'Car Mechanic', time: '14m 10s', address: 'UP AECH, P. Velasquez Street, Diliman, Quezon City, 1800 Metro Manila'},
     { id:'1', service: 'Electrician', time: '12m 10s', address: '234-B Padre Faura Street, Ermita, Manila, 1000 Metro Manila'},
@@ -31,8 +38,19 @@ export default function Requests({navigation}) {
     else if(baseServices[i].service == 'Hair Dresser') baseServices[i]['icon'] = 'face-woman-shimmer';
   }
 
-  const [services, setServices] = useState(baseServices);
-  const [waiting, setWaiting] = useState(false)
+  const [services, setServices] = useState();
+  
+
+  useEffect(() => {
+    (async () => {
+      let userID = await getUserID();
+      let allService = await ServiceSpecsServices.getAllServiceSpecs();
+      let myServices = await ServiceServices.getProviderServices(userID);
+      let service = await requestHelper(allService.body, myServices.body);
+      console.log(service)
+      setServices(service)
+    })();
+  }, []);
 
   return (
     <View style={styles.container}>

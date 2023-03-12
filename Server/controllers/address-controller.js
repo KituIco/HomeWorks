@@ -39,6 +39,7 @@ class AddressController{
                 timeZone,
                 isDefault
             } = req.body;
+            console.log(req.body)
 
             // TODO: Validations
                 // Validate if necessary fields are not null
@@ -219,7 +220,7 @@ class AddressController{
                 // Validate if userID is not null
             this.addressValidator.checkRequiredParameters(req.params, ['userID']);
                 // Validate if userID exists in database
-            let user = await this.userRepo.getUserBy(userID);
+            let user = await this.userRepo.getUser(userID);
             if (user == null) {
                 throw new this.clientErrors.Api404Error(`User with ID ${userID} does not exist`);
             }

@@ -37,7 +37,9 @@ export default function Dashboard({navigation}) {
               else setMessage1('The admins are verifying your profile.')
               if(data[1].body.length == 0) setNoService(true);
               else setMessage2('You may manage your profile in Options.')
-              setVerified(false);
+
+              if(data[0].body.length == 0 || data[1].body.length == 0)
+                setVerified(false);
               setName(fullname);
               setLoading(false);
             })

@@ -56,7 +56,7 @@ class CredentialsController {
             let refreshToken = this.jwt.sign(user, process.env.REFRESH_TOKEN_SECRET, { expiresIn: '7d' });
 
             res.cookie('access_token', accessToken, {
-                maxAge: 900000
+                maxAge: 60000
                 // httpOnly: true,
                 // secure: true
                 // domain: 'correct domain'

@@ -33,7 +33,7 @@ export default function Login({ navigation }) {
         password: password,
       }).then(() => {
         navigation.replace('HomeStack');
-        navigation.navigate('HomeStack');
+        // navigation.navigate('HomeStack');
       }).catch((err) => console.log(err)) 
     }
   }

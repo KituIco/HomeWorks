@@ -1,24 +1,26 @@
 import { StyleSheet, View, ScrollView, Text, Image, TouchableWithoutFeedback } from 'react-native';
 import { MaterialCommunityIcons  } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
+import { addressHandler } from '../utils/addressHandler';
 
 
 export default function Listing( props ) {
   const services = props.listings;
-
+  console.log(services[0].location)
+  
   const servicesList = data => {
     return (
-      <LinearGradient colors={['rgba(0,0,0,0.3)','rgba(0,0,0,0.12)'  ]} start={{ x:0, y:0.95 }} end={{ x:0, y:0.98 }} style={styles.shadow} key={data.id}>
+      <LinearGradient colors={['rgba(0,0,0,0.3)','rgba(0,0,0,0.12)'  ]} start={{ x:0, y:0.95 }} end={{ x:0, y:0.98 }} style={styles.shadow} key={data.serviceID}>
         <View style={styles.box}>
 
           <View style={styles.content}>
             <MaterialCommunityIcons name={data.icon} size={60}/>
             <View style={styles.texts}>
               <View style={styles.top}>
-                <Text style={styles.service}>{data.service}</Text>
+                <Text style={styles.service}>{data.typeName}</Text>
                 <Text style={styles.time}>{data.time}</Text>
               </View>
-              <Text style={styles.address} numberOfLines={2} ellipsizeMode='tail'>{data.address}</Text>
+              <Text style={styles.address} numberOfLines={2} ellipsizeMode='tail'>{ addressHandler(data.location)}</Text>
             </View>
           </View>
 

@@ -4,14 +4,16 @@ cookieJwtAuth = (req, res, next) => {
     let {access_token, refresh_token} = req.cookies;
         
     jwt.verify(access_token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
+        console.log('TEST')
         if (err && err.type == 'TokenExpiredError') {
+            console.log("TOKEN EXPIRED???")
             jwt.verify(refresh_token, process.env.REFRESH_TOKEN_SECRET, (err, decoded) => {
                 if (err) {
                     res.status(401).send('Unauthorized');
                 } else {
                     let accessToken = jwt.sign(decoded, process.env.ACCESS_TOKEN_SECRET, {expiresIn: '1m'});
                     res.cookie('access_token', accessToken, {
-                        maxAge: 900000
+                        maxAge: 60000
                         // httpOnly: true,
                         // secure: true
                         // domain: 'correct domain'

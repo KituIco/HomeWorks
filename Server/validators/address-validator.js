@@ -69,8 +69,8 @@ class AddressValidator extends Validator {
                 type: 'string'
             },
             isDefault : {
-                required: true,
-                type: 'int'
+                required: false,
+                type: 'number'
             }
         }
     }
