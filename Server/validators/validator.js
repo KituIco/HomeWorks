@@ -4,7 +4,7 @@ class Validator {
     }
 
     checkRequiredParameters(params, requiredParamNames) {
-        missingParams = [];
+        let missingParams = [];
         requiredParamNames.forEach((paramName) => {
             if (!params[paramName]) {
                 missingParams.push(paramName);
@@ -19,7 +19,7 @@ class Validator {
     };
 
     checkRequiredQueryParameters(query, requiredParamNames) {
-        missingParams = [];
+        let missingParams = [];
         requiredParamNames.forEach((paramName) => {
             if (!query[paramName]) {
                 missingParams.push(paramName);
@@ -34,7 +34,7 @@ class Validator {
     };
 
     checkRequiredBodyFieldNames(body, requiredFieldNames) {
-        missingFields = [];
+        let missingFields = [];
         requiredFieldNames.forEach((fieldName) => {
             if (!body[fieldName]) {
                 missingFields.push(fieldName);
