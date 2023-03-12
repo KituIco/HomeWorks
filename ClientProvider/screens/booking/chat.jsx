@@ -1,12 +1,13 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import { StyleSheet, View, Text, Image, ScrollView, TextInput, TouchableWithoutFeedback } from 'react-native';
 import { MaterialCommunityIcons  } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 
 import Back from '../../hooks/back';
 
-export default function Chat({ navigation }) {
-  const [value, onChangeText] = React.useState();
+export default function Chat({ navigation, route }) {
+  const [value, onChangeText] = useState();
+  let data = route.params;
   
   return (
     <View style={{justifyContent: 'flex-end', flex:1}}>
@@ -27,7 +28,7 @@ export default function Chat({ navigation }) {
 
         
         <View style={{backgroundColor:'#E9E9E9'}}>
-        <TouchableWithoutFeedback onPress={() => navigation.navigate('Specs')}>
+        <TouchableWithoutFeedback onPress={() => navigation.navigate('Specs', {data})}>
           <LinearGradient colors={['rgba(0,0,0,0.7)','rgba(0,0,0,0.1)'  ]} start={{ x:0, y:0.65 }} end={{ x:0, y:0.98 }} style={styles.shadow}>
             <LinearGradient colors={['#9C54D5', '#462964']} start={{ x:0.4, y:1 }} end={{ x:0, y:1 }} style={styles.button}>
               <LinearGradient colors={['rgba(0, 0, 0, 0.4)','rgba(0, 0, 0, 0)']} start={{ x: 0.5, y: 0.01 }} end={{ x: 0.5, y: 0.15 }} style={styles.ledge}>

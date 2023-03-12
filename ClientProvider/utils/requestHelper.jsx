@@ -1,18 +1,33 @@
 import * as Location from 'expo-location';
 
-export const requestHelper = async(requests, services) => {
-  let response = []
+export const requestHelper = async(requests, services, types) => {
+  let { status } = await Location.requestForegroundPermissionsAsync();
+  if (status !== 'granted') {
+    Alert.alert('Permission Denied', 
+      'This application requires location permission for certain features. To allow this app, you may check app info.', [
+      {text: 'OK'},
+    ]);
+    navigation.goBack();
+    return;
+  }
+  let time = Date.now();
+
   for (let i=0; i<requests.length; i++) {
     let passed = false;
     for (let j=0; j<services.length; j++){
-      if(requests[i].typeID == services[j].typeID){
-        passed = true;
-        break;
+      if(requests[i].typeID == services[j].typeID && time - requests[i].specsTimestamp < 9000000){
+        requests[i]['seconds'] = (time - requests[i].specsTimestamp)/1000;
+        requests[i]['serviceID'] = services[j].serviceID;
+
+        for(let k=0; k<types.length; k++)
+          if(requests[i].typeID == types[k].typeID)
+            requests[i]['minServiceCost'] = types[k].minServiceCost
+
+        passed = true; break;
       }
     }
 
     if (!passed) {
-      console.log(i)
       delete requests.splice(i,1);
       i--; continue;
     }
@@ -21,6 +36,8 @@ export const requestHelper = async(requests, services) => {
       latitude: parseFloat(coords[0]), longitude: parseFloat(coords[1])
     })
     requests[i]['location'] = res[0];
+    requests[i]['latitude'] = parseFloat(coords[0]);
+    requests[i]['longitude'] = parseFloat(coords[1])
 
   
     if(requests[i].typeID == '0') requests[i]['typeName'] = 'Carpentry'
@@ -50,7 +67,6 @@ export const requestHelper = async(requests, services) => {
     else if (requests[i].typeName == 'Meal Preparation') requests[i]['icon'] = 'silverware-clean';
     else if (requests[i].typeName == 'Manicurists') requests[i]['icon'] = 'hand-clap';
     else if (requests[i].typeName == 'Hair Dresser') requests[i]['icon'] = 'face-woman-shimmer';
-    response.push(requests[i]);
   }
   return requests
 }

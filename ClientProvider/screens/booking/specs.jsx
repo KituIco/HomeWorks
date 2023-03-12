@@ -1,32 +1,57 @@
 import { StyleSheet, View, Text, Image, ScrollView, TouchableWithoutFeedback,TextInput } from 'react-native';
 import { LinearGradient, } from 'expo-linear-gradient';
 import { MaterialCommunityIcons } from '@expo/vector-icons'; 
+import MapView, {Marker} from 'react-native-maps';
 import { useState } from 'react';
 
-export default function Specs({navigation}) {
-  const service = 'Carpentry';
-  const address = 'UP AECH, P. Velasquez Street, Diliman, Quezon City, 1800 Metro Manila';
+import BookingServices from '../../services/booking/booking-services';
+import { addressHandler } from '../../utils/addressHandler';
+import Loading from '../../hooks/loading';
+
+export default function Specs({navigation, route}) {
+  const { latitude, longitude, typeName, location, bookingID } = route.params.data;
+  const [loading, setLoading] = useState(false);
+  let region = {
+    latitude, latitudeDelta: 0.0070,
+    longitude, longitudeDelta: 0.0080,
+  };
   
   const [cost, setCost] = useState('');
-  const [specs, setSpecs] = useState('');
+  const [description, setDescription] = useState('');
   const [lines, setLines] = useState(4);
+
+  const onSubmit = () => {
+    setLoading(true);
+    BookingServices.patchBooking(bookingID, { 
+      cost: parseFloat(cost).toFixed(2), description
+    }).then(() => {
+      navigation.navigate('Arriving', {typeName, cost, bookingID})
+      setLoading(false);
+    })
+  }
 
   return (
     <View style={styles.container}>
+      {loading && <Loading/> }
       <View style={{alignItems:'center'}}>
-        <Text style={styles.header}>{service}</Text>
+        <Text style={styles.header}>{typeName}</Text>
       </View>
       
 
-      <View style={{width:'100%', height: '80%'}}>
-        <LinearGradient colors={['rgba(255,255,255,0.9)','rgba(255,255,255,0.5)'  ]} start={{ x:0, y:0 }} end={{ x:0, y:1 }} style={{height:14, zIndex:5}}/>
-        <ScrollView style={{marginVertical:-10}}>
-          <LinearGradient colors={['rgba(0,0,0,0.1)','rgba(0,0,0,0)'  ]} start={{ x:0, y:0 }} end={{ x:0, y:1 }} style={{height:4, zIndex:5, marginTop:10}}/>
-          <Image style={styles.image} source={require("../../assets/map.png")} />
-          <Image style={styles.pin} source={require("../../assets/pin.png")} />
+      <View style={{width:'100%', height: '68%'}}>
+        <LinearGradient colors={['rgba(0,0,0,0.1)','rgba(0,0,0,0)'  ]} start={{ x:0, y:0 }} end={{ x:0, y:1 }} style={{height:4, zIndex:5, marginTop:10}}/>
+        <ScrollView style={{marginVertical:-4}}>
+        
+          <View style={{width:'100%', height: 270, }}>
+            <MapView style={{flex:1}} initialRegion={region}>
+              <Marker coordinate={{latitude, longitude}}>
+                <Image style={{height:44,width:32.3}} source={require("../../assets/pin.png")}/>
+              </Marker>
+            </MapView>
+          </View>
           <LinearGradient colors={['rgba(0,0,0,0.1)','rgba(0,0,0,0)'  ]} start={{ x:0, y:1 }} end={{ x:0, y:0 }} style={{height:4, zIndex:5, marginTop:-4}}/>
 
-          <Text style={styles.address}>{address}</Text>
+          <Text style={styles.address}>{addressHandler(location)}</Text>
           
 
           <Text style={styles.heading}>Service Cost</Text>
@@ -34,15 +59,15 @@ export default function Specs({navigation}) {
             placeholder='Enter Service Cost (ie. 420.00)'/>
 
           <Text style={styles.heading}>Service Specs</Text>
-          <TextInput multiline numberOfLines={lines} onChangeText={text => setSpecs(text)} value={specs} style={styles.text}
+          <TextInput multiline numberOfLines={lines} onChangeText={text => setDescription(text)} value={description} style={styles.text}
             onContentSizeChange={(e) => {if(e.nativeEvent.contentSize.height/18>lines) setLines(lines+1)}} placeholder='Enter Service Details'/>
           
         </ScrollView>
-        <LinearGradient colors={['rgba(255,255,255,0.9)','rgba(255,255,255,0.5)'  ]} start={{ x:0, y:1 }} end={{ x:0, y:0 }} style={{height:14, zIndex:5}}/>
+        <LinearGradient colors={['rgba(255,255,255,0.9)','rgba(255,255,255,0.5)'  ]} start={{ x:0, y:1 }} end={{ x:0, y:0 }} style={{height:4, zIndex:5}}/>
       </View>
       
-      <View style={{marginBottom:38, marginTop:6, width:'80%', alignItems:'center'}}>
-        <TouchableWithoutFeedback onPress={() => navigation.navigate('Arriving')}>
+      <View style={{marginBottom:28, marginTop:16, width:'80%', alignItems:'center'}}>
+        <TouchableWithoutFeedback onPress={() => onSubmit()}>
           <LinearGradient colors={['rgba(0,0,0,0.7)','rgba(0,0,0,0.1)'  ]} start={{ x:0, y:0.65 }} end={{ x:0, y:0.98 }} style={styles.shadow}>
             <LinearGradient colors={['#9C54D5', '#462964']} start={{ x:0.4, y:1 }} end={{ x:0, y:1 }} style={styles.button}>
             <LinearGradient colors={['rgba(0, 0, 0, 0.4)','rgba(0, 0, 0, 0)']} start={{ x: 0.5, y: 0.01 }} end={{ x: 0.5, y: 0.15 }} style={styles.ledge}>
@@ -63,7 +88,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingTop: 72,
   },
   header: {
     fontFamily: 'lexend',
@@ -71,6 +95,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     textTransform: 'uppercase',
     letterSpacing: -0.7,
+    marginTop: 70,
   },
 
   shadow: {

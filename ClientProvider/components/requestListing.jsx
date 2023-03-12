@@ -6,11 +6,10 @@ import { addressHandler } from '../utils/addressHandler';
 
 export default function Listing( props ) {
   const services = props.listings;
-  console.log(services[0].location)
   
   const servicesList = data => {
     return (
-      <LinearGradient colors={['rgba(0,0,0,0.3)','rgba(0,0,0,0.12)'  ]} start={{ x:0, y:0.95 }} end={{ x:0, y:0.98 }} style={styles.shadow} key={data.serviceID}>
+      <LinearGradient colors={['rgba(0,0,0,0.3)','rgba(0,0,0,0.12)'  ]} start={{ x:0, y:0.95 }} end={{ x:0, y:0.98 }} style={styles.shadow} key={data.specsID}>
         <View style={styles.box}>
 
           <View style={styles.content}>
@@ -18,13 +17,13 @@ export default function Listing( props ) {
             <View style={styles.texts}>
               <View style={styles.top}>
                 <Text style={styles.service}>{data.typeName}</Text>
-                <Text style={styles.time}>{data.time}</Text>
+                <Text style={styles.time}>{(data.seconds/60).toFixed(0)}m ago</Text>
               </View>
               <Text style={styles.address} numberOfLines={2} ellipsizeMode='tail'>{ addressHandler(data.location)}</Text>
             </View>
           </View>
 
-          <TouchableWithoutFeedback onPress={() => props.navigation.navigate('Details')}>
+          <TouchableWithoutFeedback onPress={() => props.navigation.navigate('Details', {data})}>
             <LinearGradient colors={['#9C54D5', '#462964']} start={{ x:0.6, y:-1 }} end={{ x:0.1, y:1 }} style={styles.button}>
               <LinearGradient colors={['rgba(0, 0, 0, 0.4)','rgba(0, 0, 0, 0)']} start={{ x: 0.5, y: 0.01 }} end={{ x: 0.5, y: 0.15 }} style={styles.ledge}>
                 <Text style={styles.details}>View Request Details</Text>

@@ -5,7 +5,6 @@ import { StackActions } from '@react-navigation/native';
 import MapView, {Marker} from 'react-native-maps';
 
 import Header from '../../components/transactheader';
-import * as Location from 'expo-location';
 
 export default function FinalSpecs({ route, navigation }) {
   const [location, setLocation] = useState(null);

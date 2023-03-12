@@ -9,53 +9,38 @@ import Listing from '../../components/requestListing';
 import { requestHelper } from '../../utils/requestHelper';
 
 import ServiceSpecsServices from '../../services/service-specs/service-specs-services';
+import ServiceTypesServices from '../../services/service-types/service-types-services';
 import ServiceServices from '../../services/service/service-services';
 
 
 
 export default function Requests({navigation}) {
   const [waiting, setWaiting] = useState(true);
-  const baseServices = [
-    { id:'0', service: 'Car Mechanic', time: '14m 10s', address: 'UP AECH, P. Velasquez Street, Diliman, Quezon City, 1800 Metro Manila'},
-    { id:'1', service: 'Electrician', time: '12m 10s', address: '234-B Padre Faura Street, Ermita, Manila, 1000 Metro Manila'},
-    { id:'2', service: 'Electrician', time: '10m 10s', address: 'Honda, Quirino Avenue cor. UN Avenue, San Andres, Manila, 1000 Metro Manila'},
-    { id:'3', service: 'Appliance Repair', time: '10m 10s', address: 'Smart, Boni Avenue cor. Barangka Drive, Mandaluyong City, 1200 Metro Manila'},
-  ]
-
-  for (let i=0; i<baseServices.length; i++) {
-    if(baseServices[i].service == 'Carpentry') baseServices[i]['icon'] = 'hammer-screwdriver';
-    else if(baseServices[i].service == 'Car Mechanic') baseServices[i]['icon'] = 'car-wrench';
-    else if(baseServices[i].service == 'Plumbing') baseServices[i]['icon'] = 'water-pump';
-    else if(baseServices[i].service == 'House Cleaning') baseServices[i]['icon'] = 'broom';
-    else if(baseServices[i].service == 'Baby Sitting') baseServices[i]['icon'] = 'human-baby-changing-table';
-    else if(baseServices[i].service == 'Electrician') baseServices[i]['icon'] = 'power-plug';
-    else if(baseServices[i].service == 'Laundry') baseServices[i]['icon'] = 'tshirt-crew';
-    else if(baseServices[i].service == 'Appliance Repair') baseServices[i]['icon'] = 'television';
-    else if(baseServices[i].service == 'Roof Cleaning') baseServices[i]['icon'] = 'home-roof';
-    else if(baseServices[i].service == 'Carpet Cleaning') baseServices[i]['icon'] = 'rug';
-    else if(baseServices[i].service == 'Meal Preparation') baseServices[i]['icon'] = 'silverware-clean';
-    else if(baseServices[i].service == 'Manicurists') baseServices[i]['icon'] = 'hand-clap';
-    else if(baseServices[i].service == 'Hair Dresser') baseServices[i]['icon'] = 'face-woman-shimmer';
-  }
-
-  const [services, setServices] = useState();
-  
+  const [services, setServices] = useState([]);
+  const [check, setCheck] = useState(0);
 
   useEffect(() => {
-    (async () => {
+    (async () => {  
       let userID = await getUserID();
       let allService = await ServiceSpecsServices.getAllServiceSpecs();
+      let serviceTypes = await ServiceTypesServices.getServiceTypes()
+
       let myServices = await ServiceServices.getProviderServices(userID);
-      let service = await requestHelper(allService.body, myServices.body);
-      console.log(service)
-      setServices(service)
+      let service = await requestHelper(allService.body, myServices.body, serviceTypes.body);
+      if(service.length > 0) {
+        setServices(service);
+        setTimeout(() => setWaiting(false), 100);
+      }else {
+        setWaiting(true);
+        setServices([])
+      }
     })();
-  }, []);
+  }, [check]);
 
   return (
     <View style={styles.container}>
       <Back navigation={navigation}/>
-      <TouchableWithoutFeedback onPress={() => {setWaiting(!waiting)}}>
+      <TouchableWithoutFeedback onPress={() => setCheck(check+1)}>
         <Text style={styles.header}>Requests Page</Text>
       </TouchableWithoutFeedback>
       

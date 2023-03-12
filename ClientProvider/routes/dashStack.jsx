@@ -29,33 +29,33 @@ export default function DashStack({ navigation }) {
 
   const [initialRoute, setInitialRoute] = useState('Dashboard');
 
-  const onChangeRoute = (route) => {
+  const onChangeRoute = (route, params) => {
     if (route === 'Dashboard' && initialRoute !== 'Dashboard') {
       setInitialRoute('Dashboard',
       navigation.reset({
         index: 0,
-        routes: [{ name: 'Dashboard' }],
+        routes: [{ name: 'Dashboard', params: params }],
       }));
     }
     else if (route === 'Requests' && initialRoute !== 'Requests') {
       setInitialRoute('Requests');
       navigation.reset({
         index: 0,
-        routes: [{ name: 'Requests' }],
+        routes: [{ name: 'Requests', params: params }],
       });
     }
     else if (route === 'Chat' && initialRoute !== 'Chat') {
       setInitialRoute('Chat');
       navigation.reset({
         index: 0,
-        routes: [{ name: 'Chat' }],
+        routes: [{ name: 'Chat', params: params }],
       });
     }
     else if (route === 'Arriving' && initialRoute !== 'Arriving') {
       setInitialRoute('Arriving');
       navigation.reset({
         index: 0,
-        routes: [{ name: 'Arriving' }],
+        routes: [{ name: 'Arriving', params: params }],
       });
     }
   }
@@ -65,7 +65,7 @@ export default function DashStack({ navigation }) {
     screenListeners={{
       state: (e) => {
         let length = e.data.state.routes.length;
-        onChangeRoute(e.data.state.routes[length-1].name);
+        onChangeRoute(e.data.state.routes[length-1].name, e.data.state.routes[length-1].params);
       },}}
       screenOptions={{ animationEnabled: false }}>
 
