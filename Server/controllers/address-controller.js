@@ -44,7 +44,7 @@ class AddressController{
                 // Validate if necessary fields are not null
             this.addressValidator.validateCreateAndUpdateAddressPayload(req.body);
                 // Validate if userID exists in database
-            let user = await this.userRepo.getUserByID(userID);
+            let user = await this.userRepo.getUser(userID);
             if (user == null) {
                 throw new this.clientErrors.Api404Error(`User with ID ${userID} does not exist`);
             }
