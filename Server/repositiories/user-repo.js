@@ -33,6 +33,21 @@ class UserRepository {
             throw error;
         }
     };
+
+    getUser = async(
+        userID
+    ) => {
+        try {
+            let sqlQuery = `CALL get_user(?)`;
+            let results = await this.db.query(sqlQuery, [
+                userID
+            ]);
+            return results[0][0];
+        } catch (error) {
+            console.log(error);
+            throw error;
+        }
+    };
 }
 
 module.exports = UserRepository;

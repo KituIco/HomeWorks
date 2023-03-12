@@ -24,3 +24,17 @@ BEGIN
     WHERE
         user_id = usr_id;
 END;
+
+-- Get user via user_id
+DROP PROCEDURE IF EXISTS `get_user`;
+CREATE PROCEDURE `get_user`(
+    IN `usr_id` VARCHAR(14)
+)
+BEGIN
+    SELECT
+        *
+    FROM
+        User
+    WHERE
+        user_id = usr_id;
+END;

@@ -1,6 +1,7 @@
 class AddressController{
     constructor(
         addressRepo,
+        userRepo,
         clientErrors,
         serverErrors,
         addressValidator = null,
@@ -40,8 +41,13 @@ class AddressController{
 
             // TODO: Validations
                 // Validate if necessary fields are not null
+            this.addressValidator.validateCreateAndUpdateAddressPayload(req.body);
                 // Validate if userID exists in database
-            
+            let user = await this.userRepo.getUserByID(userID);
+            if (user == null) {
+                throw new this.clientErrors.Api404Error(`User with ID ${userID} does not exist`);
+            }
+                
             let addressID = this.nanoid(14);
 
             await this.addressRepo.createAddress(
@@ -111,7 +117,19 @@ class AddressController{
 
             // TODO: Validations
                 // Validate if addressID is not null
+            this.addressValidator.checkRequiredParameters(req.params, ['addressID']);
                 // Validate if addressID exists in database
+            let address = await this.addressRepo.getAddressByID(addressID);
+            if (address == null) {
+                throw new this.clientErrors.Api404Error(`Address with ID ${addressID} does not exist`);
+            }
+
+            if(userID) {
+                let user = await this.userRepo.getUserByID(userID);
+                if (user == null) {
+                    throw new this.clientErrors.Api404Error(`User with ID ${userID} does not exist`);
+                }
+            }
             
             await this.addressRepo.patchAddress(
                 addressID,
@@ -160,7 +178,12 @@ class AddressController{
 
             // TODO: Validations
                 // Validate if addressID is not null
+            this.addressValidator.checkRequiredParameters(req.params, ['addressID']);
                 // Validate if addressID exists in database
+            let address = await this.addressRepo.getAddressByID(addressID);
+            if (address == null) {
+                throw new this.clientErrors.Api404Error(`Address with ID ${addressID} does not exist`);
+            }
 
             await this.addressRepo.deleteAddress(addressID);
 
@@ -175,8 +198,6 @@ class AddressController{
     getAllAddress = async(req, res) => {
         try {
             let addresses = await this.addressRepo.getAllAddress();
-
-            // TODO: Validations
 
             res.status(200).json({
                 message: 'Addresses retrieved successfully',
@@ -195,7 +216,12 @@ class AddressController{
 
             // TODO: Validations
                 // Validate if userID is not null
+            this.addressValidator.checkRequiredParameters(req.params, ['userID']);
                 // Validate if userID exists in database
+            let user = await this.userRepo.getUserByID(userID);
+            if (user == null) {
+                throw new this.clientErrors.Api404Error(`User with ID ${userID} does not exist`);
+            }
 
             let addresses = await this.addressRepo.getAllAddressOfUser(userID);
 
@@ -216,11 +242,15 @@ class AddressController{
 
             // TODO: Pre-query Validations
                 // Validate if addressID is not null
+            this.addressValidator.checkRequiredParameters(req.params, ['addressID']);
                 
             let address = await this.addressRepo.getAddressByID(addressID);
 
             // TODO: Post-query Validations
                 // Validate if addressID exists in database
+            if (address == null) {
+                throw new this.clientErrors.Api404Error(`Address with ID ${addressID} does not exist`);
+            }
 
             res.status(200).json({
                 message: 'Address retrieved successfully',
