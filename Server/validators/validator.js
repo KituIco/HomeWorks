@@ -1,4 +1,6 @@
 class Validator {
+    _rules = {};
+
     constructor(clientErrors) {
         this.clientErrors = clientErrors;
     }
@@ -47,6 +49,35 @@ class Validator {
             );
         }
     };
+
+    validateField(field, value) {
+        if (this._rules[field].required && value == null) {
+            throw new this.clientErrors.Api400Error(`Missing required field: ${field}`);
+        }
+
+        if (value != null && typeof(value) != this._rules[field].type) {
+            throw new this.clientErrors.Api400Error(`Invalid type for field: ${field}. Should be ${this._rules[field].type}`);
+        }
+    };
+
+    validatePatchPayload(payload) {
+        let sum = Object.values(payload).reduce(
+            (acc, curr) => acc + curr
+        )
+
+        if (sum == 0) {
+            throw new this.clientErrors.Api400Error('No fields to update');
+        }
+    };
+
+    validateCreatePayload(payload, requiredFieldNames) {
+        this.checkRequiredBodyFieldNames(
+            payload, requiredFieldNames
+        )
+        Object.keys(payload).forEach((fieldName) => {
+            this.validateField(fieldName, payload[fieldName]);
+        });
+    }
 }
 
 module.exports = Validator;

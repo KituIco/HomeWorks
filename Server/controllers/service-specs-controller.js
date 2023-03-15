@@ -2,19 +2,17 @@ class ServiceSpecsController {
     constructor(
         serviceSpecsRepo,
         clientErrors,
-        serverErrors,
-        serviceSpecsValidator = null,
+        serviceSpecsValidator,
         nanoid
     ) {
         this.serviceSpecsRepo = serviceSpecsRepo;
         this.clientErrors = clientErrors;
-        this.serverErrors = serverErrors;
         this.serviceSpecsValidator = serviceSpecsValidator;
         this.nanoid = nanoid;
     }
 
     // POST: ""
-    createServiceSpecs = async (req, res) => {
+    createServiceSpecs = async (req, res, next) => {
         try {
             let {
                 seekerID,
@@ -28,9 +26,13 @@ class ServiceSpecsController {
 
             // TODO: Pre-query validation
                 // Validate if necessary values are not null
+            this.serviceSpecsValidator.validateCreatePayload(req.body, ['seekerID', 'typeID'])
                 // Validate if seekerID exists in database
+            await this.serviceSpecsValidator.validateExistence(seekerID, 'seeker');
                 // Validate if typeID exists in database
+            await this.serviceSpecsValidator.validateExistence(typeID, 'type');
                 // Validate if addressID exists in database
+            await this.serviceSpecsValidator.validateExistence(addressID, 'address');
             
             let specsID = this.nanoid(14);
 
@@ -57,12 +59,12 @@ class ServiceSpecsController {
             });
         } catch (error) {
             // TODO: Handle error
-            console.log(error);
+            next(error);
         }
     };
 
     // PATCH: "/:specsID"
-    patchServiceSpecs = async (req, res) => {
+    patchServiceSpecs = async (req, res, next) => {
         try {
             let { specsID } = req.params;
             let {
@@ -76,12 +78,18 @@ class ServiceSpecsController {
             } = req.body;
 
             // TODO: Pre-query validation
-                // Validate if necessary values are not null
                 // Validate if specsID is not null
+            this.serviceSpecsValidator.checkRequiredParameters(req.params, ['specsID'])
                 // Validate if specsID exists in database
+            await this.serviceSpecsValidator.validateExistence(specsID, 'specs');
+                // Validate if necessary values are not null
+            this.serviceSpecsValidator.validatePatchPayload(req.body);
                 // Validate if seekerID exists in database
+            seekerID != null && await this.serviceSpecsValidator.validateExistence(seekerID, 'seeker');
                 // Validate if typeID exists in database
+            typeID != null && await this.serviceSpecsValidator.validateExistence(typeID, 'type');
                 // Validate if addressID exists in database
+            addressID != null && await this.serviceSpecsValidator.validateExistence(addressID, 'address');
             
             await this.serviceSpecsRepo.patchServiceSpecs(
                 specsID,
@@ -106,30 +114,32 @@ class ServiceSpecsController {
             });
         } catch (error) {
             // TODO: Handle error
-            console.log(error);
+            next(error);
         }
     };
 
     // DELETE: "/:specsID"
-    deleteServiceSpecs = async (req, res) => {
+    deleteServiceSpecs = async (req, res, next) => {
         try {
             let { specsID } = req.params;
 
             // TODO: Pre-query validation
                 // Validate if specsID is not null
+            this.serviceSpecsValidator.checkRequiredParameters(req.params, ['specsID'])
                 // Validate if specsID exists in database
+            await this.serviceSpecsValidator.validateExistence(specsID, 'specs');
             
             await this.serviceSpecsRepo.deleteServiceSpecs(specsID);
 
             res.status(204);
         } catch (error) {
             // TODO: Handle error
-            console.log(error);
+            next(error);
         }
     };
 
     // GET: ""
-    getAllServiceSpecs = async (req, res) => {
+    getAllServiceSpecs = async (req, res, next) => {
         try {
             let serviceSpecs = await this.serviceSpecsRepo.getAllServiceSpecs();
 
@@ -139,7 +149,7 @@ class ServiceSpecsController {
             });
         } catch (error) {
             // TODO: Handle error
-            console.log(error);
+            next(error);
         }
     };
     
@@ -151,9 +161,11 @@ class ServiceSpecsController {
 
             // TODO: Pre-query validation
                 // Validate if seekerID is not null
+            this.serviceSpecsValidator.checkRequiredParameters(req.params, ['seekerID'])
                 // Validate if seekerID exists in database
+            await this.serviceSpecsValidator.validateExistence(seekerID, 'seeker');
 
-            if (!sorted) {
+            if (sorted == null) {
                 return next();
             }
 
@@ -171,18 +183,20 @@ class ServiceSpecsController {
             });
         } catch (error) {
             // TODO: Handle error
-            console.log(error);
+            next();
         }
     };
 
     // GET: "/seeker/:seekerID"
-    getSeekerSpecs = async (req, res) => {
+    getSeekerSpecs = async (req, res, next) => {
         try {
             let { seekerID } = req.params;
 
             // TODO: Pre-query validation
                 // Validate if seekerID is not null
+            this.serviceSpecsValidator.checkRequiredParameters(req.params, ['seekerID'])
                 // Validate if seekerID exists in database
+            await this.serviceSpecsValidator.validateExistence(seekerID, 'seeker');
 
             let seekerSpecs = await this.serviceSpecsRepo.getSeekerSpecs(seekerID);
 
@@ -192,20 +206,22 @@ class ServiceSpecsController {
             });
         } catch (error) {
             // TODO: Handle error
-            console.log(error);
+            next(error);
         }
     };
 
     // GET: "/seeker/:seekerID/type/:typeID"
-    getSeekerSpecsByType = async (req, res) => {
+    getSeekerSpecsByType = async (req, res, next) => {
         try {
             let { seekerID, typeID } = req.params;
 
             // TODO: Pre-query validation
-                // Validate if seekerID is not null
+                // Validate if seekerID and typeID is not null
+            this.serviceSpecsValidator.checkRequiredParameters(req.params, ['seekerID', 'typeID'])
                 // Validate if seekerID exists in database
-                // Validate if typeID is not null
+            await this.serviceSpecsValidator.validateExistence(seekerID, 'seeker');
                 // Validate if typeID exists in database
+            await this.serviceSpecsValidator.validateExistence(typeID, 'type');
             
             let seekerSpecs = await this.serviceSpecsRepo.getSeekerSpecsByType(seekerID, typeID);
 
@@ -215,19 +231,20 @@ class ServiceSpecsController {
             });
         } catch (error) {
             // TODO: Handle error
-            console.log(error);
+            next(error);
         }
     };
 
     // GET: "/seeker/:seekerID/status/:statusID"
-    getSeekerSpecsByStatus = async (req, res) => {
+    getSeekerSpecsByStatus = async (req, res, next) => {
         try {
             let { seekerID, statusID } = req.params;
 
             // TODO: Pre-query validation
                 // Validate if seekerID is not null
+            this.serviceSpecsValidator.checkRequiredParameters(req.params, ['seekerID', 'statusID'])
                 // Validate if seekerID exists in database
-                // Validate if statusID is not null
+            await this.serviceSpecsValidator.validateExistence(seekerID, 'seeker');
             
             let seekerSpecs = await this.serviceSpecsRepo.getSeekerSpecsByStatus(seekerID, statusID);
 
@@ -237,18 +254,20 @@ class ServiceSpecsController {
             });
         } catch (error) {
             // TODO: Handle error
-            console.log(error);
+            next(error);
         }
     };
 
     // GET: "/type/:typeID"
-    getSpecsByType = async (req, res) => {
+    getSpecsByType = async (req, res, next) => {
         try {
             let { typeID } = req.params;
 
             // TODO: Pre-query validation
                 // Validate if typeID is not null
+            this.serviceSpecsValidator.checkRequiredParameters(req.params, ['typeID'])
                 // Validate if typeID exists in database
+            await this.serviceSpecsValidator.validateExistence(typeID, 'type');
             
             let specsByType = await this.serviceSpecsRepo.getSpecsByType(typeID);
 
@@ -258,17 +277,18 @@ class ServiceSpecsController {
             });
         } catch (error) {
             // TODO: Handle error
-            console.log(error);
+            next(error);
         }
     };
 
     // GET: "/status/:statusID"
-    getSpecsByStatus = async (req, res) => {
+    getSpecsByStatus = async (req, res, next) => {
         try {
             let { statusID } = req.params;
 
             // TODO: Pre-query validation
                 // Validate if statusID is not null
+            this.serviceSpecsValidator.checkRequiredParameters(req.params, ['statusID'])
             
             let specsByStatus = await this.serviceSpecsRepo.getSpecsByStatus(statusID);
 
@@ -279,7 +299,7 @@ class ServiceSpecsController {
 
         } catch (error) {
             // TODO: Handle error
-            console.log(error);
+            next(error);
         }
     };
 
@@ -290,6 +310,7 @@ class ServiceSpecsController {
 
             // TODO: Pre-query validation
                 // Validate if specsID is not null
+            this.serviceSpecsValidator.checkRequiredParameters(req.params, ['specsID'])
             
             let specsByID = await this.serviceSpecsRepo.getSpecsByID(specsID);
 
@@ -302,7 +323,7 @@ class ServiceSpecsController {
             });
         } catch (error) {
             // TODO: Handle error
-            console.log(error);
+            next(error);
         }
     };
 }

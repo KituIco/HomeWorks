@@ -2,19 +2,17 @@ class PaymentController {
     constructor(
         paymentRepo,
         clientErrors,
-        serverErrors,
         paymentValidator = null,
         nanoid
     ) {
         this.paymentRepo = paymentRepo;
         this.clientErrors = clientErrors;
-        this.serverErrors = serverErrors;
         this.paymentValidator = paymentValidator;
         this.nanoid = nanoid;
     }
 
     // POST: ""
-    createPayment = async (req, res) => {
+    createPayment = async (req, res, next) => {
         try {
             let {
                 seekerID,
@@ -27,9 +25,13 @@ class PaymentController {
 
             // TODO: Pre-query validation
                 // validate if necessary fields are not null
+            this.paymentValidator.validateCreatePayload(req.body, ['seekerID', 'providerID', 'serviceID']);
                 // validate if seekerID exists
+            await this.paymentValidator.validateExistence(seekerID, 'seeker');
                 // validate if providerID exists
+            await this.paymentValidator.validateExistence(providerID, 'provider');
                 // validate if serviceID exists
+            await this.paymentValidator.validateExistence(serviceID, 'service');
 
             let paymentID = this.nanoid(14);
 
@@ -54,12 +56,12 @@ class PaymentController {
             });
         } catch (error) {
             // TODO: Handle error
-            console.log(error);
+            next(error);
         }
     };
 
     // PATCH: "/:paymentID"
-    patchPayment = async (req, res) => {
+    patchPayment = async (req, res, next) => {
         try {
             let {paymentID} = req.params;
             let {
@@ -72,12 +74,18 @@ class PaymentController {
             } = req.body;
 
             // TODO: Pre-query validation
-                // validate if all fields are not null
                 // validate if paymentID is not null
+            this.paymentValidator.checkRequiredParameters(req.params, ['paymentID']);
                 // validate if paymentID exists
+            await this.paymentValidator.validateExistence(paymentID, 'payment');
+                // Validate if not all fields are null
+            this.paymentValidator.validatePatchPayload(req.body);
                 // validate if seekerID exists
+            await this.paymentValidator.validateExistence(seekerID, 'seeker');
                 // validate if providerID exists
+            await this.paymentValidator.validateExistence(providerID, 'provider');
                 // validate if serviceID exists
+            await this.paymentValidator.validateExistence(serviceID, 'service');
 
             await this.paymentRepo.patchPayment(
                 paymentID,
@@ -100,30 +108,32 @@ class PaymentController {
             });
         } catch (error) {
             // TODO: Handle error
-            console.log(error);
+            next(error);
         }
     };
 
     // DELETE: "/:paymentID"
-    deletePayment = async (req, res) => {
+    deletePayment = async (req, res, next) => {
         try {
             let {paymentID} = req.params;
 
             // TODO: Pre-query validation
                 // validate if paymentID is not null
+            this.paymentValidator.checkRequiredParameters(req.params, ['paymentID']);
                 // validate if paymentID exists
+            await this.paymentValidator.validateExistence(paymentID, 'payment');
             
             await this.paymentRepo.deletePayment(paymentID);
 
             res.status(204);
         } catch (error) {
             // TODO: Handle error
-            console.log(error);
+            next(error);
         }
     };
 
     // GET: "" 
-    getAllPayments = async (req, res) => {
+    getAllPayments = async (req, res, next) => {
         try {
             let payments = await this.paymentRepo.getAllPayments();
 
@@ -133,18 +143,20 @@ class PaymentController {
             });
         } catch (error) {
             // TODO: Handle error
-            console.log(error);
+            next(error);
         }
     };
 
     // GET: "/status?paymentStatus="
-    getAllPaymentsByStatus = async (req, res) => {
+    getAllPaymentsByStatus = async (req, res, next) => {
         try {
             let {paymentStatus} = req.query;
 
             // TODO: Pre-query validation
                 // validate if paymentStatus is not null
+            this.paymentValidator.checkRequiredQueryParameters(req.query, ['paymentStatus']);
                 // validate if paymentStatus is valid
+            this.paymentValidator.validatePaymentStatus(paymentStatus);
             
             let payments = await this.paymentRepo.getAllPaymentsByStatus(paymentStatus);
 
@@ -154,7 +166,7 @@ class PaymentController {
             });
         } catch (error) {
             // TODO: Handle error
-            console.log(error);
+            next(error);
         }
     };
 
@@ -166,9 +178,13 @@ class PaymentController {
 
             // TODO: Pre-query validation
                 // validate if seekerID is not null
+            this.paymentValidator.checkRequiredParameters(req.params, ['seekerID']);
                 // validate if seekerID exists
+            await this.paymentValidator.validateExistence(seekerID, 'seeker');
                 // validate if paymentStatus is not null
+            this.paymentValidator.checkRequiredQueryParameters(req.query, ['paymentStatus']);
                 // validate if paymentStatus is valid
+            this.paymentValidator.validatePaymentStatus(paymentStatus);
 
             if (paymentStatus == null) {
                  return next();
@@ -182,18 +198,20 @@ class PaymentController {
             });
         } catch (error) {
             // TODO: Handle error
-            console.log(error);
+            next();
         }
     };
 
     // GET: "/seeker/:seekerID"
-    getSeekerPayments = async (req, res) => {
+    getSeekerPayments = async (req, res, next) => {
         try {
             let {seekerID} = req.params;
 
             // TODO: Pre-query validation
                 // validate if seekerID is not null
+            this.paymentValidator.checkRequiredParameters(req.params, ['seekerID']);
                 // validate if seekerID exists
+            await this.paymentValidator.validateExistence(seekerID, 'seeker');
             
             let payments = await this.paymentRepo.getSeekerPayments(seekerID);
 
@@ -203,7 +221,7 @@ class PaymentController {
             });
         } catch (error) {
             // TODO: Handle error
-            console.log(error);
+            next(error);
         }
     };
 
@@ -215,9 +233,13 @@ class PaymentController {
 
             // TODO: Pre-query validation
                 // validate if providerID is not null
+            this.paymentValidator.checkRequiredParameters(req.params, ['providerID']);
                 // validate if providerID exists
+            await this.paymentValidator.validateExistence(providerID, 'provider');
                 // validate if paymentStatus is not null
+            this.paymentValidator.checkRequiredQueryParameters(req.query, ['paymentStatus']);
                 // validate if paymentStatus is valid
+            this.paymentValidator.validatePaymentStatus(paymentStatus);
             
             if (paymentStatus == null) {
                 return next();
@@ -231,18 +253,20 @@ class PaymentController {
             });
         } catch (error) {
             // TODO: Handle error
-            console.log(error);
+            next();
         }
     };
 
     // GET: "/provider/:providerID"
-    getProviderPayments = async (req, res) => {
+    getProviderPayments = async (req, res, next) => {
         try {
             let {providerID} = req.params;
 
             // TODO: Pre-query validation
                 // validate if providerID is not null
+            this.paymentValidator.checkRequiredParameters(req.params, ['providerID']);
                 // validate if providerID exists
+            await this.paymentValidator.validateExistence(providerID, 'provider');
 
             let payments = await this.paymentRepo.getProviderPayments(providerID);
 
@@ -252,18 +276,20 @@ class PaymentController {
             });
         } catch (error) {
             // TODO: Handle error
-            console.log(error);
+            next(error);
         }
     };
 
     // GET: "/method?paymentMethod="
-    getPaymentByMethod = async (req, res) => {
+    getPaymentByMethod = async (req, res, next) => {
         try {
             let {paymentMethod} = req.query;
 
             // TODO: Pre-query validation
                 // validate if paymentMethod is not null
+            this.paymentValidator.checkRequiredQueryParameters(req.query, ['paymentMethod']);
                 // validate if paymentMethod is valid
+            this.paymentValidator.validatePaymentMethod(paymentMethod);
 
             let payments = await this.paymentRepo.getPaymentByMethod(paymentMethod);
 
@@ -273,17 +299,18 @@ class PaymentController {
             });
         } catch (error) {
             // TODO: Handle error
-            console.log(error);
+            next(error);
         }
     };
 
     // GET: "/:paymentID"
-    getPaymentByID = async (req, res) => {
+    getPaymentByID = async (req, res, next) => {
         try {
             let {paymentID} = req.params;
 
             // TODO: Pre-query validation
                 // validate if paymentID is not null
+            this.paymentValidator.checkRequiredParameters(req.params, ['paymentID']);
                 // validate if paymentID exists
 
             let payment = await this.paymentRepo.getPaymentByID(paymentID);
@@ -294,7 +321,7 @@ class PaymentController {
             });
         } catch (error) {
             // TODO: Handle error
-            console.log(error);
+            next(error);
         }
     };
 }

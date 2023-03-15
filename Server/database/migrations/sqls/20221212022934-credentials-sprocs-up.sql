@@ -107,7 +107,8 @@ BEGIN
     SELECT
         credentials_id AS credentialsID,
         user_id AS userID,
-        identifier
+        identifier,
+        password AS hashedPassword
     FROM
         Credentials
     WHERE
@@ -164,4 +165,20 @@ BEGIN
         Credentials
     WHERE
         identifier = idntfier AND password = paswrd;
+END;
+
+-- Get credentials by identifier
+DROP PROCEDURE IF EXISTS `get_credentials_by_identifier`;
+CREATE PROCEDURE `get_credentials_by_identifier`(
+    IN `idntfier` VARCHAR(320)
+)
+BEGIN
+    SELECT
+        credentials_id AS credentialsID,
+        user_id AS userID,
+        identifier
+    FROM
+        Credentials
+    WHERE
+        identifier = idntfier;
 END;

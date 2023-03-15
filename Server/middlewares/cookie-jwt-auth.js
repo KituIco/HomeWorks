@@ -9,7 +9,7 @@ cookieJwtAuth = (req, res, next) => {
                 if (err) {
                     res.status(401).send('Unauthorized');
                 } else {
-                    let accessToken = jwt.sign(decoded, process.env.ACCESS_TOKEN_SECRET, {expiresIn: '1m'});
+                    let accessToken = jwt.sign(decoded, process.env.ACCESS_TOKEN_SECRET, {expiresIn: '15m'});
                     res.cookie('access_token', accessToken, {
                         maxAge: 60000
                         // httpOnly: true,

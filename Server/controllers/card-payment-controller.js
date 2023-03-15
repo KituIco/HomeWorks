@@ -2,19 +2,17 @@ class CardPaymentController {
     constructor(
         cardPaymentRepo,
         clientErrors,
-        serverErrors,
-        cardPaymentValidator = null,
+        cardPaymentValidator,
         nanoid
     ) {
         this.cardPaymentRepo = cardPaymentRepo;
         this.clientErrors = clientErrors;
-        this.serverErrors = serverErrors;
         this.cardPaymentValidator = cardPaymentValidator;
         this.nanoid = nanoid;
     }
 
     // POST: ""
-    createCardPayment = async(req, res) => {
+    createCardPayment = async(req, res, next) => {
         try {
             let {
                 userID,
@@ -28,7 +26,9 @@ class CardPaymentController {
             // Client Errors
             // TODO: Pre-query validations
                 // Validate if necessary fields are not null
+            this.cardPaymentValidator.validateCreatePayload(req.body, ['userID', 'cardNum', 'expiryDate', 'cvv', 'cardType']);
                 // Validate if userID exists in database
+            await this.cardPaymentValidator.validateExistence(userID, 'user');
 
             let cardID = this.nanoid(14);
 
@@ -53,12 +53,12 @@ class CardPaymentController {
             });
         } catch (error) {
             //TODO: Handle error
-            console.log(error);
+            next(error);
         }
     };
 
     // PATCH: "/:cardID"
-    patchCardPayment = async(req, res) => {
+    patchCardPayment = async(req, res, next) => {
         try {
             let {cardID} = req.params;
             let {
@@ -72,10 +72,14 @@ class CardPaymentController {
 
             // Client Errors
             // TODO: Pre-query validations
-                // Validate if necessary fields are not null
-                // Validate if userID exists in database
                 // Validate if cardID is not null
+            this.cardPaymentValidator.checkRequiredParameters(req.params, ['cardID']);
                 // Validate if cardID exists in database
+            await this.cardPaymentValidator.validateExistence(cardID, 'cardPayment');
+                // Validate if necessary fields are not null
+            this.cardPaymentValidator.validatePatchPayload(req.body);
+                // Validate if userID exists in database
+            userID != null && await this.cardPaymentValidator.validateExistence(userID, 'user');
             
             await this.cardPaymentRepo.patchCardPayment(
                 cardID,
@@ -98,31 +102,33 @@ class CardPaymentController {
             });
         } catch (error) {
             //TODO: Handle error
-            console.log(error);
+            next(error);
         }
     };
 
     // DELETE: "/:cardID"
-    deleteCardPayment = async(req, res) => {
+    deleteCardPayment = async(req, res, next) => {
         try {
             let {cardID} = req.params;
 
             // Client Errors
             // TODO: Pre-query validations
                 // Validate if cardID is not null
+            this.cardPaymentValidator.checkRequiredParameters(req.params, ['cardID']);
                 // Validate if cardID exists in database
+            await this.cardPaymentValidator.validateExistence(cardID, 'cardPayment');
             
             await this.cardPaymentRepo.deleteCardPayment(cardID);
 
             res.status(204);
         } catch (error) {
             //TODO: Handle error
-            console.log(error);
+            next(error);
         }
     };
 
     // GET: ""
-    getAllCardPayments = async(req, res) => {
+    getAllCardPayments = async(req, res, next) => {
         try {
             let allCardPayments = await this.cardPaymentRepo.getAllCardPayments();
 
@@ -132,19 +138,21 @@ class CardPaymentController {
             });
         } catch (error) {
             //TODO: Handle error
-            console.log(error);
+            next(error);
         }
     };
 
     // GET: "/user/:userID"
-    getUserCardPayments = async(req, res) => {
+    getUserCardPayments = async(req, res, next) => {
         try {
             let {userID} = req.params;
 
             // Client Errors
             // TODO: Pre-query validations
                 // Validate if userID is not null
+            this.cardPaymentValidator.checkRequiredParameters(req.params, ['userID']);
                 // Validate if userID exists in database
+            await this.cardPaymentValidator.validateExistence(userID, 'user');
             
             let userCardPayments = await this.cardPaymentRepo.getUserCardPayments(userID);
 
@@ -154,17 +162,18 @@ class CardPaymentController {
             });
         } catch (error) {
             //TODO: Handle error
-            console.log(error);
+            next(error);
         }
     };
 
     // GET: "/:cardID"
-    getCardPaymentByID = async(req, res) => {
+    getCardPaymentByID = async(req, res, next) => {
         try {
             let {cardID} = req.params;
 
             // TODO: Pre-query validations
                 // Validate if cardID is not null
+            this.cardPaymentValidator.checkRequiredParameters(req.params, ['cardID']);
             
             let cardPayment = await this.cardPaymentRepo.getCardPaymentByID(cardID);
 
@@ -177,7 +186,7 @@ class CardPaymentController {
             });
         } catch (error) {
             //TODO: Handle error
-            console.log(error);
+            next(error);
         }
     };
 }

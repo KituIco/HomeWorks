@@ -20,7 +20,7 @@ class CredentialsRepository {
             ]);
         } catch (error) {
             // TODO: Handle SQL error
-            console.log(error);
+            throw error;
         }
     };
 
@@ -40,7 +40,7 @@ class CredentialsRepository {
             ]);
         } catch (error) {
             // TODO: Handle SQL error
-            console.log(error);
+            throw error;
         }
     };
 
@@ -58,7 +58,6 @@ class CredentialsRepository {
             ]);
         } catch (error) {
             // TODO: Handle SQL error
-            console.log(error);
             throw error;
         }
     };
@@ -69,7 +68,7 @@ class CredentialsRepository {
             await this.db.query(sqlQuery, [credentialsID]);
         } catch {
             // TODO: Handle SQL error
-            console.log(error);
+            throw error;
         }
     };
 
@@ -80,7 +79,7 @@ class CredentialsRepository {
             return result[0];
         } catch (error) { 
             // TODO: Handle SQL error
-            console.log(error);
+            throw error;
         }
     };
 
@@ -91,7 +90,7 @@ class CredentialsRepository {
             return result[0][0];
         } catch (error) {
             // TODO: Handle SQL error
-            console.log(error);
+            throw error;
         }
     };
 
@@ -102,7 +101,6 @@ class CredentialsRepository {
             return result[0];
         } catch (error) {
             // TODO: Handle SQL error
-            console.log(error);
             throw error;
         }
     };
@@ -125,7 +123,16 @@ class CredentialsRepository {
             let [result, _] = await this.db.query(sqlQuery, [identifier]);
             return result[0][0];
         } catch (error) {
-            console.log(error);
+            throw error;
+        }
+    };
+
+    getCredentialsByIdentifier = async (identifier) => {
+        try {
+            let sqlQuery = `CALL get_credentials_by_identifier(?)`;
+            let [result, _] = await this.db.query(sqlQuery, [identifier]);
+            return result[0][0];
+        } catch (error) {
             throw error;
         }
     };

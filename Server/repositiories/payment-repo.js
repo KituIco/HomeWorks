@@ -26,7 +26,6 @@ class PaymentRepository {
             ]);
         } catch (error) {
             // TODO: Handle SQL error
-            console.log(error);
             throw error;
         }
     };
@@ -53,7 +52,6 @@ class PaymentRepository {
             ]);
         } catch (error) {
             // TODO: Handle SQL error
-            console.log(error);
             throw error;
         }
     };
@@ -64,7 +62,6 @@ class PaymentRepository {
             await this.db.query(sqlQuery, [paymentID]);
         } catch (error) {
             // TODO: Handle SQL error
-            console.log(error);
             throw error;
         }
     };
@@ -76,7 +73,6 @@ class PaymentRepository {
             return result[0];
         } catch (error) {
             // TODO: Handle SQL error
-            console.log(error);
             throw error;
         }
     };
@@ -88,7 +84,6 @@ class PaymentRepository {
             return result[0];
         } catch (error) {
             // TODO: Handle SQL error
-            console.log(error);
             throw error;
         }
     };
@@ -100,7 +95,6 @@ class PaymentRepository {
             return result[0];
         } catch (error) {
             // TODO: Handle SQL error
-            console.log(error);
             throw error;
         }
     };
@@ -115,7 +109,6 @@ class PaymentRepository {
             return result[0];
         } catch (error) {
             // TODO: Handle SQL error
-            console.log(error);
             throw error;
         }
     };
@@ -127,7 +120,6 @@ class PaymentRepository {
             return result[0];
         } catch (error) {
             // TODO: Handle SQL error
-            console.log(error);
             throw error;
         }
     };
@@ -142,7 +134,6 @@ class PaymentRepository {
             return result[0];
         } catch (error) {
             // TODO: Handle SQL error
-            console.log(error);
             throw error;
         }
     };
@@ -154,7 +145,6 @@ class PaymentRepository {
             return result[0];
         } catch (error) {
             // TODO: Handle SQL error
-            console.log(error);
             throw error;
         }
     };
@@ -166,7 +156,6 @@ class PaymentRepository {
             return result[0][0];
         } catch (error) {
             // TODO: Handle SQL error
-            console.log(error);
             throw error;
         }
     };

@@ -3,9 +3,9 @@ const BaseError = require('./base-error');
 
 class Api500Error extends BaseError {
     constructor(
+        description,
         name = 'Internal Server Error',
         statusCode = httpStatusCodes.INTERNAL_SERVER_ERROR,
-        description,
         isOperational = true
     ) {
         super(name, statusCode, isOperational, description);
@@ -14,9 +14,9 @@ class Api500Error extends BaseError {
 
 class Api501Error extends BaseError {
     constructor(
+        description,
         name = 'Not Implemented',
         statusCode = httpStatusCodes.NOT_IMPLEMENTED,
-        description,
         isOperational = true
     ) {
         super(name, statusCode, isOperational, description);
@@ -25,9 +25,9 @@ class Api501Error extends BaseError {
 
 class Api502Error extends BaseError {
     constructor(
+        description,
         name = 'Bad Gateway',
         statusCode = httpStatusCodes.BAD_GATEWAY,
-        description,
         isOperational = true
     ) {
         super(name, statusCode, isOperational, description);
@@ -36,9 +36,9 @@ class Api502Error extends BaseError {
 
 class Api503Error extends BaseError {
     constructor(
+        description,
         name = 'Service Unavailable',
         statusCode = httpStatusCodes.SERVICE_UNAVAILABLE,
-        description,
         isOperational = true
     ) {
         super(name, statusCode, isOperational, description);
@@ -47,9 +47,9 @@ class Api503Error extends BaseError {
 
 class Api504Error extends BaseError {
     constructor(
+        description,
         name = 'Gateway Timeout',
         statusCode = httpStatusCodes.GATEWAY_TIMEOUT,
-        description,
         isOperational = true
     ) {
         super(name, statusCode, isOperational, description);
@@ -58,9 +58,9 @@ class Api504Error extends BaseError {
 
 class Api505Error extends BaseError {
     constructor(
+        description,
         name = 'HTTP Version Not Supported',
         statusCode = httpStatusCodes.HTTP_VERSION_NOT_SUPPORTED,
-        description,
         isOperational = true
     ) {
         super(name, statusCode, isOperational, description);
@@ -69,9 +69,9 @@ class Api505Error extends BaseError {
 
 class Api506Error extends BaseError {
     constructor(
+        description,
         name = 'Variant Also Negotiates',
         statusCode = httpStatusCodes.VARIANT_ALSO_NEGOTIATES,
-        description,
         isOperational = true
     ) {
         super(name, statusCode, isOperational, description);
@@ -80,9 +80,9 @@ class Api506Error extends BaseError {
 
 class Api507Error extends BaseError {
     constructor(
+        description,
         name = 'Insufficient Storage',
         statusCode = httpStatusCodes.INSUFFICIENT_STORAGE,
-        description,
         isOperational = true
     ) {
         super(name, statusCode, isOperational, description);
@@ -91,9 +91,9 @@ class Api507Error extends BaseError {
 
 class Api508Error extends BaseError {
     constructor(
+        description,
         name = 'Loop Detected',
         statusCode = httpStatusCodes.LOOP_DETECTED,
-        description,
         isOperational = true
     ) {
         super(name, statusCode, isOperational, description);
@@ -102,9 +102,9 @@ class Api508Error extends BaseError {
 
 class Api510Error extends BaseError {
     constructor(
+        description,
         name = 'Not Extended',
         statusCode = httpStatusCodes.NOT_EXTENDED,
-        description,
         isOperational = true
     ) {
         super(name, statusCode, isOperational, description);
@@ -113,9 +113,9 @@ class Api510Error extends BaseError {
 
 class Api511Error extends BaseError {
     constructor(
+        description,
         name = 'Network Authentication Required',
         statusCode = httpStatusCodes.NETWORK_AUTHENTICATION_REQUIRED,
-        description,
         isOperational = true
     ) {
         super(name, statusCode, isOperational, description);

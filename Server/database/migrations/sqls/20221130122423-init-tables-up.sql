@@ -111,7 +111,7 @@ CREATE TABLE IF NOT EXISTS `Review`(
     `service_id` VARCHAR(14) NOT NULL,
     `seeker_id` VARCHAR(14) NOT NULL,
     `date_timestamp` BIGINT NOT NULL,
-    `rating` FLOAT,
+    `rating` FLOAT NOT NULL,
     `comment` TEXT,
     `images` TEXT,
     PRIMARY KEY (`review_id`),
@@ -185,10 +185,10 @@ CREATE TABLE IF NOT EXISTS `CardPayment`(
     `card_id` VARCHAR(14) NOT NULL,
     `user_id` VARCHAR(14) NOT NULL,
     `card_num` VARCHAR(16) NOT NULL,
-    `expiry_date` BIGINT,
-    `cvv` VARCHAR(4),
+    `expiry_date` BIGINT NOT NULL,
+    `cvv` VARCHAR(4) NOT NULL,
     `merchant` VARCHAR(30),
-    `card_type` TINYINT,
+    `card_type` TINYINT NOT NULL,
     PRIMARY KEY (`card_id`),
     FOREIGN KEY (`user_id`) REFERENCES User(`user_id`) ON DELETE CASCADE
 );

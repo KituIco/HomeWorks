@@ -28,7 +28,6 @@ class TransactionReportsRepository {
             ]);
         } catch (error) {
             // TODO: Handle SQL error
-            console.log(error);
             throw error;
         }
     };
@@ -57,7 +56,6 @@ class TransactionReportsRepository {
             ]);
         } catch (error) {
             // TODO: Handle SQL error
-            console.log(error);
             throw error;
         }
     };
@@ -68,7 +66,6 @@ class TransactionReportsRepository {
             await this.db.query(sqlQuery, [reportID]);
         } catch (error) {
             // TODO: Handle SQL error
-            console.log(error);
             throw error;
         }
     };
@@ -80,7 +77,6 @@ class TransactionReportsRepository {
             return result[0];
         } catch (error) {
             // TODO: Handle SQL error
-            console.log(error);
             throw error;
         }
     };
@@ -92,7 +88,6 @@ class TransactionReportsRepository {
             return result[0];
         } catch (error) {
             // TODO: Handle SQL error
-            console.log(error);
             throw error;
         }
     };
@@ -104,7 +99,6 @@ class TransactionReportsRepository {
             return result[0];
         } catch (error) {
             // TODO: Handle SQL error
-            console.log(error);
             throw error;
         }
     };
@@ -116,7 +110,6 @@ class TransactionReportsRepository {
             return result[0];
         } catch (error) {
             // TODO: Handle SQL error
-            console.log(error);
             throw error;
         }
     };
@@ -128,7 +121,6 @@ class TransactionReportsRepository {
             return result[0];
         } catch (error) {
             // TODO: Handle SQL error
-            console.log(error);
             throw error;
         }
     };
@@ -140,7 +132,6 @@ class TransactionReportsRepository {
             return result[0];
         } catch (error) {
             // TODO: Handle SQL error
-            console.log(error);
             throw error;
         }
     };
@@ -152,7 +143,6 @@ class TransactionReportsRepository {
             return result[0][0];
         } catch (error) {
             // TODO: Handle SQL error
-            console.log(error);
             throw error;
         }
     };

@@ -3,9 +3,9 @@ const BaseError = require('./base-error.js');
 
 class Api400Error extends BaseError {
     constructor(
+        description,
         name = 'Bad Request',
         statusCode = httpStatusCodes.BAD_REQUEST,
-        description,
         isOperational = true
     ) {
         super(name, statusCode, isOperational, description);
@@ -14,9 +14,9 @@ class Api400Error extends BaseError {
 
 class Api401Error extends BaseError {
     constructor(
+        description,
         name = 'Unauthorized',
         statusCode = httpStatusCodes.UNAUTHORIZED,
-        description,
         isOperational = true
     ) {
         super(name, statusCode, isOperational, description);
@@ -25,9 +25,9 @@ class Api401Error extends BaseError {
 
 class Api402Error extends BaseError {
     constructor(
+        description,
         name = 'Payment Required',
         statusCode = httpStatusCodes.PAYMENT_REQUIRED,
-        description,
         isOperational = true
     ) {
         super(name, statusCode, isOperational, description);
@@ -36,9 +36,9 @@ class Api402Error extends BaseError {
 
 class Api403Error extends BaseError {
     constructor(
+        description,
         name = 'Forbidden',
         statusCode = httpStatusCodes.FORBIDDEN,
-        description,
         isOperational = true
     ) {
         super(name, statusCode, isOperational, description);
@@ -47,9 +47,9 @@ class Api403Error extends BaseError {
 
 class Api404Error extends BaseError {
     constructor(
+        description,
         name = 'Not Found',
         statusCode = httpStatusCodes.NOT_FOUND,
-        description,
         isOperational = true
     ) {
         super(name, statusCode, isOperational, description);
@@ -58,9 +58,9 @@ class Api404Error extends BaseError {
 
 class Api405Error extends BaseError {
     constructor(
+        description,
         name = 'Method Not Allowed',
         statusCode = httpStatusCodes.METHOD_NOT_ALLOWED,
-        description,
         isOperational = true
     ) {
         super(name, statusCode, isOperational, description);
@@ -69,9 +69,9 @@ class Api405Error extends BaseError {
 
 class Api406Error extends BaseError {
     constructor(
+        description,
         name = 'Not Acceptable',
         statusCode = httpStatusCodes.NOT_ACCEPTABLE,
-        description,
         isOperational = true
     ) {
         super(name, statusCode, isOperational, description);
@@ -80,9 +80,9 @@ class Api406Error extends BaseError {
 
 class Api407Error extends BaseError {
     constructor(
+        description,
         name = 'Proxy Authentication Required',
         statusCode = httpStatusCodes.PROXY_AUTHENTICATION_REQUIRED,
-        description,
         isOperational = true
     ) {
         super(name, statusCode, isOperational, description);
@@ -91,9 +91,9 @@ class Api407Error extends BaseError {
 
 class Api408Error extends BaseError {
     constructor(
+        description,
         name = 'Request Timeout',
         statusCode = httpStatusCodes.REQUEST_TIMEOUT,
-        description,
         isOperational = true
     ) {
         super(name, statusCode, isOperational, description);
@@ -102,9 +102,9 @@ class Api408Error extends BaseError {
 
 class Api409Error extends BaseError {
     constructor(
+        description,
         name = 'Conflict',
         statusCode = httpStatusCodes.CONFLICT,
-        description,
         isOperational = true
     ) {
         super(name, statusCode, isOperational, description);
@@ -113,9 +113,9 @@ class Api409Error extends BaseError {
 
 class Api410Error extends BaseError {
     constructor(
+        description,
         name = 'Gone',
         statusCode = httpStatusCodes.GONE,
-        description,
         isOperational = true
     ) {
         super(name, statusCode, isOperational, description);
@@ -124,9 +124,9 @@ class Api410Error extends BaseError {
 
 class Api411Error extends BaseError {
     constructor(
+        description,
         name = 'Length Required',
         statusCode = httpStatusCodes.LENGTH_REQUIRED,
-        description,
         isOperational = true
     ) {
         super(name, statusCode, isOperational, description);
@@ -135,9 +135,9 @@ class Api411Error extends BaseError {
 
 class Api412Error extends BaseError {
     constructor(
+        description,
         name = 'Precondition Failed',
         statusCode = httpStatusCodes.PRECONDITION_FAILED,
-        description,
         isOperational = true
     ) {
         super(name, statusCode, isOperational, description);
@@ -146,9 +146,9 @@ class Api412Error extends BaseError {
 
 class Api413Error extends BaseError {
     constructor(
+        description,
         name = 'Payload Too Large',
         statusCode = httpStatusCodes.PAYLOAD_TOO_LARGE,
-        description,
         isOperational = true
     ) {
         super(name, statusCode, isOperational, description);
@@ -157,9 +157,9 @@ class Api413Error extends BaseError {
 
 class Api414Error extends BaseError {
     constructor(
+        description,
         name = 'URI Too Long',
         statusCode = httpStatusCodes.URI_TOO_LONG,
-        description,
         isOperational = true
     ) {
         super(name, statusCode, isOperational, description);
@@ -168,9 +168,9 @@ class Api414Error extends BaseError {
 
 class Api415Error extends BaseError {
     constructor(
+        description,
         name = 'Unsupported Media Type',
         statusCode = httpStatusCodes.UNSUPPORTED_MEDIA_TYPE,
-        description,
         isOperational = true
     ) {
         super(name, statusCode, isOperational, description);
@@ -179,9 +179,9 @@ class Api415Error extends BaseError {
 
 class Api416Error extends BaseError {
     constructor(
+        description,
         name = 'Range Not Satisfiable',
         statusCode = httpStatusCodes.RANGE_NOT_SATISFIABLE,
-        description,
         isOperational = true
     ) {
         super(name, statusCode, isOperational, description);
@@ -190,9 +190,9 @@ class Api416Error extends BaseError {
 
 class Api417Error extends BaseError {
     constructor(
+        description,
         name = 'Expectation Failed',
         statusCode = httpStatusCodes.EXPECTATION_FAILED,
-        description,
         isOperational = true
     ) {
         super(name, statusCode, isOperational, description);
@@ -201,9 +201,9 @@ class Api417Error extends BaseError {
 
 class Api418Error extends BaseError {
     constructor(
+        description,
         name = 'I\'m a teapot',
         statusCode = httpStatusCodes.IM_A_TEAPOT,
-        description,
         isOperational = true
     ) {
         super(name, statusCode, isOperational, description);
@@ -212,9 +212,9 @@ class Api418Error extends BaseError {
 
 class Api421Error extends BaseError {
     constructor(
+        description,
         name = 'Misdirected Request',
         statusCode = httpStatusCodes.MISDIRECTED_REQUEST,
-        description,
         isOperational = true
     ) {
         super(name, statusCode, isOperational, description);
@@ -223,9 +223,9 @@ class Api421Error extends BaseError {
 
 class Api422Error extends BaseError {
     constructor(
+        description,
         name = 'Unprocessable Entity',
         statusCode = httpStatusCodes.UNPROCESSABLE_ENTITY,
-        description,
         isOperational = true
     ) {
         super(name, statusCode, isOperational, description);
@@ -234,9 +234,9 @@ class Api422Error extends BaseError {
 
 class Api423Error extends BaseError {
     constructor(
+        description,
         name = 'Locked',
         statusCode = httpStatusCodes.LOCKED,
-        description,
         isOperational = true
     ) {
         super(name, statusCode, isOperational, description);
@@ -245,9 +245,9 @@ class Api423Error extends BaseError {
 
 class Api424Error extends BaseError {
     constructor(
+        description,
         name = 'Failed Dependency',
         statusCode = httpStatusCodes.FAILED_DEPENDENCY,
-        description,
         isOperational = true
     ) {
         super(name, statusCode, isOperational, description);
@@ -256,9 +256,9 @@ class Api424Error extends BaseError {
 
 class Api425Error extends BaseError {
     constructor(
+        description,
         name = 'Too Early',
         statusCode = httpStatusCodes.TOO_EARLY,
-        description,
         isOperational = true
     ) {
         super(name, statusCode, isOperational, description);
@@ -267,9 +267,9 @@ class Api425Error extends BaseError {
 
 class Api426Error extends BaseError {
     constructor(
+        description,
         name = 'Upgrade Required',
         statusCode = httpStatusCodes.UPGRADE_REQUIRED,
-        description,
         isOperational = true
     ) {
         super(name, statusCode, isOperational, description);
@@ -278,9 +278,9 @@ class Api426Error extends BaseError {
 
 class Api428Error extends BaseError {
     constructor(
+        description,
         name = 'Precondition Required',
         statusCode = httpStatusCodes.PRECONDITION_REQUIRED,
-        description,
         isOperational = true
     ) {
         super(name, statusCode, isOperational, description);
@@ -289,9 +289,9 @@ class Api428Error extends BaseError {
 
 class Api429Error extends BaseError {
     constructor(
+        description,
         name = 'Too Many Requests',
         statusCode = httpStatusCodes.TOO_MANY_REQUESTS,
-        description,
         isOperational = true
     ) {
         super(name, statusCode, isOperational, description);
@@ -300,9 +300,9 @@ class Api429Error extends BaseError {
 
 class Api431Error extends BaseError {
     constructor(
+        description,
         name = 'Request Header Fields Too Large',
         statusCode = httpStatusCodes.REQUEST_HEADER_FIELDS_TOO_LARGE,
-        description,
         isOperational = true
     ) {
         super(name, statusCode, isOperational, description);
@@ -311,9 +311,9 @@ class Api431Error extends BaseError {
 
 class Api451Error extends BaseError {
     constructor(
+        description,
         name = 'Unavailable For Legal Reasons',
         statusCode = httpStatusCodes.UNAVAILABLE_FOR_LEGAL_REASONS,
-        description,
         isOperational = true
     ) {
         super(name, statusCode, isOperational, description);

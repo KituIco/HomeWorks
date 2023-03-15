@@ -26,7 +26,6 @@ class ReviewRepository {
             ]);
         } catch (error) {
             // TODO: Handle SQL error
-            console.log(error);
             throw error;
         }
     };
@@ -53,7 +52,6 @@ class ReviewRepository {
             ]);
         } catch (error) {
             // TODO: Handle SQL error
-            console.log(error);
             throw error;
         }
     };
@@ -64,7 +62,6 @@ class ReviewRepository {
             await this.db.query(sqlQuery, [reviewID]);
         } catch (error) {
             // TODO: Handle SQL error
-            console.log(error);
             throw error;
         }
     };
@@ -76,7 +73,6 @@ class ReviewRepository {
             return result[0];
         } catch (error) {
             // TODO: Handle SQL error
-            console.log(error);
             throw error;
         }
     };
@@ -88,7 +84,6 @@ class ReviewRepository {
             return result[0];
         } catch (error) {
             // TODO: Handle SQL error
-            console.log(error);
             throw error;
         }
     };
@@ -100,7 +95,6 @@ class ReviewRepository {
             return result[0][0];
         } catch (error) {
             // TODO: Handle SQL error
-            console.log(error);
             throw error;
         }
     };

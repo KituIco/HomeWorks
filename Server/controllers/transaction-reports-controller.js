@@ -2,19 +2,17 @@ class TransactionReportsController {
     constructor(
         transactionReportsRepo,
         clientErrors,
-        serverErrors,
-        transactionReportsValidator = null,
+        transactionReportsValidator,
         nanoid
     ) {
         this.transactionReportsRepo = transactionReportsRepo;
         this.clientErrors = clientErrors;
-        this.serverErrors = serverErrors;
         this.transactionReportsValidator = transactionReportsValidator;
         this.nanoid = nanoid;
     }
 
     // POST: ""
-    createTransactionReport = async (req, res) => {
+    createTransactionReport = async (req, res, next) => {
         try {
             let {
                 bookingID,
@@ -28,12 +26,19 @@ class TransactionReportsController {
 
             // TODO: Pre-query validation
                 // Validate if necessary fields are not null
+            this.transactionReportsValidator.validateCreatePayload(req.body, ['bookingID', 'paymentID', 'specsID', 'seekerID', 'providerID', 'serviceID']);
                 // Validate if bookingID exists in the database
+            await this.transactionReportsValidator.validateExistence(bookingID, 'booking');
                 // Validate if paymentID exists in the database
+            await this.transactionReportsValidator.validateExistence(paymentID, 'payment');
                 // Validate if specsID exists in the database
+            await this.transactionReportsValidator.validateExistence(specsID, 'specs');
                 // Validate if seekerID exists in the database
+            await this.transactionReportsValidator.validateExistence(seekerID, 'seeker');
                 // Validate if providerID exists in the database
+            await this.transactionReportsValidator.validateExistence(providerID, 'provider');
                 // Validate if serviceID exists in the database
+            await this.transactionReportsValidator.validateExistence(serviceID, 'service');
 
             let reportID = this.nanoid(14);
 
@@ -60,12 +65,12 @@ class TransactionReportsController {
             });
         } catch (error) {
             // TODO: Handle error
-            console.log(error);
+            next(error);
         }
     };
 
     // PATCH: "/:reportID"
-    patchTransactionReport = async (req, res) => {
+    patchTransactionReport = async (req, res, next) => {
         try {
             let {
                 bookingID,
@@ -81,14 +86,23 @@ class TransactionReportsController {
 
             // TODO: Pre-query validation
                 // Validate if reportID is not null
+            this.transactionReportsValidator.checkRequiredParameters(req.params, ['reportID']);
                 // Validate if reportID exists in the database
+            await this.transactionReportsValidator.validateExistence(reportID, 'report');
                 // Validate if necessary fields are not null
+            this.transactionReportsValidator.validatePatchPayload(req.body);
                 // Validate if bookingID exists in the database
+            bookingID != null && await this.transactionReportsValidator.validateExistence(bookingID, 'booking');
                 // Validate if paymentID exists in the database
+            paymentID != null && await this.transactionReportsValidator.validateExistence(paymentID, 'payment');
                 // Validate if specsID exists in the database
+            specsID != null && await this.transactionReportsValidator.validateExistence(specsID, 'specs');
                 // Validate if seekerID exists in the database
+            seekerID != null && await this.transactionReportsValidator.validateExistence(seekerID, 'seeker');
                 // Validate if providerID exists in the database
+            providerID != null && await this.transactionReportsValidator.validateExistence(providerID, 'provider');
                 // Validate if serviceID exists in the database
+            serviceID != null && await this.transactionReportsValidator.validateExistence(serviceID, 'service');
             
             await this.transactionReportsRepo.patchTransactionReport(
                 reportID,
@@ -113,25 +127,27 @@ class TransactionReportsController {
             });
         } catch (error) {
             // TODO: Handle error
-            console.log(error);
+            next(error);
         }
     };
 
     // DELETE: "/:reportID"
-    deleteTransactionReport = async (req, res) => {
+    deleteTransactionReport = async (req, res, next) => {
         try {
             let {reportID} = req.params;
 
             // TODO: Pre-query validation
                 // Validate if reportID is not null
+            this.transactionReportsValidator.checkRequiredParameters(req.params, ['reportID']);
                 // Validate if reportID exists in the database
+            await this.transactionReportsValidator.validateExistence(reportID, 'report');
             
             await this.transactionReportsRepo.deleteTransactionReport(reportID);
 
             res.status(204);
         } catch (error) {
             // TODO: Handle error
-            console.log(error);
+            next(error);
         }
     };
 
@@ -152,12 +168,12 @@ class TransactionReportsController {
             });
         } catch (error) {
             // TODO: Handle error
-            console.log(error);
+            next(error);
         }
     };
 
     // GET: ""
-    getTransactionReports = async (req, res) => {
+    getTransactionReports = async (req, res, next) => {
         try {
             let transactionReports = await this.transactionReportsRepo.getTransactionReports();
 
@@ -167,18 +183,20 @@ class TransactionReportsController {
             });
         } catch (error) {
             // TODO: Handle error
-            console.log(error);
+            next(error);
         }
     };
 
     // GET: "/seeker/:seekerID"
-    getTransactionReportsBySeekerID = async (req, res) => {
+    getTransactionReportsBySeekerID = async (req, res, next) => {
         try {
             let {seekerID} = req.params;
 
             // TODO: Pre-query validation
                 // Validate if seekerID is not null
+            this.transactionReportsValidator.checkRequiredParameters(req.params, ['seekerID']);
                 // Validate if seekerID exists in the database
+            await this.transactionReportsValidator.validateExistence(seekerID, 'seeker');
             
             let transactionReports = await this.transactionReportsRepo.getTransactionReportsBySeekerID(seekerID);
 
@@ -188,18 +206,20 @@ class TransactionReportsController {
             });
         } catch (error) {
             // TODO: Handle error
-            console.log(error);
+            next(error);
         }
     };
 
     // GET: "/provider/:providerID"
-    getTransactionReportsByProviderID = async (req, res) => {
+    getTransactionReportsByProviderID = async (req, res, next) => {
         try {
             let {providerID} = req.params;
 
             // TODO: Pre-query validation
                 // Validate if providerID is not null
+            this.transactionReportsValidator.checkRequiredParameters(req.params, ['providerID']);
                 // Validate if providerID exists in the database
+            await this.transactionReportsValidator.validateExistence(providerID, 'provider');
             
             let transactionReports = await this.transactionReportsRepo.getTransactionReportsByProviderID(providerID);
 
@@ -209,18 +229,20 @@ class TransactionReportsController {
             });
         } catch (error) {
             // TODO: Handle error
-            console.log(error);
+            next(error);
         }
     };
 
     // GET: "/service/:serviceID"
-    getTransactionReportsByServiceID = async (req, res) => {
+    getTransactionReportsByServiceID = async (req, res, next) => {
         try {
             let {serviceID} = req.params;
 
             // TODO: Pre-query validation
                 // Validate if serviceID is not null
+            this.transactionReportsValidator.checkRequiredParameters(req.params, ['serviceID']);
                 // Validate if serviceID exists in the database
+            await this.transactionReportsValidator.validateExistence(serviceID, 'service');
             
             let transactionReports = await this.transactionReportsRepo.getTransactionReportsByServiceID(serviceID);
 
@@ -230,17 +252,18 @@ class TransactionReportsController {
             });
         } catch (error) {
             // TODO: Handle error
-            console.log(error);
+            next(error);
         }
     };
 
     // GET: "/status/:statusID"
-    getTransactionReportsByStatusCode = async (req, res) => {
+    getTransactionReportsByStatusCode = async (req, res, next) => {
         try {
             let {statusID} = req.params;
 
             // TODO: Pre-query validation
                 // Validate if statusCode is not null
+            this.transactionReportsValidator.checkRequiredParameters(req.params, ['statusID']);
             
             let transactionReports = await this.transactionReportsRepo.getTransactionReportsByStatusCode(statusID);
 
@@ -250,17 +273,18 @@ class TransactionReportsController {
             });
         } catch (error) {
             // TODO: Handle error
-            console.log(error);
+            next(error);
         }
     };
 
     // GET: "/:reportID"
-    getTransactionReportByID = async (req, res) => {
+    getTransactionReportByID = async (req, res, next) => {
         try {
             let {reportID} = req.params;
 
             // TODO: Pre-query validation
                 // Validate if reportID is not null
+            this.transactionReportsValidator.checkRequiredParameters(req.params, ['reportID']);
 
             let transactionReport = await this.transactionReportsRepo.getTransactionReportByID(reportID);
 
@@ -273,7 +297,7 @@ class TransactionReportsController {
             });
         } catch (error) {
             // TODO: Handle error
-            console.log(error);
+            next(error);
         }
     };
 }

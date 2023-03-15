@@ -48,7 +48,6 @@ class AddressRepository {
             ]);
         } catch (error) {
             // TODO: Handle error
-            console.log(error);
             throw error;
         }
     };
@@ -97,7 +96,6 @@ class AddressRepository {
             ]);
         } catch (error) {
             // TODO: Handle error
-            console.log(error);
             throw error;
         }
     };
@@ -108,7 +106,6 @@ class AddressRepository {
             await this.db.query(sqlQuery, [addressID]);
         } catch (error) {
             //TODO: Handle error
-            console.log(error);
             throw error;
         }
     };
@@ -119,7 +116,6 @@ class AddressRepository {
             await this.db.query(sqlQuery, [addressID, userID]);
         } catch (error) {
             //TODO: Handle error
-            console.log(error);
             throw error;
         }
     };
@@ -131,7 +127,6 @@ class AddressRepository {
             return result[0];
         } catch (error) {
             //TODO: Handle error
-            console.log(error);
             throw error;
         }
     };
@@ -143,7 +138,6 @@ class AddressRepository {
             return result[0];
         } catch (error) {
             //TODO: Handle error
-            console.log(error);
             throw error;
         }
     };
@@ -155,7 +149,6 @@ class AddressRepository {
             return result[0][0];
         } catch (error) {
             //TODO: Handle error
-            console.log(error);
             throw error;
         }
     };
@@ -166,7 +159,6 @@ class AddressRepository {
             let [result, _] = await this.db.query(sqlQuery);
             return result[0];
         } catch (error) {
-            console.log(error);
             throw error;
         }
     };
@@ -177,7 +169,6 @@ class AddressRepository {
             let [result, _] = await this.db.query(sqlQuery);
             return result[0];
         } catch (error) {
-            console.log(error);
             throw error;
         }
     }

@@ -2,19 +2,17 @@ class MessageController {
     constructor(
         messageRepo,
         clientErrors,
-        serverErrors,
-        messageValidator = null,
+        messageValidator,
         nanoid
     ) {
         this.messageRepo = messageRepo;
         this.clientErrors = clientErrors;
-        this.serverErrors = serverErrors;
         this.messageValidator = messageValidator;
         this.nanoid = nanoid;
     }
 
     // POST: ""
-    createMessage = async(req, res) => {
+    createMessage = async(req, res, next) => {
         try {
             let {
                 bookingID,
@@ -26,8 +24,11 @@ class MessageController {
 
             // Pre-query validations
                 // Validate if necessary fields are not null
+            this.messageValidator.validateCreatePayload(req.body, ['bookingID', 'userID', 'dateTimestamp']);
                 // Validate if bookingID exists in database
+            await this.messageValidator.validateExistence(bookingID, 'booking');
                 // Validate if userID exists in database
+            await this.messageValidator.validateExistence(userID, 'user');
 
             let messageID = this.nanoid(14);
 
@@ -51,12 +52,12 @@ class MessageController {
             });
         } catch (error) {
             // TODO: Handle error
-            console.log(error);
+            next(error);
         }
     };
 
     // PATCH: "/:messageID"
-    patchMessage = async(req, res) => {
+    patchMessage = async(req, res, next) => {
         try {
             let {
                 bookingID,
@@ -69,11 +70,16 @@ class MessageController {
             let {messageID} = req.params;
             
             // TODO: Pre-query validations
-                // Validate if not all fields are null
-                // Validate if bookingID exists in database
-                // Validate if userID exists in database
                 // Validate if messageID is not null
+            this.messageValidator.checkRequiredParameters(req.params, ['messageID']);
                 // Validate if messageID exists in database
+            await this.messageValidator.validateExistence(messageID, 'message');
+                // Validate if not all fields are null
+            this.messageValidator.validatePatchPayload(req.body);
+                // Validate if bookingID exists in database
+            bookingID != null && await this.messageValidator.validateExistence(bookingID, 'booking');
+                // Validate if userID exists in database
+            userID != null && await this.messageValidator.validateExistence(userID, 'user');
 
             await this.messageRepo.patchMessage(
                 messageID,
@@ -95,30 +101,32 @@ class MessageController {
             });
         } catch (error) {
             // TODO: Handle error
-            console.log(error);
+            next(error);
         }
     };
 
     // DELETE: "/:messageID"
-    deleteMessage = async(req, res) => {
+    deleteMessage = async(req, res, next) => {
         try {
             let {messageID} = req.params;
 
             // TODO: Pre-query validations
                 // Validate if messageID is not null
+            this.messageValidator.checkRequiredParameters(req.params, ['messageID']);
                 // Validate if messageID exists in database
+            await this.messageValidator.validateExistence(messageID, 'message');
             
             await this.messageRepo.deleteMessage(messageID);
             
             res.status(204);
         } catch (error) {
             // TODO: Handle error
-            console.log(error);
+            next(error);
         }
     };
 
     // GET: ""
-    getMessages = async(req, res) => {
+    getMessages = async(req, res, next) => {
         try {
             let messages = await this.messageRepo.getMessages();
 
@@ -128,7 +136,7 @@ class MessageController {
             });
         } catch (error) {
             // TODO: Handle error
-            console.log(error);
+            next(error);
         }
     };
 
@@ -140,9 +148,10 @@ class MessageController {
 
             // TODO: Pre-query validations
                 // Validate if bookingID is not null
+            this.messageValidator.checkRequiredParameters(req.params, ['bookingID']);
                 // Validate if bookingID exists in database
+            await this.messageValidator.validateExistence(bookingID, 'booking');
                 // Validate if keyword is not null
-
             if (keyword == null) {
                 return next();
             }
@@ -155,18 +164,20 @@ class MessageController {
             });
         } catch (error) {
             // TODO: Handle error
-            console.log(error);
+            next();
         }
     };
 
     // GET: "/booking/:bookingID"
-    getBookingMessages = async(req, res) => {
+    getBookingMessages = async(req, res, next) => {
         try {
             let {bookingID} = req.params;
 
             // TODO: Pre-query validations
                 // Validate if bookingID is not null
+            this.messageValidator.checkRequiredParameters(req.params, ['bookingID']);
                 // Validate if bookingID exists in database
+            await this.messageValidator.validateExistence(bookingID, 'booking');
             
             let messages = await this.messageRepo.getBookingMessages(bookingID);
 
@@ -176,17 +187,18 @@ class MessageController {
             });
         } catch (error) {
             // TODO: Handle error
-            console.log(error);
+            next(error);
         }
     };
 
     // GET: "/:messageID"
-    getMessage = async(req, res) => {
+    getMessage = async(req, res, next) => {
         try {
             let {messageID} = req.params;
 
             // TODO: Pre-query validations
                 // Validate if messageID is not null
+            this.messageValidator.checkRequiredParameters(req.params, ['messageID']);
             
             let message = await this.messageRepo.getMessage(messageID);
 
@@ -199,7 +211,7 @@ class MessageController {
             });
         } catch (error) {
             // TODO: Handle error
-            console.log(error);
+            next(error);
         }
     };
 

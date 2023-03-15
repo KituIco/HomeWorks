@@ -2,19 +2,17 @@ class ServiceTypeController {
     constructor(
         serviceTypeRepo,
         clientErrors,
-        serverErrors,
-        serviceTypeValidator = null,
+        serviceTypeValidator,
         nanoid
     ) {
         this.serviceTypeRepo = serviceTypeRepo;
         this.clientErrors = clientErrors;
-        this.serverErrors = serverErrors;
         this.serviceTypeValidator = serviceTypeValidator;
         this.nanoid = nanoid;
     }
 
     // POST: ""
-    createServiceType = async (req, res) => {
+    createServiceType = async (req, res, next) => {
         try {
             let {
                 typeName,
@@ -25,8 +23,7 @@ class ServiceTypeController {
             let typeID = this.nanoid(14);
 
             // TODO: Pre-query validation
-                // Validate if typeName is not null
-                // Validate if typeDesc is not null
+            this.serviceTypeValidator.validateCreatePayload(req.body, ['typeName', 'typeDesc']);
 
             await this.serviceTypeRepo.createServiceType(
                 typeID,
@@ -47,12 +44,12 @@ class ServiceTypeController {
             });
         } catch (error) {
             // TODO: Handle error
-            console.log(error);
+            next(error);
         }
     };
 
     // PATCH: "/:typeID"
-    patchServiceType = async (req, res) => {
+    patchServiceType = async (req, res, next) => {
         try {
             let {
                 typeName,
@@ -63,10 +60,9 @@ class ServiceTypeController {
             let {typeID} = req.params;
 
             // TODO: Pre-query validation
-                // Validate if typeID is not null
-                // Validate if typeID exists in the database
-                // Validate if typeName is not null
-                // Validate if typeDesc is not null
+            this.serviceTypeValidator.checkRequiredParameters(req.params, ['typeID']);
+            await this.serviceTypeValidator.validateExistence(typeID);
+            this.serviceTypeValidator.validatePatchPayload(req.body);
 
             await this.serviceTypeRepo.patchServiceType(
                 typeID,
@@ -87,30 +83,30 @@ class ServiceTypeController {
             });
         } catch (error) {
             // TODO: Handle error
-            console.log(error);
+            next(error);
         }
     };
 
     // DELETE: "/:typeID"
-    deleteServiceType = async (req, res) => {
+    deleteServiceType = async (req, res, next) => {
         try {
             let {typeID} = req.params;
 
             // TODO: Pre-query validation
-                // Validate if typeID is not null
-                // Validate if typeID exists in the database
+            this.serviceTypeValidator.checkRequiredParameters(req.params, ['typeID']);
+            await this.serviceTypeValidator.validateExistence(typeID);
 
             await this.serviceTypeRepo.deleteServiceType(typeID);
 
             res.status(204);
         } catch (error) {
             // TODO: Handle error
-            console.log(error);
+            next(error);
         }
     };
 
     // GET: ""
-    getServiceTypes = async (req, res) => {
+    getServiceTypes = async (req, res, next) => {
         try {
             let serviceTypes = await this.serviceTypeRepo.getServiceTypes();
 
@@ -120,17 +116,18 @@ class ServiceTypeController {
             });
         } catch (error) {
             // TODO: Handle error
-            console.log(error);
+            next(error);
         }
     };
 
     // GET: "/:typeID"
-    getServiceTypeByID = async (req, res) => {
+    getServiceTypeByID = async (req, res, next) => {
         try {
             let {typeID} = req.params;
 
             // TODO: Pre-query validation
                 // Validate if typeID is not null
+            this.serviceTypeValidator.checkRequiredParameters(req.params, ['typeID']);
 
             let serviceType = await this.serviceTypeRepo.getServiceTypeByID(typeID);
 
@@ -143,7 +140,7 @@ class ServiceTypeController {
             });
         } catch (error) {
             // TODO: Handle error
-            console.log(error);
+            next(error);
         }
     };
 }

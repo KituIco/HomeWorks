@@ -2,19 +2,17 @@ class PortfolioController {
     constructor(
         portfolioRepo,
         clientErrors,
-        serverErrors,
-        portfolioValidator = null,
+        portfolioValidator,
         nanoid
     ) {
         this.portfolioRepo = portfolioRepo;
         this.clientErrors = clientErrors;
-        this.serverErrors = serverErrors;
         this.portfolioValidator = portfolioValidator;
         this.nanoid = nanoid;
     }
 
     // POST: ""
-    createPortfolio = async (req, res) => {
+    createPortfolio = async (req, res, next) => {
         try {
             let {
                 serviceID,
@@ -25,7 +23,9 @@ class PortfolioController {
 
             // TODO: Pre-query validation
                 // validate if necessary fields are not null
+            this.portfolioValidator.validateCreatePayload(req.body, ['serviceID'])
                 // validate if serviceID exists
+            await this.portfolioValidator.validateExistence(serviceID, 'service')
 
             let portfolioID = this.nanoid(14);
 
@@ -48,12 +48,12 @@ class PortfolioController {
             });
         } catch (error) {
             // TODO: Handle error
-            console.log(error);
+            next(error);
         }
     };
 
     // PATCH: "/:portfolioID"
-    patchPortfolio = async (req, res) => {
+    patchPortfolio = async (req, res, next) => {
         try {
             let {
                 serviceID,
@@ -65,10 +65,14 @@ class PortfolioController {
             let {portfolioID} = req.params;
 
             // TODO: Pre-query validation
-                // validate if necessary fields are not null
-                // validate if serviceID exists
                 // validate if portfolioID is not null
+            this.portfolioValidator.checkRequiredParameters(req.params, ['portfolioID'])
                 // validate if portfolioID exists
+            await this.portfolioValidator.validateExistence(portfolioID, 'portfolio')
+                // validate if not all fields are null
+            this.portfolioValidator.validatePatchPayload(req.body);
+                // validate if serviceID exists
+            await this.portfolioValidator.validateExistence(serviceID, 'service')
             
             await this.portfolioRepo.patchPortfolio(
                 portfolioID,
@@ -89,30 +93,32 @@ class PortfolioController {
             });
         } catch (error) {
             // TODO: Handle error
-            console.log(error);
+            next(error);
         }
     };
 
     // DELETE: "/:portfolioID"
-    deletePortfolio = async (req, res) => {
+    deletePortfolio = async (req, res, next) => {
         try {
             let {portfolioID} = req.params;
 
             // TODO: Pre-query validation
                 // validate if portfolioID is not null
+            this.portfolioValidator.checkRequiredParameters(req.params, ['portfolioID'])
                 // validate if portfolioID exists
+            await this.portfolioValidator.validateExistence(portfolioID, 'portfolio')
             
             await this.portfolioRepo.deletePortfolio(portfolioID);
 
             res.status(204);
         } catch (error) {
             // TODO: Handle error
-            console.log(error);
+            next(error);
         }
     };
 
     // GET: ""
-    getAllPortfolios = async (req, res) => {
+    getAllPortfolios = async (req, res, next) => {
         try {
             let portfolios = await this.portfolioRepo.getAllPortfolios();
 
@@ -122,7 +128,7 @@ class PortfolioController {
             });
         } catch (error) {
             // TODO: Handle error
-            console.log(error);
+            next(error);
         }
     };
 
@@ -133,7 +139,9 @@ class PortfolioController {
 
             // TODO: Pre-query validation
                 // validate if serviceID is not null
+            this.portfolioValidator.checkRequiredQueryParameters(req.query, ['serviceID', 'sortedByPrice'])
                 // validate if serviceID exists
+            await this.portfolioValidator.validateExistence(serviceID, 'service')
 
             if (sortedByPrice == null) {
                 return next();
@@ -145,7 +153,9 @@ class PortfolioController {
                 portfolios = await this.portfolioRepo.getServicePortfoliosSortedByPriceAsc(serviceID, sortedByPrice);
             } else if (sortedByPrice === "desc") {
                 portfolios = await this.portfolioRepo.getServicePortfoliosSortedByPriceDesc(serviceID, sortedByPrice);
-            } 
+            }  else {
+                throw new this.clientErrors.Api400Error("Invalid sortedByPrice query parameter value");
+            }
 
             res.status(200).json({
                 message: `Portfolios of service ${serviceID} sorted by price ${sortedByPrice} retrieved successfully`,
@@ -153,18 +163,20 @@ class PortfolioController {
             });
         } catch (error) {
             // TODO: Handle error
-            console.log(error);
+            next();
         }
     };
 
     // GET: "/service?serviceID"
-    getServicePortfolios = async (req, res) => {
+    getServicePortfolios = async (req, res, next) => {
         try {
             let {serviceID} = req.query;
 
             // TODO: Pre-query validation
                 // validate if serviceID is not null
+            this.portfolioValidator.checkRequiredQueryParameters(req.query, ['serviceID'])
                 // validate if serviceID exists
+            await this.portfolioValidator.validateExistence(serviceID, 'service')
             
             let portfolios = await this.portfolioRepo.getServicePortfolios(serviceID);
 
@@ -174,18 +186,20 @@ class PortfolioController {
             });
         } catch (error) {
             // TODO: Handle error
-            console.log(error);
+            next(error);
         }
     };
 
     // GET: "/:portfolioID"
-    getPortfolio = async (req, res) => {
+    getPortfolio = async (req, res, next) => {
         try {
             let {portfolioID} = req.params;
 
             // TODO: Pre-query validation
                 // validate if portfolioID is not null
+            this.portfolioValidator.checkRequiredParameters(req.params, ['portfolioID'])
                 // validate if portfolioID exists
+            await this.portfolioValidator.validateExistence(portfolioID, 'portfolio')
             
             let portfolio = await this.portfolioRepo.getPortfolio(portfolioID);
 
@@ -195,7 +209,7 @@ class PortfolioController {
             });
         } catch (error) {
             // TODO: Handle error
-            console.log(error);
+            next(error);
         }
     };
 }

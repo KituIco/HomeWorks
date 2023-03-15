@@ -2,18 +2,16 @@ class AgencyController {
     constructor(
         agencyRepo,
         clientErrors,
-        serverErrors,
-        agencyValidator = null,
+        agencyValidator,
         nanoid
     ) {
         this.agencyRepo = agencyRepo;
         this.clientErrors = clientErrors;
-        this.serverErrors = serverErrors;
         this.agencyValidator = agencyValidator;
         this.nanoid = nanoid;
     }
     // POST: ""
-    createAgency = async(req, res) => {
+    createAgency = async(req, res, next) => {
         try {
             let {
                 agencyName,
@@ -26,6 +24,7 @@ class AgencyController {
 
             // TODO: Pre-query validations
                 // Validate if necessary fields are not null
+            this.agencyValidator.validateCreatePayload(req.body, ['agencyName']);
             
             let agencyID = this.nanoid(14);
 
@@ -50,12 +49,12 @@ class AgencyController {
             });
         } catch (error) {
             //TODO: Handle error
-            console.log(error);
+            next(error);
         }
     };
 
     // PATCH: "/:agencyID"
-    patchAgency = async(req, res) => {
+    patchAgency = async(req, res, next) => {
         try {
             let {
                 agencyName,
@@ -69,9 +68,12 @@ class AgencyController {
             let {agencyID} = req.params;
 
             // TODO: Pre-query validations
-                // Validate if necessary fields are not null
                 // Validate if agencyID is not null
+            this.agencyValidator.checkRequiredParameters(req.params, ['agencyID']);
                 // Validate if agencyID exists in database
+            await this.agencyValidator.validateExistence(agencyID, 'agency');
+                // Validate if necessary fields are not null
+            this.agencyValidator.validatePatchPayload(req.body);
             
             await this.agencyRepo.patchAgency(
                 agencyID,
@@ -94,34 +96,37 @@ class AgencyController {
             });
         } catch (error) {
             //TODO: Handle error
-            console.log(error);
+            next(error);
         }
     };
 
     // DELETE: "/:agencyID"
-    deleteAgency = async(req, res) => {
+    deleteAgency = async(req, res, next) => {
         try {
             let {agencyID} = req.params;
 
             // TODO: Pre-query validations
                 // Validate if agencyID is not null
+            this.agencyValidator.checkRequiredParameters(req.params, ['agencyID']);
                 // Validate if agencyID exists in database
+            await this.agencyValidator.validateExistence(agencyID, 'agency');
 
             await this.agencyRepo.deleteAgency(agencyID);
             res.status(204)
         } catch (error) {
             //TODO: Handle error
-            console.log(error);
+            next(error);
         }
     };
 
     // GET: "/:agencyID"
-    getAgencyByID = async(req, res) => {
+    getAgencyByID = async(req, res, next) => {
         try {
             let {agencyID} = req.params;
 
             // TODO: Pre-query validations
                 // Validate if agencyID is not null
+            this.agencyValidator.checkRequiredParameters(req.params, ['agencyID']);
 
             let agency = await this.agencyRepo.getAgencyByID(agencyID);
 
@@ -134,12 +139,12 @@ class AgencyController {
             });
         } catch (error) {
             //TODO: Handle error
-            console.log(error);
+            next(error);
         }
     };
 
     // GET: ""
-    getAllAgency = async(req, res) => {
+    getAllAgency = async(req, res, next) => {
         try {
             let agencies = await this.agencyRepo.getAllAgency();
             
@@ -149,18 +154,20 @@ class AgencyController {
             });
         } catch (error) {
             //TODO: Handle error
-            console.log(error);
+            next(error);
         }
     };
 
     // GET: "/:agencyID/providers"
-    getAgencyProviders = async(req, res) => {
+    getAgencyProviders = async(req, res, next) => {
         try {
             let {agencyID} = req.params;
 
             // TODO: Pre-query validations
                 // Validate if agencyID is not null
+            this.agencyValidator.checkRequiredParameters(req.params, ['agencyID']);
                 // Validate if agencyID exists in database
+            await this.agencyValidator.validateExistence(agencyID, 'agency');
             
             let providers = await this.agencyRepo.getAgencyProviders(agencyID);
             res.status(200).json({
@@ -169,18 +176,20 @@ class AgencyController {
             });
         } catch (error) {
             //TODO: Handle error
-            console.log(error);
+            next(error);
         }
     };
 
     // GET: "/:agencyID/service-types"
-    getAgencyServiceTypes = async(req, res) => {
+    getAgencyServiceTypes = async(req, res, next) => {
         try {
             let {agencyID} = req.params;
 
             // TODO: Pre-query validations
                 // Validate if agencyID is not null
+            this.agencyValidator.checkRequiredParameters(req.params, ['agencyID']);
                 // Validate if agencyID exists in database
+            await this.agencyValidator.validateExistence(agencyID, 'agency');
             
             let serviceTypes = await this.agencyRepo.getAgencyServiceTypes(agencyID);
 
@@ -190,70 +199,90 @@ class AgencyController {
             });
         } catch (error) {
             //TODO: Handle error
-            console.log(error);
+            next(error);
         }
     };
 
     // PATCH: "/:agencyID/providers?providerID="
-    addProviderToAgency = async(req, res) => {
+    addProviderToAgency = async(req, res, next) => {
         try {
             let {agencyID} = req.params;
             let {providerID} = req.query;
 
             // TODO: Pre-query validations
                 // Validate if agencyID is not null
+            this.agencyValidator.checkRequiredParameters(req.params, ['agencyID']);
                 // Validate if providerID is not null
+            this.agencyValidator.checkRequiredQueryParameters(req.query, ['providerID'])
                 // Validate if agencyID exists in database
+            await this.agencyValidator.validateExistence(agencyID, 'agency');
                 // Validate if providerID exists in database
+            await this.agencyValidator.validateExistence(providerID, 'provider');
 
             await this.agencyRepo.addProviderToAgency(agencyID, providerID);
 
             // TODO: Post-query validations
                 // Get updated provider
+            let updatedProvider = {
+                ...provider
+            }
+            updatedProvider.agencyID = agencyID;
+
             res.status(200).json({
-                message: `Provider ${providerID} added to agency ${agencyID} successfully`
-                // body: updatedProvider
+                message: `Provider ${providerID} added to agency ${agencyID} successfully`,
+                body: updatedProvider
             });
 
         } catch (error) {
             //TODO: Handle error
-            console.log(error);
+            next(error);
         }
     };
 
     // PATCH: "/providers/:providerID"
-    removeProviderFromAgency = async(req, res) => {
+    removeProviderFromAgency = async(req, res, next) => {
         try {
             let {providerID} = req.params;
 
             // TODO: Pre-query validations
                 // Validate if providerID is not null
+            this.agencyValidator.checkRequiredParameters(req.params, ['providerID']);
                 // Validate if providerID exists in database
+            await this.agencyValidator.validateExistence(providerID, 'provider');
             
             await this.agencyRepo.removeProviderFromAgency(providerID);
 
             // TODO: Post-query validations
                 // Get updated provider
+            
+            let updatedProvider = {
+                ...provider
+            }
+            updatedProvider.agencyID = null;
+
             res.status(200).json({
-                message: `Provider ${providerID} removed from agency successfully`
-                // body: updatedProvider
+                message: `Provider ${providerID} removed from agency successfully`,
+                body: updatedProvider
             });
         } catch (error) {
             //TODO: Handle error
-            console.log(error);
+            next(error);
         }
     };
 
     // GET: "/:agencyID/search-name?searchQuery="
-    searchProviderInAgency = async(req, res) => {
+    searchProviderInAgency = async(req, res, next) => {
         try {
             let {agencyID} = req.params;
             let {searchQuery} = req.query;
 
             // TODO: Pre-query validations
                 // Validate if agencyID is not null
+            this.agencyValidator.checkRequiredParameters(req.params, ['agencyID']);
                 // Validate if searchQuery is not null
+            this.agencyValidator.checkRequiredQueryParameters(req.query, ['searchQuery']);
                 // Validate if agencyID exists in database
+            await this.agencyValidator.validateExistence(agencyID, 'agency');
 
             let providers = await this.agencyRepo.searchProviderInAgency(agencyID, searchQuery);
 
@@ -263,7 +292,7 @@ class AgencyController {
             });
         } catch (error) {
             //TODO: Handle error
-            console.log(error);
+            next(error);
         }
     };
 }

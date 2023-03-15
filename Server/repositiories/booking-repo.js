@@ -28,7 +28,6 @@ class BookingRepository {
             ]);
         } catch (error) {
             //TODO: Handle SQL error
-            console.log(error);
             throw error;
         }
     };
@@ -68,7 +67,6 @@ class BookingRepository {
             await this.db.query(sqlQuery, [bookingID]);
         } catch (error) {
             //TODO: Handle SQL error
-            console.log(error);
             throw error;
         }
     };
@@ -80,7 +78,6 @@ class BookingRepository {
             return result[0];
         } catch (error) {
             //TODO: Handle SQL error
-            console.log(error);
             throw error;
         }
     };
@@ -92,7 +89,6 @@ class BookingRepository {
             return result[0];
         } catch (error) {
             //TODO: Handle SQL error
-            console.log(error);
             throw error;
         }
     };
@@ -104,7 +100,6 @@ class BookingRepository {
             return result[0];
         } catch (error) {
             //TODO: Handle SQL error
-            console.log(error);
             throw error;
         }
     };
@@ -116,7 +111,6 @@ class BookingRepository {
             return result[0][0];
         } catch (error) {
             //TODO: Handle SQL error
-            console.log(error);
             throw error;
         }
     };

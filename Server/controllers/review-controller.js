@@ -2,19 +2,17 @@ class ReviewController {
     constructor(
         reviewRepo,
         clientErrors,
-        serverErrors,
-        reviewValidator = null,
+        reviewValidator,
         nanoid
     ) {
         this.reviewRepo = reviewRepo;
         this.clientErrors = clientErrors;
-        this.serverErrors = serverErrors;
         this.reviewValidator = reviewValidator;
         this.nanoid = nanoid;
     }
 
     // POST: ""
-    createReview = async (req, res) => {
+    createReview = async (req, res, next) => {
         try {
             let {
                 serviceID,
@@ -27,8 +25,11 @@ class ReviewController {
 
             // TODO: Pre-query validation
                 // validate if necessary fields are not null
+            this.reviewValidator.validateCreatePayload(req.body, ['serviceID', 'seekerID', 'dateTimestamp', 'rating']);
                 // validate if serviceID exists
+            await this.reviewValidator.validateExistence(serviceID, 'service');
                 // validate if seekerID exists
+            await this.reviewValidator.validateExistence(seekerID, 'seeker');
 
             let reviewID = this.nanoid(14);
 
@@ -54,12 +55,12 @@ class ReviewController {
             });
         } catch (error) {
             // TODO: Handle error
-            console.log(error);
+            next(error);
         }
     };
 
     // PATCH: "/:reviewID"
-    patchReview = async (req, res) => {
+    patchReview = async (req, res, next) => {
         try {
             let {
                 serviceID,
@@ -73,10 +74,15 @@ class ReviewController {
             let { reviewID } = req.params;
 
             // TODO: Pre-query validation
-                // validate if necessary fields are not null
-                // validate if serviceID exists
-                // validate if seekerID exists
+            this.reviewValidator.checkRequiredParameters(req.params, ['reviewID']);
                 // validate if reviewID exists
+            await this.reviewValidator.validateExistence(reviewID, 'review');
+                // validate if necessary fields are not null
+            this.reviewValidator.validatePatchPayload(req.body);
+                // validate if serviceID exists
+            serviceID != null && await this.reviewValidator.validateExistence(serviceID, 'service');
+                // validate if seekerID exists
+            seekerID != null && await this.reviewValidator.validateExistence(seekerID, 'seeker');
             
             await this.reviewRepo.patchReview(
                 reviewID,
@@ -100,30 +106,32 @@ class ReviewController {
             });
         } catch (error) {
             // TODO: Handle error
-            console.log(error);
+            next(error);
         }
     };
 
     // DELETE: "/:reviewID"
-    deleteReview = async (req, res) => {
+    deleteReview = async (req, res, next) => {
         try {
             let { reviewID } = req.params;
 
             // TODO: Pre-query validation
                 // validate if reviewID is not null
+            this.reviewValidator.checkRequiredParameters(req.params, ['reviewID']);
                 // validate if reviewID exists
+            await this.reviewValidator.validateExistence(reviewID, 'review');
             
             await this.reviewRepo.deleteReview(reviewID);
 
             res.status(204);
         } catch (error) {
             // TODO: Handle error
-            console.log(error);
+            next(error);
         }
     };
 
     // GET: ""
-    getAllReviews = async (req, res) => {
+    getAllReviews = async (req, res, next) => {
         try {
             let reviews = await this.reviewRepo.getAllReviews();
 
@@ -133,18 +141,20 @@ class ReviewController {
             });
         } catch (error) {
             // TODO: Handle error
-            console.log(error);
+            next(error);
         }
     };
 
     // GET: "service/:serviceID"
-    getServiceReviews = async (req, res) => {
+    getServiceReviews = async (req, res, next) => {
         try {
             let { serviceID } = req.params;
 
             // TODO: Pre-query validation
                 // validate if serviceID is not null
+            this.reviewValidator.checkRequiredParameters(req.params, ['serviceID']);
                 // validate if serviceID exists
+            await this.reviewValidator.validateExistence(serviceID, 'service');
             
             let reviews = await this.reviewRepo.getServiceReviews(serviceID);
 
@@ -154,17 +164,18 @@ class ReviewController {
             });
         } catch (error) {
             // TODO: Handle error
-            console.log(error);
+            next(error);
         }
     };
 
     // GET: "/:reviewID"
-    getReview = async (req, res) => {
+    getReview = async (req, res, next) => {
         try {
             let { reviewID } = req.params;
 
             // TODO: Pre-query validation
                 // validate if reviewID is not null
+            this.reviewValidator.checkRequiredParameters(req.params, ['reviewID']);
 
             let review = await this.reviewRepo.getReview(reviewID);
 
@@ -177,7 +188,7 @@ class ReviewController {
             });
         } catch (error) {
             // TODO: Handle error
-            console.log(error);
+            next(error);
         }
     };
 }

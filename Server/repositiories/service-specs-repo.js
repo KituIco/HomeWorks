@@ -28,7 +28,6 @@ class ServiceSpecsRepository {
             ]);
         } catch (error) {
             // TODO: Handle SQL error
-            console.log(error);
             throw error;
         }
     };
@@ -57,7 +56,6 @@ class ServiceSpecsRepository {
             ]);
         } catch (error) {
             // TODO: Handle SQL error
-            console.log(error);
             throw error;
         }
     };
@@ -68,7 +66,6 @@ class ServiceSpecsRepository {
             await this.db.query(sqlQuery, [specsID]);
         } catch (error) {
             // TODO: Handle SQL error
-            console.log(error);
             throw error;
         }
     };
@@ -80,7 +77,6 @@ class ServiceSpecsRepository {
             return result[0];
         } catch (error) {
             // TODO: Handle SQL error
-            console.log(error);
             throw error;
         }
     };
@@ -92,7 +88,6 @@ class ServiceSpecsRepository {
             return result[0];
         } catch (error) {
             // TODO: Handle SQL error
-            console.log(error);
             throw error;
         }
     };
@@ -104,7 +99,6 @@ class ServiceSpecsRepository {
             return result[0];
         } catch (error) {
             // TODO: Handle SQL error
-            console.log(error);
             throw error;
         }
     };
@@ -116,7 +110,6 @@ class ServiceSpecsRepository {
             return result[0];
         } catch (error) {
             // TODO: Handle SQL error
-            console.log(error);
             throw error;
         }
     };
@@ -128,7 +121,6 @@ class ServiceSpecsRepository {
             return result[0];
         } catch (error) {
             // TODO: Handle SQL error
-            console.log(error);
             throw error;
         }
     };
@@ -140,7 +132,6 @@ class ServiceSpecsRepository {
             return result[0];
         } catch (error) {
             // TODO: Handle SQL error
-            console.log(error);
             throw error;
         }
     };
@@ -152,7 +143,6 @@ class ServiceSpecsRepository {
             return result[0];
         } catch (error) {
             // TODO: Handle SQL error
-            console.log(error);
             throw error;
         }
     };
@@ -164,7 +154,6 @@ class ServiceSpecsRepository {
             return result[0];
         } catch (error) {
             // TODO: Handle SQL error
-            console.log(error);
             throw error;
         }
     };
@@ -176,7 +165,6 @@ class ServiceSpecsRepository {
             return result[0][0];
         } catch (error) {
             // TODO: Handle SQL error
-            console.log(error);
             throw error;
         }
     };

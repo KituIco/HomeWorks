@@ -2,19 +2,17 @@ class BookingController {
     constructor (
         bookingRepo,
         clientErrors,
-        serverErrors,
-        bookingValidator = null,
+        bookingValidator,
         nanoid
     ) {
         this.bookingRepo = bookingRepo;
         this.clientErrors = clientErrors;
-        this.serverErrors = serverErrors;
         this.bookingValidator = bookingValidator;
         this.nanoid = nanoid;
     }
 
     // POST: ""
-    createBooking = async(req, res) => {
+    createBooking = async(req, res, next) => {
         try {
             let {
                 seekerID,
@@ -29,8 +27,11 @@ class BookingController {
             // Client Errors
             // Pre-query validations
                 // Validate if necessary fields are not null
+            this.bookingValidator.validateCreatePayload(req.body, ['seekerID', 'serviceID']);
                 // Validate if seekerID exists in database
+            await this.bookingValidator.validateExistence(seekerID, 'seeker');
                 // Validate if serviceID exists in databas
+            await this.bookingValidator.validateExistence(serviceID, 'service');
 
             let bookingID = this.nanoid(14);
 
@@ -56,12 +57,12 @@ class BookingController {
             });
         } catch (error) {
             //TODO: Handle error
-            console.log(error);
+            next(error);
         }
     };
 
     // PATCH: "/:bookingID"
-    patchBooking = async(req, res) => {
+    patchBooking = async(req, res, next) => {
         try {
             let {
                 seekerID,
@@ -77,11 +78,16 @@ class BookingController {
 
             // Client Errors
             // Pre-query validations
-                // Validate if not all fields are null
                 // Validate if bookingID is not null
+            this.bookingValidator.checkRequiredParameters(req.params, ['bookingID']);
                 // Validate if bookingID exists in database
+            await this.bookingValidator.validateExistence(bookingID, 'booking');
+                // Validate if not all fields are null
+            this.bookingValidator.validatePatchPayload(req.body);
                 // Validate if seekerID exists in database
+            seekerID != null && await this.bookingValidator.validateExistence(seekerID, 'seeker');
                 // Validate if serviceID exists in database
+            serviceID != null && await this.bookingValidator.validateExistence(serviceID, 'service');
             
             await this.bookingRepo.patchBooking(
                 bookingID,
@@ -105,30 +111,32 @@ class BookingController {
             });
         } catch (error) {
             //TODO: Handle error
-            console.log(error);
+            next(error);
         }
     };
 
     // DELETE: "/:bookingID"
-    deleteBooking = async(req, res) => {
+    deleteBooking = async(req, res, next) => {
         try {
             let {bookingID} = req.params;
 
             // Pre-query validations
                 // Validate if bookingID is not null
+            this.bookingValidator.checkRequiredParameters(req.params, ['bookingID']);
                 // Validate if bookingID exists in database
+            await this.bookingValidator.validateExistence(bookingID, 'booking');
             
             await this.bookingRepo.deleteBooking(bookingID);
 
             res.status(204);
         } catch (error) {
             //TODO: Handle error
-            console.log(error);
+            next(error);
         }
     };
 
     // GET: ""
-    getAllBookings = async(req, res) => {
+    getAllBookings = async(req, res, next) => {
         try {
             let bookings = await this.bookingRepo.getAllBookings();
             res.status(200).json({
@@ -137,17 +145,20 @@ class BookingController {
             });
         } catch (error) {
             //TODO: Handle error
-            console.log(error);
+            next(error);
         }
     };
 
     // GET: "/seeker/:seekerID"
-    getSeekerBookings = async(req, res) => {
+    getSeekerBookings = async(req, res, next) => {
         try {
             let {seekerID} = req.params;
 
             // Pre-query validations
                 // Validate if seekerID is not null
+            this.bookingValidator.checkRequiredParameters(req.params, ['seekerID']);
+                // Validate if seekerID exists in database
+            await this.bookingValidator.validateExistence(seekerID, 'seeker');
 
             let bookings = await this.bookingRepo.getSeekerBookings(seekerID);
 
@@ -157,17 +168,20 @@ class BookingController {
             });
         } catch (error) {
             //TODO: Handle error
-            console.log(error);
+            next(error);
         }
     };
 
     // GET: "/provider/:providerID"
-    getProviderBookings = async(req, res) => {
+    getProviderBookings = async(req, res, next) => {
         try {
             let {providerID} = req.params;
 
             // Pre-query validations
                 // Validate if providerID is not null
+            this.bookingValidator.checkRequiredParameters(req.params, ['providerID']);
+                // Validate if providerID exists in database
+            await this.bookingValidator.validateExistence(providerID, 'provider');
             
             let bookings = await this.bookingRepo.getProviderBookings(providerID);
 
@@ -177,16 +191,17 @@ class BookingController {
             });
         } catch (error) {
             //TODO: Handle error
-            console.log(error);
+            next(error);
         }
     };
 
-    getBookingByID = async(req, res) => {
+    getBookingByID = async(req, res, next) => {
         try {
             let {bookingID} = req.params;
 
             // Pre-query validations
                 // Validate if bookingID is not null
+            this.bookingValidator.checkRequiredParameters(req.params, ['bookingID']);
 
             let booking = await this.bookingRepo.getBookingByID(bookingID);
 
@@ -199,7 +214,7 @@ class BookingController {
             });
         } catch (error) {
             //TODO: Handle error
-            console.log(error);
+            next(error);
         }
     };
 }

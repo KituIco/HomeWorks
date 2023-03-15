@@ -22,7 +22,7 @@ class PortfolioRepository {
             ]);
         } catch (error) {
             // TODO: Handle SQL error
-            console.log(error);
+            throw error;
         }
     };
 
@@ -44,7 +44,7 @@ class PortfolioRepository {
             ]);
         } catch (error) {
             // TODO: Handle SQL error
-            console.log(error);
+            throw error;
         }
     };
 
@@ -54,7 +54,7 @@ class PortfolioRepository {
             await this.db.query(sqlQuery, [portfolioID]);
         } catch (error) {
             // TODO: Handle SQL error
-            console.log(error);
+            throw error;
         }
     };
 
@@ -65,7 +65,7 @@ class PortfolioRepository {
             return result[0];
         } catch (error) {
             // TODO: Handle SQL error
-            console.log(error);
+            throw error;
         }
     };
 
@@ -76,7 +76,7 @@ class PortfolioRepository {
             return result[0];
         } catch (error) {
             // TODO: Handle SQL error
-            console.log(error);
+            throw error;
         }
     };
 
@@ -87,7 +87,7 @@ class PortfolioRepository {
             return result[0];
         } catch (error) {
             // TODO: Handle SQL error
-            console.log(error);
+            throw error;
         }
     };
 
@@ -98,7 +98,7 @@ class PortfolioRepository {
             return result[0];
         } catch (error) {
             // TODO: Handle SQL error
-            console.log(error);
+            throw error;
         }
     };
 
@@ -109,7 +109,7 @@ class PortfolioRepository {
             return result[0][0];
         } catch (error) {
             // TODO: Handle SQL error
-            console.log(error);
+            throw error;
         }
     };
 }

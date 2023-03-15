@@ -1,24 +1,18 @@
 class AddressController{
     constructor(
         addressRepo,
-        userRepo,
         clientErrors,
-        serverErrors,
         addressValidator,
-        nanoid,
-        axios
+        nanoid
     ) {
         this.addressRepo = addressRepo;
-        this.userRepo = userRepo;
         this.clientErrors = clientErrors;
-        this.serverErrors = serverErrors;
         this.addressValidator = addressValidator;
         this.nanoid = nanoid;
-        this.axios = axios;
     }
 
     // POST: "" && need middleware to validate if user is logged in
-    createAddress = async(req, res) => {
+    createAddress = async(req, res, next) => {
         try {
             let {
                 userID,
@@ -39,16 +33,12 @@ class AddressController{
                 timeZone,
                 isDefault
             } = req.body;
-            console.log(req.body)
 
             // TODO: Validations
                 // Validate if necessary fields are not null
-            this.addressValidator.validateCreateAndUpdateAddressPayload(req.body);
+            this.addressValidator.validateCreatePayload(req.body, ['userID', 'userFullName', 'userNum', 'latitude', 'longitude', 'isDefault']);
                 // Validate if userID exists in database
-            let user = await this.userRepo.getUser(userID);
-            if (user == null) {
-                throw new this.clientErrors.Api404Error(`User with ID ${userID} does not exist`);
-            }
+            await this.addressValidator.validateExistence(userID, 'user');
                 
             let addressID = this.nanoid(14);
 
@@ -88,12 +78,12 @@ class AddressController{
             });
         } catch (error) {
             //TODO: Handle error
-            console.log(error);
+            next(error);
         }
     };
 
     // PATCH: "/:addressID" && need middleware to validate if user is logged in
-    patchAddress = async(req, res) => {
+    patchAddress = async(req, res, next) => {
         try {
             let {
                 userID,
@@ -120,18 +110,12 @@ class AddressController{
             // TODO: Validations
                 // Validate if addressID is not null
             this.addressValidator.checkRequiredParameters(req.params, ['addressID']);
-                // Validate if addressID exists in database
-            let address = await this.addressRepo.getAddressByID(addressID);
-            if (address == null) {
-                throw new this.clientErrors.Api404Error(`Address with ID ${addressID} does not exist`);
-            }
+            // Validate if addressID exists in database
+            await this.addressValidator.validateExistence(addressID, 'address');
+                // Validate if payload is not empty
+            this.addressValidator.validatePatchPayload(req.body);
 
-            if(userID) {
-                let user = await this.userRepo.getUser(userID);
-                if (user == null) {
-                    throw new this.clientErrors.Api404Error(`User with ID ${userID} does not exist`);
-                }
-            }
+            userID != null && await this.addressValidator.validateExistence(userID, 'user');
             
             await this.addressRepo.patchAddress(
                 addressID,
@@ -169,12 +153,12 @@ class AddressController{
             });
         } catch (error) {
             //TODO: Handle error
-            console.log(error);
+            next(error);
         }
     };
     
     // DELETE: "/:addressID" && need middleware to validate if user is logged in
-    deleteAddress = async(req, res) => {
+    deleteAddress = async(req, res, next) => {
         try {
             let { addressID } = req.params;
 
@@ -182,22 +166,19 @@ class AddressController{
                 // Validate if addressID is not null
             this.addressValidator.checkRequiredParameters(req.params, ['addressID']);
                 // Validate if addressID exists in database
-            let address = await this.addressRepo.getAddressByID(addressID);
-            if (address == null) {
-                throw new this.clientErrors.Api404Error(`Address with ID ${addressID} does not exist`);
-            }
+            await this.addressValidator.validateExistence(addressID, 'address');
 
             await this.addressRepo.deleteAddress(addressID);
 
             res.status(204)
         } catch (error) {
             //TODO: Handle error
-            console.log(error);
+            next(error);
         }
     };
 
     // GET: ""
-    getAllAddress = async(req, res) => {
+    getAllAddress = async(req, res, next) => {
         try {
             let addresses = await this.addressRepo.getAllAddress();
 
@@ -207,12 +188,12 @@ class AddressController{
             });
         } catch (error) {
             //TODO: Handle error
-            console.log(error);
+            next(error);
         }
     };
 
     // GET: "/user/:userID"
-    getAllAddressOfUser = async(req, res) => {
+    getAllAddressOfUser = async(req, res, next) => {
         try {
             let { userID } = req.params;
 
@@ -220,10 +201,7 @@ class AddressController{
                 // Validate if userID is not null
             this.addressValidator.checkRequiredParameters(req.params, ['userID']);
                 // Validate if userID exists in database
-            let user = await this.userRepo.getUser(userID);
-            if (user == null) {
-                throw new this.clientErrors.Api404Error(`User with ID ${userID} does not exist`);
-            }
+            await this.addressValidator.validateExistence(userID, 'user');
 
             let addresses = await this.addressRepo.getAllAddressOfUser(userID);
 
@@ -233,12 +211,12 @@ class AddressController{
             });
         } catch (error) { 
             //TODO: Handle error
-            console.log(error);
+            next(error);
         }
     };
 
     // GET: "/:addressID"
-    getAddressByID = async(req, res) => {
+    getAddressByID = async(req, res, next) => {
         try {
             let { addressID } = req.params;
 
@@ -260,12 +238,12 @@ class AddressController{
             });
         } catch (error) {
             //TODO: Handle error
-            console.log(error);
+            next(error);
         }
     };
 
     // GET: "/default/providers"
-    getAllDefaultProviderAddress = async(req, res) => {
+    getAllDefaultProviderAddress = async(req, res, next) => {
         try {
             let addresses = await this.addressRepo.getAllDefaultProviderAddress();
 
@@ -275,12 +253,12 @@ class AddressController{
             });
         } catch (error) {
             // TODO: Handle error
-            console.log(error);
+            next(error);
         }
     };
 
     // GET: "/default/seekers"
-    getAllDefaultSeekerAddress = async(req, res) => {
+    getAllDefaultSeekerAddress = async(req, res, next) => {
         try {
             let addresses = await this.addressRepo.getAllDefaultSeekerAddress();
 
@@ -290,7 +268,7 @@ class AddressController{
             });
         } catch (error) {
             // TODO: Handle error
-            console.log(error);
+            next(error);
         }
     };
 }

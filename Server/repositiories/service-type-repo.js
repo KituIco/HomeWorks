@@ -20,7 +20,6 @@ class ServiceTypeRepository {
             ]);
         } catch (error) {
             // TODO: Handle SQL error
-            console.log(error);
             throw error;
         }
     };
@@ -41,7 +40,6 @@ class ServiceTypeRepository {
             ]);
         } catch (error) {
             // TODO: Handle SQL error
-            console.log(error);
             throw error;
         }
     };
@@ -52,7 +50,6 @@ class ServiceTypeRepository {
             await this.db.query(sqlQuery, [typeID]);
         } catch (error) {
             // TODO: Handle SQL error
-            console.log(error);
             throw error;
         }
     };
@@ -64,7 +61,6 @@ class ServiceTypeRepository {
             return result[0];
         } catch (error) {
             // TODO: Handle SQL error
-            console.log(error);
             throw error;
         }
     };
@@ -76,7 +72,6 @@ class ServiceTypeRepository {
             return result[0][0];
         } catch (error) {
             // TODO: Handle SQL error
-            console.log(error);
             throw error;
         }
     };

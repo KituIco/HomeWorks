@@ -14,7 +14,7 @@ BEGIN
         Agency(
             agency_id, 
             agency_name, 
-            agency_description, 
+            agency_desc, 
             agency_dp, 
             agency_images, 
             agency_service_types, 

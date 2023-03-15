@@ -26,7 +26,6 @@ class AgencyRepository {
             ]);
         } catch (error) { 
             //TODO: Handle SQL Error
-            console.log(error);
             throw error;
         }
     };
@@ -41,7 +40,7 @@ class AgencyRepository {
         agencyRating
     ) => {
         try {
-            let sqlQuery = `CALL patch_agency(?, ?, ?, ?, ?, ?, ?, ?)`;
+            let sqlQuery = `CALL patch_agency(?, ?, ?, ?, ?, ?, ?)`;
             await this.db.query(sqlQuery, [
                 agencyID,
                 agencyName,
@@ -53,7 +52,6 @@ class AgencyRepository {
             ]);
         } catch (error) {
             //TODO: Handle SQL error
-            console.log(error);
             throw error;  
         }
     };
@@ -64,7 +62,6 @@ class AgencyRepository {
             await this.db.query(sqlQuery, [agencyID]);
         } catch (error) {
             //TODO: Handle SQL error
-            console.log(error);
             throw error;
         }
     };
@@ -76,7 +73,6 @@ class AgencyRepository {
             return result[0][0];
         } catch (error) {
             //TODO: Handle SQL error
-            console.log(error);
             throw error;
         }
     };
@@ -100,7 +96,6 @@ class AgencyRepository {
             return result[0];
         } catch (error) {
             //TODO: Handle SQL error
-            console.log(error);
             throw error;
         }
     };
@@ -112,7 +107,6 @@ class AgencyRepository {
             return result[0][0];
         } catch (error) {
             //TODO: Handle SQL error
-            console.log(error);
             throw error;
         }
     };
@@ -123,7 +117,6 @@ class AgencyRepository {
             await this.db.query(sqlQuery, [agencyID, providerID]);
         } catch (error) {
             //TODO: Handle SQL error
-            console.log(error);
             throw error;
         }
     };
@@ -134,7 +127,6 @@ class AgencyRepository {
             await this.db.query(sqlQuery, [providerID]);
         } catch (error) {
             //TODO: Handle SQL error
-            console.log(error);
             throw error;
         }
     };
@@ -146,7 +138,6 @@ class AgencyRepository {
             return result[0];
         } catch (error) {
             //TODO: Handle SQL error
-            console.log(error);
             throw error;
         }
     };

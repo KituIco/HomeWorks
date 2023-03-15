@@ -4,8 +4,7 @@ class ProviderController {
         credentialsRepo,
         userRepo,
         clientErrors,
-        serverErrors,
-        providerValidator = null,
+        providerValidator,
         nanoid,
         bcrypt,
         jwt
@@ -14,7 +13,6 @@ class ProviderController {
         this.credentialsRepo = credentialsRepo;
         this.userRepo = userRepo;
         this.clientErrors = clientErrors;
-        this.serverErrors = serverErrors;
         this.providerValidator = providerValidator;
         this.nanoid = nanoid;
         this.bcrypt = bcrypt;
@@ -22,7 +20,7 @@ class ProviderController {
     }
 
     // POST: ""
-    createProvider = async (req, res) => {
+    createProvider = async (req, res, next) => {
         try {
             let {
                 email,
@@ -42,13 +40,18 @@ class ProviderController {
 
             // TODO: Pre-query validation
                 // validate if necessary fields are not null
+            this.providerValidator.validateCreatePayload(req.body, ['username', 'password', 'firstName', 'lastName'])
                 // validate if email, username, or phoneNumber follows the correct format
                 // validate if email, username, or phoneNumber already exists in database
+            await this.providerValidator.validateIdentifiers({
+                email,
+                username,
+                phoneNumber
+            })
 
-            // TODO: refactor line 45-47 when validation is implemented
-            if (password != null) {
-                password = await this.bcrypt.hash(password, 10);
-            }
+            this.providerValidator.validateIdentifierOrPassword(password, 'password');
+
+            password = await this.bcrypt.hash(password, 10);
 
             let providerID = this.nanoid(14);
 
@@ -115,7 +118,7 @@ class ProviderController {
             }
 
             let accessToken = this.jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {
-                expiresIn: '1m'
+                expiresIn: '15m'
             })
 
             let refreshToken = this.jwt.sign(user, process.env.REFRESH_TOKEN_SECRET, {
@@ -142,12 +145,12 @@ class ProviderController {
             });
         } catch (error) {
             // TODO: Handle error
-            console.log(error);
+            next(error);
         }
     };
 
     // PATCH: "/:providerID"
-    patchProvider = async (req, res) => {
+    patchProvider = async (req, res, next) => {
         try {
             let {
                 firstName,
@@ -165,8 +168,11 @@ class ProviderController {
 
             // TODO: Pre-query validation
                 // validate if providerID is not null
+            this.providerValidator.checkRequiredParameters(req.params, ['providerID']);
                 // validate if providerID exists
+            await this.providerValidator.validateExistence(providerID);
                 // validate if necessary fields are not null
+            this.providerValidator.validatePatchPayload(req.body)
 
             await this.providerRepo.patchProvider(
                 providerID,
@@ -192,30 +198,32 @@ class ProviderController {
             });
         } catch (error) {
             // TODO: Handle error
-            console.log(error);
+            next(error);
         }
     };
 
     // DELETE: "/:providerID"
-    deleteProvider = async (req, res) => {
+    deleteProvider = async (req, res, next) => {
         try {
             let { providerID } = req.params;
 
             // TODO: Pre-query validation
                 // validate if providerID is not null
+            this.providerValidator.checkRequiredParameters(req.params, ['providerID']);
                 // validate if providerID exists
+            await this.providerValidator.validateExistence(providerID);
 
             await this.providerRepo.deleteProvider(providerID);
 
             res.status(204)
         } catch (error) {
             // TODO: Handle error
-            console.log(error);
+            next(error);
         }
     };
 
     // GET: ""
-    getProviders = async (req, res) => {
+    getProviders = async (req, res, next) => {
         try {
             let providers = await this.providerRepo.getProviders();
 
@@ -225,17 +233,18 @@ class ProviderController {
             });
         } catch (error) {
             // TODO: Handle error
-            console.log(error);
+            next(error);
         }
     };
 
     // GET: "/:providerID"
-    getProvider = async (req, res) => {
+    getProvider = async (req, res, next) => {
         try {
             let { providerID } = req.params;
 
             // TODO: Pre-query validation
                 // validate if providerID is not null
+            this.providerValidator.checkRequiredParameters(req.params, ['providerID']);
             
             let provider = await this.providerRepo.getProvider(providerID);
 
@@ -248,7 +257,7 @@ class ProviderController {
             });
         } catch (error) {
             // TODO: Handle error
-            console.log(error);
+            next(error);
         }
     };
 }

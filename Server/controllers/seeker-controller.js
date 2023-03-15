@@ -4,8 +4,7 @@ class SeekerController {
         credentialsRepo,
         userRepo,
         clientErrors,
-        serverErrors,
-        seekerValidator = null,
+        seekerValidator,
         nanoid,
         bcrypt,
         jwt
@@ -14,7 +13,6 @@ class SeekerController {
         this.credentialsRepo = credentialsRepo;
         this.userRepo = userRepo;
         this.clientErrors = clientErrors;
-        this.serverErrors = serverErrors;
         this.seekerValidator = seekerValidator;
         this.nanoid = nanoid;
         this.bcrypt = bcrypt;
@@ -22,7 +20,7 @@ class SeekerController {
     }
     
     // POST: ""
-    createSeeker = async (req, res) => {
+    createSeeker = async (req, res, next) => {
         try {
             let {
                 email,
@@ -38,20 +36,24 @@ class SeekerController {
 
             // TODO: Pre-query validation
                 // validate if necessary fields are not null
+            this.seekerValidator.validateCreatePayload(req.body, ['username', 'password', 'firstName', 'lastName']);
                 // validate if email, username, or phoneNumber follows the correct format
                 // validate if email, username, or phoneNumber already exists in database
+            await this.seekerValidator.validateIdentifiers({
+                    email,
+                    username,
+                    phoneNumber
+            })
             
-            // TODO: refactor line 39-41 when validation is implemented
-            if (password != null) {
-                password = await this.bcrypt.hash(password, 10);
-            }
+            this.seekerValidator.validateIdentifierOrPassword(password, 'password');
+            
+            password = await this.bcrypt.hash(password, 10);
 
             let seekerID = this.nanoid(14);
 
             await this.userRepo.createUser(seekerID,);
 
             if (email != null) {
-                // TODO: Validate if email already exists in the database
                 let credentialsID = this.nanoid(14);
                 await this.credentialsRepo.createCredentials(
                     credentialsID,
@@ -62,7 +64,6 @@ class SeekerController {
             };
 
             if (username != null) {
-                // TODO: Validate if username already exists in the database
                 let credentialsID = this.nanoid(14);
                 await this.credentialsRepo.createCredentials(
                     credentialsID,
@@ -73,7 +74,6 @@ class SeekerController {
             };
 
             if (phoneNumber != null) {
-                // TODO: Validate if phoneNumber already exists in the database
                 let credentialsID = this.nanoid(14);
                 await this.credentialsRepo.createCredentials(
                     credentialsID,
@@ -106,7 +106,7 @@ class SeekerController {
             }
 
             let accessToken = this.jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {
-                expiresIn: '1m'
+                expiresIn: '15m'
             })
 
             let refreshToken = this.jwt.sign(user, process.env.REFRESH_TOKEN_SECRET, {
@@ -133,13 +133,13 @@ class SeekerController {
             });
         } catch (error) {
             // TODO: Handle error
-            console.log(error);
+            next(error);
         }
     };
 
     // PATCH: "/:seekerId"
         // can get seekerID from req.user.userID
-    patchSeeker = async (req, res) => {
+    patchSeeker = async (req, res, next) => {
         try {
             let {
                 firstName,
@@ -152,9 +152,12 @@ class SeekerController {
             let {seekerID} = req.params;
 
             // TODO: Pre-query validation
-                // validate if necessary fields are not null
                 // validate if seekerID is not null
+            this.seekerValidator.checkRequiredParameters(req.params, ['seekerID']);
                 // validate if seekerID exists
+            await this.seekerValidator.validateExistence(seekerID);
+                // validate if necessary fields are not null
+            this.seekerValidator.validatePatchPayload(req.body);
             
             await this.seekerRepo.patchSeeker(
                 seekerID,
@@ -177,30 +180,32 @@ class SeekerController {
             });    
         } catch (error) {
             // TODO: Handle error
-            console.log(error);
+            next(error);
         }
     };
 
     // DELETE: "/:seekerId"
-    deleteSeeker = async (req, res) => {
+    deleteSeeker = async (req, res, next) => {
         try{
             let {seekerID} = req.params;
 
             // TODO: Pre-query validation
                 // validate if seekerID is not null
+            this.seekerValidator.checkRequiredParameters(req.params, ['seekerID']);
                 // validate if seekerID exists
+            await this.seekerValidator.validateExistence(seekerID);
             
             await this.seekerRepo.deleteSeeker(seekerID);
 
             res.status(204);
         } catch (error) {
             // TODO: Handle error
-            console.log(error);
+            next(error);
         }
     };
 
     // GET: ""
-    getSeekers = async (req, res) => {
+    getSeekers = async (req, res, next) => {
         try {
             let seekers = await this.seekerRepo.getSeekers();
 
@@ -210,17 +215,18 @@ class SeekerController {
             });
         } catch (error) {
             // TODO: Handle error
-            console.log(error);
+            next(error);
         }
     };
 
     // GET: "/:seekerId"
-    getSeeker = async (req, res) => {
+    getSeeker = async (req, res, next) => {
         try {
             let {seekerID} = req.params;
 
             // TODO: Pre-query validation
                 // validate if seekerID is not null
+            this.seekerValidator.checkRequiredParameters(req.params, ['seekerID']);
 
             let seeker = await this.seekerRepo.getSeeker(seekerID);
 
@@ -233,7 +239,7 @@ class SeekerController {
             });
         } catch (error) {
             // TODO: Handle error
-            console.log(error);
+            next(error);
         }
     };
 }
