@@ -26,7 +26,6 @@ var seekerController = new SeekerController(
     credentialsRepo,
     userRepo,
     clientErrors,
-    serverErrors,
     seekerValidator,
     nanoid,
     bcrypt,

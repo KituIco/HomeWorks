@@ -6,7 +6,7 @@ class ServiceSpecsValidator extends Validator {
         serviceSpecsRepo,
         seekerRepo,
         serviceTypeRepo,
-        addressRepo,
+        addressRepo
     ) {
         super(clientErrors);
         this.serviceSpecsRepo = serviceSpecsRepo;
