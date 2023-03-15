@@ -13,7 +13,7 @@ errorHandler = (err, req, res, next) => {
         res.status(500).send({ 
             error: {
                 name: 'InternalServerError',
-                message: 'An internal server error occurred',
+                message: `An internal server error occurred. Specific error message is: ${err.message}`,
                 isOperational: true,
             }
          });
