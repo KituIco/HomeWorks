@@ -12,8 +12,8 @@ export default function FinalSpecs({ route, navigation }) {
 
   const { service, icon }= route.params;
   let region = {
-      latitude: 14.595987,
-      longitude: 121.142957,
+      latitude: 14.5759057598,
+      longitude: 121.041201492,
       latitudeDelta: 0.0050,
       longitudeDelta: 0.0050,
   };
@@ -26,13 +26,13 @@ export default function FinalSpecs({ route, navigation }) {
         <Text style={styles.heading}>Cost and Address</Text>
         <View style={styles.details}>
           <Text style={styles.content}>{service} Service</Text>
-          <Text style={[styles.content,{fontFamily: 'quicksand-bold', fontSize: 16}]}>Php 420</Text>
+          <Text style={[styles.content,{fontFamily: 'quicksand-bold', fontSize: 16}]}>Php 420.00</Text>
         </View>
 
         <LinearGradient colors={['rgba(0,0,0,0.1)','rgba(0,0,0,0)'  ]} start={{ x:0, y:0 }} end={{ x:0, y:1 }} style={{height:4, zIndex:5}}/>
         <View style={{width:'100%', height: 200, marginVertical:-4}}>
           <MapView style={{flex:1}} initialRegion={region}>
-            <Marker coordinate={{latitude: 14.595987, longitude: 121.142957}}>
+            <Marker coordinate={{latitude: 14.5759057598, longitude: 121.041201492}}>
               <Image style={{height:38.2,width:28}} source={require("../../assets/pin.png")}/>
             </Marker>
           </MapView>
@@ -40,7 +40,7 @@ export default function FinalSpecs({ route, navigation }) {
         <LinearGradient colors={['rgba(0,0,0,0.1)','rgba(0,0,0,0)']} start={{ x:0, y:1 }} end={{ x:0, y:0 }} style={{height:4, zIndex:5}}/>
 
         <View style={styles.address}>
-          <Text style={styles.location}>UP AECH, P. Velasquez Street, Diliman, Quezon City, 1800 Metro Manila</Text>
+          <Text style={styles.location}> McDonalds, Boni Avenue, Malamig, Mandaluyong, 1550 Metro Manila</Text>
         </View>
         
         <Text style={styles.heading}>Service Description</Text>

@@ -9,6 +9,18 @@ let SeekerServices = {
             return res;
         } catch (error) {
             console.log(error);
+            throw error.message;
+        }
+    },
+    
+    checkSeekerMail: async(data) => {
+        try {
+            let queryURL = `${url}/mail`;
+            let res = await postAxios(queryURL, data);
+            return res;
+        } catch (error) {
+            console.log(error);
+            throw error.message;
         }
     },
 

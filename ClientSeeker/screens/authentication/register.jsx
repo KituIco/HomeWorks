@@ -3,6 +3,9 @@ import React, { useState } from 'react';
 import { StyleSheet, View, Text, Image, TouchableWithoutFeedback, TextInput, ScrollView, Alert } from 'react-native';
 import { Dimensions } from 'react-native';
 
+import SeekerServices from '../../services/user/seeker-services';
+import Loading from '../../hooks/loading';
+
 const screenHeight = Dimensions.get('window').height;
 
 export default function Register({ navigation }) {
@@ -18,7 +21,9 @@ export default function Register({ navigation }) {
   const [confirmCHK, setConfirmCHK] = useState();
   const [lastnameCHK, setLastnameCHK] = useState();
 
-  const onRegister = () => {
+  const [loading, setLoading] = useState(false);
+
+  const onRegister = async() => {
     if(new Set([firstnameCHK, lastnameCHK, mailCHK, passwordCHK, confirmCHK]).has(styles.warning) 
       || !firstnameCHK || !mailCHK || !passwordCHK || !confirmCHK){
       Alert.alert('Check your Inputs', 
@@ -28,27 +33,38 @@ export default function Register({ navigation }) {
     } 
     
     else {
-      navigation.navigate('Credentials', {
-        firstname: firstname, 
-        lastname: lastname,
-        mail: mail,
-        password: password,
-      });
+      setLoading(true);
+      try {
+        await SeekerServices.checkSeekerMail({ email:mail });
+        navigation.navigate('Credentials', {
+          firstname: firstname, 
+          lastname: lastname,
+          mail: mail,
+          password: password,
+        });      
+
+      } catch(err) {
+        Alert.alert('Registration Warning', err+' Please provide a new Email. You may also choose to login instead.', 
+        [ {text: 'OK'} ]);
+      }
+      setLoading(false);
     }
   }
 
   const onCheck = (type) => {
-    let regex = new RegExp(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/)
+    let mailRegex = new RegExp(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/);
+    let passRegex = new RegExp(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/);
     if (type == 'pw'|| type == 'confirm') setConfirmCHK( (password == confirm) ? styles.accepted : styles.warning);
     else if (type == 'first') setFirstnameCHK( firstname ? styles.accepted : styles.warning);
     else if (type == 'last') setLastnameCHK( lastname ? styles.accepted : styles.warning);
-    else if (type == 'mail') setMailCHK( regex.test(mail) ? styles.accepted : styles.warning);
-    if (type == 'pw' ) setPasswordCHK( password ? styles.accepted : styles.warning) 
+    else if (type == 'mail') setMailCHK( mailRegex.test(mail) ? styles.accepted : styles.warning);
+    if (type == 'pw' ) setPasswordCHK( passRegex.test(password) ? styles.accepted : styles.warning) 
   }
 
   return (
     <View style={{flex:1, backgroundColor: '#E9E9E9'}}>
     <View style={{width:'100%', height:40, backgroundColor: '#E9E9E9'}}/>
+    { loading && <Loading/> }
     
     <ScrollView style={{width: '100%', backgroundColor: '#E9E9E9'}}>
 
@@ -70,6 +86,8 @@ export default function Register({ navigation }) {
         <View style={[styles.textbox,passwordCHK]}>
           <TextInput style={styles.input} onChangeText={setPassword} value={password} placeholder="Password" secureTextEntry={true} onBlur={() => onCheck('pw')}/>
         </View>
+        { passwordCHK===styles.warning && 
+        <Text style={styles.notice}>At least 8 characters with number, special character, capital letter.</Text> }
         <View style={[styles.textbox,confirmCHK]}>
           <TextInput style={styles.input} onChangeText={setConfirm} value={confirm} placeholder="Confirm Password" secureTextEntry={true} onBlur={() => onCheck('confirm')}/>
         </View>
@@ -194,4 +212,8 @@ const styles = StyleSheet.create({
     borderColor: '#00FF00',
     borderWidth: 1,
   },
+  notice: {
+    fontFamily: 'notosans',
+    fontSize: 9,
+  }
 });

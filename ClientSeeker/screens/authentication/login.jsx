@@ -1,6 +1,6 @@
 import { LinearGradient } from 'expo-linear-gradient';
 import React, { useState } from 'react';
-import { StyleSheet, View, Text, Image, TouchableWithoutFeedback, TextInput, ScrollView } from 'react-native';
+import { StyleSheet, View, Text, Image, TouchableWithoutFeedback, TextInput, ScrollView, Alert } from 'react-native';
 import { Dimensions } from 'react-native';
 import { StackActions } from '@react-navigation/native';
 
@@ -14,19 +14,19 @@ export default function Login({ navigation }) {
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false);
 
-  const onLogin = () => {
+  const onLogin = async() => {
     if( mail && password) {
-      // setLoading(true);
-      CredentialsServices.login({
-        identifier: mail,
-        password: password,
-      }).then(() => {
-          navigation.dispatch(StackActions.popToTop()),
-          navigation.replace('HomeStack');
-          navigation.navigate('HomeStack');
-        })
-        .catch((err) => console.log(err))   
-    } 
+      setLoading(true);
+      try {
+        await CredentialsServices.login({ identifier: mail, password: password });
+        navigation.dispatch(StackActions.popToTop()),
+        navigation.replace('HomeStack');
+
+      } catch (err) {
+        Alert.alert('Login Warning', err+'. Make sure to input correct credentials.', [ {text: 'OK'} ]);
+      }
+      setLoading(false);
+    }
   }
 
   return (

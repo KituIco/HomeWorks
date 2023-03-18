@@ -86,7 +86,7 @@ class CredentialsController {
 
             // validate if the identifier exists in seeker or provider
             if (result == null) {
-                throw new this.clientErrors.Api401Error(`${userType} with identifier ${identifier} does not exist`)
+                throw new this.clientErrors.Api401Error(`Identifier ${identifier} does not exist as a ${userType}`)
             }
 
             let {hashedPassword, userID} = result;

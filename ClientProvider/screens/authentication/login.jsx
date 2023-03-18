@@ -1,18 +1,19 @@
 import { LinearGradient } from 'expo-linear-gradient';
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Text, Image, TouchableWithoutFeedback, TextInput, ScrollView, Keyboard } from 'react-native';
+import { StyleSheet, View, Text, Image, TouchableWithoutFeedback, TextInput, ScrollView, Keyboard, Alert } from 'react-native';
 import { Dimensions } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import Back from '../../hooks/back';
+import Loading from '../../hooks/loading';
 import CredentialsServices from '../../services/user/credentials-services';
 
 const screenHeight = Dimensions.get('window').height;
 
 export default function Login({ navigation }) {
-  const [mail, setMail] = useState('')
-  const [password, setPassword] = useState('')
-
+  const [mail, setMail] = useState('');
+  const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
 
   useEffect(() => {
@@ -26,24 +27,27 @@ export default function Login({ navigation }) {
   };
   }, []);
 
-  const onLogin = () => {
+  const onLogin = async() => {
     if( mail && password) {
-      CredentialsServices.login({
-        identifier: mail,
-        password: password,
-      }).then(() => {
+      setLoading(true);
+      try {
+        await CredentialsServices.login({ identifier: mail, password: password })
         navigation.replace('HomeStack');
-        // navigation.navigate('HomeStack');
-      }).catch((err) => console.log(err)) 
+
+      } catch (err) {
+        Alert.alert('Login Warning', err+'. Make sure to input correct credentials.', [ {text: 'OK'} ]);
+      }
+      setLoading(false);
     }
   }
 
   return (
     <View style={styles.container}>
       <Back navigation={navigation}/>
+      { loading && <Loading/> }
 
       <ScrollView style={{width: '100%'}}>
-      <View style={{alignItems: 'center'}}>
+      <View style={{alignItems: 'center', marginTop: 100}}>
         <Text style={styles.botheader}>Hello, Service Provider!</Text>
         <MaterialCommunityIcons name="account-hard-hat" size={160} color='#9C54D5'/>
         <Text style={styles.title}>Home<Text style={{color:'#1E1E1E'}}>Works</Text></Text>
@@ -91,7 +95,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#EFEFEF',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingTop:100
   },
 
   homeIcon: {
@@ -129,7 +132,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: '#000',
     letterSpacing: -0.5,
-    marginBottom: 30
+    marginBottom: 30,
   },
 
   shadow: {

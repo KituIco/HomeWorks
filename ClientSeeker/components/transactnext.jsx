@@ -1,11 +1,5 @@
 import { StyleSheet, View, Text, TouchableWithoutFeedback  } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { useEffect, useState } from 'react';
-
-// import CredentialsServices from '../services/user/credentials-services';
-// import SeekerServices from '../services/user/seeker-services';
-// import { contactHandler } from '../utils/contactHandler';
-// import { getUserID } from '../utils/getUserID';
 
 export default function Next ( props ) {
   const { service, icon, title, screen, price, address } = props;

@@ -57,10 +57,13 @@ postAxios = async(url, data = {}, imageFile = null) => {
             console.log(error.response.data);
             console.log(error.response.status);
             console.log(error.response.headers);
+            throw error.response.data.error;
         } else if (error.request) {
             console.log(error.request);
+            throw error.request;
         } else {
             console.log('Error', error.message);
+            throw error.message;
         }
     }
 }

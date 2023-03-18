@@ -46,7 +46,7 @@ class SeekerController {
             })
             
             this.seekerValidator.validateIdentifierOrPassword(password, 'password');
-            
+
             password = await this.bcrypt.hash(password, 10);
 
             let seekerID = this.nanoid(14);
@@ -236,6 +236,25 @@ class SeekerController {
             res.status(200).json({
                 message: `Seeker ${seekerID} retrieved successfully`,
                 body: seeker
+            });
+        } catch (error) {
+            // TODO: Handle error
+            next(error);
+        }
+    };
+
+    // POST: "/mail"
+    checkSeekerMail = async (req, res, next) => {
+        try {
+            let {
+                email,
+            } = req.body;
+
+            // validate if email already exists in database
+            await this.seekerValidator.validateIdentifiers({ email })
+            
+            res.status(201).json({
+                message: "Email not yet Taken",
             });
         } catch (error) {
             // TODO: Handle error

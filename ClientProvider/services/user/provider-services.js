@@ -9,6 +9,18 @@ let ProviderServices = {
             return res;
         } catch (error) {
             console.log(error);
+            throw error.message;
+        }
+    },
+    
+    checkProviderMail: async(data) => {
+        try {
+            let queryURL = `${url}/mail`;
+            let res = await postAxios(queryURL, data);
+            return res;
+        } catch (error) {
+            console.log(error);
+            throw error.message;
         }
     },
 

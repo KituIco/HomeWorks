@@ -17,19 +17,19 @@ import Loading from '../../hooks/loading';
 const screenHeight = Dimensions.get('window').height;
 
 async function onSubmit( props, data ) {
-  ImageService.uploadFile(data.urlDp)
-    .then((res) => {
-      data['seekerDp'] = res;
-      delete data['urlDp'];
+  try {
+    let res = await ImageService.uploadFile(data.urlDp)
+    data['seekerDp'] = res;
+    delete data['urlDp'];
+      
+    await SeekerServices.createSeeker(data);
+    props.navigation.dispatch(StackActions.popToTop());
+    props.navigation.replace('HomeStack');
 
-      SeekerServices.createSeeker(data)
-        .then((res) => {
-        props.navigation.dispatch(StackActions.popToTop());
-        props.navigation.replace('HomeStack');
-        props.navigation.navigate('HomeStack'); 
-      }).catch((err) => console.log(err)) 
-
-    }).catch((err) => console.log(err)) 
+  } catch (err) {
+    Alert.alert('Registration Warning', err, [ {text: 'OK'} ]);
+    throw err;
+  }
 }
 
 export default function Credentials( props ) {
@@ -92,9 +92,10 @@ export default function Credentials( props ) {
   }
 
   const onCheck = (type) => {
-    let regex = new RegExp(/^\+639[0-9]{9}/);
-    if (type == 'username') setUsernameCHK( username ? styles.accepted : styles.warning);
-    else if (type == 'contact') setContactCHK( regex.test(contact) ? styles.accepted : styles.warning);
+    let numRegex = new RegExp(/^\+639[0-9]{9}/);
+    let nameRegex = new RegExp(/^[a-zA-Z0-9_\-]{3,25}$/);
+    if (type == 'username') setUsernameCHK( nameRegex.test(username) ? styles.accepted : styles.warning);
+    else if (type == 'contact') setContactCHK( numRegex.test(contact) ? styles.accepted : styles.warning);
     else if (type == 'birthday') setBirthdayCHK( birthday ? styles.accepted : styles.warning);
   }
 

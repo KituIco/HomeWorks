@@ -41,6 +41,19 @@ export default function Request({ route, navigation }) {
       let response = await Location.reverseGeocodeAsync({
        latitude, longitude
       });
+      if(!response[0]) {
+        response = [{city: '',
+          country: '',
+          district: '',
+          isoCountryCode: '',
+          name: '',
+          postalCode: '',
+          region: '',
+          street: '',
+          streetNumber: '',
+          subregion: '',
+          timezone: '',}]
+      }
       setRegion({latitude, longitude, latitudeDelta: 0.0080, longitudeDelta: 0.0060, 
         location:addressHandler(response[0]), raw:response[0]});
       setProcessing(false);

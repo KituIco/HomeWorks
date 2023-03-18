@@ -11,6 +11,7 @@ let CredentialsServices = {
             return res;
         } catch (error) {
             console.log(error);
+            throw error.message;
         }
     },
 

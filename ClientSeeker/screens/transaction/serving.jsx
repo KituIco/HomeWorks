@@ -17,7 +17,7 @@ export default function Serving({route, navigation}) {
   const provider = [
     {key: 'Alex Guerrero', location: 'Taguig City', ratings: '4.3', service: 'Car Mechanic', price: 'min Php 420', src: require("../../assets/providers/provider-a.png")},
   ]
-  const price = '520.00'
+  const price = '420.00'
 
   const changeStatus = () => {
     setStatus('Serving');
