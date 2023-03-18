@@ -9,7 +9,7 @@ let TransactionReportServices = {
             let res = await patchAxios(queryURL, data);
             return res;
         } catch (error) {
-            console.log(error);
+            throw error;
         }
     },
 
@@ -19,7 +19,7 @@ let TransactionReportServices = {
             let res = await deleteAxios(queryURL);
             return res;
         } catch (error) {
-            console.log(error);
+            throw error;
         }
     },
 
@@ -29,7 +29,7 @@ let TransactionReportServices = {
             let res = await getAxios(queryURL);
             return res;
         } catch (error) {
-            console.log(error);
+            throw error;
         }
     },
 
@@ -38,7 +38,7 @@ let TransactionReportServices = {
             let res = await getAxios(url);
             return res;
         } catch (error) {
-            console.log(error);
+            throw error;
         }
     },
 
@@ -48,7 +48,7 @@ let TransactionReportServices = {
             let res = await getAxios(queryURL);
             return res;
         } catch (error) {
-            console.log(error);
+            throw error;
         }
     },
 
@@ -58,7 +58,7 @@ let TransactionReportServices = {
             let res = await getAxios(queryURL);
             return res;
         } catch (error) {
-            console.log(error);
+            throw error;
         }
     },
 
@@ -68,7 +68,7 @@ let TransactionReportServices = {
             let res = await getAxios(queryURL);
             return res;
         } catch (error) {
-            console.log(error);
+            throw error;
         }
     },
 
@@ -78,7 +78,7 @@ let TransactionReportServices = {
             let res = await getAxios(queryURL);
             return res;
         } catch (error) {
-            console.log(error);
+            throw error;
         }
     }
 }

@@ -55,9 +55,7 @@ postAxios = async(url, data = {}, imageFile = null) => {
     } catch (error) {
         if (error.response) {
             console.log(error.response.data);
-            console.log(error.response.status);
-            console.log(error.response.headers);
-            throw error.response.data.error;
+            throw error.response.data.error.message;
         } else if (error.request) {
             console.log(error.request);
             throw error.request;
@@ -90,12 +88,13 @@ patchAxios = async(url, data = {}) => {
     } catch (error) {
         if (error.response) {
             console.log(error.response.data);
-            console.log(error.response.status);
-            console.log(error.response.headers);
+            throw error.response.data.error.message;
         } else if (error.request) {
             console.log(error.request);
+            throw error.request;
         } else {
             console.log('Error', error.message);
+            throw error.message;
         }
     }
 }
@@ -121,12 +120,13 @@ deleteAxios = async(url) => {
     } catch (error) {
         if (error.response) {
             console.log(error.response.data);
-            console.log(error.response.status);
-            console.log(error.response.headers);
+            throw error.response.data.error.message;
         } else if (error.request) {
             console.log(error.request);
+            throw error.request;
         } else {
             console.log('Error', error.message);
+            throw error.message;
         }
     }
 }
@@ -152,12 +152,13 @@ getAxios = async(url) => {
     } catch (error) {
         if (error.response) {
             console.log(error.response.data);
-            console.log(error.response.status);
-            console.log(error.response.headers);
+            throw error.response.data.error.message;
         } else if (error.request) {
             console.log(error.request);
+            throw error.request;
         } else {
             console.log('Error', error.message);
+            throw error.message;
         }
     }
 }
@@ -184,12 +185,13 @@ putAxios = async(url, data = {}) => {
     } catch (error) {
         if (error.response) {
             console.log(error.response.data);
-            console.log(error.response.status);
-            console.log(error.response.headers);
+            throw error.response.data.error.message;
         } else if (error.request) {
             console.log(error.request);
+            throw error.request;
         } else {
             console.log('Error', error.message);
+            throw error.message;
         }
     }
 }

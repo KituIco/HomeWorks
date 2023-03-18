@@ -1,5 +1,6 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { StyleSheet, Text,View } from 'react-native';
+import { useState } from 'react';
 
 import DashStack from './dashStack';
 import OptionsStack from './optionsStack';
@@ -8,6 +9,15 @@ const Stack = createBottomTabNavigator();
 
 
 export default function HomeStack({ navigation }) {
+  const [tracker, setTracker] = useState(styles.outsideOptions);
+  try {
+    if (navigation.getState().routes[0].state.routes[1].state.index > 0 && tracker !== styles.insideOptions) {
+      setTracker(styles.insideOptions);
+    } else if (navigation.getState().routes[0].state.routes[1].state.index == 0 && tracker !== styles.outsideOptions) {
+      setTracker(styles.outsideOptions);
+    }
+  } catch (err) {}
+
   return (
       <Stack.Navigator initialRouteName='DashStack' 
         screenOptions={({ route }) => ({
@@ -33,7 +43,7 @@ export default function HomeStack({ navigation }) {
           tabBarActiveBackgroundColor: '#E9E9E9',
           animationEnabled: false,
 
-          tabBarStyle: { height: 70, backgroundColor: '#E9E9E9',},
+          tabBarStyle: [{ height: 70, backgroundColor: '#E9E9E9' }, tracker],
           tabBarLabelStyle: { display: "none" },
         })}
         
@@ -67,6 +77,12 @@ const styles = StyleSheet.create({
     fontSize: 20,
     textTransform: 'uppercase',
     color: '#9C54D5',
+  },
+  outsideOptions: {
+    height: 70
+  },
+  insideOptions: {
+    display: 'none'
   }
   
 });

@@ -7,7 +7,7 @@ let AgencyServices = {
             let res = await postAxios(url, data);
             return res;
         } catch (error) {
-            console.log(error);
+            throw error;
         }
     },
 
@@ -17,7 +17,7 @@ let AgencyServices = {
             let res = await patchAxios(queryUrl, data);
             return res;
         } catch (error) {
-            console.log(error);
+            throw error;
         }
     },
 
@@ -27,7 +27,7 @@ let AgencyServices = {
             let res = await deleteAxios(queryUrl);
             return res;
         } catch (error) {
-            console.log(error);
+            throw error;
         }
     },
 
@@ -37,7 +37,7 @@ let AgencyServices = {
             let res = await getAxios(queryUrl);
             return res;
         } catch (error) {
-            console.log(error);
+            throw error;
         }
     },
 
@@ -46,7 +46,7 @@ let AgencyServices = {
             let res = await getAxios(url);
             return res;
         } catch (error) {
-            console.log(error);
+            throw error;
         }
     },
 
@@ -56,7 +56,7 @@ let AgencyServices = {
             let res = await getAxios(queryUrl);
             return res;
         } catch (error) {
-            console.log(error);
+            throw error;
         }
     },
 
@@ -66,7 +66,7 @@ let AgencyServices = {
             let res = await getAxios(queryUrl);
             return res;
         } catch (error) {
-            console.log(error);
+            throw error;
         }
     },
 
@@ -76,7 +76,7 @@ let AgencyServices = {
             let res = await patchAxios(queryUrl);
             return res;
         } catch (error) {
-            console.log(error);
+            throw error;
         }
     },
 
@@ -86,7 +86,7 @@ let AgencyServices = {
             let res = await patchAxios(queryUrl);
             return res;
         } catch (error) {
-            console.log(error);
+            throw error;
         }
     },
 
@@ -96,7 +96,7 @@ let AgencyServices = {
             let res = await getAxios(queryUrl);
             return res;
         } catch (error) {
-            console.log(error);
+            throw error;
         }
     }
 

@@ -56,10 +56,12 @@ export default function Options({ navigation }) {
         </View>
         <Text style={styles.name}>{name}</Text>
         
-        <View style={styles.options}>
-          <MaterialCommunityIcons name={'face-man-profile'} size={36}/>
-          <Text style={styles.tabs}>Manage Profile</Text>
-        </View>
+        <TouchableWithoutFeedback onPress={() => navigation.navigate('Address')}>
+          <View style={styles.options}>
+            <MaterialCommunityIcons name={'face-man-profile'} size={36}/>
+            <Text style={styles.tabs}>Manage Profile</Text>
+          </View>
+        </TouchableWithoutFeedback>
 
         <TouchableWithoutFeedback onPress={() => navigation.navigate('Services')}>
           <View style={styles.options}>

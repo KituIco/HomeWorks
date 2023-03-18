@@ -8,7 +8,7 @@ let AgencyServices = {
             let res = await getAxios(queryUrl);
             return res;
         } catch (error) {
-            console.log(error);
+            throw error;
         }
     },
 
@@ -17,7 +17,7 @@ let AgencyServices = {
             let res = await getAxios(url);
             return res;
         } catch (error) {
-            console.log(error);
+            throw error;
         }
     },
 
@@ -27,7 +27,7 @@ let AgencyServices = {
             let res = await getAxios(queryUrl);
             return res;
         } catch (error) {
-            console.log(error);
+            throw error;
         }
     },
 
@@ -37,7 +37,7 @@ let AgencyServices = {
             let res = await getAxios(queryUrl);
             return res;
         } catch (error) {
-            console.log(error);
+            throw error;
         }
     },
 
@@ -47,7 +47,7 @@ let AgencyServices = {
             let res = await getAxios(queryUrl);
             return res;
         } catch (error) {
-            console.log(error);
+            throw error;
         }
     }
 

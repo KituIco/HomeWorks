@@ -159,7 +159,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     width: '90%',
     padding: 10,
-    height: '60%'
+    height: '70%'
   },
   enter: {
     fontSize:16,

@@ -1,11 +1,12 @@
-import { useEffect, useState } from 'react';
-import { StyleSheet, View, Text, TextInput, ScrollView, TouchableWithoutFeedback } from 'react-native';
+import { StyleSheet, View, Text, TextInput, ScrollView, TouchableWithoutFeedback, Alert } from 'react-native';
 import { MaterialCommunityIcons  } from '@expo/vector-icons';
 import { addressHandler } from '../utils/addressHandler';
 import { LinearGradient, } from 'expo-linear-gradient';
+import { useEffect, useState } from 'react';
 
-import Loading from '../hooks/loading';
 import AddressService from '../services/address/address-services';
+import Loading from '../hooks/loading';
+
 
 export default function AddAddress( props ) {
   const [city,setCity] = useState(props.raw.city);
@@ -51,15 +52,18 @@ export default function AddAddress( props ) {
     }
   }
 
-  const onAdd = () => {
+  const onAdd = async() => {
     setLoading(true);
-    AddressService.createAddress({
-      userID, userFullName, userNum, latitude, longitude, city, district,
-      postalCode, region, street, streetNumber, name, isoCountryCode, isDefault
-    }).then(() => {
+    try {
+      await AddressService.createAddress({
+        userID, userFullName, userNum, latitude, longitude, city, district,
+        postalCode, region, street, streetNumber, name, isoCountryCode, isDefault
+      })
       setDone(true);
-      setLoading(false);
-    }).catch((err) => console.log(err))
+    } catch (err) {
+      Alert.alert('Server Error', err+'.', 
+      [ {text: 'OK'} ]);
+    } setLoading(false);
   }
 
   if(done) 
@@ -98,7 +102,7 @@ export default function AddAddress( props ) {
           <TextInput style={styles.input} onChangeText={setStreet} value={street} placeholder="Street"/>
         </View>
 
-        <Text style={styles.header}>District</Text>
+        <Text style={styles.header}>District or Barangay</Text>
         <View style={styles.textbox}>
           <TextInput style={styles.input} onChangeText={setDistrict} value={district} placeholder="District"/>
         </View>

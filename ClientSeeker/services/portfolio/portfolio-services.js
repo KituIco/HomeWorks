@@ -8,7 +8,7 @@ let PortfolioServices = {
             let res = await getAxios(url);
             return res;
         } catch (error) {
-            console.log(error);
+            throw error;
         }
     },
 
@@ -18,7 +18,7 @@ let PortfolioServices = {
             let res = await getAxios(queryURL);
             return res;
         } catch (error) {
-            console.log(error);
+            throw error;
         }
     },
 
@@ -28,7 +28,7 @@ let PortfolioServices = {
             let res = await getAxios(queryURL);
             return res;
         } catch (error) {
-            console.log(error);
+            throw error;
         }
     },
 
@@ -38,7 +38,7 @@ let PortfolioServices = {
             let res = await getAxios(queryURL);
             return res;
         } catch (error) {
-            console.log(error);
+            throw error;
         }
     }
 }

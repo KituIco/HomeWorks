@@ -43,22 +43,26 @@ export default function AddService( props ) {
         props.navigation.replace('HomeStack');
         props.navigation.navigate('HomeStack', { screen:'OptionsStack', 
          params: { screen: 'Services', initial:false} })
-      }, 1000)
+      }, 500)
     }
   }, [done]);
 
   const onAdd = (ID, name, desc) => {
     setTypeID(ID);
     setTypeName(name);
+    setTypeDesc(desc);
     setDetails(true);
-    setTypeDesc(desc)
+  }
+
+  const onBack = (ID, name, desc) => {
+    setDetails(false);
   }
 
   const onFinalAdd = () => {
     if(regex.test(initCost)) {
       setLoading(true);
-      let initialCost = parseFloat(initCost).toFixed(2);
-      ServiceServices.createService({providerID,typeID,typeName,initialCost})
+      let initialCost = Number(parseFloat(initCost).toFixed(2));
+      ServiceServices.createService({providerID, typeID, typeName, initialCost})
         .then(() => {
           setDone(true);
           setLoading(false);
@@ -86,6 +90,10 @@ export default function AddService( props ) {
     return (
       <ScrollView style={{marginVertical:-10}}>
         <View style={{marginHorizontal:20}}>
+          <TouchableWithoutFeedback onPress={() => onBack()}>
+            <Text style={styles.back}>Click here to see Services List</Text>
+          </TouchableWithoutFeedback>
+          
           <Text style={[styles.service, {fontSize:24}]}>{typeName}</Text>
           <Text style={[styles.desc, {textAlign:'justify', fontSize:11}]}>{typeDesc}</Text>
           <Text style={styles.cost}>Initial Cost of your {typeName} Service</Text>
@@ -248,4 +256,12 @@ const styles = StyleSheet.create({
     borderColor: '#00FF00',
     borderWidth: 1,
   },
+
+  back:{
+    marginBottom: 20,
+    fontFamily: 'notosans',
+    letterSpacing: -0.5,
+    color: '#9C54D5',
+    textDecorationLine: 'underline',
+  }
 });

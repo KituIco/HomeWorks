@@ -17,7 +17,7 @@ let ImageService = {
             let res = await postAxios(url, bodyFormData, true);
             return res.url;
         } catch (error) {
-            console.log(error);
+            throw error;
         }
     },
     

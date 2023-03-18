@@ -46,6 +46,10 @@ class AddressValidator extends Validator {
                 required: false,
                 type: 'string'
             },
+            isoCountryCode : {
+                required: false,
+                type: 'string'
+            },
             name : {
                 required: false,
                 type: 'string'

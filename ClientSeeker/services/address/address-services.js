@@ -7,7 +7,7 @@ let AddressService = {
             let res = await postAxios(url, data);
             return res;
         } catch (error) {
-            console.log(error);
+            throw error;
         }
     },
     patchAddress: async (addressID, data = {}) => {
@@ -16,7 +16,7 @@ let AddressService = {
             let res = await patchAxios(queryURL, data);
             return res;
         } catch (error) {
-            console.log(error);
+            throw error;
         }
     },
     deleteAddress: async (addressID) => {
@@ -25,7 +25,7 @@ let AddressService = {
             let res = await deleteAxios(queryURL);
             return res;
         } catch (error) {
-            console.log(error);
+            throw error;
         }
     },
 
@@ -34,7 +34,7 @@ let AddressService = {
             let res = await getAxios(url);
             return res;
         } catch (error) {
-            console.log(error);
+            throw error;
         }
     },
 
@@ -44,7 +44,7 @@ let AddressService = {
             let res = await getAxios(queryURL);
             return res;
         } catch (error) {
-            console.log(error);
+            throw error;
         }
     },
 
@@ -54,7 +54,7 @@ let AddressService = {
             let res = await getAxios(queryURL);
             return res;
         } catch (error) {
-            console.log(error);
+            throw error;
         }
     },
 
@@ -64,7 +64,7 @@ let AddressService = {
             let res = await getAxios(queryURL);
             return res;
         } catch (error) {
-            console.log(error);
+            throw error;
         }
     }
 }

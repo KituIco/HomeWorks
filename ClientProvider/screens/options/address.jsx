@@ -17,7 +17,6 @@ import CredentialsServices from '../../services/user/credentials-services';
 
 export default function Address({navigation}){
   const [processing, setProcessing] = useState(true);
-  const [outside, setOutside] = useState(true);
   const [region, setRegion] = useState({
     latitude: 14.6487, longitude: 121.0687,
     latitudeDelta: 0.0080, longitudeDelta: 0.0120,
@@ -33,9 +32,7 @@ export default function Address({navigation}){
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
 
   useEffect(() => {
-    if(processing && outside)
     (async () => {
-      setOutside(false)
       let { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== 'granted') {
         Alert.alert('Permission Denied', 
@@ -199,7 +196,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     width: '90%',
     padding: 10,
-    height: '60%'
+    height: '75%'
   },
   enter: {
     fontSize:16,

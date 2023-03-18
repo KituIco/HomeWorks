@@ -10,8 +10,7 @@ let CredentialsServices = {
             let res = await postAxios(queryURL, data);
             return res;
         } catch (error) {
-            console.log(error);
-            throw error.message;
+            throw error;
         }
     },
 
@@ -23,7 +22,7 @@ let CredentialsServices = {
             await SecureStore.deleteItemAsync('refresh_token');
             return res;
         } catch (error) {
-            console.log(error);
+            throw error;
         }
     },
 
@@ -33,7 +32,7 @@ let CredentialsServices = {
             let res = await patchAxios(queryURL, data);
             return res;
         } catch (error) {
-            console.log(error);
+            throw error;
         }
     },
 
@@ -43,7 +42,7 @@ let CredentialsServices = {
             let res = await patchAxios(queryURL, data);
             return res;
         } catch (error) {
-            console.log(error);
+            throw error;
         }
     },
 
@@ -53,7 +52,7 @@ let CredentialsServices = {
             let res = await patchAxios(queryURL, data);
             return res;
         } catch (error) {
-            console.log(error);
+            throw error;
         }
     },
 
@@ -63,7 +62,7 @@ let CredentialsServices = {
             let res = await getAxios(queryURL);
             return res;
         } catch (error) {
-            console.log(error);
+            throw error;
         }
     }
 
