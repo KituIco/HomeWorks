@@ -1,14 +1,12 @@
 import { StyleSheet, View, Text, Image, TouchableWithoutFeedback, Modal, Keyboard } from 'react-native';
 import { LinearGradient, } from 'expo-linear-gradient';
-import MapView, {Marker} from 'react-native-maps';
 import { useState, useEffect } from 'react';
-import { MaterialCommunityIcons  } from '@expo/vector-icons';
 import * as Location from 'expo-location';
+import MapView from 'react-native-maps';
 
 import Back from '../../hooks/back';
 import Loading from '../../hooks/loading';
 import { addressHandler } from '../../utils/addressHandler';
-import { contactHandler } from '../../utils/contactHandler';
 import { getUserID } from '../../utils/getUserID';
 
 import AddAddress from '../../components/addAddress';
@@ -68,10 +66,10 @@ export default function Address({navigation}){
     'keyboardDidShow', () => { setKeyboardVisible(true); });
     const keyboardDidHideListener = Keyboard.addListener(
     'keyboardDidHide', () => { setKeyboardVisible(false); });
-  return () => {
-    keyboardDidHideListener.remove();
-    keyboardDidShowListener.remove();
-  };
+    return () => {
+      keyboardDidHideListener.remove();
+      keyboardDidShowListener.remove();
+    };
   }, []);
 
   const regionChange = async(data) => {

@@ -20,10 +20,10 @@ export default function Login({ navigation }) {
     'keyboardDidShow', () => { setKeyboardVisible(true); });
     const keyboardDidHideListener = Keyboard.addListener(
     'keyboardDidHide', () => { setKeyboardVisible(false); });
-  return () => {
-    keyboardDidHideListener.remove();
-    keyboardDidShowListener.remove();
-  };
+    return () => {
+      keyboardDidHideListener.remove();
+      keyboardDidShowListener.remove();
+    };
   }, []);
 
   const onLogin = async() => {

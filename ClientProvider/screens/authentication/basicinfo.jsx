@@ -1,6 +1,5 @@
 import { StyleSheet, View, Text, Image, TouchableWithoutFeedback, TextInput, ScrollView, Modal, Alert, Dimensions } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { StackActions } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
 import * as ImagePicker from 'expo-image-picker';
 import { useState } from 'react';
@@ -28,7 +27,6 @@ async function onSubmit( props, data ) {
     data['verified'] = 0;
 
     await ProviderServices.createProvider(data)
-    props.navigation.dispatch(StackActions.popToTop());
     props.navigation.replace('HomeStack');
 
   } catch (err) {

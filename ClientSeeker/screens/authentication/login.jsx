@@ -1,5 +1,4 @@
 import { StyleSheet, View, Text, Image, TouchableWithoutFeedback, TextInput, ScrollView, Alert, Dimensions } from 'react-native';
-import { StackActions } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useState } from 'react';
 
@@ -18,7 +17,6 @@ export default function Login({ navigation }) {
       setLoading(true);
       try {
         await CredentialsServices.login({ identifier: mail, password: password });
-        navigation.dispatch(StackActions.popToTop()),
         navigation.replace('HomeStack');
 
       } catch (err) {

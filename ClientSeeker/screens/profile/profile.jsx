@@ -1,6 +1,5 @@
-import { StyleSheet, View, Text, ScrollView, Image, TouchableWithoutFeedback, Alert } from 'react-native';
+import { StyleSheet, View, Text, ScrollView, Image, TouchableWithoutFeedback, Alert, Keyboard, Modal } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { StackActions } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useState, useEffect } from 'react';
 
@@ -13,14 +12,20 @@ import { getImageURL } from '../../utils/getImageURL';
 import Loading from '../../hooks/loading';
 
 export default function Profile({ navigation }) {
-  const [name, setName] = useState('');
-  const [mail, setMail] = useState('');
-  const [birthday, setBirthday] = useState('');
+  const [email, setEmail] = useState('');
+  const [birthdate, setBirthdate] = useState('');
   const [contact, setContact] = useState('');
 
+  const [username, setUsername] = useState('');
+  const [firstName, setFirstname] = useState('');
+  const [lastName, setLastname] = useState('');
+
   const [image, setImage] = useState(require("../../assets/default.jpg"));
-  const [loading, setLoading] = useState(false);
   const [processing, setProcessing] = useState(true);
+  const [loading, setLoading] = useState(false);
+
+  const [isKeyboardVisible, setKeyboardVisible] = useState(false);
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     ( async() => {
@@ -31,10 +36,12 @@ export default function Profile({ navigation }) {
 
         if(seeker.body.seekerDp)
           setImage({uri : getImageURL(seeker.body.seekerDp)})
-        setName(`${seeker.body.firstName} ${seeker.body.lastName}`);
-        setBirthday(seeker.body.birthdate);
+        setFirstname(seeker.body.firstName);
+        setLastname(seeker.body.lastName)
+        setBirthdate(seeker.body.birthdate);
 
-        setMail(credentials.body.email);
+        setEmail(credentials.body.email);
+        setUsername(credentials.body.username);
         setContact(contactHandler(credentials.body.phoneNumber));
 
       } catch (err) {
@@ -44,14 +51,30 @@ export default function Profile({ navigation }) {
     })();
   }, []);
 
-  const onLogout = () => {
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener(
+    'keyboardDidShow', () => { setKeyboardVisible(true); });
+    const keyboardDidHideListener = Keyboard.addListener(
+    'keyboardDidHide', () => { setKeyboardVisible(false); });
+    return () => {
+      keyboardDidHideListener.remove();
+      keyboardDidShowListener.remove();
+    };
+  }, []);
+
+  const onEdit = async() => {
+    setOpen(true);
+  }
+
+  const onLogout = async() => {
     setLoading(true);
-    CredentialsServices.logout()
-    .then(() => {
-      navigation.dispatch(StackActions.popToTop()),
-      navigation.navigate('AuthStack')
-    })
-    .catch(() => setLoading(false))
+    try {
+      await CredentialsServices.logout()
+      navigation.replace('AuthStack')
+    } catch (err) {
+      Alert.alert('Error', err+'.', [ {text: 'OK'} ]);
+    }
+    setLoading(false)
   }
 
   if (processing) return <Loading/>
@@ -60,9 +83,25 @@ export default function Profile({ navigation }) {
     <View style={styles.container}>
       { loading && <Loading/> }
       <View style={styles.header}>
-        <Text style={styles.heading}>My Profile</Text>
+        <Text numberOfLines={1} style={styles.heading}>{username}'s Profile!</Text>
       </View>
       
+      { open && <View style={styles.overlay}/> }
+      <Modal visible={open} transparent={true} animationType='slide'>
+        <View style={styles.centered}>
+          <View style={styles.modal}>
+
+            <View style={{flex:1}}><Text>Try</Text></View>
+            
+            { !isKeyboardVisible &&
+            <TouchableWithoutFeedback onPress= {() => setOpen(!open)}>
+              <Text style={styles.enter}>CLOSE</Text>
+            </TouchableWithoutFeedback>
+            }
+
+          </View>
+        </View>
+      </Modal>
 
       <ScrollView style={styles.info}>
         <View style={styles.holder}>
@@ -74,25 +113,30 @@ export default function Profile({ navigation }) {
         
         <Text style={styles.nameheader}>Name</Text>
         <View style={styles.nameholder}>
-          <MaterialCommunityIcons name={'pencil-outline'} size={26} style={{color:'#FFF', marginTop: 4}}/>
-          <Text style={styles.name}>{name}</Text>
-          <MaterialCommunityIcons name={'pencil-outline'} size={26} style={{color:'#9C54D5', marginTop: 4}}/>
+          <Text style={styles.name}>{firstName} {lastName}</Text>
+          <TouchableWithoutFeedback onPress={() => onEdit()}>
+            <MaterialCommunityIcons name={'pencil-outline'} size={26} style={{position:'absolute', right:0, bottom:0, color:'#9C54D5', marginTop: 4}}/>
+          </TouchableWithoutFeedback>
         </View>
 
 
         <Text style={styles.subheader}>E-mail</Text>
-        <Text style={styles.subcontent}>{mail}</Text>
+        <Text style={styles.subcontent}>{email}</Text>
 
         <Text style={styles.subheader}>Birthday</Text>
         <View style={styles.subholder}>
-          <Text style={styles.subcontent}>{birthday}</Text>
-          <MaterialCommunityIcons name={'pencil-outline'} size={26} style={{color:'#9C54D5', marginTop: 4}}/>
+          <Text style={styles.subcontent}>{birthdate}</Text>
+          <TouchableWithoutFeedback onPress={() => onEdit()}>
+            <MaterialCommunityIcons name={'pencil-outline'} size={26} style={{color:'#9C54D5', marginTop: 4}}/>
+          </TouchableWithoutFeedback>
         </View>
 
         <Text style={styles.subheader}>Contact Number</Text>
         <View style={styles.subholder}>
           <Text style={styles.subcontent}>{contact}</Text>
-          <MaterialCommunityIcons name={'pencil-outline'} size={26} style={{color:'#9C54D5', marginTop: 4}}/>
+          <TouchableWithoutFeedback onPress={() => onEdit()}>
+            <MaterialCommunityIcons name={'pencil-outline'} size={26} style={{color:'#9C54D5', marginTop: 4}}/>
+          </TouchableWithoutFeedback>
         </View>
 
         <TouchableWithoutFeedback>
@@ -128,11 +172,12 @@ const styles = StyleSheet.create({
   },
   heading: {
     fontFamily: 'lexend',   
-    fontSize: 20,
+    fontSize: 18,
     textTransform:'uppercase',
     color: '#462964',
-    marginBottom: 28,
-    letterSpacing: -0.8
+    marginBottom: 30,
+    letterSpacing: -0.8,
+    marginHorizontal: 50
   },
 
   holder: {
@@ -167,7 +212,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginHorizontal: 30,
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     marginTop: -4,
   },
   name: {
@@ -229,5 +274,35 @@ const styles = StyleSheet.create({
     marginBottom: 8,
     backgroundColor:'#FFF', 
     marginTop: -4,
+  },
+
+  centered: {
+    flex:1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modal: {
+    borderRadius: 20,
+    backgroundColor: 'white',
+    width: '90%',
+    padding: 10,
+    height: '75%'
+  },
+  enter: {
+    fontSize:16,
+    color:'#000', 
+    alignSelf:'center', 
+    fontFamily: 'lexend',
+    marginBottom: 10,
+    letterSpacing: -0.5,
+  },
+
+  overlay: {
+    position: 'absolute', 
+    top: 0, left: 0, right: 0, bottom: 0, 
+    justifyContent: 'center', 
+    alignItems: 'center',
+    zIndex: 15,
+    backgroundColor: '#E9E9E9A0'
   },
 });
