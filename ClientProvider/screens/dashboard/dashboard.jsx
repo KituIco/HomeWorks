@@ -1,7 +1,8 @@
-import { StyleSheet, View, Text, Image, ScrollView, TouchableWithoutFeedback, } from 'react-native';
+import { StyleSheet, View, Text, Alert, TouchableWithoutFeedback, } from 'react-native';
+import { MaterialCommunityIcons } from '@expo/vector-icons'; 
 import { LinearGradient } from 'expo-linear-gradient';
 import { useState, useEffect } from 'react';
-import { MaterialCommunityIcons } from '@expo/vector-icons'; 
+
 
 import ProviderServices from '../../services/user/provider-services';
 import AddressServices from '../../services/address/address-services';
@@ -20,40 +21,34 @@ export default function Dashboard({navigation}) {
 
   const [loading, setLoading] = useState(true);
   const [name, setName] = useState('');
-  const [init, setInit] = useState(0);
 
   useEffect(() => {
-    getUserID().then( userID => {
-      if(userID && loading) {
-        ProviderServices.getProvider(userID).then( data => {
-          let fullname = `${data.body.firstName} ${data.body.lastName}`;
-          
-          if(!data.body.verified) {
-            Promise.all([
-              AddressServices.getAllAddressOfUser(userID),
-              ServiceServices.getProviderServices(userID),
-            ]).then (data => {
-              if(data[0].body.length == 0) setNoAddress(true);
-              else setMessage1('The admins are verifying your profile.')
-              if(data[1].body.length == 0) setNoService(true);
-              else setMessage2('You may manage your profile in Options.')
+    ( async() => {
+      try {
+        let userID = await getUserID();
+        let data = await ProviderServices.getProvider(userID);
+        let fullname = `${data.body.firstName} ${data.body.lastName}`;
 
-              if(data[0].body.length == 0 || data[1].body.length == 0)
-                setVerified(false);
-              setName(fullname);
-              setLoading(false);
-            })
-          } 
-        }).catch((err) => {
-          console.log('test', err);
-          navigation.navigate('AuthStack');
-        })
-      } 
-      else if (!userID) {
-        setInit(init+1);
+        if(!data.body.verified) {
+          let address = await AddressServices.getAllAddressOfUser(userID);
+          let service = await  ServiceServices.getProviderServices(userID);
+          
+          if(address.body.length == 0) setNoAddress(true);
+          else setMessage1('The admins are verifying your profile.')
+          if(service.body.length == 0) setNoService(true);
+          else setMessage2('You may manage your profile in Options.')
+
+          if(address.body.length == 0 || service.body.length == 0)
+            setVerified(false);
+          setName(fullname); 
+        } 
+      } catch (err) {
+        Alert.alert('Error', err+'.', [ {text: 'OK'} ]);
+        navigation.navigate('AuthStack');
       }
-    })
-  }, [init]);
+      setLoading(false);
+    })();
+  }, []);
 
   const changeRegister = () => {
     setVerified(!verified);

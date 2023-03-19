@@ -30,7 +30,7 @@ export default function AddAddress( props ) {
       city, district, postalCode, region,
       street, streetNumber, name, isoCountryCode
     }))
-  });
+  }, []);
 
   useEffect(() => {
     if(done){

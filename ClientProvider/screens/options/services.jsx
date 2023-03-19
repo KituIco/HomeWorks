@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react';
-import { StyleSheet, View, Text, ScrollView, Modal, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import { StyleSheet, View, Text, ScrollView, Modal, TouchableWithoutFeedback, Keyboard, Alert } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
+import { useState, useEffect } from 'react';
 
 import ProviderServices from '../../services/user/provider-services';
 import ServiceServices from '../../services/service/service-services';
@@ -22,19 +22,21 @@ export default function Services({ navigation }) {
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
   
   useEffect(() => {
-    if(loading) 
-      getUserID().then( userID => {
-        setLoading(false);
-        ProviderServices.getProvider(userID).then( data => {
-          ServiceServices.getProviderServices(userID)
-            .then((data) => {
-              setServices(typeHandler(data.body));
-              setUserID(userID);
-              if(data.body.length == 0) setNoService(true);
-            })
-        })
-      })
-  });
+    ( async() => {
+      try {
+        let userID = await getUserID();
+        let data = await ServiceServices.getProviderServices(userID);
+        
+        setServices(typeHandler(data.body));
+        setUserID(userID);
+        if(data.body.length == 0) setNoService(true);
+
+      } catch(err) {
+        Alert.alert('Error', err+'.', [ {text: 'OK'} ]);
+      }
+      setLoading(false);
+    })();
+  }, []);
 
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(

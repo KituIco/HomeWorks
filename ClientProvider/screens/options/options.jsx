@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react';
-import { StyleSheet, View, Text, ScrollView, Image, TouchableWithoutFeedback } from 'react-native';
+import { StyleSheet, View, Text, ScrollView, Image, TouchableWithoutFeedback, Alert } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
+import { useState, useEffect } from 'react';
 
 import CredentialsServices from '../../services/user/credentials-services';
 import ProviderServices from '../../services/user/provider-services';
@@ -12,20 +12,24 @@ import Loading from '../../hooks/loading';
 
 export default function Options({ navigation }) {
   const [name, setName] = useState('');
-  const [image, setImage] = useState(require("../../assets/default.jpg"));
   const [loading, setLoading] = useState(true);
+  const [image, setImage] = useState(require("../../assets/default.jpg"));
   
   useEffect(() => {
-    if(loading) 
-      getUserID().then( userID => {
-        ProviderServices.getProvider(userID).then( data => {
-          setLoading(false)
-          setName(`${data.body.firstName} ${data.body.lastName}`);
-          if (data.body.providerDp)
-            setImage({uri : getImageURL(data.body.providerDp)});
-        })
-      })
-  });
+    ( async() => {
+      try {
+        let userID = await getUserID();
+        let data = await ProviderServices.getProvider(userID)
+        setName(`${data.body.firstName} ${data.body.lastName}`);
+        if (data.body.providerDp)
+          setImage({uri : getImageURL(data.body.providerDp)});
+
+      } catch (err) {
+        Alert.alert('Error', err+'.', [ {text: 'OK'} ]);
+      }
+      setLoading(false);
+    })();
+  }, []);
 
   const onLogout = () => {
     setLoading(true);

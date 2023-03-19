@@ -27,7 +27,7 @@ export default function InitSpecs({ route, navigation }) {
   const [image4, setImage4] = useState(null);
 
   useEffect(() => {
-    (async () => {
+    ( async() => {
       setSeekerID(await getUserID())
     })();
   }, []);

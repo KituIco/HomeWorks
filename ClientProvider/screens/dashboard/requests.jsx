@@ -1,9 +1,10 @@
-import { StyleSheet, View, Text, Image, ScrollView, TouchableWithoutFeedback, } from 'react-native';
-import { LinearGradient, } from 'expo-linear-gradient';
+import { StyleSheet, View, Text, Image, ScrollView, TouchableWithoutFeedback, Alert, } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons'; 
+import { LinearGradient, } from 'expo-linear-gradient';
 import { useState, useEffect } from 'react';
 
 import Back from '../../hooks/back';
+import Loading from '../../hooks/loading';
 import { getUserID } from '../../utils/getUserID';
 import Listing from '../../components/requestListing';
 import { requestHelper } from '../../utils/requestHelper';
@@ -12,30 +13,37 @@ import ServiceSpecsServices from '../../services/service-specs/service-specs-ser
 import ServiceTypesServices from '../../services/service-types/service-types-services';
 import ServiceServices from '../../services/service/service-services';
 
-
-
 export default function Requests({navigation}) {
   const [waiting, setWaiting] = useState(true);
   const [services, setServices] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [check, setCheck] = useState(0);
 
   useEffect(() => {
-    (async () => {  
-      let userID = await getUserID();
-      let allService = await ServiceSpecsServices.getAllServiceSpecs();
-      let serviceTypes = await ServiceTypesServices.getServiceTypes()
-
-      let myServices = await ServiceServices.getProviderServices(userID);
-      let service = await requestHelper(allService.body, myServices.body, serviceTypes.body);
-      if(service.length > 0) {
-        setServices(service);
-        setTimeout(() => setWaiting(false), 100);
-      }else {
-        setWaiting(true);
-        setServices([])
+    ( async() => {  
+      try {
+        let userID = await getUserID();
+        let allService = await ServiceSpecsServices.getAllServiceSpecs();
+        let serviceTypes = await ServiceTypesServices.getServiceTypes()
+  
+        let myServices = await ServiceServices.getProviderServices(userID);
+        let service = await requestHelper(allService.body, myServices.body, serviceTypes.body);
+        if(service.length > 0) {
+          setServices(service);
+          setWaiting(false);
+        } else {
+          setWaiting(true);
+          setServices([])
+        }
+      } catch (err) {
+        Alert.alert('Error', err+'.', [ {text: 'OK'} ]);
       }
+      setLoading(false);
     })();
   }, [check]);
+
+  if (loading)
+    return <Loading/>
 
   return (
     <View style={styles.container}>

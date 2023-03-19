@@ -1,4 +1,4 @@
-import { StyleSheet, View, Text, Image, ScrollView, } from 'react-native';
+import { StyleSheet, View, Text, Alert, ScrollView, } from 'react-native';
 import { EvilIcons  } from '@expo/vector-icons';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState } from 'react';
@@ -6,25 +6,29 @@ import { useEffect, useState } from 'react';
 import Grid  from '../../components/grid';
 import Listing from '../../components/listing';
 import Header from '../../components/dashheader';
-import Back from '../../hooks/back';
 
 import ServiceTypeServices from '../../services/service/service-type-services';
-import Loading from '../../hooks/loading';
 import { typeHandler } from '../../utils/typeHandler';
+import Loading from '../../hooks/loading';
+import Back from '../../hooks/back';
+
 
 export default function Dashboard({navigation}) {
   const [processing, setProcessing] = useState(true);
   const [services, setServices] = useState([]);
 
   useEffect(() => {
-    if(processing)
-      ServiceTypeServices.getServiceTypes()
-        .then((data) => {
-          let patched = typeHandler(data.body);
-          setServices(patched)
-          setProcessing(false);
-        })
-  });
+    ( async() => {
+      try {
+        let data = await ServiceTypeServices.getServiceTypes()
+        let patched = await typeHandler(data.body);
+        setServices(patched);
+      } catch (err) {
+        Alert.alert('Error', err+'.', [ {text: 'OK'} ]);
+      }
+      setProcessing(false);
+    })();
+  }, []);
 
   const featured = [
     {key: 'Alex Guerrero', location: 'Taguig City', ratings: '4.3', service: 'Car Mechanic', price: 'min Php 420', src: require("../../assets/providers/provider-a.png")},

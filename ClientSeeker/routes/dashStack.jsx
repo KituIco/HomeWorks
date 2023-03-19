@@ -1,4 +1,4 @@
-import { StyleSheet, View, Image, TouchableWithoutFeedback } from 'react-native';
+import { StyleSheet, View, Image, TouchableWithoutFeedback, Alert } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { useEffect, useState } from 'react';
 
@@ -15,20 +15,21 @@ const Stack = createStackNavigator();
 
 export default function DashStack({ navigation }) {
   const [image, setImage] = useState(require("../assets/default.jpg"));
-  const [init, setInit] = useState(0);
 
   useEffect(() => {
-    getUserID().then( userID => {
-      if(userID) {
-        SeekerServices.getSeeker(userID).then( data => {
-          if(data.body.seekerDp)
-            setImage({uri : getImageURL(data.body.seekerDp)})
-        }).catch(() => navigation.navigate('AuthStack'))
-      } else {
-        setInit(init+1);
+    ( async() => {
+      try{
+        let userID = await getUserID();
+        let data = await SeekerServices.getSeeker(userID);
+        if(data.body.seekerDp)
+          setImage({uri : getImageURL(data.body.seekerDp)});
+
+      } catch (err) {
+        Alert.alert('Error', err+'.', [ {text: 'OK'} ]);
+        navigation.navigate('AuthStack')
       }
-    })
-  }, [init]);
+    })();
+  }, []);
 
   const header = ({
     headerRight: () => (

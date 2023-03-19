@@ -1,4 +1,4 @@
-import { StyleSheet, View, ScrollView, Text, TextInput, TouchableWithoutFeedback } from 'react-native';
+import { StyleSheet, View, ScrollView, Text, TextInput, TouchableWithoutFeedback, Alert } from 'react-native';
 import { MaterialCommunityIcons  } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useEffect, useState } from 'react';
@@ -27,8 +27,7 @@ export default function AddService( props ) {
   let regex = /^-?\d+(?:[.,]\d*?)?$/;
 
   useEffect(() =>{
-    if(loading)
-    (async() =>{
+    ( async() =>{
       try {
         let data = await ServiceTypesServices.getServiceTypes();
         let list = removeExisting(data.body,existing);
@@ -38,7 +37,7 @@ export default function AddService( props ) {
       } 
       setLoading(false);
     })();
-  })
+  }, [])
 
   useEffect(() => {
     if(done){

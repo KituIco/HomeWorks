@@ -1,6 +1,4 @@
 import { useState } from 'react';
-import { StyleSheet } from 'react-native';
-
 import AppLoading from 'expo-app-loading';
 import * as Font from "expo-font";
 import * as SecureStore from 'expo-secure-store';
@@ -50,17 +48,3 @@ export default function App() {
     )
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  content: {
-    fontFamily: 'lexend',   
-    fontSize: 15,
-    textTransform:'uppercase'
-  }
-});

@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react';
-import { StyleSheet, View, Text, ScrollView, Image, TouchableWithoutFeedback } from 'react-native';
+import { StyleSheet, View, Text, ScrollView, Image, TouchableWithoutFeedback, Alert } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { LinearGradient } from 'expo-linear-gradient';
 import { StackActions } from '@react-navigation/native';
+import { LinearGradient } from 'expo-linear-gradient';
+import { useState, useEffect } from 'react';
 
 import CredentialsServices from '../../services/user/credentials-services';
 import SeekerServices from '../../services/user/seeker-services';
@@ -19,28 +19,30 @@ export default function Profile({ navigation }) {
   const [contact, setContact] = useState('');
 
   const [image, setImage] = useState(require("../../assets/default.jpg"));
-  const [init, setInit] = useState(0);
   const [loading, setLoading] = useState(false);
   const [processing, setProcessing] = useState(true);
 
   useEffect(() => {
-    getUserID().then( userID => {
-      if(userID) {
-        Promise.all([SeekerServices.getSeeker(userID), CredentialsServices.getUserCredentials(userID)])
-          .then(data => {
-            if(data[0].body.seekerDp)
-              setImage({uri : getImageURL(data[0].body.seekerDp)})
-            setName(`${data[0].body.firstName} ${data[0].body.lastName}`);
-            setBirthday(data[0].body.birthdate);
-            setMail(data[1].body.email);
-            setContact(contactHandler(data[1].body.phoneNumber));
-            setProcessing(false);
-          })
-      } else {
-        setInit(init+1);
+    ( async() => {
+      try {
+        let userID = await getUserID();
+        let seeker = await SeekerServices.getSeeker(userID);
+        let credentials = await CredentialsServices.getUserCredentials(userID);
+
+        if(seeker.body.seekerDp)
+          setImage({uri : getImageURL(seeker.body.seekerDp)})
+        setName(`${seeker.body.firstName} ${seeker.body.lastName}`);
+        setBirthday(seeker.body.birthdate);
+
+        setMail(credentials.body.email);
+        setContact(contactHandler(credentials.body.phoneNumber));
+
+      } catch (err) {
+        Alert.alert('Error', err+'.', [ {text: 'OK'} ]);
       }
-    })
-  }, [init]);
+      setProcessing(false);    
+    })();
+  }, []);
 
   const onLogout = () => {
     setLoading(true);
