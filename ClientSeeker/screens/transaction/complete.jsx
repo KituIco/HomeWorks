@@ -8,9 +8,9 @@ import Listing from '../../components/listing';
 
 export default function Complete({route, navigation}) {
   const { service, icon } = route.params;
-  const [value, onChangeText] = React.useState('');
-  const [rates, setRates] = React.useState(0);
-  const [answered, setAnswered] = React.useState(false);
+  const [value, onChangeText] = useState('');
+  const [rates, setRates] = useState(0);
+  const [answered, setAnswered] = useState(false);
 
   const starList = ['star-outline','star-outline','star-outline','star-outline','star-outline']
   const [stars, setStars] = useState(starList);

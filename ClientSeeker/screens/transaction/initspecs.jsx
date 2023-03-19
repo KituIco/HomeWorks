@@ -16,7 +16,7 @@ const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
 
 export default function InitSpecs({ route, navigation }) {
-  const { typeID, addressID, typeName, icon, minServiceCost, location }= route.params;
+  const { typeID, addressID, typeName, icon, minServiceCost, location } = route.params;
   const [seekerID, setSeekerID] = useState('');
   const [waiting,setWaiting] = useState(false);
   const [specsDesc, onChangeText] = useState('');
@@ -55,23 +55,27 @@ export default function InitSpecs({ route, navigation }) {
 
   const onSubmit = async() => {
     setWaiting(true);
+    try {
+      let images = [];
+      if(image1) images.push(await ImageService.uploadFile(image1));
+      if(image2) images.push(await ImageService.uploadFile(image2));
+      if(image3) images.push(await ImageService.uploadFile(image3));
+      if(image4) images.push(await ImageService.uploadFile(image4));
+      images = JSON.stringify(images);
+      
+      let specsStatus = 1;
+      let specsTimeStamp = Date.now();
 
-    let images = [];
-    if(image1) images.push(await ImageService.uploadFile(image1));
-    if(image2) images.push(await ImageService.uploadFile(image2));
-    if(image3) images.push(await ImageService.uploadFile(image3));
-    if(image4) images.push(await ImageService.uploadFile(image4));
-    images = JSON.stringify(images);
+      let res = await ServiceSpecsServices.createServiceSpecs({
+        seekerID, typeID, addressID, specsDesc, images, specsStatus, specsTimeStamp, 
+      })
+      navigation.navigate('Matching', { specsID:res.body.specsID, icon, typeName, addressID, minServiceCost, location});
+    } catch (err) {
+      console.log(err);
+    }
     
-    let specsStatus = 1;
-    let specsTimeStamp = Date.now();
-
-    let res = await ServiceSpecsServices.createServiceSpecs({
-      seekerID, typeID, addressID, specsDesc, images, specsStatus, specsTimeStamp, 
-    })
-
     setWaiting(false);
-    navigation.navigate('Matching', { specsID:res.body.specsID, icon, typeName, addressID, minServiceCost, location});
+    
   }
   
   return (

@@ -42,7 +42,7 @@ class ServiceSpecsValidator extends Validator {
                 required: false,
                 type: 'number'
             },
-            specsTimestamp: {
+            specsTimeStamp: {
                 required: false,
                 type: 'number'
             }

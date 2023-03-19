@@ -75,6 +75,7 @@ class Validator {
             payload, requiredFieldNames
         )
         Object.keys(payload).forEach((fieldName) => {
+            // console.log('check here', fieldName);
             this.validateField(fieldName, payload[fieldName]);
         });
     }

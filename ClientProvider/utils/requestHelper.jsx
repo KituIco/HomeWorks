@@ -1,4 +1,5 @@
 import * as Location from 'expo-location';
+import AddressService from '../services/address/address-services';
 
 export const requestHelper = async(requests, services, types) => {
   let { status } = await Location.requestForegroundPermissionsAsync();
@@ -31,13 +32,10 @@ export const requestHelper = async(requests, services, types) => {
       delete requests.splice(i,1);
       i--; continue;
     }
-    let coords = JSON.parse(requests[i]['addressID']);
-    let res = await Location.reverseGeocodeAsync({
-      latitude: parseFloat(coords[0]), longitude: parseFloat(coords[1])
-    })
-    requests[i]['location'] = res[0];
-    requests[i]['latitude'] = parseFloat(coords[0]);
-    requests[i]['longitude'] = parseFloat(coords[1])
+    let data = await AddressService.getAddressByID(requests[i]['addressID']);
+    requests[i]['location'] = data.body;
+    requests[i]['latitude'] = data.body.latitude;
+    requests[i]['longitude'] = data.body.longitude;
 
   
     if(requests[i].typeID == '0') requests[i]['typeName'] = 'Carpentry'

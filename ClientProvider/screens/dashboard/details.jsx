@@ -18,11 +18,12 @@ export default function Details({route, navigation}) {
   let bookingStatus = 0, dateTimestamp = Date.now();
 
   const [open,setOpen] = useState(false);
-  const [loading,setLoading] = useState(false)
+  const [loading,setLoading] = useState(false);
+  const [noImage, setNoImage] = useState(true);
   let urls = JSON.parse(images); 
   
-
   let viewer = [];
+  if(urls.length && noImage) setNoImage(false);
   if(urls[0]) viewer.push({url : getImageURL(urls[0])});
   if(urls[1]) viewer.push({url : getImageURL(urls[1])});
   if(urls[2]) viewer.push({url : getImageURL(urls[2])});
@@ -47,13 +48,13 @@ export default function Details({route, navigation}) {
   return (
     <View style={styles.container}>
       {loading && <Loading/> }
-      <View style={{alignItems:'center', marginTop:60, marginBottom:10}}>
+      <View style={{alignItems:'center', marginTop:60, marginBottom:-16}}>
         <Text style={styles.header}>{typeName}</Text>
         <Text style={[styles.content,{marginBottom:0}]}>scroll down to see more info</Text>
       </View>
       
 
-      <View style={{width:'100%', height: '68%'}}>
+      <View style={{width:'100%', height: '70%'}}>
         <LinearGradient colors={['rgba(0,0,0,0.1)','rgba(0,0,0,0)'  ]} start={{ x:0, y:0 }} end={{ x:0, y:1 }} style={{height:4, zIndex:5, marginTop:10}}/>
         <ScrollView style={{marginTop:-4, marginBottom:-4}}>
           
@@ -77,12 +78,14 @@ export default function Details({route, navigation}) {
           <Text style={styles.heading}>Service Specs</Text>
           <Text style={styles.content}>{specsDesc}</Text>
 
-          { viewer &&
+          { !noImage &&
           <View  style={{width:'90%', alignSelf:'center', marginTop: 30}}>
             <TouchableWithoutFeedback onPress={() => setOpen(true)}>
-              <View style={[styles.button, {borderWidth:1, borderColor: '#606060', height:32,}]}>
+            <LinearGradient colors={['rgba(0,0,0,0.7)','rgba(0,0,0,0.1)'  ]} start={{ x:0, y:0.65 }} end={{ x:0, y:0.98 }} style={styles.shadow}>
+              <View style={[styles.button, {borderWidth:1, borderColor: '#9C54D5', height:34,}]}>
                 <Text style={[styles.next, {color: '#606060', fontSize:14}]}>Click here to see Specs Images</Text>
               </View>
+              </LinearGradient>
             </TouchableWithoutFeedback>
           </View>
           }
@@ -97,25 +100,25 @@ export default function Details({route, navigation}) {
           </Modal>
 
          
-          <View style={{height:30, width:'100%'}}/>
+          <View style={{height:20, width:'100%'}}/>
         </ScrollView>
         <LinearGradient colors={['rgba(0,0,0,0.1)','rgba(0,0,0,0)'  ]} start={{ x:0, y:1 }} end={{ x:0, y:0 }} style={{height:4, zIndex:5}}/>
       </View>
       
-      <View style={{marginBottom:20,  width:'80%', alignItems:'center', marginTop:20}}>
+      <View style={{marginBottom:16,  width:'80%', alignItems:'center', marginTop:0}}>
         <TouchableWithoutFeedback onPress={() => onSettle()}>
-          <LinearGradient colors={['rgba(0,0,0,0.7)','rgba(0,0,0,0.1)'  ]} start={{ x:0, y:0.65 }} end={{ x:0, y:0.98 }} style={styles.shadow}>
-            <LinearGradient colors={['#9C54D5', '#462964']} start={{ x:0.4, y:1 }} end={{ x:0, y:1 }} style={styles.button}>
+          <LinearGradient colors={['rgba(0,0,0,0.7)','rgba(0,0,0,0.1)'  ]} start={{ x:0, y:0.65 }} end={{ x:0, y:0.98 }} style={[styles.shadow, {height:46}]}>
+            <LinearGradient colors={['#9C54D5', '#462964']} start={{ x:0.4, y:1 }} end={{ x:0, y:1 }} style={[styles.button, {height:46}]}>
               <Text style={styles.next}>Settle Request via Chat</Text>
             </LinearGradient>
           </LinearGradient>
         </TouchableWithoutFeedback>
 
-        <TouchableWithoutFeedback onPress={() => navigation.goBack()}>
+        {/* <TouchableWithoutFeedback onPress={() => navigation.goBack()}>
           <View style={[styles.button, {borderWidth:1, borderColor: '#606060', height:32}]}>
             <Text style={[styles.next, {color: '#606060', fontSize:14}]}>Go Back to Requests Page</Text>
           </View>
-        </TouchableWithoutFeedback>
+        </TouchableWithoutFeedback> */}
       </View>
 
     </View>
@@ -156,7 +159,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontFamily: 'lexend-light',
     letterSpacing: -0.5,
-    fontSize: 16,
+    fontSize: 17,
     color: '#FFF'
   },
 

@@ -70,11 +70,11 @@ class AddressValidator extends Validator {
                 required: false,
                 type: 'string'
             },
-            subRegion : {
+            subregion : {
                 required: false,
                 type: 'string'
             },
-            timeZone : {
+            timezone : {
                 required: false,
                 type: 'string'
             },

@@ -9,12 +9,20 @@ import Header from '../../components/transactheader';
 import Next from '../../components/transactnext';
 import Loading from '../../hooks/loading';
 
+import AddressService from '../../services/address/address-services';
+import SeekerServices from '../../services/user/seeker-services';
+import CredentialsServices from '../../services/user/credentials-services';
 import { addressHandler } from '../../utils/addressHandler';
+import { getUserID } from '../../utils/getUserID';
 
 export default function Request({ route, navigation }) {
   const { typeName, icon, minServiceCost } = route.params.data;
   const [processing, setProcessing] = useState(true);
-  const [waiting,setWaiting] = useState(false)
+  const [waiting,setWaiting] = useState(false);
+
+  const [userFullName, setUserFullName] = useState('');
+  const [userID, setUserID] = useState('');
+  const [userNum, setUserNum] = useState('');
 
   const [region, setRegion] = useState({
     latitude: 14.6487, longitude: 121.0687,
@@ -24,7 +32,6 @@ export default function Request({ route, navigation }) {
   })
 
   useEffect(() => {
-    if(processing)
     (async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== 'granted') {
@@ -41,6 +48,14 @@ export default function Request({ route, navigation }) {
       let response = await Location.reverseGeocodeAsync({
        latitude, longitude
       });
+
+      let currentID = await getUserID();
+      let provider = await SeekerServices.getSeeker(currentID);
+      let credentials = await  CredentialsServices.getUserCredentials(currentID);
+
+      setUserFullName(`${provider.body.firstName} ${provider.body.lastName}`);
+      setUserNum(credentials.body.phoneNumber);
+      setUserID(currentID)
       
       setRegion({latitude, longitude, latitudeDelta: 0.0080, longitudeDelta: 0.0060, 
         location:addressHandler(response[0]), raw:response[0]});
@@ -59,14 +74,20 @@ export default function Request({ route, navigation }) {
 
   const onRequest = async() => {
     setWaiting(true);
-    let addressID = "[" + region.latitude.toFixed(6).toString() + ", " + region.longitude.toFixed(6).toString() + "]";
-    let {icon, minServiceCost, typeID, typeName} = route.params.data;
-    let { location } = region
-    
-    setTimeout(() => {
-      setWaiting(false)
+    try {
+      let isDefault = 1;
+      let res = await AddressService.createAddress({
+        ...region.raw, userID, userFullName, userNum, latitude:region.latitude, longitude:region.longitude, isDefault
+      }) 
+      let addressID = res.body.addressID;
+      let { icon, minServiceCost, typeID, typeName } = route.params.data;
+      let { location } = region
+
       navigation.navigate('InitSpecs', { addressID, icon, minServiceCost, typeID, typeName, location });
-    }, 200);
+    } catch (err) {
+      Alert.alert('Error', err+'.', [ {text: 'OK'} ]);
+    } 
+    setWaiting(false);
   }
 
   if (processing) return <Loading/>
