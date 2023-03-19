@@ -53,7 +53,7 @@ export default function Login({ navigation }) {
         <Text style={styles.subtitle}>Household and Wellness Services App</Text>
 
         <View style={styles.textbox}>
-          <TextInput style={styles.input} onChangeText={setMail} value={mail} placeholder="Email Address"/>
+          <TextInput style={styles.input} onChangeText={setMail} value={mail} placeholder="Email or Number"/>
         </View>
         <View style={styles.textbox}>
           <TextInput style={styles.input} onChangeText={setPassword} value={password} placeholder="Password" secureTextEntry={true}/>

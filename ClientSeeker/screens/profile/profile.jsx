@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react';
 
 import CredentialsServices from '../../services/user/credentials-services';
 import SeekerServices from '../../services/user/seeker-services';
+import EditProfile from '../../components/editProfile';
 
 import { getUserID } from '../../utils/getUserID';
 import { contactHandler } from '../../utils/contactHandler';
@@ -91,8 +92,7 @@ export default function Profile({ navigation }) {
         <View style={styles.centered}>
           <View style={styles.modal}>
 
-            <View style={{flex:1}}><Text>Try</Text></View>
-            
+            <EditProfile firstName={firstName} lastName={lastName} birthdate={birthdate}/>
             { !isKeyboardVisible &&
             <TouchableWithoutFeedback onPress= {() => setOpen(!open)}>
               <Text style={styles.enter}>CLOSE</Text>
@@ -123,17 +123,12 @@ export default function Profile({ navigation }) {
         <Text style={styles.subheader}>E-mail</Text>
         <Text style={styles.subcontent}>{email}</Text>
 
+        <Text style={styles.subheader}>Contact Number</Text>
+        <Text style={styles.subcontent}>{contact}</Text>
+
         <Text style={styles.subheader}>Birthday</Text>
         <View style={styles.subholder}>
           <Text style={styles.subcontent}>{birthdate}</Text>
-          <TouchableWithoutFeedback onPress={() => onEdit()}>
-            <MaterialCommunityIcons name={'pencil-outline'} size={26} style={{color:'#9C54D5', marginTop: 4}}/>
-          </TouchableWithoutFeedback>
-        </View>
-
-        <Text style={styles.subheader}>Contact Number</Text>
-        <View style={styles.subholder}>
-          <Text style={styles.subcontent}>{contact}</Text>
           <TouchableWithoutFeedback onPress={() => onEdit()}>
             <MaterialCommunityIcons name={'pencil-outline'} size={26} style={{color:'#9C54D5', marginTop: 4}}/>
           </TouchableWithoutFeedback>
@@ -286,7 +281,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     width: '90%',
     padding: 10,
-    height: '75%'
+    height: 475
   },
   enter: {
     fontSize:16,

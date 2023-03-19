@@ -43,7 +43,7 @@ export default function Login({ navigation }) {
         <Text style={styles.content}>Welcome to HomeWorks, your provider of the finest household services.</Text>
 
         <View style={styles.textbox}>
-          <TextInput style={styles.input} onChangeText={setMail} value={mail} placeholder="Email Address"/>
+          <TextInput style={styles.input} onChangeText={setMail} value={mail} placeholder="Email or Number"/>
         </View>
         <View style={styles.textbox}>
           <TextInput style={styles.input} onChangeText={setPassword} value={password} placeholder="Password" secureTextEntry={true}/>
