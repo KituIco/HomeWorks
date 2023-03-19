@@ -1,8 +1,7 @@
-import { LinearGradient } from 'expo-linear-gradient';
-import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Text, Image, TouchableWithoutFeedback, TextInput, ScrollView, Keyboard, Alert } from 'react-native';
-import { Dimensions } from 'react-native';
+import { StyleSheet, View, Text, TouchableWithoutFeedback, TextInput, ScrollView, Keyboard, Alert, Dimensions } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { LinearGradient } from 'expo-linear-gradient';
+import { useState, useEffect } from 'react';
 
 import Back from '../../hooks/back';
 import Loading from '../../hooks/loading';

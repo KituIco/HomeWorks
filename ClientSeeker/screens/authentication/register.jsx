@@ -1,7 +1,6 @@
+import { StyleSheet, View, Text, Image, TouchableWithoutFeedback, TextInput, ScrollView, Alert, Dimensions } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import React, { useState } from 'react';
-import { StyleSheet, View, Text, Image, TouchableWithoutFeedback, TextInput, ScrollView, Alert } from 'react-native';
-import { Dimensions } from 'react-native';
+import { useState } from 'react';
 
 import SeekerServices from '../../services/user/seeker-services';
 import Loading from '../../hooks/loading';

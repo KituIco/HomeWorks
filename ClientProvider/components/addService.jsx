@@ -6,9 +6,9 @@ import { useEffect, useState } from 'react';
 import ServiceTypesServices from '../services/service-types/service-types-services';
 import ServiceServices from '../services/service/service-services';
 
-import Loading from '../hooks/loading';
 import { removeExisting } from '../utils/removeExisitng';
 import { typeHandler } from '../utils/typeHandler';
+import Loading from '../hooks/loading';
 
 export default function AddService( props ) {
   const existing = props.listings;
@@ -27,14 +27,17 @@ export default function AddService( props ) {
   let regex = /^-?\d+(?:[.,]\d*?)?$/;
 
   useEffect(() =>{
-    if(loading){
-      ServiceTypesServices.getServiceTypes()
-        .then((data) => {
-          let list = removeExisting(data.body,existing);
-          setServices(typeHandler(list));
-          setLoading(false)
-        })
-    }
+    if(loading)
+    (async() =>{
+      try {
+        let data = await ServiceTypesServices.getServiceTypes();
+        let list = removeExisting(data.body,existing);
+        setServices(typeHandler(list));
+      } catch (err) {
+        Alert.alert('Error', err+'.', [ {text: 'OK'} ]);
+      } 
+      setLoading(false);
+    })();
   })
 
   useEffect(() => {
@@ -42,8 +45,8 @@ export default function AddService( props ) {
       setTimeout(() => {
         props.navigation.replace('HomeStack');
         props.navigation.navigate('HomeStack', { screen:'OptionsStack', 
-         params: { screen: 'Services', initial:false} })
-      }, 500)
+         params: { screen: 'Services', initial:false} });
+      }, 1000)
     }
   }, [done]);
 
@@ -54,20 +57,21 @@ export default function AddService( props ) {
     setDetails(true);
   }
 
-  const onBack = (ID, name, desc) => {
+  const onBack = () => {
     setDetails(false);
   }
 
-  const onFinalAdd = () => {
+  const onFinalAdd = async() => {
     if(regex.test(initCost)) {
       setLoading(true);
       let initialCost = Number(parseFloat(initCost).toFixed(2));
-      ServiceServices.createService({providerID, typeID, typeName, initialCost})
-        .then(() => {
-          setDone(true);
-          setLoading(false);
-        })
-        .catch((err) => console.log(err))
+      try {
+        ServiceServices.createService({providerID, typeID, typeName, initialCost});
+        setDone(true);
+      } catch (err) {
+        Alert.alert('Error', err+'.', [ {text: 'OK'} ]);
+      } 
+      setLoading(false);
     }
   }
 

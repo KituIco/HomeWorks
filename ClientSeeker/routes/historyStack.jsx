@@ -1,10 +1,8 @@
 import { createStackNavigator } from '@react-navigation/stack';
-import { StyleSheet } from 'react-native';
 
 import Complete from '../screens/transaction/complete';
 
 const Stack = createStackNavigator();
-
 
 export default function HistoryStack({ route }) {
   const { service, icon } = route.params;
@@ -34,18 +32,3 @@ export default function HistoryStack({ route }) {
       </Stack.Navigator>
   );
 }
-
-const styles = StyleSheet.create({
-  dashboardIcon: {
-    width: 30, 
-    height: 30, 
-    marginLeft:15, 
-    marginRight:-5 
-  },
-  profileIcon: {
-    width: 40, 
-    height: 40, 
-    borderRadius: 40/2,
-    marginRight: 15
-  }
-});

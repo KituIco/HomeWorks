@@ -36,7 +36,6 @@ export default function AddAddress( props ) {
     if(done){
       setTimeout(() => {
         props.navigation.replace('HomeStack');
-        props.navigation.navigate('HomeStack');
       }, 1000)
     }
   }, [done]);
@@ -61,9 +60,9 @@ export default function AddAddress( props ) {
       })
       setDone(true);
     } catch (err) {
-      Alert.alert('Server Error', err+'.', 
-      [ {text: 'OK'} ]);
-    } setLoading(false);
+      Alert.alert('Error', err+'.', [ {text: 'OK'} ]);
+    } 
+    setLoading(false);
   }
 
   if(done) 

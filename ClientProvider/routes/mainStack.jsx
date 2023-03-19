@@ -1,14 +1,13 @@
 import { NavigationContainer } from '@react-navigation/native'; 
 import { createStackNavigator } from '@react-navigation/stack';
-import { useState } from 'react';
 
-import HomeStack from './homeStack.jsx';
-import AuthStack from './authStack..jsx';
+import HomeStack from './homeStack';
+import AuthStack from './authStack';
 
 const Stack = createStackNavigator();
 
 export default function Navigator( props ) {
-  const [initialRoute, setInitialRoute] = useState(props.route);
+  let initialRoute = props.route;
 
   return (
     <NavigationContainer>

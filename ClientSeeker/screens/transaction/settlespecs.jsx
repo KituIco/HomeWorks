@@ -1,4 +1,4 @@
-import React from 'react';
+import { useState } from 'react';
 import { StyleSheet, View, Text, ImageBackground, Image, ScrollView, TextInput, TouchableWithoutFeedback } from 'react-native';
 import { MaterialCommunityIcons  } from '@expo/vector-icons';
 
@@ -8,7 +8,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 export default function SettleSpecs({ route, navigation }) {
   const { service, icon } = route.params;
 
-  const [value, onChangeText] = React.useState();
+  const [value, onChangeText] = useState();
   
   return (
     <View style={{justifyContent: 'flex-end', flex:1}}>

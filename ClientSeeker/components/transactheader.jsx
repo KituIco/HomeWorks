@@ -2,8 +2,6 @@ import { StyleSheet, View, Text  } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 
-
-
 export default function Header ( props ) {
   let bar = '0%', color1='#323941', color2='#323941', color3='#323941';
   if(props.phase >= 1) { bar='25%'; color1='#9C54D5' } 

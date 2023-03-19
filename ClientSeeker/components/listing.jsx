@@ -1,6 +1,5 @@
-import { StyleSheet, View, Text, Image } from 'react-native';
+import { StyleSheet, View, Text, Image, Dimensions } from 'react-native';
 import { MaterialCommunityIcons  } from '@expo/vector-icons';
-import { Dimensions } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
 const screenWidth = Dimensions.get('window').width;

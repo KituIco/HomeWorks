@@ -1,8 +1,7 @@
-import { LinearGradient } from 'expo-linear-gradient';
-import React, { useState } from 'react';
-import { StyleSheet, View, Text, Alert, TouchableWithoutFeedback, TextInput, ScrollView } from 'react-native';
-import { Dimensions } from 'react-native';
+import { StyleSheet, View, Text, Alert, TouchableWithoutFeedback, TextInput, ScrollView, Dimensions } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { LinearGradient } from 'expo-linear-gradient';
+import { useState } from 'react';
 
 import ProviderServices from '../../services/user/provider-services';
 import Loading from '../../hooks/loading';
@@ -47,8 +46,7 @@ export default function Register({ navigation }) {
       } catch (err) {
         Alert.alert('Registration Warning', err+' Please provide a new Email. You may also choose to login instead.', 
         [ {text: 'OK'} ]);
-      }
-      setLoading(false);
+      } setLoading(false);
     }
   }
 

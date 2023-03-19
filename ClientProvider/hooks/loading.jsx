@@ -1,4 +1,3 @@
-import React, { useEffect, useState  } from 'react';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { StyleSheet, Animated, Easing, View } from 'react-native';
 
@@ -21,11 +20,6 @@ export default function Loading ( props ) {
     inputRange: [0, 1],
     outputRange: ['0deg', '360deg']
   })
-
-  const changeStatus = () => {
-    setAccepted(true);
-    setOpacity(0.8);
-  }
 
   return (
     <View style={styles.waiting}>

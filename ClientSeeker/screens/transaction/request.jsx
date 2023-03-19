@@ -1,5 +1,5 @@
 import { LinearGradient } from 'expo-linear-gradient';
-import React, { useState, useEffect }  from 'react';
+import { useState, useEffect }  from 'react';
 import { StyleSheet, View, Text, ScrollView, Image, Alert, TouchableWithoutFeedback } from 'react-native';
 import { MaterialCommunityIcons  } from '@expo/vector-icons';
 import MapView, {Marker} from 'react-native-maps';

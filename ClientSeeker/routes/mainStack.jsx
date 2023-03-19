@@ -1,7 +1,5 @@
 import { NavigationContainer } from '@react-navigation/native'; 
 import { createStackNavigator } from '@react-navigation/stack';
-import { StyleSheet } from 'react-native';
-import { useState } from 'react';
 
 import HomeStack from './homeStack';
 import ProfileStack from './profileStack';
@@ -14,7 +12,7 @@ import AuthStack from './authStack';
 const Stack = createStackNavigator();
 
 export default function Navigator( props ) {
-  const [initialRoute, setInitialRoute] = useState(props.route);
+  let initialRoute = props.route;
   
   return (
     <NavigationContainer>
@@ -69,18 +67,3 @@ export default function Navigator( props ) {
     </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  dashboardIcon: {
-    width: 30, 
-    height: 30, 
-    marginLeft:15, 
-    marginRight:-5 
-  },
-  profileIcon: {
-    width: 40, 
-    height: 40, 
-    borderRadius: 40/2,
-    marginRight: 15
-  }
-});

@@ -1,7 +1,7 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { StyleSheet, Animated, Easing, View } from 'react-native';
 
-export default function Loading ( props ) {
+export default function Loading () {
   const spinValue = new Animated.Value(0);
 
   Animated.loop(

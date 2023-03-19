@@ -1,5 +1,4 @@
 import { createStackNavigator } from '@react-navigation/stack';
-import { StyleSheet } from 'react-native';
 import { useState } from 'react';
 
 import Dashboard from '../screens/dashboard/dashboard';

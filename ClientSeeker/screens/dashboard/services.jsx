@@ -1,4 +1,3 @@
-import React from 'react';
 import { ScrollView, View } from 'react-native';
 import Grid from '../../components/grid';
 import ListHeader from '../../components/listheader';

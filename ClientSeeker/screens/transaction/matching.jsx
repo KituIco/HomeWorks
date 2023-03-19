@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { StyleSheet, View, Text, ImageBackground, TouchableWithoutFeedback, Animated, Easing, Alert } from 'react-native';
 import { MaterialCommunityIcons  } from '@expo/vector-icons';
 import { StackActions } from '@react-navigation/native';

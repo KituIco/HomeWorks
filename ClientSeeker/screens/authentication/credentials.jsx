@@ -1,11 +1,10 @@
-import { LinearGradient } from 'expo-linear-gradient';
-import React, { useState } from 'react';
-import { StyleSheet, View, Text, Image, TouchableWithoutFeedback, TextInput, ScrollView, Modal, Alert } from 'react-native';
-import { Dimensions } from 'react-native';
+import { StyleSheet, View, Text, Image, TouchableWithoutFeedback, TextInput, ScrollView, Modal, Alert, Dimensions } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { StackActions } from '@react-navigation/native';
-
+import { LinearGradient } from 'expo-linear-gradient';
 import * as ImagePicker from 'expo-image-picker';
+import { useState } from 'react';
+
 import { dateHandler } from '../../utils/dateHandler';
 import { contactHandler } from '../../utils/contactHandler';
 import DatePicker from 'react-native-modern-datepicker';

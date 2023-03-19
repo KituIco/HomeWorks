@@ -1,16 +1,15 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { StyleSheet } from 'react-native';
 
-import DashStack from './dashStack';
-import History from '../screens/history';
 import Notifications from '../screens/notifications';
+import History from '../screens/history';
 import Options from '../screens/options';
+import DashStack from './dashStack';
 
 const Stack = createBottomTabNavigator();
 
 
-export default function HomeStack({ navigation }) {
+export default function HomeStack() {
   return (
       <Stack.Navigator initialRouteName='DashStack' 
         screenOptions={({ route }) => ({
@@ -61,18 +60,3 @@ export default function HomeStack({ navigation }) {
       </Stack.Navigator>
   );
 }
-
-const styles = StyleSheet.create({
-  dashboardIcon: {
-    width: 30, 
-    height: 30, 
-    marginLeft:15, 
-    marginRight:-5 
-  },
-  profileIcon: {
-    width: 40, 
-    height: 40, 
-    borderRadius: 40/2,
-    marginRight: 15
-  }
-});

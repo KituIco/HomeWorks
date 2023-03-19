@@ -1,7 +1,6 @@
-import React, {useState, useEffect} from 'react';
-import { StyleSheet, View, Text, ScrollView, Image, TextInput, TouchableWithoutFeedback } from 'react-native';
+import { useState, useEffect } from 'react';
+import { StyleSheet, View, Text, ScrollView, Image, TextInput, TouchableWithoutFeedback, Dimensions } from 'react-native';
 import { MaterialCommunityIcons  } from '@expo/vector-icons';
-import { Dimensions } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 
 import ServiceSpecsServices from '../../services/service-specs/service-specs-services';

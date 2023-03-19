@@ -1,5 +1,4 @@
 import { createStackNavigator } from '@react-navigation/stack';
-import { StyleSheet } from 'react-native';
 
 import Serving from '../screens/transaction/serving';
 import Payment from '../screens/transaction/payment';
@@ -41,18 +40,3 @@ export default function ServeStack({ route }) {
       </Stack.Navigator>
   );
 }
-
-const styles = StyleSheet.create({
-  dashboardIcon: {
-    width: 30, 
-    height: 30, 
-    marginLeft:15, 
-    marginRight:-5 
-  },
-  profileIcon: {
-    width: 40, 
-    height: 40, 
-    borderRadius: 40/2,
-    marginRight: 15
-  }
-});

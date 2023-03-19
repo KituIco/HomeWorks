@@ -1,5 +1,4 @@
 import { createStackNavigator } from '@react-navigation/stack';
-import { StyleSheet } from 'react-native';
 
 import Options from '../screens/options/options';
 import Services from '../screens/options/services';
@@ -7,7 +6,7 @@ import Address from '../screens/options/address';
 
 const Stack = createStackNavigator();
 
-export default function OptionsStack({ navigation }) {
+export default function OptionsStack() {
 
   const header = {
     headerTransparent: true,
@@ -45,18 +44,3 @@ export default function OptionsStack({ navigation }) {
     </Stack.Navigator>
   );
 }
-
-const styles = StyleSheet.create({
-  dashboardIcon: {
-    width: 30, 
-    height: 30, 
-    marginLeft:15, 
-    marginRight:-5 
-  },
-  profileIcon: {
-    width: 40, 
-    height: 40, 
-    borderRadius: 40/2,
-    marginRight: 15
-  }
-});

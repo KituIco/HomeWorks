@@ -1,5 +1,5 @@
-import { createStackNavigator } from '@react-navigation/stack';
 import { StyleSheet, View, Image, TouchableWithoutFeedback } from 'react-native';
+import { createStackNavigator } from '@react-navigation/stack';
 import { useEffect, useState } from 'react';
 
 import Dashboard from '../screens/dashboard/dashboard';
@@ -8,8 +8,8 @@ import Featured from '../screens/dashboard/featured';
 import Explore from '../screens/dashboard/explore';
 
 import SeekerServices from '../services/user/seeker-services';
-import { getUserID } from '../utils/getUserID';
 import { getImageURL } from '../utils/getImageURL';
+import { getUserID } from '../utils/getUserID';
 
 const Stack = createStackNavigator();
 

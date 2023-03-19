@@ -1,8 +1,5 @@
+import { StyleSheet, View, Text, Image, TouchableWithoutFeedback, Dimensions } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import React from 'react';
-import { StyleSheet, View, Text, Image, TouchableWithoutFeedback } from 'react-native';
-import { Dimensions } from 'react-native';
-
 import Back from '../../hooks/back';
 
 const screenHeight = Dimensions.get('window').height;
