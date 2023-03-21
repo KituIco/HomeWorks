@@ -21,7 +21,7 @@ async function onSubmit( props, data ) {
       username: data.username,
       phoneNumber: data.phoneNumber, 
     });
-    let res = await ImageService.uploadFile(data.urlDp)
+    let res = await ImageService.uploadFile(data.urlDp);
     data['seekerDp'] = res;
     delete data['urlDp'];
       

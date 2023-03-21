@@ -81,7 +81,7 @@ export default function AddAddress( props ) {
       <Text numberOfLines={2} style={styles.location}><Text style={{fontFamily:'quicksand-medium', color: '#9C54D5'}}>Address: </Text>{address}</Text>
 
       <LinearGradient colors={['rgba(255,255,255,1)','rgba(255,255,255,0)'  ]} start={{ x:0, y:0 }} end={{ x:0, y:1 }} style={{height:11, zIndex:5, marginTop:10}}/>        
-      <ScrollView style={{marginVertical:-10}}>
+      <ScrollView style={{marginVertical:-10, paddingHorizontal: 22}}>
         <Text style={styles.address}>Address</Text>
         <Text style={styles.desc}>The following address fields were obtained via geolocation services. 
           If there are incorrect address fields, please update them. Not applicable fields may be left blank.</Text>
@@ -137,7 +137,6 @@ export default function AddAddress( props ) {
 
 const styles = StyleSheet.create({
   container: {
-    marginHorizontal: 22,
     marginBottom: 16,
     height: '90%',
   },

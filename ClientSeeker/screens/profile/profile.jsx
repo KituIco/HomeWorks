@@ -1,10 +1,12 @@
 import { StyleSheet, View, Text, ScrollView, Image, TouchableWithoutFeedback, Alert, Keyboard, Modal } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
+import * as ImagePicker from 'expo-image-picker';
 import { useState, useEffect } from 'react';
 
 import CredentialsServices from '../../services/user/credentials-services';
 import SeekerServices from '../../services/user/seeker-services';
+import ImageService from '../../services/image/image-services';
 import EditProfile from '../../components/editProfile';
 
 import { getUserID } from '../../utils/getUserID';
@@ -26,7 +28,10 @@ export default function Profile({ navigation }) {
   const [loading, setLoading] = useState(false);
 
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
+  const [seekerID, setSeekerID] = useState('');
   const [open, setOpen] = useState(false);
+
+  const [newImage, setNewImage] = useState(null);
 
   useEffect(() => {
     ( async() => {
@@ -41,6 +46,7 @@ export default function Profile({ navigation }) {
         setLastname(seeker.body.lastName)
         setBirthdate(seeker.body.birthdate);
 
+        setSeekerID(userID);
         setEmail(credentials.body.email);
         setUsername(credentials.body.username);
         setContact(contactHandler(credentials.body.phoneNumber));
@@ -67,6 +73,10 @@ export default function Profile({ navigation }) {
     setOpen(true);
   }
 
+  const fromChild = () => {
+    setKeyboardVisible(!isKeyboardVisible);
+  }
+
   const onLogout = async() => {
     setLoading(true);
     try {
@@ -78,7 +88,73 @@ export default function Profile({ navigation }) {
     setLoading(false)
   }
 
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All, quality: 1,
+    });
+    if (!result.canceled) {
+      setNewImage(result.assets[0].uri);
+    }
+  };
+
+  const removeImage = () => {
+    setNewImage();
+  };
+
+  const onUpload = async () => {
+    setLoading(true);
+    try {
+      let seekerDp = await ImageService.uploadFile(newImage);
+      await SeekerServices.patchSeeker(seekerID, { seekerDp });
+      navigation.replace('HomeStack');
+      navigation.navigate('ProfileStack');
+    } catch (err) {
+      Alert.alert('Error', err, [ {text: 'OK'} ]);
+      navigation.goBack()
+    }
+    setLoading(false);
+  }
+
   if (processing) return <Loading/>
+
+  if (newImage)
+
+  return (
+    <View style={styles.container}>
+      { loading && <Loading/> }
+      <View style={styles.header}>
+        <Text numberOfLines={1} style={styles.heading}>{username}'s Profile!</Text>
+      </View>
+      <Text numberOfLines={1} style={styles.head}>Update Picture</Text>
+
+      <View style={styles.newHolder}>
+        <Image source={{ uri: newImage}} style={styles.newIcon}/>
+        <TouchableWithoutFeedback onPress={() => pickImage()}>
+          <View style={styles.newEdit}>
+            <MaterialCommunityIcons name={'camera-flip'} size={26} style={{color:'#9C54D5'}}/>
+          </View>
+        </TouchableWithoutFeedback>
+      </View>
+
+      <View style={{marginTop:60, marginHorizontal:20}}>
+      <TouchableWithoutFeedback onPress= {() => onUpload()}>
+          <LinearGradient colors={['rgba(10,10,10,0.7)','rgba(10,10,10,0)'  ]} start={{ x:0, y:0.65 }} end={{ x:0, y:0.98 }} style={[styles.shadow, {marginBottom:0}]}>
+            <LinearGradient colors={['#9C54D5', '#462964']} start={{ x:0.4, y:1 }} end={{ x:0, y:1 }} style={styles.logout}>
+              <Text style={[styles.content, {color: '#FFF'}]}>Update Display Picture</Text>
+            </LinearGradient>
+          </LinearGradient>
+        </TouchableWithoutFeedback>
+
+        <TouchableWithoutFeedback onPress= {() => removeImage()}>
+          <View style={[styles.changepw, {marginTop:6}]}>
+            <Text style={[styles.content, {color: '#462964'}]}>Cancel</Text>
+          </View>
+        </TouchableWithoutFeedback>
+      </View>
+        
+    </View>
+
+  )
    
   return (
     <View style={styles.container}>
@@ -92,7 +168,7 @@ export default function Profile({ navigation }) {
         <View style={styles.centered}>
           <View style={styles.modal}>
 
-            <EditProfile firstName={firstName} lastName={lastName} birthdate={birthdate}/>
+            <EditProfile firstName={firstName} lastName={lastName} birthdate={birthdate} seekerID={seekerID} navigation={navigation} fromChild={fromChild}/>
             { !isKeyboardVisible &&
             <TouchableWithoutFeedback onPress= {() => setOpen(!open)}>
               <Text style={styles.enter}>CLOSE</Text>
@@ -106,9 +182,11 @@ export default function Profile({ navigation }) {
       <ScrollView style={styles.info}>
         <View style={styles.holder}>
           <Image style={styles.icon} source={image} />
-          <View style={styles.editicon}>
-            <MaterialCommunityIcons name={'camera-flip'} size={26} style={{color:'#9C54D5'}}/>
-          </View>
+          <TouchableWithoutFeedback onPress={() => pickImage()}>
+            <View style={styles.editicon}>
+              <MaterialCommunityIcons name={'camera-flip'} size={26} style={{color:'#9C54D5'}}/>
+            </View>
+          </TouchableWithoutFeedback>
         </View>
         
         <Text style={styles.nameheader}>Name</Text>
@@ -140,7 +218,7 @@ export default function Profile({ navigation }) {
             </View>
         </TouchableWithoutFeedback>
 
-        <TouchableWithoutFeedback onPress= {() => { onLogout() }}>
+        <TouchableWithoutFeedback onPress= {() => onLogout()}>
           <LinearGradient colors={['rgba(10,10,10,0.7)','rgba(10,10,10,0)'  ]} start={{ x:0, y:0.65 }} end={{ x:0, y:0.98 }} style={styles.shadow}>
             <LinearGradient colors={['#9C54D5', '#462964']} start={{ x:0.4, y:1 }} end={{ x:0, y:1 }} style={styles.logout}>
               <Text style={[styles.content, {color: '#FFF'}]}>Log Out</Text>
@@ -299,5 +377,35 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     zIndex: 15,
     backgroundColor: '#E9E9E9A0'
+  },
+
+
+  newHolder: {
+    width: 200, 
+    marginTop: 30,
+    alignSelf: 'center',
+  },
+  newIcon: {
+    width: 200, 
+    height: 200, 
+    borderRadius: 200/2,    
+  },
+  newEdit: {
+    marginLeft: 150,
+    marginTop: -50,
+    borderRadius: 40/2,
+    height: 40,
+    width: 40,
+    backgroundColor: '#FFF',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  head: {
+    fontFamily: 'notosans',
+    fontSize: 24,
+    letterSpacing: -0.5,
+    fontVariant: ['small-caps'],
+    alignSelf: 'center',
+    marginTop: '26%'
   },
 });

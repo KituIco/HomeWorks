@@ -6,11 +6,12 @@ import { useEffect, useState } from 'react';
 import Loading from '../hooks/loading';
 import DatePicker from 'react-native-modern-datepicker';
 
+import SeekerServices from '../services/user/seeker-services';
 import { dateHandler } from '../utils/dateHandler';
-import { contactHandler } from '../utils/contactHandler';
 
 
 export default function EditProfile( props ) {
+  let seekerID = props.seekerID;
   const [birthdate, setBirthdate] = useState(props.birthdate);
   const [firstName, setFirstname] = useState(props.firstName);
   const [lastName, setLastname] = useState(props.lastName);
@@ -26,16 +27,15 @@ export default function EditProfile( props ) {
   
 
   useEffect(() => {
-    if(done){
-      // setTimeout(() => {
-      //   props.navigation.replace('HomeStack');
-      // }, 1000)
-      setDone(false)
+    if(done) {
+      setTimeout(() => {
+        props.navigation.replace('ProfileStack');
+      }, 1000)
     }
   }, [done]);
 
   const onUpdate = async() => {
-    if(new Set([usernameCHK, contactCHK, birthdayCHK, firstnameCHK, lastnameCHK]).has(styles.warning) ){
+    if(new Set([birthdayCHK, firstnameCHK, lastnameCHK]).has(styles.warning) ){
       Alert.alert('Check your Inputs', 
         'Valid inputs have input boxes with light green border.', [
         {text: 'OK'},
@@ -43,6 +43,8 @@ export default function EditProfile( props ) {
     } 
     setLoading(true);
     try {
+      await SeekerServices.patchSeeker(seekerID, {birthdate, firstName, lastName});
+      props.fromChild();
       setDone(true);
     } catch (err) {
       Alert.alert('Error', err+'.', [ {text: 'OK'} ]);
@@ -56,9 +58,16 @@ export default function EditProfile( props ) {
     else if (type == 'birthday') setBirthdayCHK( birthdate ? styles.accepted : styles.warning);
   }
 
-  const onOpen = () => {
+  const onTrigger = () => {
+    props.fromChild();
+    setOpen(!open);
+  }
+
+  const onSelect = () => {
     onCheck('birthday');
     setOpen(!open);
+
+    props.fromChild();
     if(birthday)
       setBirthdate(dateHandler(birthday))
   }
@@ -66,7 +75,7 @@ export default function EditProfile( props ) {
   if(done) 
     return (
       <View style={{flex:1, justifyContent:'center', alignItems:'center' }}>
-        <Text style={[styles.address, {fontSize:24, marginTop:-20}]}>Address Added</Text>
+        <Text style={[styles.address, {fontSize:24, marginTop:-20}]}>Profile Updated</Text>
         <Text style={[styles.desc, {marginBottom:20, marginTop:-6}]}>This form will be closed.</Text>
         <MaterialCommunityIcons name={'progress-check'} size={160} color={'#9C54D5'}/>
       </View>
@@ -76,23 +85,27 @@ export default function EditProfile( props ) {
 
   if(open) return (
     <View style={{flex:1, marginTop:16}}>
-      <TouchableWithoutFeedback onPress={() => onOpen()}>
-          <LinearGradient colors={['#9C54D5', '#462964']} start={{ x:0.6, y:-1 }} end={{ x:0.1, y:1 }} style={[styles.button,{marginHorizontal:20, marginBottom:10}]}>
+      <TouchableWithoutFeedback onPress={() => onTrigger()}>
+        <Text style={styles.back}>Go back</Text>
+      </TouchableWithoutFeedback>
+      <DatePicker mode='calendar' selected={birthday} onDateChange={setBirthday}/>
+
+      <TouchableWithoutFeedback onPress={() => onSelect()}>
+          <LinearGradient colors={['#9C54D5', '#462964']} start={{ x:0.6, y:-1 }} end={{ x:0.1, y:1 }} style={[styles.button,{marginHorizontal:20, marginTop:0}]}>
             <LinearGradient colors={['rgba(0, 0, 0, 0.4)','rgba(0, 0, 0, 0)']} start={{ x: 0.5, y: 0.01 }} end={{ x: 0.5, y: 0.15 }} style={styles.ledge}>
               <Text style={styles.details}>Select this Date</Text>
             </LinearGradient>
           </LinearGradient> 
         </TouchableWithoutFeedback>
-      <DatePicker mode='calendar' selected={birthday} onDateChange={setBirthday}/>
     </View>
   )
 
   return (
     <View style={styles.container}>
       <LinearGradient colors={['rgba(255,255,255,1)','rgba(255,255,255,0)'  ]} start={{ x:0, y:0 }} end={{ x:0, y:1 }} style={{height:11, zIndex:5, marginTop:10}}/>        
-      <ScrollView style={{marginVertical:-10}}>
-        <Text style={styles.address}>Update Profile</Text>
-        <Text style={styles.desc}>You may only update the following fields. Make sure that your inputs are correct.</Text>
+      <ScrollView style={{marginVertical:-10, paddingHorizontal: 22}}>
+        <Text style={styles.head}>Update Profile</Text>
+        <Text style={styles.desc}>You may update the following fields. Make sure that your inputs are correct.</Text>
 
         <Text style={styles.header}>First Name</Text>
         <View style={[styles.textbox,firstnameCHK]}>
@@ -105,7 +118,7 @@ export default function EditProfile( props ) {
         </View>
 
         <Text style={styles.header}>Birthdate</Text>
-        <TouchableWithoutFeedback onPress={() => onOpen()}>
+        <TouchableWithoutFeedback onPress={() => onTrigger()}>
         <View style={[styles.textbox, birthdayCHK]}>
             <Text style={styles.input}>{birthdate}</Text>
           </View>
@@ -128,11 +141,9 @@ export default function EditProfile( props ) {
 
 const styles = StyleSheet.create({
   container: {
-    marginHorizontal: 22,
-    marginBottom: 16,
-    height: '90%',
+    height: '92%',
   },
-  address: {
+  head: {
     fontFamily: 'notosans',
     fontSize: 24,
     letterSpacing: -0.5,
@@ -182,7 +193,8 @@ const styles = StyleSheet.create({
     height: 40,
     marginVertical: 12,
     borderRadius: 8,
-    justifyContent: 'center'
+    justifyContent: 'center',
+    marginTop: 20
   },
   ledge: {
     height: 40,
@@ -213,4 +225,12 @@ const styles = StyleSheet.create({
     letterSpacing: -0.5,
     textTransform:'uppercase',
   },
+
+  back: {
+    fontFamily: 'lexend',
+    marginLeft: 20,
+    color: '#9C54D5',
+    letterSpacing: -0.5,
+    textDecorationLine: 'underline',
+  }
 });
