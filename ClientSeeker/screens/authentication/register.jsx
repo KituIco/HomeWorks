@@ -2,7 +2,7 @@ import { StyleSheet, View, Text, Image, TouchableWithoutFeedback, TextInput, Scr
 import { LinearGradient } from 'expo-linear-gradient';
 import { useState } from 'react';
 
-import SeekerServices from '../../services/user/seeker-services';
+import CredentialsServices from '../../services/user/credentials-services';
 import Loading from '../../hooks/loading';
 
 const screenHeight = Dimensions.get('window').height;
@@ -34,12 +34,9 @@ export default function Register({ navigation }) {
     else {
       setLoading(true);
       try {
-        await SeekerServices.checkSeekerMail({ email:mail });
+        await CredentialsServices.validateIdentifier({ email: mail });
         navigation.navigate('Credentials', {
-          firstname: firstname, 
-          lastname: lastname,
-          mail: mail,
-          password: password,
+          firstname, lastname, mail, password
         });      
 
       } catch(err) {

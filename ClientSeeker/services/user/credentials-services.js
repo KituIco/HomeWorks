@@ -64,7 +64,17 @@ let CredentialsServices = {
         } catch (error) {
             throw error;
         }
-    }
+    },
+
+    validateIdentifier: async(data) => {
+        try {
+            let queryURL = `${url}/identifier`;
+            let res = await postAxios(queryURL, data);
+            return res;
+        } catch (error) {
+            throw error;
+        }
+    },
 
 }
 

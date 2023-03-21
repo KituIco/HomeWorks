@@ -348,6 +348,28 @@ class CredentialsController {
         }
     };
 
+    validateIdentifier = async (req, res, next) => {
+        try {
+            let {
+                username,
+                email,
+                phoneNumber,
+            } = req.body;
+
+            // validate if identifier already exists in database
+            if(username) await this.credentialsValidator.validateIdentifiers({ username })
+            if(email) await this.credentialsValidator.validateIdentifiers({ email })
+            if(phoneNumber) await this.credentialsValidator.validateIdentifiers({ phoneNumber })
+            
+            res.status(201).json({
+                message: "Email not yet Taken",
+            });
+        } catch (error) {
+            // TODO: Handle error
+            next(error);
+        }
+    };
+
     validateUserExistence = async (userID) => {
         const user = await this.userRepo.getUser(userID);
         if (user == null) {

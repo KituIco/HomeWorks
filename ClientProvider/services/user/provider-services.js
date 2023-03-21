@@ -11,16 +11,6 @@ let ProviderServices = {
             throw error;
         }
     },
-    
-    checkProviderMail: async(data) => {
-        try {
-            let queryURL = `${url}/mail`;
-            let res = await postAxios(queryURL, data);
-            return res;
-        } catch (error) {
-            throw error;
-        }
-    },
 
     patchProvider: async(providerID, data) => {
         try {

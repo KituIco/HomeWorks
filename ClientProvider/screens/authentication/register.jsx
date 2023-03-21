@@ -3,7 +3,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useState } from 'react';
 
-import ProviderServices from '../../services/user/provider-services';
+import CredentialsServices from '../../services/user/credentials-services';
 import Loading from '../../hooks/loading';
 
 const screenHeight = Dimensions.get('window').height;
@@ -35,12 +35,9 @@ export default function Register({ navigation }) {
     else {
       setLoading(true);
       try {
-        await ProviderServices.checkProviderMail({ email:mail });
+        await CredentialsServices.validateIdentifier({ email:mail });
         navigation.navigate('BasicInfo', {
-          firstname: firstname, 
-          lastname: lastname,
-          mail: mail,
-          password: password,
+          firstname, lastname, mail, password,
         });
 
       } catch (err) {

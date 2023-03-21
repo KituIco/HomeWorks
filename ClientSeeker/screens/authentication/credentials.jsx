@@ -8,6 +8,7 @@ import { dateHandler } from '../../utils/dateHandler';
 import { contactHandler } from '../../utils/contactHandler';
 import DatePicker from 'react-native-modern-datepicker';
 
+import CredentialsServices from '../../services/user/credentials-services';
 import SeekerServices from '../../services/user/seeker-services';
 import ImageService from '../../services/image/image-services';
 import Loading from '../../hooks/loading';
@@ -16,6 +17,10 @@ const screenHeight = Dimensions.get('window').height;
 
 async function onSubmit( props, data ) {
   try {
+    await CredentialsServices.validateIdentifier({
+      username: data.username,
+      phoneNumber: data.phoneNumber, 
+    });
     let res = await ImageService.uploadFile(data.urlDp)
     data['seekerDp'] = res;
     delete data['urlDp'];

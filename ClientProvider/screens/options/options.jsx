@@ -35,8 +35,7 @@ export default function Options({ navigation }) {
     setLoading(true);
     CredentialsServices.logout()
     .then(() => {
-      navigation.replace('HomeStack');
-      navigation.navigate('AuthStack');
+      navigation.replace('AuthStack');
     })
     .catch(() => setLoading(false))
   }

@@ -11,16 +11,6 @@ let SeekerServices = {
             throw error;
         }
     },
-    
-    checkSeekerMail: async(data) => {
-        try {
-            let queryURL = `${url}/mail`;
-            let res = await postAxios(queryURL, data);
-            return res;
-        } catch (error) {
-            throw error;
-        }
-    },
 
     patchSeeker: async(seekerID, data) => {
         try {

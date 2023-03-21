@@ -261,24 +261,6 @@ class ProviderController {
         }
     };
 
-     // POST: "/mail"
-     checkProviderMail = async (req, res, next) => {
-        try {
-            let {
-                email,
-            } = req.body;
-
-            // validate if email already exists in database
-            await this.providerValidator.validateIdentifiers({ email })
-            
-            res.status(201).json({
-                message: "Email not yet Taken",
-            });
-        } catch (error) {
-            // TODO: Handle error
-            next(error);
-        }
-    };
 }
 
 module.exports = ProviderController;

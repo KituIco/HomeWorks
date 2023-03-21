@@ -4,6 +4,8 @@ let url = '/upload';
 let ImageService = {
     uploadFile: async (data) => {
         try {
+            if(!data) return "";
+
             var bodyFormData = new FormData();
             let file = data.split("/");
             let name = file[file.length-1];
@@ -17,7 +19,7 @@ let ImageService = {
             let res = await postAxios(url, bodyFormData, true);
             return res.url;
         } catch (error) {
-            throw error;
+            throw error.message;
         }
     },
     

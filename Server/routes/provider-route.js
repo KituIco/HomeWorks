@@ -35,7 +35,6 @@ var cookieJwtAuth = require('../middlewares/cookie-jwt-auth.js');
 var errorHandler = require('../middlewares/error-handler.js');
 
 router.post('', [providerController.createProvider, errorHandler]);
-router.post('/mail', [providerController.checkProviderMail, errorHandler]);
 router.patch('/:providerID', [cookieJwtAuth], [providerController.patchProvider, errorHandler]);
 router.delete('/:providerID', [cookieJwtAuth], [providerController.deleteProvider, errorHandler]);
 router.get('', [providerController.getProviders, errorHandler]);

@@ -33,6 +33,7 @@ var errorHandler = require('../middlewares/error-handler.js');
 
 router.post('', [credentialsController.createCredentials, errorHandler]);
 router.post('/login', [credentialsController.login, errorHandler]);
+router.post('/identifier', [credentialsController.validateIdentifier, errorHandler]);
 router.delete('/logout', [cookieJwtAuth], [credentialsController.logout, errorHandler]);
 router.patch('/user/:userID/email', [cookieJwtAuth], [credentialsController.patchEmail, errorHandler]);
 router.patch('/user/:userID/phone-number', [cookieJwtAuth], [credentialsController.patchPhoneNumber, errorHandler]);
