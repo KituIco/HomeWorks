@@ -40,10 +40,10 @@ export default function HomeStack({ navigation }) {
           },
           tabBarActiveTintColor: '#9C54D5',
           tabBarInactiveTintColor: '#2F2D2E',
-          tabBarActiveBackgroundColor: '#E9E9E9',
+          tabBarActiveBackgroundColor: '#EFEFEF',
           animationEnabled: false,
 
-          tabBarStyle: [{ height: 70, backgroundColor: '#E9E9E9' }, tracker],
+          tabBarStyle: [{ height: 70, backgroundColor: '#EFEFEF' }, tracker],
           tabBarLabelStyle: { display: "none" },
         })}
         

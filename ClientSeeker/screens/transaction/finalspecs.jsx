@@ -83,7 +83,7 @@ export default function FinalSpecs({ route, navigation }) {
 const styles = StyleSheet.create({
   container:{
     marginBottom:-6, 
-    backgroundColor: '#F9F9F9',
+    backgroundColor: '#FFFFFF',
   },
   heading: {
     fontFamily: 'notosans-medium',
@@ -149,7 +149,7 @@ const styles = StyleSheet.create({
 
   footer: {
     height: 120,
-    backgroundColor: '#E9E9E9',
+    backgroundColor: '#F9F9F9',
     marginTop:6,
     justifyContent: 'center'
   },
@@ -168,7 +168,7 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     justifyContent: 'center',
     marginBottom: 8,
-    backgroundColor:'#E9E9E9', 
+    backgroundColor:'#F9F9F9', 
     borderWidth: 0.6, 
     borderColor: '#462964', 
   },

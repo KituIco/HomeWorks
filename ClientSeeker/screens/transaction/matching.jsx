@@ -57,7 +57,7 @@ export default function Matching({ route, navigation }) {
       <Back navigation={navigation}/>
 
       <View style={styles.container}>
-        <ImageBackground source={require("../../assets/map.png")} imageStyle= {{opacity:0.3}} resizeMode="cover">
+        <ImageBackground source={require("../../assets/map.png")} imageStyle= {{opacity:0.2}} resizeMode="cover">
             <View style={styles.map}>
               <TouchableWithoutFeedback onPress= {() => {
                   navigation.dispatch(StackActions.popToTop()), navigation.dispatch(StackActions.popToTop()),

@@ -78,7 +78,7 @@ export default function Complete({route, navigation}) {
 
       </ScrollView>
 
-      <LinearGradient colors={['rgba(0,0,0,0.4)','rgba(0,0,0,0)'  ]} start={{ x:0, y:0.2 }} end={{ x:0, y:0 }}>
+      <LinearGradient colors={['rgba(0,0,0,0.9)','rgba(0,0,0,0)'  ]} start={{ x:0, y:0.2 }} end={{ x:0, y:0 }}>
         { !answered &&
         <View style={styles.bottom}>
 
@@ -96,7 +96,7 @@ export default function Complete({route, navigation}) {
 
           { rates !== 0 && value !== '' ? (
             <TouchableWithoutFeedback onPress= {() => changeStatus()}>
-              <LinearGradient colors={['rgba(10,10,10,0.4)','rgba(10,10,10,0)']} start={{ x:0, y:0.65 }} end={{ x:0, y:0.98 }} style={styles.shadow}>
+              <LinearGradient colors={['rgba(0,0,0,0.4)','rgba(0,0,0,0)']} start={{ x:0, y:0.65 }} end={{ x:0, y:0.98 }} style={styles.shadow}>
                 <LinearGradient colors={['#9C54D5', '#462964']} start={{ x:0.4, y:1 }} end={{ x:0, y:1 }} style={styles.accept}>
                   <Text style={styles.prompt}>Submit Ratings and Review</Text>
                 </LinearGradient>         
@@ -118,7 +118,8 @@ export default function Complete({route, navigation}) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F9F9F9',
+    backgroundColor: '#FFFFFF',
+    marginBottom: -10,
   },
   status: {
     fontFamily: 'lexend',   
@@ -133,7 +134,7 @@ const styles = StyleSheet.create({
     width: 160,
     height: 160,
     borderRadius: 140,
-    backgroundColor: '#E9E9E9',
+    backgroundColor: '#EFEFEF',
     alignSelf: 'center',
     marginTop: 16,
     justifyContent: 'center',
@@ -165,7 +166,7 @@ const styles = StyleSheet.create({
 
   bottom: {
     height: 170,
-    backgroundColor: '#E9E9E9',
+    backgroundColor: '#F9F9F9',
     marginTop:6,
     alignItems: 'center',
     padding: 12,

@@ -3,6 +3,9 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 
 export default function Header ( props ) {
+  let color = styles.normal;
+  if (props.compressed) color = styles.other;
+  
   let bar = '0%', color1='#323941', color2='#323941', color3='#323941';
   if(props.phase >= 1) { bar='25%'; color1='#9C54D5' } 
   if(props.phase >= 2) { bar='50%'; color2='#9C54D5' } 
@@ -10,7 +13,7 @@ export default function Header ( props ) {
   if(props.phase >= 4) bar='100%';  
 
   return (
-    <View style={{backgroundColor:'#F9F9F9'}}>
+    <View style={color}>
       { !props.compressed &&
       <LinearGradient colors={['#462964', '#9C54D5' ]} start={{ x:0, y:1.4 }} end={{ x:0, y:0 }} style={styles.header}>
         <View style={styles.iconbg}>
@@ -102,5 +105,11 @@ const styles = StyleSheet.create({
       textAlign: 'center',
       paddingTop: 6,
     },
-  
+
+    normal: {
+      backgroundColor:'#FFFFFF'
+    },
+    other: {
+      backgroundColor:'#F9F9F9'
+    }
   });

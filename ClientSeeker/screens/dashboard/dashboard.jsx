@@ -79,12 +79,12 @@ export default function Dashboard({navigation}) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F9F9F9',
+    backgroundColor: '#FFFFFF',
   },
   search: {
     height: 40,
     width: "100%",
-    backgroundColor: "#E4E4E4",
+    backgroundColor: "#EFEFEF",
     alignItems: 'center',
   },
   searchbar:{

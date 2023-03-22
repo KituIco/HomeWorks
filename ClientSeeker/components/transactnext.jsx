@@ -23,7 +23,7 @@ export default function Next ( props ) {
         }
 
         <TouchableWithoutFeedback onPress= {() => onPress()}>
-          <LinearGradient colors={['rgba(10,10,10,0.7)','rgba(10,10,10,0)'  ]} start={{ x:0, y:0.65 }} end={{ x:0, y:0.98 }} style={styles.shadow}>
+          <LinearGradient colors={['rgba(0,0,0,0.7)','rgba(0,0,0,0)'  ]} start={{ x:0, y:0.65 }} end={{ x:0, y:0.98 }} style={styles.shadow}>
             
             {!price &&
             <LinearGradient colors={['#9C54D5', '#462964']} start={{ x:0.4, y:1 }} end={{ x:0, y:1 }} style={styles.button}>
@@ -47,13 +47,13 @@ export default function Next ( props ) {
 const styles = StyleSheet.create({
 	container: {
     height: 90,
-    backgroundColor: '#E9E9E9',
+    backgroundColor: '#EFEFEF',
     marginTop:6,
     justifyContent: 'center'
   },
   container2: {
     height: 120,
-    backgroundColor: '#E9E9E9',
+    backgroundColor: '#FFFFFF',
     marginTop:6,
     justifyContent: 'center'
   },
@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     justifyContent: 'center',
     marginBottom: 8,
-    backgroundColor:'#E9E9E9', 
+    backgroundColor:'#FFFFFF', 
     borderWidth:1, 
     borderColor: '#462964', 
   },
@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
   content: {
     textAlign: 'center',
     fontFamily: 'lexend',
-    color: '#E9E9E9',
+    color: '#EFEFEF',
     letterSpacing: -1,
     fontSize: 20
   },
@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
     justifyContent:'space-between',
     margin: 12,
     marginTop: -4,
-    alignItems: 'center'
+    alignItems: 'center',
   }
   
 });

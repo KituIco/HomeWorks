@@ -66,6 +66,7 @@ export default function AddService( props ) {
       let initialCost = Number(parseFloat(initCost).toFixed(2));
       try {
         ServiceServices.createService({providerID, typeID, typeName, initialCost});
+        props.fromChild();
         setDone(true);
       } catch (err) {
         Alert.alert('Error', err+'.', [ {text: 'OK'} ]);

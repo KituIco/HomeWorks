@@ -42,7 +42,7 @@ export default function DashStack({ navigation }) {
 
     headerStyle: {
       height: 110,
-      backgroundColor: '#E4E4E4',
+      backgroundColor: '#EFEFEF',
     },
     headerTintColor: '#9C54D5',
     headerTitleStyle: {
@@ -72,7 +72,7 @@ export default function DashStack({ navigation }) {
         ),
 
         headerStyle: {
-          backgroundColor: '#E4E4E4',
+          backgroundColor: '#EFEFEF',
           height: 110,
         },
         headerTintColor: '#fff',

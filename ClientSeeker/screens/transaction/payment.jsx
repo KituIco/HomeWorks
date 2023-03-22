@@ -77,7 +77,7 @@ export default function Payment({route, navigation}) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F9F9F9',
+    backgroundColor: '#FFFFFF',
   },
   content: {
     fontFamily: 'lexend',   
@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
     marginLeft: 55,
     fontFamily: 'lexend',
     fontSize: 20,
-    color: '#F9F9F9'
+    color: '#FFFFFF'
   },
 
   list: {

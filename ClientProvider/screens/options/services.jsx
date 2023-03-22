@@ -49,6 +49,10 @@ export default function Services({ navigation }) {
     };
   }, []);
 
+  const fromChild = () => {
+    setKeyboardVisible(!isKeyboardVisible);
+  }
+
   const onClose = () => {
     setOpen(!open);
     ProviderServices.getProvider(userID).then( data => {
@@ -83,7 +87,7 @@ export default function Services({ navigation }) {
           <View style={styles.modal}>
           
             <LinearGradient colors={['rgba(255,255,255,1)','rgba(255,255,255,0)'  ]} start={{ x:0, y:0 }} end={{ x:0, y:1 }} style={{height:11, zIndex:5, marginTop:20}}/>        
-              <AddService listings={services} providerID={userID} navigation={navigation}/>
+              <AddService listings={services} providerID={userID} navigation={navigation} fromChild={fromChild}/>
             <LinearGradient colors={['rgba(255,255,255,1)','rgba(255,255,255,0)'  ]} start={{ x:0, y:1 }} end={{ x:0, y:0 }} style={{height:11, zIndex:5, marginBottom:20}}/>
 
             { !isKeyboardVisible &&

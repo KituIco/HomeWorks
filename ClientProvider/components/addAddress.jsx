@@ -57,7 +57,8 @@ export default function AddAddress( props ) {
       await AddressService.createAddress({
         userID, userFullName, userNum, latitude, longitude, city, district,
         postalCode, region, street, streetNumber, name, isoCountryCode, isDefault
-      })
+      });
+      props.fromChild();
       setDone(true);
     } catch (err) {
       Alert.alert('Error', err+'.', [ {text: 'OK'} ]);

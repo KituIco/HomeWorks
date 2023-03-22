@@ -80,7 +80,8 @@ export default function Serving({route, navigation}) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F9F9F9',
+    backgroundColor: '#FFFFFF',
+    marginBottom: -10
   },
   status: {
     fontFamily: 'lexend',   
@@ -95,7 +96,7 @@ const styles = StyleSheet.create({
     width: 160,
     height: 160,
     borderRadius: 140,
-    backgroundColor: '#E9E9E9',
+    backgroundColor: '#EFEFEF',
     alignSelf: 'center',
     marginTop: 16,
     justifyContent: 'center',
@@ -140,7 +141,7 @@ const styles = StyleSheet.create({
 
   bottom: {
     height: 80,
-    backgroundColor: '#E9E9E9',
+    backgroundColor: '#EFEFEF',
     marginTop:6,
     justifyContent: 'center',
     flexDirection: 'row',

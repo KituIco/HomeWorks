@@ -13,7 +13,7 @@ export default function Explore() {
   ]
 
   return (
-    <View style={{justifyContent: 'flex-end'}}>
+    <View style={{justifyContent: 'flex-end', backgroundColor: '#FFFFFF'}}>
       <ListHeader title={"Explore"}/>
       <ScrollView>
         <View style={styles.container}>

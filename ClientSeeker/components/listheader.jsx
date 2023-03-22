@@ -18,7 +18,7 @@ export default function ListHeader ( props ) {
 const styles = StyleSheet.create({
   container: {
     height: 112,
-    backgroundColor: '#E4E4E4',
+    backgroundColor: '#EFEFEF',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.8,

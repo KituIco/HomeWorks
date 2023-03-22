@@ -204,7 +204,7 @@ const styles = StyleSheet.create({
   },
   details: {
     fontFamily: 'quicksand-semibold',
-    color: '#E9E9E9',
+    color: '#EFEFEF',
     letterSpacing: -0.5,
     fontSize: 16,
   },

@@ -128,7 +128,7 @@ const styles = StyleSheet.create({
     paddingVertical: 4,
   },
   serve: {
-    color: "#F9F9F9",
+    color: "#FFFFFF",
     fontFamily: 'lexend-light',
     fontSize: 12
   }

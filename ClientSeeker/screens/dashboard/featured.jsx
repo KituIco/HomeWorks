@@ -13,7 +13,7 @@ export default function Featured() {
   ]
 
   return (
-    <View style={{justifyContent: 'flex-end'}}>
+    <View style={{justifyContent: 'flex-end', backgroundColor: '#FFFFFF',}}>
       <ListHeader title={"Featured"}/>
       <ScrollView>
         <View style={styles.container}>

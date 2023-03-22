@@ -6,7 +6,7 @@ export default function Services( props ) {
   const services = props.route.params.service;
   
   return (
-    <View style={{justifyContent: 'flex-end'}}>
+    <View style={{justifyContent: 'flex-end', backgroundColor: '#FFFFFF'}}>
       <ListHeader title={"Services"}/>
       <ScrollView>
         <View>

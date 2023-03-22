@@ -72,6 +72,10 @@ export default function Address({navigation}){
     };
   }, []);
 
+  const fromChild = () => {
+    setKeyboardVisible(!isKeyboardVisible);
+  }
+
   const regionChange = async(data) => {
     Location.reverseGeocodeAsync({
       latitude: data.latitude, longitude: data.longitude
@@ -104,8 +108,8 @@ export default function Address({navigation}){
         <View style={styles.centered}>
           <View style={styles.modal}>
 
-            <AddAddress raw={region.raw} userID={userID} userFullName={userFullName} userNum={userNum} 
-              latitude={region.latitude} longitude={region.longitude} navigation={navigation}/>
+            <AddAddress raw={region.raw} userID={userID} userFullName={userFullName} userNum={userNum} fromChild={fromChild}
+              latitude={region.latitude} longitude={region.longitude} navigation={navigation} />
             { !isKeyboardVisible &&
             <TouchableWithoutFeedback onPress= {() => setOpen(!open)}>
               <Text style={styles.enter}>CLOSE</Text>

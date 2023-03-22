@@ -31,7 +31,7 @@ export default function HomeStack() {
           tabBarActiveTintColor: '#9C54D5',
           tabBarInactiveTintColor: '#2F2D2E',
 
-          tabBarStyle: { height: 70, backgroundColor: '#E4E4E4' },
+          tabBarStyle: { height: 70, backgroundColor: '#FFFFFF' },
           tabBarLabelStyle: { display: "none" },
         })}
       >

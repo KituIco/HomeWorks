@@ -193,7 +193,7 @@ export default function InitSpecs({ route, navigation }) {
 const styles = StyleSheet.create({
   container:{
     marginBottom:-6, 
-    backgroundColor: '#F9F9F9',
+    backgroundColor: '#FFFFFF',
   },
   heading: {
     fontFamily: 'notosans-medium',
