@@ -24,6 +24,7 @@ export default function AddAddress( props ) {
   const [done, setDone] = useState(false);
   const {userID, userFullName, userNum, latitude, longitude} = props;
   let isDefault = 1;
+  let addressID = props.addressID;
   
   useEffect(() => {
     setAddress(addressHandler({
@@ -35,7 +36,12 @@ export default function AddAddress( props ) {
   useEffect(() => {
     if(done){
       setTimeout(() => {
-        props.navigation.replace('HomeStack');
+        if(!addressID) props.navigation.replace('HomeStack');
+        else {
+          props.navigation.replace('HomeStack');
+          props.navigation.navigate('HomeStack', { screen:'OptionsStack', 
+            params: { screen: 'Profile', initial:false} });
+        }
       }, 1000)
     }
   }, [done]);
@@ -54,10 +60,17 @@ export default function AddAddress( props ) {
   const onAdd = async() => {
     setLoading(true);
     try {
-      await AddressService.createAddress({
-        userID, userFullName, userNum, latitude, longitude, city, district,
-        postalCode, region, street, streetNumber, name, isoCountryCode, isDefault
-      });
+      if (addressID){
+        await AddressService.patchAddress(addressID, {
+          userFullName, userNum, latitude, longitude, city, district,
+          postalCode, region, street, streetNumber, name, isoCountryCode, isDefault
+        });
+      } else {
+        await AddressService.createAddress({
+          userID, userFullName, userNum, latitude, longitude, city, district,
+          postalCode, region, street, streetNumber, name, isoCountryCode, isDefault
+        });
+      }
       props.fromChild();
       setDone(true);
     } catch (err) {

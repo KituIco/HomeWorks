@@ -6,11 +6,14 @@ import { useState, useEffect } from 'react';
 
 import CredentialsServices from '../../services/user/credentials-services';
 import ProviderServices from '../../services/user/provider-services';
+import AddressService from '../../services/address/address-services';
 import ImageService from '../../services/image/image-services';
+import EditCredentials from '../../components/editCredentials';
 import EditProfile from '../../components/editProfile';
 
-import { getUserID } from '../../utils/getUserID';
 import { contactHandler } from '../../utils/contactHandler';
+import { addressHandler } from '../../utils/addressHandler';
+import { getUserID } from '../../utils/getUserID';
 import { getImageURL } from '../../utils/getImageURL';
 import Loading from '../../hooks/loading';
 
@@ -18,10 +21,12 @@ export default function Profile({ navigation }) {
   const [email, setEmail] = useState('');
   const [birthdate, setBirthdate] = useState('');
   const [contact, setContact] = useState('');
+  const [address, setAddress] = useState();
 
   const [username, setUsername] = useState('');
   const [firstName, setFirstname] = useState('');
   const [lastName, setLastname] = useState('');
+  const [agencyId, setAgencyId] = useState();
 
   const [image, setImage] = useState(require("../../assets/default.jpg"));
   const [processing, setProcessing] = useState(true);
@@ -31,25 +36,37 @@ export default function Profile({ navigation }) {
   const [providerID, setProviderID] = useState('');
   const [open, setOpen] = useState(false);
 
+  const [type, setType] = useState('');
   const [newImage, setNewImage] = useState(null);
 
   useEffect(() => {
     ( async() => {
       try {
         let userID = await getUserID();
+        let address = await AddressService.getAllAddressOfUser(userID);
+        if(address.body.length == 0){
+          navigation.replace('HomeStack');
+          navigation.navigate('HomeStack', { screen:'OptionsStack', 
+            params: { screen: 'Address', initial:false} });
+        }
+
         let provider = await ProviderServices.getProvider(userID);
         let credentials = await CredentialsServices.getUserCredentials(userID);
 
         if(provider.body.providerDp)
-          setImage({uri : getImageURL(provider.body.providerDp)})
+          setImage({uri : getImageURL(provider.body.providerDp)});
+        if (provider.body.agencyId) 
+          setAgencyId(provider.body.agencyId);
+        
         setFirstname(provider.body.firstName);
         setLastname(provider.body.lastName)
         setBirthdate(provider.body.birthdate);
+        setAddress(address.body[0])
 
         setProviderID(userID);
         setEmail(credentials.body.email);
         setUsername(credentials.body.username);
-        setContact(contactHandler(credentials.body.phoneNumber));
+        setContact(credentials.body.phoneNumber);
 
       } catch (err) {
         Alert.alert('Error', err+'.', [ {text: 'OK'} ]);
@@ -73,19 +90,18 @@ export default function Profile({ navigation }) {
     setOpen(true);
   }
 
-  const fromChild = () => {
-    setKeyboardVisible(!isKeyboardVisible);
+  const onClose = async() => {
+    setType();
+    setOpen(false);
   }
 
-  const onLogout = async() => {
-    setLoading(true);
-    try {
-      await CredentialsServices.logout()
-      navigation.replace('AuthStack')
-    } catch (err) {
-      Alert.alert('Error', err+'.', [ {text: 'OK'} ]);
-    }
-    setLoading(false)
+  const onCredentials = async(type) => {
+    setType(type);
+    setOpen(true);
+  }
+
+  const fromChild = () => {
+    setKeyboardVisible(!isKeyboardVisible);
   }
 
   const pickImage = async () => {
@@ -107,7 +123,8 @@ export default function Profile({ navigation }) {
       let providerDp = await ImageService.uploadFile(newImage);
       await ProviderServices.patchProvider(providerID, { providerDp });
       navigation.replace('HomeStack');
-      navigation.navigate('ProfileStack');
+      navigation.navigate('HomeStack', { screen:'OptionsStack', 
+        params: { screen: 'Profile', initial:false} });
     } catch (err) {
       Alert.alert('Error', err, [ {text: 'OK'} ]);
       navigation.goBack()
@@ -168,9 +185,16 @@ export default function Profile({ navigation }) {
         <View style={styles.centered}>
           <View style={styles.modal}>
 
-            <EditProfile firstName={firstName} lastName={lastName} birthdate={birthdate} providerID={providerID} navigation={navigation} fromChild={fromChild}/>
+            { !type &&
+              <EditProfile firstName={firstName} lastName={lastName} birthdate={birthdate} providerID={providerID} navigation={navigation} fromChild={fromChild}/>
+            }
+            { type &&
+              <EditCredentials type={type} email={email} contact={contact} providerID={providerID} navigation={navigation} fromChild={fromChild}/>
+            }
+
+
             { !isKeyboardVisible &&
-            <TouchableWithoutFeedback onPress= {() => setOpen(!open)}>
+            <TouchableWithoutFeedback onPress= {() => onClose()}>
               <Text style={styles.enter}>CLOSE</Text>
             </TouchableWithoutFeedback>
             }
@@ -179,7 +203,8 @@ export default function Profile({ navigation }) {
         </View>
       </Modal>
 
-      <ScrollView style={styles.info}>
+      <LinearGradient colors={['rgba(255,255,255,1)','rgba(255,255,255,0)'  ]} start={{ x:0, y:0 }} end={{ x:0, y:1 }} style={{height:10, zIndex:5}}/>
+      <ScrollView style={{marginVertical: -10}}>
         <View style={styles.holder}>
           <Image style={styles.icon} source={image} />
           <TouchableWithoutFeedback onPress={() => pickImage()}>
@@ -193,40 +218,58 @@ export default function Profile({ navigation }) {
         <View style={styles.nameholder}>
           <Text style={styles.name}>{firstName} {lastName}</Text>
           <TouchableWithoutFeedback onPress={() => onEdit()}>
-            <MaterialCommunityIcons name={'pencil-outline'} size={26} style={{position:'absolute', right:0, bottom:0, color:'#9C54D5', marginTop: 4}}/>
+            <MaterialCommunityIcons name={'pencil-outline'} size={26} style={{position:'absolute', right:0, bottom:0, color:'#9C54D5', marginTop:4}}/>
           </TouchableWithoutFeedback>
         </View>
 
 
-        <Text style={styles.subheader}>E-mail</Text>
-        <Text style={styles.subcontent}>{email}</Text>
+        <Text style={styles.subheader}>E-mail Address</Text>
+        <View style={styles.subholder}>
+          <Text style={styles.subcontent}>{email}</Text>
+          <TouchableWithoutFeedback onPress={() => onCredentials("Email")}>
+            <MaterialCommunityIcons name={'pencil-outline'} size={26} style={{color:'#9C54D5', marginTop: -20}}/>
+          </TouchableWithoutFeedback>
+        </View>
 
         <Text style={styles.subheader}>Contact Number</Text>
-        <Text style={styles.subcontent}>{contact}</Text>
+        <View style={styles.subholder}>
+          <Text style={styles.subcontent}>{contactHandler(contact)}</Text>
+          <TouchableWithoutFeedback onPress={() => onCredentials("Contact Number")}>
+            <MaterialCommunityIcons name={'pencil-outline'} size={26} style={{color:'#9C54D5', marginTop: -20}}/>
+          </TouchableWithoutFeedback>
+        </View>
 
         <Text style={styles.subheader}>Birthday</Text>
         <View style={styles.subholder}>
           <Text style={styles.subcontent}>{birthdate}</Text>
           <TouchableWithoutFeedback onPress={() => onEdit()}>
-            <MaterialCommunityIcons name={'pencil-outline'} size={26} style={{color:'#9C54D5', marginTop: 4}}/>
+            <MaterialCommunityIcons name={'pencil-outline'} size={26} style={{color:'#9C54D5', marginTop: -20}}/>
           </TouchableWithoutFeedback>
         </View>
 
-        <TouchableWithoutFeedback>
+        <Text style={styles.subheader}>Address</Text>
+        <View style={styles.subholder}>
+          <Text numberOfLines={2} style={[styles.subcontent,{fontSize:15}]}>{addressHandler(address)}</Text>
+          <TouchableWithoutFeedback onPress={() => navigation.navigate( 'Address', {addressID: address.addressID} )}>
+            <MaterialCommunityIcons name={'pencil-outline'} size={26} style={{color:'#9C54D5', marginTop: -20}}/>
+          </TouchableWithoutFeedback>
+        </View>
+
+        { agencyId && 
+        <View>
+          <Text style={styles.subheader}>Agency</Text>
+          <Text style={styles.subcontent}>{agencyId}</Text>
+        </View>
+        }
+
+        <TouchableWithoutFeedback onPress={() => onCredentials("Password")}>
             <View style={styles.changepw}>
               <Text style={[styles.content, {color: '#462964'}]}>Change Password</Text>
             </View>
         </TouchableWithoutFeedback>
-
-        <TouchableWithoutFeedback onPress= {() => onLogout()}>
-          <LinearGradient colors={['rgba(10,10,10,0.7)','rgba(10,10,10,0)'  ]} start={{ x:0, y:0.65 }} end={{ x:0, y:0.98 }} style={styles.shadow}>
-            <LinearGradient colors={['#9C54D5', '#462964']} start={{ x:0.4, y:1 }} end={{ x:0, y:1 }} style={styles.logout}>
-              <Text style={[styles.content, {color: '#FFF'}]}>Log Out</Text>
-            </LinearGradient>
-          </LinearGradient>
-        </TouchableWithoutFeedback>
          
       </ScrollView>
+      <LinearGradient colors={['rgba(255,255,255,1)','rgba(255,255,255,0)'  ]} start={{ x:0, y:1 }} end={{ x:0, y:0 }} style={{height:10, zIndex:5, marginBottom:42}}/>
     </View>
   );
 }
@@ -235,7 +278,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#FFF',
-     },
+  },
 
   header: {
     height: 120,
@@ -255,7 +298,7 @@ const styles = StyleSheet.create({
 
   holder: {
     width: 160, 
-    marginTop: 56,
+    marginTop: 40,
     alignSelf: 'center',
   },
   icon: {
@@ -287,6 +330,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 30,
     justifyContent: 'center',
     marginTop: -4,
+    marginBottom: 10
   },
   name: {
     fontFamily: 'notosans',
@@ -295,17 +339,18 @@ const styles = StyleSheet.create({
   },
 
   subheader: {
-    fontSize: 16,
+    fontSize: 14,
     fontFamily: 'quicksand-medium',
     letterSpacing: -0.5,
-    marginTop: 30,
+    marginTop: 23,
     marginLeft: 30
   },
   subcontent: {
-    fontSize: 18,
+    fontSize: 17,
     fontFamily: 'notosans-light',
     letterSpacing: -0.5,
-    marginLeft: 30
+    marginLeft: 30,
+    width: '75%'
   },
   subholder: {
     flexDirection: 'row',
@@ -322,7 +367,7 @@ const styles = StyleSheet.create({
     backgroundColor:'#FFF', 
     borderWidth:1, 
     borderColor: '#462964', 
-    marginTop: 40,
+    marginTop: 30,
     marginHorizontal: 30,
     marginBottom: 12
   },
@@ -392,7 +437,7 @@ const styles = StyleSheet.create({
   },
   newEdit: {
     marginLeft: 150,
-    marginTop: -50,
+    marginTop: -60,
     borderRadius: 40/2,
     height: 40,
     width: 40,

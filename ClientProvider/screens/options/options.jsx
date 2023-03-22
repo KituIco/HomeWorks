@@ -53,13 +53,10 @@ export default function Options({ navigation }) {
       <ScrollView style={{marginVertical:-10}}>
         <View style={styles.holder}>
           <Image style={styles.icon} source={ image } />
-          <View style={styles.editicon}>
-            <MaterialCommunityIcons name={'camera-flip'} size={26} style={{color:'#9C54D5'}}/>
-          </View>
         </View>
         <Text style={styles.name}>{name}</Text>
         
-        <TouchableWithoutFeedback onPress={() => navigation.navigate('Address')}>
+        <TouchableWithoutFeedback onPress={() => navigation.navigate('Profile')}>
           <View style={styles.options}>
             <MaterialCommunityIcons name={'face-man-profile'} size={36}/>
             <Text style={styles.tabs}>Manage Profile</Text>
@@ -133,18 +130,7 @@ const styles = StyleSheet.create({
     height: 160, 
     borderRadius: 160/2,    
   },
-  editicon: {
-    marginLeft: 120,
-    marginTop: -40,
-    borderRadius: 36/2,
-    height: 36,
-    width: 36,
-    backgroundColor: '#FFF',
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
 
- 
   name: {
     fontFamily: 'notosans',
     fontSize: 20,

@@ -54,7 +54,7 @@ export default function Register({ navigation }) {
     else if (type == 'first') setFirstnameCHK( firstname ? styles.accepted : styles.warning);
     else if (type == 'last') setLastnameCHK( lastname ? styles.accepted : styles.warning);
     else if (type == 'mail') setMailCHK( mailRegex.test(mail) ? styles.accepted : styles.warning);
-    if (type == 'pw' ) setPasswordCHK( passRegex.test(password) ? styles.accepted : styles.warning) 
+    if (type == 'pw' ) setPasswordCHK( passRegex.test(password) ? styles.accepted : styles.warning); 
   }
 
   return (
@@ -206,5 +206,9 @@ const styles = StyleSheet.create({
   accepted: {
     borderColor: '#00FF00',
     borderWidth: 1,
+  },
+  notice: {
+    fontFamily: 'notosans',
+    fontSize: 9,
   },
 });

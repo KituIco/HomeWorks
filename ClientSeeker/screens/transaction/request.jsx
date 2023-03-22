@@ -59,7 +59,7 @@ export default function Request({ route, navigation }) {
       
       setRegion({latitude, longitude, latitudeDelta: 0.0080, longitudeDelta: 0.0060, 
         location:addressHandler(response[0]), raw:response[0]});
-      setProcessing(false);
+      setTimeout(() => {setProcessing(false);}, 200);
     })();
   }, []);
 

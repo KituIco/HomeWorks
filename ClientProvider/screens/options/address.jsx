@@ -6,14 +6,15 @@ import MapView from 'react-native-maps';
 
 import Back from '../../hooks/back';
 import Loading from '../../hooks/loading';
-import { addressHandler } from '../../utils/addressHandler';
 import { getUserID } from '../../utils/getUserID';
+import { addressHandler } from '../../utils/addressHandler';
 
 import AddAddress from '../../components/addAddress';
 import ProviderServices from '../../services/user/provider-services';
 import CredentialsServices from '../../services/user/credentials-services';
 
-export default function Address({navigation}){
+export default function Address({ navigation, route }) {
+  let addressID = route.params.addressID;
   const [processing, setProcessing] = useState(true);
   const [region, setRegion] = useState({
     latitude: 14.6487, longitude: 121.0687,
@@ -53,7 +54,8 @@ export default function Address({navigation}){
       
       setRegion({latitude, longitude, latitudeDelta: 0.0080, longitudeDelta: 0.0120, 
         location:addressHandler(response[0]), raw:response[0]});
-      setProcessing(false);
+      setTimeout(() => {setProcessing(false);}, 200);
+      
 
       setUserFullName(`${provider.body.firstName} ${provider.body.lastName}`);
       setUserNum(credentials.body.phoneNumber);
@@ -109,7 +111,7 @@ export default function Address({navigation}){
           <View style={styles.modal}>
 
             <AddAddress raw={region.raw} userID={userID} userFullName={userFullName} userNum={userNum} fromChild={fromChild}
-              latitude={region.latitude} longitude={region.longitude} navigation={navigation} />
+              latitude={region.latitude} longitude={region.longitude} navigation={navigation} addressID={addressID} />
             { !isKeyboardVisible &&
             <TouchableWithoutFeedback onPress= {() => setOpen(!open)}>
               <Text style={styles.enter}>CLOSE</Text>

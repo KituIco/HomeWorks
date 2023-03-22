@@ -7,6 +7,7 @@ import { useState, useEffect } from 'react';
 import CredentialsServices from '../../services/user/credentials-services';
 import SeekerServices from '../../services/user/seeker-services';
 import ImageService from '../../services/image/image-services';
+import EditCredentials from '../../components/editCredentials';
 import EditProfile from '../../components/editProfile';
 
 import { getUserID } from '../../utils/getUserID';
@@ -32,6 +33,7 @@ export default function Profile({ navigation }) {
   const [open, setOpen] = useState(false);
 
   const [newImage, setNewImage] = useState(null);
+  const [type, setType] = useState('');
 
   useEffect(() => {
     ( async() => {
@@ -70,6 +72,16 @@ export default function Profile({ navigation }) {
   }, []);
 
   const onEdit = async() => {
+    setOpen(true);
+  }
+
+  const onClose = async() => {
+    setType();
+    setOpen(false);
+  }
+
+  const onCredentials = async(type) => {
+    setType(type);
     setOpen(true);
   }
 
@@ -168,9 +180,14 @@ export default function Profile({ navigation }) {
         <View style={styles.centered}>
           <View style={styles.modal}>
 
-            <EditProfile firstName={firstName} lastName={lastName} birthdate={birthdate} seekerID={seekerID} navigation={navigation} fromChild={fromChild}/>
+          { !type &&
+              <EditProfile firstName={firstName} lastName={lastName} birthdate={birthdate} seekerID={seekerID} navigation={navigation} fromChild={fromChild}/>
+            }
+            { type &&
+              <EditCredentials type={type} email={email} contact={contact} seekerID={seekerID} navigation={navigation} fromChild={fromChild}/>
+            }
             { !isKeyboardVisible &&
-            <TouchableWithoutFeedback onPress= {() => setOpen(!open)}>
+            <TouchableWithoutFeedback onPress= {() => onClose()}>
               <Text style={styles.enter}>CLOSE</Text>
             </TouchableWithoutFeedback>
             }
@@ -198,21 +215,31 @@ export default function Profile({ navigation }) {
         </View>
 
 
-        <Text style={styles.subheader}>E-mail</Text>
-        <Text style={styles.subcontent}>{email}</Text>
+        <Text style={styles.subheader}>E-mail Address</Text>
+        <View style={styles.subholder}>
+          <Text style={styles.subcontent}>{email}</Text>
+          <TouchableWithoutFeedback onPress={() => onCredentials("Email")}>
+            <MaterialCommunityIcons name={'pencil-outline'} size={26} style={{color:'#9C54D5', marginTop: -20}}/>
+          </TouchableWithoutFeedback>
+        </View>
 
         <Text style={styles.subheader}>Contact Number</Text>
-        <Text style={styles.subcontent}>{contact}</Text>
+        <View style={styles.subholder}>
+          <Text style={styles.subcontent}>{contactHandler(contact)}</Text>
+          <TouchableWithoutFeedback onPress={() => onCredentials("Contact Number")}>
+            <MaterialCommunityIcons name={'pencil-outline'} size={26} style={{color:'#9C54D5', marginTop: -20}}/>
+          </TouchableWithoutFeedback>
+        </View>
 
         <Text style={styles.subheader}>Birthday</Text>
         <View style={styles.subholder}>
           <Text style={styles.subcontent}>{birthdate}</Text>
           <TouchableWithoutFeedback onPress={() => onEdit()}>
-            <MaterialCommunityIcons name={'pencil-outline'} size={26} style={{color:'#9C54D5', marginTop: 4}}/>
+            <MaterialCommunityIcons name={'pencil-outline'} size={26} style={{color:'#9C54D5', marginTop: -20}}/>
           </TouchableWithoutFeedback>
         </View>
 
-        <TouchableWithoutFeedback>
+        <TouchableWithoutFeedback onPress={() => onCredentials("Password")}>
             <View style={styles.changepw}>
               <Text style={[styles.content, {color: '#462964'}]}>Change Password</Text>
             </View>

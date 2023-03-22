@@ -211,5 +211,5 @@ const styles = StyleSheet.create({
   notice: {
     fontFamily: 'notosans',
     fontSize: 9,
-  }
+  },
 });
