@@ -1,32 +1,89 @@
-import { useState } from 'react';
-import { StyleSheet, View, Text, ImageBackground, Image, ScrollView, TextInput, TouchableWithoutFeedback } from 'react-native';
+import { StyleSheet, View, Text, Image, ScrollView, TextInput, TouchableWithoutFeedback, Alert } from 'react-native';
 import { MaterialCommunityIcons  } from '@expo/vector-icons';
-
-import Header from '../../components/transactheader';
 import { LinearGradient } from 'expo-linear-gradient';
+import { useEffect, useState } from 'react';
+
+
+import ServiceSpecsServices from '../../services/service-specs/service-specs-services';
+import ProviderServices from '../../services/provider/provider-services';
+import ServiceServices from '../../services/service/service-services';
+import BookingServices from '../../services/booking/booking-services';
+
+import { getImageURL } from '../../utils/getImageURL';
+import Header from '../../components/transactheader';
+import Loading from '../../hooks/loading';
+import Back from '../../hooks/back';
 
 export default function SettleSpecs({ route, navigation }) {
-  const { service, icon } = route.params;
-
+  const { typeName, icon, address, specsID } = route.params;
+  const [loading,setLoading] = useState(true);
   const [value, onChangeText] = useState();
+  
+
+  const [providerName, setProviderName] = useState('');
+  const [providerDP, setProviderDP] = useState(require("../../assets/default.jpg"));
+
+  useEffect(() => {
+    ( async() => {
+      try {
+        let { body: specs } = await ServiceSpecsServices.getSpecsByID(specsID);
+        let { body: booking } = await BookingServices.getBookingByID(specs.referencedID);
+        let { body: service } = await ServiceServices.getService(booking.serviceID);
+        let { body: user } = await ProviderServices.getProvider(service.providerID);
+
+        setProviderName(user.firstName + " " + user.lastName)
+        if (user.providerDp)
+          setProviderDP({uri : getImageURL(user.providerDp)});
+      } catch (err) {
+        Alert.alert('Error', err+'.', [ {text: 'OK'} ]);
+      }
+      setLoading(false);
+    })(); 
+  }, []);
+
+  const onConfirm = async() => {
+    try {
+      await ServiceSpecsServices.patchServiceSpecs(specsID, { specsStatus:1, referencedID:address, specsTimeStamp:Date.now() });
+      navigation.goBack();
+    } catch (err) {
+      Alert.alert('Error', err+'.', [ {text: 'OK'} ]);
+    }
+  }
+
+  const onDecline = async() => {
+    Alert.alert('Decline the Provider', 'Are you sure you want to decline this service provider? If you declined, we will search another service provider for you.', [
+      {
+        text: 'Cancel',
+        onPress: () => console.log('Cancel Pressed'),
+      },
+      {text: 'OK', 
+        onPress: () => onConfirm(),
+      }
+    ]);
+  }
+
+  if (loading) return <View style={{flex:1}}><Loading/></View>
   
   return (
     <View style={{justifyContent: 'flex-end', flex:1}}>
-      <Header service={service} icon={icon} phase={2} compressed={true}/>
+      <Back navigation={navigation}/>
+      <Header service={typeName} icon={icon} phase={2} compressed={true}/>
 
       <View style={styles.container}>
         <View style={styles.header}>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <Image style={styles.profileIcon} source={require("../../assets/providers/provider-f.png")} />
-            <Text style={styles.names}>Cedric Protacio</Text>
+            <Image style={styles.profileIcon} source={providerDP} />
+            <Text style={styles.names}>{providerName}</Text>
           </View>
-          <MaterialCommunityIcons name={'magnify-remove-outline'} color={'#000000'} size={24} style={{marginRight:8}}/>
+          <TouchableWithoutFeedback onPress={() => onDecline()}>
+            <MaterialCommunityIcons name={'close-box'} color={'#9C54D5'} size={24} style={{marginRight:8}}/>
+          </TouchableWithoutFeedback>
         </View>
 
         <LinearGradient colors={['rgba(0,0,0,0.1)','rgba(0,0,0,0)'  ]} start={{ x:0, y:0 }} end={{ x:0, y:1 }} style={{height:4}}/>
         <ScrollView style={{flex:1}}>
           <View style={{justifyContent:'center', alignItems:'center', marginTop:'60%'}}>
-            <TouchableWithoutFeedback onPress= {() => { navigation.navigate('FinalSpecs', {service: service, icon: icon})
+            <TouchableWithoutFeedback onPress= {() => { navigation.navigate('FinalSpecs', {service: typeName, icon: icon})
                 }}>
               <Text style={{fontFamily: 'lexend', fontSize: 15, textTransform:'uppercase'}}>Chat!</Text>
             </TouchableWithoutFeedback>

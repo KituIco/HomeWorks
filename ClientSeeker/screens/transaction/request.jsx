@@ -95,9 +95,8 @@ export default function Request({ route, navigation }) {
     let referencedID = address;
     let addressID = res.body.addressID;
     let { icon, minServiceCost, typeID, typeName } = route.params.data;
-    let { location } = region;
 
-    navigation.navigate('InitSpecs', { addressID, referencedID, icon, minServiceCost, typeID, typeName, location })
+    navigation.navigate('InitSpecs', { addressID, referencedID, icon, minServiceCost, typeID, typeName })
   }
 
   const onRequest = async() => {

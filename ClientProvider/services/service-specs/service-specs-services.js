@@ -3,6 +3,16 @@ import { getAxios } from '../../lib/axios';
 let url = '/service-specs';
 
 let ServiceSpecsServices = {
+    patchServiceSpecs: async(specsID, data) => {
+        try {
+            let queryURL = `${url}/${specsID}`;
+            let res = await patchAxios(queryURL, data);
+            return res;
+        } catch (error) {
+            throw error;
+        }
+    },
+    
     getAllServiceSpecs: async() => {
         try {
             let res = await getAxios(url);

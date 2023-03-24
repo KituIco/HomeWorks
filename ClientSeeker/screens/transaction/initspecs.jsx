@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react';
-import { StyleSheet, View, Text, ScrollView, Image, TextInput, TouchableWithoutFeedback, Dimensions } from 'react-native';
+import { StyleSheet, View, Text, ScrollView, Image, TextInput, TouchableWithoutFeedback, Dimensions, Alert } from 'react-native';
 import { MaterialCommunityIcons  } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
+import { useState, useEffect } from 'react';
 
 import ServiceSpecsServices from '../../services/service-specs/service-specs-services';
 import ImageService from '../../services/image/image-services';
@@ -16,7 +16,7 @@ const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
 
 export default function InitSpecs({ route, navigation }) {
-  const { typeID, addressID, referencedID, typeName, icon, minServiceCost, location } = route.params;
+  const { typeID, addressID, referencedID, typeName, icon, minServiceCost } = route.params;
   const [seekerID, setSeekerID] = useState('');
   const [waiting,setWaiting] = useState(false);
   const [specsDesc, onChangeText] = useState('');
@@ -69,9 +69,9 @@ export default function InitSpecs({ route, navigation }) {
       let res = await ServiceSpecsServices.createServiceSpecs({
         seekerID, typeID, addressID, referencedID, specsDesc, images, specsStatus, specsTimeStamp, 
       })
-      navigation.navigate('Matching', { specsID:res.body.specsID, icon, typeName, addressID, minServiceCost, location});
+      navigation.navigate('Matching', { specsID:res.body.specsID, icon, typeName, referencedID, minServiceCost});
     } catch (err) {
-      console.log(err);
+      Alert.alert('Error', err+'.', [ {text: 'OK'} ]);
     }
     
     setWaiting(false);

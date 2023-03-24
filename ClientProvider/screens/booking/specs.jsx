@@ -1,4 +1,4 @@
-import { StyleSheet, View, Text, Image, ScrollView, TouchableWithoutFeedback,TextInput } from 'react-native';
+import { StyleSheet, View, Text, Image, ScrollView, TouchableWithoutFeedback, TextInput, Modal, Animated, Easing } from 'react-native';
 import { LinearGradient, } from 'expo-linear-gradient';
 import { MaterialCommunityIcons } from '@expo/vector-icons'; 
 import MapView, {Marker} from 'react-native-maps';
@@ -11,23 +11,44 @@ import Loading from '../../hooks/loading';
 export default function Specs({navigation, route}) {
   const { latitude, longitude, typeName, location, bookingID } = route.params.data;
   const [loading, setLoading] = useState(false);
+  const [open, setOpen] = useState(false);
   let region = {
     latitude, latitudeDelta: 0.0070,
-    longitude, longitudeDelta: 0.0080,
+    longitude, longitudeDelta: 0.0060,
   };
   
   const [cost, setCost] = useState('');
   const [description, setDescription] = useState('');
   const [lines, setLines] = useState(4);
+  
+  const spinValue = new Animated.Value(0);
+
+  Animated.loop(
+    Animated.timing(
+      spinValue,
+      {
+       toValue: 1,
+       duration: 1200,
+       easing: Easing.linear,
+       useNativeDriver: true
+      }
+    )
+   ).start();
+
+   const spin = spinValue.interpolate({
+    inputRange: [0, 1],
+    outputRange: ['0deg', '360deg']
+  })
+
 
   const onSubmit = () => {
-    setLoading(true);
-    BookingServices.patchBooking(bookingID, { 
-      cost: parseFloat(cost).toFixed(2), description
-    }).then(() => {
-      navigation.navigate('Arriving', {typeName, cost, bookingID})
-      setLoading(false);
-    })
+    // setLoading(true);
+    // BookingServices.patchBooking(bookingID, { 
+    //   cost: parseFloat(cost).toFixed(2), description
+    // }).then(() => {
+    //   navigation.navigate('Arriving', {typeName, cost, bookingID})
+    //   setLoading(false);
+    // })
   }
 
   return (
@@ -36,9 +57,29 @@ export default function Specs({navigation, route}) {
       <View style={{alignItems:'center'}}>
         <Text style={styles.header}>{typeName}</Text>
       </View>
+
+      { open && <View style={styles.overlay}/> }
+      <Modal visible={open} transparent={true} animationType='slide'>
+        <View style={styles.centered}>
+          <View style={styles.modal}>
+          
+            <View style={styles.waiting}>
+              <Animated.View style={{transform:[{rotate:spin}]}}>
+                <MaterialCommunityIcons name={'loading'} size={60} color={'#9C54D5'}/>
+              </Animated.View>
+              <Text style={styles.subheading}>Waiting for the Customer to Agree with the Service Cost and Details submitted.</Text>
+            </View>
+
+            <TouchableWithoutFeedback>
+              <Text style={styles.enter}>CANCEL</Text>
+            </TouchableWithoutFeedback>
+
+          </View>
+        </View>
+      </Modal>
       
 
-      <View style={{width:'100%', height: '68%'}}>
+      <View style={{width:'100%', height: '75%'}}>
         <LinearGradient colors={['rgba(0,0,0,0.1)','rgba(0,0,0,0)'  ]} start={{ x:0, y:0 }} end={{ x:0, y:1 }} style={{height:4, zIndex:5, marginTop:10}}/>
         <ScrollView style={{marginVertical:-4}}>
         
@@ -96,6 +137,7 @@ const styles = StyleSheet.create({
     textTransform: 'uppercase',
     letterSpacing: -0.7,
     marginTop: 70,
+    marginBottom: 10
   },
 
   shadow: {
@@ -178,7 +220,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 10,
     borderColor: '#888486',
-    // placeholderTextColor: '#888486',
     fontFamily: 'quicksand',
     textAlignVertical: 'top',
     letterSpacing: -0.5,
@@ -186,4 +227,48 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
 
+  centered: {
+    flex:1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modal: {
+    borderRadius: 20,
+    backgroundColor: 'white',
+    width: '90%',
+    padding: 10,
+    height: '40%',
+    justifyContent: 'flex-end'
+  },
+  overlay: {
+    position: 'absolute', 
+    top: 0, left: 0, right: 0, bottom: 0, 
+    justifyContent: 'center', 
+    alignItems: 'center',
+    zIndex: 15,
+    backgroundColor: '#E9E9E9A0'
+  },
+  enter: {
+    fontSize:16,
+    color:'#000', 
+    alignSelf:'center', 
+    fontFamily: 'lexend',
+    marginBottom: 10,
+    letterSpacing: -0.5,
+  },
+
+  waiting: {
+    position: 'absolute', 
+    top: -20, left: 0, right: 0, bottom: 0, 
+    justifyContent: 'center', 
+    alignItems: 'center',
+  },
+  subheading: {
+    fontFamily: 'quicksand-light',
+    fontSize: 14,
+    letterSpacing: -0.5,
+    marginHorizontal: 34,
+    textAlign: 'center',
+    marginTop: 20,
+  },
 });

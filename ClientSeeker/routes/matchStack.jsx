@@ -7,7 +7,7 @@ const Stack = createStackNavigator();
 
 
 export default function MatchStack({ route }) {
-  const { service, icon } = route.params;
+  const { typeName, icon, address, specsID } = route.params;
 
   const header = {
     headerTransparent: true,
@@ -28,7 +28,7 @@ export default function MatchStack({ route }) {
         <Stack.Screen 
           name='SettleSpecs' 
           component={SettleSpecs}
-          initialParams={{ service: service, icon: icon}}
+          initialParams={{ typeName, icon, address, specsID }}
           options={() => header}
         />
 

@@ -1,20 +1,13 @@
-import { useState } from 'react';
 import { StyleSheet, View, Text, ImageBackground, TouchableWithoutFeedback, Animated, Easing, Alert } from 'react-native';
 import { MaterialCommunityIcons  } from '@expo/vector-icons';
-import { StackActions } from '@react-navigation/native';
 
 import ServiceSpecsServices from '../../services/service-specs/service-specs-services';
 import Header from '../../components/transactheader';
 import Next from '../../components/transactnext';
-
-import Loading from '../../hooks/loading';
 import Back from '../../hooks/back';
 
-
-
 export default function Matching({ route, navigation }) {
-  const { addressID, location, minServiceCost, specsID, typeName, icon } = route.params;
-  const [waiting,setWaiting] = useState(false)
+  const { referencedID, minServiceCost, specsID, typeName, icon } = route.params;
 
   const spinValue = new Animated.Value(0);
   Animated.loop(
@@ -32,11 +25,16 @@ export default function Matching({ route, navigation }) {
     inputRange: [0, 1],
     outputRange: ['0deg', '360deg']
   })
+
+  const onNext = async() => {
+    navigation.navigate('MatchStack', { typeName, icon, address: referencedID, specsID })
+  }
   
   const onConfirm = async() => {
     await ServiceSpecsServices.patchServiceSpecs(specsID, { specsStatus:4 })
     navigation.navigate('Dashboard')
   }
+
   const onCancel = async() => {
     Alert.alert('Cancel Request', 'The request will be inactive and will not be seen by Service Providers. To resend this request, visit your History.', [
       {
@@ -53,16 +51,12 @@ export default function Matching({ route, navigation }) {
   return (
     <View style={{justifyContent: 'flex-end', flex:1}}>
       <Header service={typeName} icon={icon} phase={2}/>
-      { waiting && <Loading/>}
       <Back navigation={navigation}/>
 
       <View style={styles.container}>
         <ImageBackground source={require("../../assets/map.png")} imageStyle= {{opacity:0.2}} resizeMode="cover">
             <View style={styles.map}>
-              <TouchableWithoutFeedback onPress= {() => {
-                  navigation.dispatch(StackActions.popToTop()), navigation.dispatch(StackActions.popToTop()),
-                  navigation.navigate('MatchStack', {service: typeName, icon: icon})
-                } }>
+              <TouchableWithoutFeedback onPress= {() => onNext()}>
                 <View>
                   <MaterialCommunityIcons name={'account-search-outline'} size={140} color="#9C54D5" style={{marginTop:-60}}/>
                   <View style={styles.waiting}>
@@ -86,7 +80,7 @@ export default function Matching({ route, navigation }) {
         </TouchableWithoutFeedback>
       </View>
         
-      <Next navigation={navigation} price={minServiceCost} address={location} title={'Cancel Request'} screen={'Dashboard'}/>
+      <Next navigation={navigation} price={minServiceCost} address={referencedID} title={'Cancel Request'} screen={'Dashboard'}/>
     </View>
   );
 }

@@ -1,4 +1,4 @@
-import { StyleSheet, View, Text, Image, ScrollView, TouchableWithoutFeedback, } from 'react-native';
+import { StyleSheet, View, Text, Image, ScrollView, TouchableWithoutFeedback, Alert } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons'; 
 import { LinearGradient, } from 'expo-linear-gradient';
 
@@ -6,7 +6,7 @@ import ImageViewer from 'react-native-image-zoom-viewer';
 import MapView, {Marker} from 'react-native-maps';
 import { Modal } from 'react-native';
 
-
+import ServiceSpecsServices from '../../services/service-specs/service-specs-services';
 import BookingServices from '../../services/booking/booking-services';
 import AddressService from '../../services/address/address-services';
 
@@ -18,7 +18,7 @@ import { useEffect, useState } from 'react';
 export default function Details({route, navigation}) {
   const { seekerID, serviceID, specsID, minServiceCost} = route.params.data;
   const { typeName, specsDesc, images, addressID } = route.params.data;
-  let bookingStatus = 0, dateTimestamp = Date.now();
+  let bookingStatus = 1, dateTimestamp = Date.now();
 
   const [location, setLocation] = useState();
   const [latitude,setLatitude] = useState();
@@ -39,27 +39,37 @@ export default function Details({route, navigation}) {
 
   useEffect(() =>{
     (async() => {
-      let data = await AddressService.getAddressByID(addressID);
-      setLocation(data.body);
-      setLatitude(data.body.latitude);
-      setLongitude(data.body.longitude);
-      setRegion({
-        latitude: data.body.latitude, latitudeDelta: 0.0090,
-        longitude: data.body.longitude, longitudeDelta: 0.0080,
-      })
+      try {
+        let data = await AddressService.getAddressByID(addressID);
+        setLocation(data.body);
+        setLatitude(data.body.latitude);
+        setLongitude(data.body.longitude);
+        setRegion({
+          latitude: data.body.latitude, latitudeDelta: 0.0090,
+          longitude: data.body.longitude, longitudeDelta: 0.0080,
+        });
+      } catch (err) {
+        Alert.alert('Error', err+'.', [ {text: 'OK'} ]);
+      }
       setLoading(false);
     })();
   }, [])
 
-  const onSettle = () => {
+  const onSettle = async() => {
     setLoading(true);
-    BookingServices.createBooking({
-      seekerID, serviceID, specsID, bookingStatus, dateTimestamp
-    }).then((res) => {
-      let {bookingID} = res.body;
-      navigation.navigate('Chat', {bookingID, latitude, longitude, location, typeName})
-      setLoading(false);
-    })
+    try {
+      let res = await BookingServices.createBooking({
+        seekerID, serviceID, specsID, bookingStatus, dateTimestamp
+      });
+      let { bookingID } = res.body;
+      await ServiceSpecsServices.patchServiceSpecs(specsID, {referencedID: bookingID, specsStatus: 2})
+      navigation.navigate('Chat', { specsID, bookingID, latitude, longitude, location, typeName })
+        
+    } catch (err) {
+      Alert.alert('Error', err+'.', [ {text: 'OK'} ]);
+    }
+    setLoading(false);
+   
   }
 
   if(loading) return <View style={{flex:1}}><Loading/></View>

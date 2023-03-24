@@ -1,13 +1,63 @@
-import { useState } from 'react';
-import { StyleSheet, View, Text, Image, ScrollView, TextInput, TouchableWithoutFeedback } from 'react-native';
+import { StyleSheet, View, Text, Image, ScrollView, TextInput, TouchableWithoutFeedback, Alert } from 'react-native';
 import { MaterialCommunityIcons  } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
+import { useState, useEffect } from 'react';
 
+import ServiceSpecsServices from '../../services/service-specs/service-specs-services';
+import SeekerServices from '../../services/seeker/seeker-services';
+
+import { addressHandler } from '../../utils/addressHandler';
+import { getImageURL } from '../../utils/getImageURL';
+import Loading from '../../hooks/loading';
 import Back from '../../hooks/back';
+
 
 export default function Chat({ navigation, route }) {
   const [value, onChangeText] = useState();
+  const [loading, setLoading] = useState(true);
   let data = route.params;
+
+  const [seekerName, setSeekerName] = useState('');
+  const [seekerDP, setSeekerDP] = useState(require("../../assets/default.jpg"));
+
+  useEffect(() => {
+    ( async() => {
+      try {
+        let { body: specs } = await ServiceSpecsServices.getSpecsByID(data.specsID);
+        let { body: user } = await SeekerServices.getSeeker(specs.seekerID);
+
+        setSeekerName(user.firstName + " " + user.lastName)
+        if (user.seekerDp)
+          setSeekerDP({uri : getImageURL(user.seekerDp)});
+      } catch (err) {
+        Alert.alert('Error', err+'.', [ {text: 'OK'} ]);
+      }
+      setLoading(false);
+    })(); 
+  }, [])
+  
+  const onConfirm = async() => {
+    try {
+      await ServiceSpecsServices.patchServiceSpecs(data.specsID, { specsStatus:1, referencedID:addressHandler(data.location), specsTimeStamp:Date.now() });
+      navigation.navigate('Requests')
+    } catch (err) {
+      Alert.alert('Error', err+'.', [ {text: 'OK'} ]);
+    }
+  }
+
+  const onDecline = async() => {
+    Alert.alert('Decline the Request', 'Are you sure you want to decline this request?', [
+      {
+        text: 'Cancel',
+        onPress: () => console.log('Cancel Pressed'),
+      },
+      {text: 'OK', 
+        onPress: () => onConfirm(),
+      }
+    ]);
+  }
+
+  if (loading) return <View style={{flex:1}}><Loading/></View>
   
   return (
     <View style={{justifyContent: 'flex-end', flex:1}}>
@@ -16,10 +66,10 @@ export default function Chat({ navigation, route }) {
       <View style={styles.container}>
         <View style={styles.header}>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <Image style={styles.profileIcon} source={require("../../assets/angel-aquino.jpg")} />
-            <Text style={styles.names}>Felizidad Fiero-Pavia</Text>
+            <Image style={styles.profileIcon} source={seekerDP} />
+            <Text style={styles.names}>{seekerName}</Text>
           </View>
-          <TouchableWithoutFeedback onPress={() => navigation.navigate('Requests')}>
+          <TouchableWithoutFeedback onPress={() => onDecline()}>
             <View style={styles.decline}>
                 <Text style={styles.content}>Decline</Text>
             </View>
