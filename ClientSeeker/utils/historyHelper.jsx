@@ -31,7 +31,7 @@ export const historyHelper = async(specs) => {
     else if (specs[i].typeName == 'Hair Dresser') specs[i]['icon'] = 'face-woman-shimmer';
 
     let status = ['', 'Active', 'Matching', 'Settled', 'Cancelled'];
-    let colors = ['', styles.black, styles.blue, styles.green, styles.red]
+    let colors = ['', styles.blue, styles.brown, styles.green, styles.red]
     let button = ['', 'View Specs Form', 'View Booking Details', 'View Transaction', 'View Specs Form'];
     specs[i]['status'] = status[specs[i].specsStatus];
     specs[i]['button'] = button[specs[i].specsStatus];
@@ -50,11 +50,11 @@ export const historyHelper = async(specs) => {
 }
 
 const styles = StyleSheet.create ({
-  black: {
-    color: 'black'
-  },
   blue: {
     color: 'blue'
+  },
+  brown: {
+    color: 'brown'
   },
   green: {
     color: 'green'
