@@ -34,7 +34,7 @@ export default function Matching({ route, navigation }) {
   })
   
   const onConfirm = async() => {
-    await ServiceSpecsServices.patchServiceSpecs(specsID, { specsStatus:2 })
+    await ServiceSpecsServices.patchServiceSpecs(specsID, { specsStatus:4 })
     navigation.navigate('Dashboard')
   }
   const onCancel = async() => {

@@ -16,7 +16,7 @@ const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
 
 export default function InitSpecs({ route, navigation }) {
-  const { typeID, addressID, typeName, icon, minServiceCost, location } = route.params;
+  const { typeID, addressID, referencedID, typeName, icon, minServiceCost, location } = route.params;
   const [seekerID, setSeekerID] = useState('');
   const [waiting,setWaiting] = useState(false);
   const [specsDesc, onChangeText] = useState('');
@@ -67,7 +67,7 @@ export default function InitSpecs({ route, navigation }) {
       let specsTimeStamp = Date.now();
 
       let res = await ServiceSpecsServices.createServiceSpecs({
-        seekerID, typeID, addressID, specsDesc, images, specsStatus, specsTimeStamp, 
+        seekerID, typeID, addressID, referencedID, specsDesc, images, specsStatus, specsTimeStamp, 
       })
       navigation.navigate('Matching', { specsID:res.body.specsID, icon, typeName, addressID, minServiceCost, location});
     } catch (err) {

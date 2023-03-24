@@ -21,10 +21,8 @@ export default function AddAddress( props ) {
 
   const [address, setAddress] = useState(addressHandler(props.raw));
   const [loading, setLoading] = useState(false);
-  const [done, setDone] = useState(false);
   const {userID, userFullName, userNum, latitude, longitude} = props;
   let isDefault = 1;
-  let addressID = props.addressID;
   
   useEffect(() => {
     setAddress(addressHandler({
@@ -32,19 +30,6 @@ export default function AddAddress( props ) {
       street, streetNumber, name, isoCountryCode
     }))
   });
-
-  useEffect(() => {
-    if(done){
-      setTimeout(() => {
-        if(!addressID) props.navigation.replace('HomeStack');
-        else {
-          props.navigation.replace('HomeStack');
-          props.navigation.navigate('HomeStack', { screen:'OptionsStack', 
-            params: { screen: 'Profile', initial:false} });
-        }
-      }, 1000)
-    }
-  }, [done]);
 
   const onSet = (value,field) => {
     if(field == 'name') { 
@@ -60,33 +45,16 @@ export default function AddAddress( props ) {
   const onAdd = async() => {
     setLoading(true);
     try {
-      if (addressID){
-        await AddressService.patchAddress(addressID, {
-          userFullName, userNum, latitude, longitude, city, district,
-          postalCode, region, street, streetNumber, name, isoCountryCode, isDefault
-        });
-      } else {
-        await AddressService.createAddress({
-          userID, userFullName, userNum, latitude, longitude, city, district,
-          postalCode, region, street, streetNumber, name, isoCountryCode, isDefault
-        });
-      }
-      props.fromChild();
-      setDone(true);
+      let res = await AddressService.createAddress({
+        userID, userFullName, userNum, latitude, longitude, city, district,
+        postalCode, region, street, streetNumber, name, isoCountryCode, isDefault
+      });
+      props.fromChild(address, res);
     } catch (err) {
       Alert.alert('Error', err+'.', [ {text: 'OK'} ]);
     } 
     setLoading(false);
   }
-
-  if(done) 
-    return (
-      <View style={{flex:1, justifyContent:'center', alignItems:'center' }}>
-        <Text style={[styles.address, {fontSize:24, marginTop:-20}]}>Address Added</Text>
-        <Text style={[styles.desc, {marginBottom:20, marginTop:-6}]}>This form will be closed.</Text>
-        <MaterialCommunityIcons name={'progress-check'} size={160} color={'#9C54D5'}/>
-      </View>
-    )
   
   if(loading) return <View style={{flex:1}}><Loading/></View>
 
@@ -189,7 +157,7 @@ const styles = StyleSheet.create({
     letterSpacing: -0.5,
     fontVariant: ['small-caps'],
     marginTop: 10,
-    color: '#303030',
+    color: '#303030'
   },
   location: {
     fontFamily: 'quicksand',
@@ -198,7 +166,7 @@ const styles = StyleSheet.create({
     color: '#888486',
     height: 34,
     marginTop: 20,
-    marginHorizontal: 20,
+    marginHorizontal: 20
   },
 
   button: {

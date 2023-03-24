@@ -5,20 +5,22 @@ import { LinearGradient } from 'expo-linear-gradient';
 const screenWidth = Dimensions.get('window').width;
 
 export default function Listing( props ) {
-  const providers = props.listings
-  let listing = styles.lists
-  let shadow = styles.shadow
-  let sectioning = styles.sections
+  const providers = props.listings;
+  let listing = styles.lists;
+  let shadow = styles.shadow;
+  let sectioning = styles.sections;
+  let color = ['rgba(0,0,0,0.3)','rgba(0,0,0,0.12)'];
 
   if (props.solo) {
-    listing = styles.sololist
-    sectioning = styles.solosection
-    shadow = styles.hide
+    listing = styles.sololist;
+    sectioning = styles.solosection;
+    shadow = styles.hide;
+    color = ['rgba(0,0,0,0)','rgba(0,0,0,0)'];
   }
 
   const providersList = data => {
     return (
-      <LinearGradient colors={['rgba(0,0,0,0.3)','rgba(0,0,0,0.12)'  ]} start={{ x:0, y:0.95 }} end={{ x:0, y:0.98 }} style={shadow} key={data.key}>
+      <LinearGradient colors={color} start={{ x:0, y:0.95 }} end={{ x:0, y:0.98 }} style={shadow} key={data.key}>
       <View style={listing} key={data.key}>
         <Image style={styles.image} source={data.src} />
         <View style={styles.details}>
@@ -145,7 +147,5 @@ const styles = StyleSheet.create({
     fontFamily: 'lexend-light',
     fontSize: 12
   },
-  hide: {
-    display: 'none'
-  }
+  hide:{}
 });

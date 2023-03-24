@@ -54,7 +54,7 @@ export default function Address({ navigation, route }) {
       
       setRegion({latitude, longitude, latitudeDelta: 0.0080, longitudeDelta: 0.0120, 
         location:addressHandler(response[0]), raw:response[0]});
-      setTimeout(() => {setProcessing(false);}, 200);
+      setProcessing(false);
       
 
       setUserFullName(`${provider.body.firstName} ${provider.body.lastName}`);

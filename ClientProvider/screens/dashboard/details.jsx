@@ -1,24 +1,32 @@
 import { StyleSheet, View, Text, Image, ScrollView, TouchableWithoutFeedback, } from 'react-native';
-import { LinearGradient, } from 'expo-linear-gradient';
 import { MaterialCommunityIcons } from '@expo/vector-icons'; 
-import MapView, {Marker} from 'react-native-maps';
+import { LinearGradient, } from 'expo-linear-gradient';
+
 import ImageViewer from 'react-native-image-zoom-viewer';
+import MapView, {Marker} from 'react-native-maps';
 import { Modal } from 'react-native';
 
 
 import BookingServices from '../../services/booking/booking-services';
+import AddressService from '../../services/address/address-services';
+
 import { addressHandler } from '../../utils/addressHandler';
 import { getImageURL } from '../../utils/getImageURL';
 import Loading from '../../hooks/loading';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export default function Details({route, navigation}) {
   const { seekerID, serviceID, specsID, minServiceCost} = route.params.data;
-  const { typeName, location, specsDesc, images, latitude, longitude} = route.params.data;
+  const { typeName, specsDesc, images, addressID } = route.params.data;
   let bookingStatus = 0, dateTimestamp = Date.now();
 
+  const [location, setLocation] = useState();
+  const [latitude,setLatitude] = useState();
+  const [longitude,setLongitude] = useState();
+  const [region, setRegion] = useState()
+
   const [open,setOpen] = useState(false);
-  const [loading,setLoading] = useState(false);
+  const [loading,setLoading] = useState(true);
   const [noImage, setNoImage] = useState(true);
   let urls = JSON.parse(images); 
   
@@ -29,10 +37,19 @@ export default function Details({route, navigation}) {
   if(urls[2]) viewer.push({url : getImageURL(urls[2])});
   if(urls[3]) viewer.push({url : getImageURL(urls[3])});
 
-  let region = {
-    latitude, latitudeDelta: 0.0090,
-    longitude, longitudeDelta: 0.0080,
-  };
+  useEffect(() =>{
+    (async() => {
+      let data = await AddressService.getAddressByID(addressID);
+      setLocation(data.body);
+      setLatitude(data.body.latitude);
+      setLongitude(data.body.longitude);
+      setRegion({
+        latitude: data.body.latitude, latitudeDelta: 0.0090,
+        longitude: data.body.longitude, longitudeDelta: 0.0080,
+      })
+      setLoading(false);
+    })();
+  }, [])
 
   const onSettle = () => {
     setLoading(true);
@@ -44,6 +61,8 @@ export default function Details({route, navigation}) {
       setLoading(false);
     })
   }
+
+  if(loading) return <View style={{flex:1}}><Loading/></View>
 
   return (
     <View style={styles.container}>

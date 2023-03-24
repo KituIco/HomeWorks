@@ -19,7 +19,7 @@ export default function Listing( props ) {
                 <Text style={styles.service}>{data.typeName}</Text>
                 <Text style={styles.time}>{(data.seconds/60).toFixed(0)}m ago</Text>
               </View>
-              <Text style={styles.address} numberOfLines={2} ellipsizeMode='tail'>{ addressHandler(data.location)}</Text>
+              <Text style={styles.address} numberOfLines={2} ellipsizeMode='tail'>{ data.referencedID }</Text>
             </View>
           </View>
 

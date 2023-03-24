@@ -9,18 +9,20 @@ class ServiceSpecsRepository {
         seekerID,
         typeID,
         addressID,
+        referencedID,
         specsDesc,
         images,
         specsStatus,
         specsTimestamp
     ) => {
         try {
-            let sqlQuery = `CALL create_service_specs(?, ?, ?, ?, ?, ?, ?, ?)`;
+            let sqlQuery = `CALL create_service_specs(?, ?, ?, ?, ?, ?, ?, ?, ?)`;
             await this.db.query(sqlQuery, [
                 specsID,
                 seekerID,
                 typeID,
                 addressID,
+                referencedID,
                 specsDesc,
                 images,
                 specsStatus,
@@ -37,18 +39,20 @@ class ServiceSpecsRepository {
         seekerID,
         typeID,
         addressID,
+        referencedID,
         specsDesc,
         images,
         specsStatus,
         specsTimestamp
     ) => {
         try {
-            let sqlQuery = `CALL patch_service_specs(?, ?, ?, ?, ?, ?, ?, ?)`;
+            let sqlQuery = `CALL patch_service_specs(?, ?, ?, ?, ?, ?, ?, ?, ?)`;
             await this.db.query(sqlQuery, [
                 specsID,
                 seekerID,
                 typeID,
                 addressID,
+                referencedID,
                 specsDesc,
                 images,
                 specsStatus,

@@ -1,17 +1,19 @@
+import { StyleSheet, View, Text, ScrollView, Image, Alert, TouchableWithoutFeedback, Keyboard, Modal } from 'react-native';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useState, useEffect }  from 'react';
-import { StyleSheet, View, Text, ScrollView, Image, Alert, TouchableWithoutFeedback } from 'react-native';
-import { MaterialCommunityIcons  } from '@expo/vector-icons';
-import MapView, {Marker} from 'react-native-maps';
+
+import MapView from 'react-native-maps';
 import * as Location from 'expo-location';
 
+import AddAddress from '../../components/addAddress';
 import Header from '../../components/transactheader';
 import Next from '../../components/transactnext';
 import Loading from '../../hooks/loading';
 
+import CredentialsServices from '../../services/user/credentials-services';
 import AddressService from '../../services/address/address-services';
 import SeekerServices from '../../services/user/seeker-services';
-import CredentialsServices from '../../services/user/credentials-services';
 import { addressHandler } from '../../utils/addressHandler';
 import { getUserID } from '../../utils/getUserID';
 
@@ -23,6 +25,9 @@ export default function Request({ route, navigation }) {
   const [userFullName, setUserFullName] = useState('');
   const [userID, setUserID] = useState('');
   const [userNum, setUserNum] = useState('');
+
+  const [open, setOpen] = useState(false);
+  const [isKeyboardVisible, setKeyboardVisible] = useState(false);
 
   const [region, setRegion] = useState({
     latitude: 14.6487, longitude: 121.0687,
@@ -59,8 +64,19 @@ export default function Request({ route, navigation }) {
       
       setRegion({latitude, longitude, latitudeDelta: 0.0080, longitudeDelta: 0.0060, 
         location:addressHandler(response[0]), raw:response[0]});
-      setTimeout(() => {setProcessing(false);}, 200);
+      setProcessing(false);
     })();
+  }, []);
+
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener(
+    'keyboardDidShow', () => { setKeyboardVisible(true); });
+    const keyboardDidHideListener = Keyboard.addListener(
+    'keyboardDidHide', () => { setKeyboardVisible(false); });
+    return () => {
+      keyboardDidHideListener.remove();
+      keyboardDidShowListener.remove();
+    };
   }, []);
 
   const regionChange = async(data) => {
@@ -70,6 +86,18 @@ export default function Request({ route, navigation }) {
       setRegion({latitude: data.latitude, longitude: data.longitude, 
         location:addressHandler(res[0]), raw:res[0]})
     });
+  }
+
+  const fromChild = async(address, res) => {
+    setKeyboardVisible(false);
+    setOpen(!open);
+    
+    let referencedID = address;
+    let addressID = res.body.addressID;
+    let { icon, minServiceCost, typeID, typeName } = route.params.data;
+    let { location } = region;
+
+    navigation.navigate('InitSpecs', { addressID, referencedID, icon, minServiceCost, typeID, typeName, location })
   }
 
   const onRequest = async() => {
@@ -96,6 +124,23 @@ export default function Request({ route, navigation }) {
     <View style={{justifyContent: 'flex-end', flex:1}}>
       {waiting && <Loading/>}
       <Header service={typeName} icon={icon} phase={1}/>
+
+      { open && <View style={styles.overlay}/> }
+      <Modal visible={open} transparent={true} animationType='slide'>
+        <View style={styles.centered}>
+          <View style={styles.modal}>
+
+            <AddAddress raw={region.raw} userID={userID} userFullName={userFullName} userNum={userNum} fromChild={fromChild}
+              latitude={region.latitude} longitude={region.longitude} navigation={navigation} />
+            { !isKeyboardVisible &&
+            <TouchableWithoutFeedback onPress= {() => setOpen(!open)}>
+              <Text style={styles.enter}>CLOSE</Text>
+            </TouchableWithoutFeedback>
+            }
+
+          </View>
+        </View>
+      </Modal>
 
       <ScrollView style={styles.container}>
         <Text style={styles.heading}>Detected Address</Text>
@@ -137,7 +182,7 @@ export default function Request({ route, navigation }) {
       </ScrollView>
 
       <View style={styles.holder}>
-        <TouchableWithoutFeedback onPress={() => onRequest()}>
+        <TouchableWithoutFeedback onPress={() => setOpen(!open)}>
           <View style={styles.ghost}/>
         </TouchableWithoutFeedback>
       </View>
@@ -227,5 +272,35 @@ const styles = StyleSheet.create({
     zIndex: 5,
     marginHorizontal: 30,
     marginBottom: 8
-  }
+  },
+
+  centered: {
+    flex:1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modal: {
+    borderRadius: 20,
+    backgroundColor: 'white',
+    width: '90%',
+    padding: 10,
+    height: '75%'
+  },
+  enter: {
+    fontSize:16,
+    color:'#000', 
+    alignSelf:'center', 
+    fontFamily: 'lexend',
+    marginBottom: 10,
+    letterSpacing: -0.5,
+  },
+
+  overlay: {
+    position: 'absolute', 
+    top: 0, left: 0, right: 0, bottom: 0, 
+    justifyContent: 'center', 
+    alignItems: 'center',
+    zIndex: 15,
+    backgroundColor: '#E9E9E9A0'
+  },
 });

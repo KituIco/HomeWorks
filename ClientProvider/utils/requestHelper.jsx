@@ -21,10 +21,10 @@ export const requestHelper = async(requests, services, types) => {
       delete requests.splice(i,1);
       i--; continue;
     }
-    let data = await AddressService.getAddressByID(requests[i]['addressID']);
-    requests[i]['location'] = data.body;
-    requests[i]['latitude'] = data.body.latitude;
-    requests[i]['longitude'] = data.body.longitude;
+    // let data = await AddressService.getAddressByID(requests[i]['addressID']);
+    // requests[i]['location'] = data.body;
+    // requests[i]['latitude'] = data.body.latitude;
+    // requests[i]['longitude'] = data.body.longitude;
 
   
     if(requests[i].typeID == '0') requests[i]['typeName'] = 'Carpentry'

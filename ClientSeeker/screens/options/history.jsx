@@ -1,10 +1,11 @@
-import { StyleSheet, View, Text, Alert, ScrollView, RefreshControl } from 'react-native';
+import { StyleSheet, View, Alert, ScrollView, RefreshControl } from 'react-native';
 import { useState, useEffect, useCallback } from 'react';
 import { getUserID } from '../../utils/getUserID';
 
 import ServiceSpecsServices from '../../services/service-specs/service-specs-services';
-import Listing from '../../components/historyListing';
 import { historyHelper } from '../../utils/historyHelper';
+import Listing from '../../components/historyListing';
+
 
 export default function History() {
   const [waiting, setWaiting] = useState(true);
@@ -12,13 +13,17 @@ export default function History() {
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
 
+  const getHistory = async() => {
+    let userID = await getUserID();
+    let specs = await ServiceSpecsServices.getSortedSeekerSpecs(userID, 'desc');
+    let history = await historyHelper(specs.body);
+    setHistory(history);
+  }
+
   useEffect(() => {
     ( async() => {  
       try {
-        let userID = await getUserID();
-        let specs = await ServiceSpecsServices.getSortedSeekerSpecs(userID, 'desc');
-        let history = await historyHelper(specs.body);
-        setHistory(history);
+        getHistory();
         setWaiting(false);
       } catch (err) {
         Alert.alert('Error', err+'.', [ {text: 'OK'} ]);
@@ -31,12 +36,7 @@ export default function History() {
     ( async() => {  
       setRefreshing(true);
       try {
-        let userID = await getUserID();
-        let specs = await ServiceSpecsServices.getSortedSeekerSpecs(userID, 'desc');
-        let history = await historyHelper(specs.body);
-
-        
-        setHistory(history);
+        getHistory();
       } catch (err) {
         Alert.alert('Error', err+'.', [ {text: 'OK'} ]);
       }

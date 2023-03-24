@@ -30,6 +30,10 @@ class ServiceSpecsValidator extends Validator {
                 required: false,
                 type: 'string'
             },
+            referencedID: {
+                required: false,
+                type: 'string'
+            },
             specsDesc: {
                 required: false,
                 type: 'string'
