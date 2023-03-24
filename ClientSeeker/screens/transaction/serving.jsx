@@ -4,9 +4,10 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { StackActions } from '@react-navigation/native';
 
+import Listing from '../../components/serviceListing';
 import Header from '../../components/transactheader';
 import Next from '../../components/transactnext';
-import Listing from '../../components/listing';
+
 
 export default function Serving({route, navigation}) {
   const { service, icon } = route.params;

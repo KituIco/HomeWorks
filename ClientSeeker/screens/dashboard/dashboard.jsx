@@ -4,8 +4,8 @@ import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState } from 'react';
 
 import Grid  from '../../components/grid';
-import Listing from '../../components/listing';
 import Header from '../../components/dashheader';
+import Listing from '../../components/serviceListing';
 
 import ServiceTypeServices from '../../services/service/service-type-services';
 import { typeHandler } from '../../utils/typeHandler';

@@ -1,18 +1,7 @@
-import * as Location from 'expo-location';
 import AddressService from '../services/address/address-services';
 
 export const requestHelper = async(requests, services, types) => {
-  let { status } = await Location.requestForegroundPermissionsAsync();
-  if (status !== 'granted') {
-    Alert.alert('Permission Denied', 
-      'This application requires location permission for certain features. To allow this app, you may check app info.', [
-      {text: 'OK'},
-    ]);
-    navigation.goBack();
-    return;
-  }
   let time = Date.now();
-
   for (let i=0; i<requests.length; i++) {
     let passed = false;
     for (let j=0; j<services.length; j++){

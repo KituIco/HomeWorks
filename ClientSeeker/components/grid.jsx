@@ -10,6 +10,7 @@ export default function Grid( props ) {
         <TouchableWithoutFeedback onPress= {() => 
         props.navigation.navigate('RequestStack', { data })}>
           <View style={styles.touchables}>
+            <MaterialCommunityIcons name={data.icon} style={styles.shadow} size={58} color={'#A9A9A9'}/>
             <MaterialCommunityIcons name={data.icon} size={58}/>
             <Text style={styles.item}>{data.typeName}</Text>
           </View>
@@ -48,6 +49,12 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   touchables: {
-    alignItems: 'center'
+    alignItems: 'center',
+    width: 80
+  },
+  shadow: {
+    position: 'absolute',
+    top: 2,
+    left: 12
   }
 })

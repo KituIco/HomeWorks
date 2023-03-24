@@ -14,7 +14,7 @@ import ProviderServices from '../../services/user/provider-services';
 import CredentialsServices from '../../services/user/credentials-services';
 
 export default function Address({ navigation, route }) {
-  let addressID = route.params.addressID;
+  let addressID = route.params ? route.params.addressID : null;
   const [processing, setProcessing] = useState(true);
   const [region, setRegion] = useState({
     latitude: 14.6487, longitude: 121.0687,

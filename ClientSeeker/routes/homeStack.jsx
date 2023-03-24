@@ -1,9 +1,9 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
-import Notifications from '../screens/notifications';
-import History from '../screens/history';
-import Options from '../screens/options';
+import Notifications from '../screens/options/notifications';
+import History from '../screens/options/history';
+import Options from '../screens/options/options';
 import DashStack from './dashStack';
 
 const Stack = createBottomTabNavigator();

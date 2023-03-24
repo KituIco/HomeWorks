@@ -1,6 +1,7 @@
 import { StyleSheet, ScrollView, View } from 'react-native';
+import Listing from '../../components/serviceListing';
 import ListHeader from '../../components/listheader';
-import Listing from '../../components/listing';
+
 
 export default function Explore() {
   const explore = [

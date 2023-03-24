@@ -4,7 +4,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 
 import Header from '../../components/transactheader';
-import Listing from '../../components/listing';
+import Listing from '../../components/serviceListing';
 
 export default function Complete({route, navigation}) {
   const { service, icon } = route.params;

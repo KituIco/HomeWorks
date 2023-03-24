@@ -7,15 +7,18 @@ const screenWidth = Dimensions.get('window').width;
 export default function Listing( props ) {
   const providers = props.listings
   let listing = styles.lists
+  let shadow = styles.shadow
   let sectioning = styles.sections
 
   if (props.solo) {
     listing = styles.sololist
     sectioning = styles.solosection
+    shadow = styles.hide
   }
 
   const providersList = data => {
     return (
+      <LinearGradient colors={['rgba(0,0,0,0.3)','rgba(0,0,0,0.12)'  ]} start={{ x:0, y:0.95 }} end={{ x:0, y:0.98 }} style={shadow} key={data.key}>
       <View style={listing} key={data.key}>
         <Image style={styles.image} source={data.src} />
         <View style={styles.details}>
@@ -43,6 +46,7 @@ export default function Listing( props ) {
           
         </View>
       </View>
+      </LinearGradient>
     );
   };
 
@@ -67,11 +71,20 @@ const styles = StyleSheet.create({
   },
   lists: {
     flexDirection: 'row',
-    padding: 6,
+    paddingVertical: 10,
+    paddingHorizontal: 8,
     borderRadius: 10,
-    borderWidth: 0.6,
-    borderColor: "#323941",
-    margin: 8
+    backgroundColor: '#F4F4F4',
+    height: 110,
+  },
+  shadow: {
+    flexDirection: 'row',
+    borderRadius: 10,
+    backgroundColor: '#F4F4F4',
+    marginHorizontal: 8,
+    marginVertical: 5,
+    height: 112,
+    justifyContent: 'center'
   },
   sololist: {
     flexDirection: 'row',
@@ -79,7 +92,7 @@ const styles = StyleSheet.create({
   image: {
     height: 90,
     width: 90,
-    borderRadius: 10
+    borderRadius: 4
   },
   details: {
     width: screenWidth - 150,
@@ -131,5 +144,8 @@ const styles = StyleSheet.create({
     color: "#FFFFFF",
     fontFamily: 'lexend-light',
     fontSize: 12
+  },
+  hide: {
+    display: 'none'
   }
 });
