@@ -1,24 +1,59 @@
-import { useState } from 'react';
-import { StyleSheet, View, Text, TouchableWithoutFeedback, ScrollView } from 'react-native';
+import { StyleSheet, View, Text, TouchableWithoutFeedback, ScrollView, Alert } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { LinearGradient } from 'expo-linear-gradient';
 import { StackActions } from '@react-navigation/native';
+import { LinearGradient } from 'expo-linear-gradient';
+import { useEffect, useState } from 'react';
 
 import Listing from '../../components/serviceListing';
 import Header from '../../components/transactheader';
 import Next from '../../components/transactnext';
 
+import TransactionReportServices from '../../services/transaction/transaction-reports-services';
+import ServiceSpecsServices from '../../services/service-specs/service-specs-services';
+import ProviderServices from '../../services/provider/provider-services';
+import BookingServices from '../../services/booking/booking-services';
+import ServiceServices from '../../services/service/service-services';
+import AddressServices from '../../services/address/address-services';
+
+import { addressHandler } from '../../utils/addressHandler';
+import { getImageURL } from '../..//utils/getImageURL';
+import Loading from '../../hooks/loading';
+
 
 export default function Serving({route, navigation}) {
-  const { service, icon } = route.params;
-  const [status, setStatus] = useState('Arriving');
+  const { typeName, icon, reportID } = route.params;
+  const [loading, setLoading] = useState(true);
+  const [cost, setCost] = useState();
+  
   const [statusIcon, setStatusIcon] = useState('train-car');
-  const [paid, setPaid] = useState(false)
+  const [status, setStatus] = useState('Arriving');
+  const [paid, setPaid] = useState(false);
+  const [list, setList] = useState();
 
-  const provider = [
-    {key: 'Alex Guerrero', location: 'Taguig City', ratings: '4.3', service: 'Car Mechanic', price: 'min Php 420', src: require("../../assets/providers/provider-a.png")},
-  ]
-  const price = '420.00'
+  useEffect(() => {
+    ( async() => {
+      try {
+        let { body: report } = await TransactionReportServices.getTransactionReportsByID(reportID);
+        let { body: booking } = await BookingServices.getBookingByID(report.bookingID);
+        let { body: specs } = await ServiceSpecsServices.getSpecsByID(report.specsID);
+
+        let { body: provider } = await ProviderServices.getProvider(report.providerID);
+        let { body: address } = await AddressServices.getAddressByID(specs.addressID);
+        let { body: service } = await ServiceServices.getService(report.serviceID)
+        
+        let providerInfo = [{
+          providerID: report.providerID, name: provider.firstName+" "+provider.lastName, location: addressHandler(address),
+          serviceRatings: service.serviceRating, typeName: service.typeName, initialCost: service.initialCost, icon, src: {uri : getImageURL(provider.providerDp)}
+        }];
+
+        setCost(booking.cost);
+        setList(providerInfo);
+      } catch(err) {
+        Alert.alert('Error', err+'.', [ {text: 'OK'} ]);
+      }
+      setLoading(false);
+    })();
+  }, [])
 
   const changeStatus = () => {
     setStatus('Serving');
@@ -29,10 +64,12 @@ export default function Serving({route, navigation}) {
     setPaid(!paid)
   }
   
+  if(loading) return <View style={{flex:1}}><Loading/></View>
+  
   return (
     <View style={{flex:1}}>
       {/* remove touchables */}
-      <Header service={service} icon={icon} phase={3}/>
+      <Header service={typeName} icon={icon} phase={3}/>
 
       <ScrollView style={styles.container}>
         <Text style={styles.status}>{status}</Text>
@@ -43,27 +80,27 @@ export default function Serving({route, navigation}) {
         </TouchableWithoutFeedback>
         
         <Text style={styles.heading}>Your Service Provider</Text>
-        <Listing listings={provider} solo={true}/>
+        <Listing listings={list} solo={true}/>
 
         <Text style={styles.heading}>Service Payment</Text>
         <View style={styles.subheading}>
-          <Text style={[{width: '60%'},styles.texts]}>{service} Service</Text>
+          <Text style={[{width: '60%'},styles.texts]}>{typeName} Service</Text>
           <TouchableWithoutFeedback onPress={() => changePaid()}>
-            <Text style={styles.texts}> Starts at <Text style={{fontFamily: 'quicksand-bold'}}>Php {price}</Text></Text>
+            <Text style={styles.texts}> Php <Text style={{fontFamily: 'quicksand-bold'}}>{cost}</Text></Text>
           </TouchableWithoutFeedback>
         </View>
 
       </ScrollView>
 
       { !paid &&
-      <Next icon={icon} service={service} navigation={navigation} title={'Settle Payment'} screen={'Payment'}/>
+      <Next icon={icon} service={typeName} navigation={navigation} title={'Settle Payment'} screen={'Payment'}/>
       }
 
       { paid &&
       <LinearGradient colors={['rgba(0,0,0,0.4)','rgba(0,0,0,0)'  ]} start={{ x:0, y:0.2 }} end={{ x:0, y:0 }}>
         <TouchableWithoutFeedback onPress= {() => {
           navigation.dispatch(StackActions.popToTop()),
-          navigation.navigate('HistoryStack', {service: service, icon: icon})
+          navigation.navigate('HistoryStack', {service: typeName, icon: icon})
         }}>
         <View style={styles.bottom}>
           <MaterialCommunityIcons name={'check-circle-outline'} size={26} style={{color:'#462964'}}/>

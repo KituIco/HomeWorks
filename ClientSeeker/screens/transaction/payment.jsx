@@ -9,12 +9,12 @@ export default function Payment({route, navigation}) {
   
   const baseMethods = [
     { id: 0, type: 'Cash', toggled: true},
-    { id: 1, type: 'G-Cash', account: '+639** *** 6424', toggled: false},
-    { id: 2, type: 'G-Cash', account: '+639** *** 3492', toggled: false},
-    { id: 3, type: 'G-Cash', account: '+639** *** 7831', toggled: false},
-    { id: 4, type: 'PayMaya', account: '+639** *** 6333', toggled: false},
-    { id: 5, type: 'PayMaya', account: '+639** *** 8882', toggled: false},
-    { id: 6, type: 'PayMaya', account: '+639** *** 3241', toggled: false},
+    // { id: 1, type: 'G-Cash', account: '+639** *** 6424', toggled: false},
+    // { id: 2, type: 'G-Cash', account: '+639** *** 3492', toggled: false},
+    // { id: 3, type: 'G-Cash', account: '+639** *** 7831', toggled: false},
+    // { id: 4, type: 'PayMaya', account: '+639** *** 6333', toggled: false},
+    // { id: 5, type: 'PayMaya', account: '+639** *** 8882', toggled: false},
+    // { id: 6, type: 'PayMaya', account: '+639** *** 3241', toggled: false},
   ]
 
   for (let i=0; i<baseMethods.length; i++) {

@@ -16,8 +16,9 @@ export default function Complete({route, navigation}) {
   const [stars, setStars] = useState(starList);
 
   const provider = [
-    {key: 'Alex Guerrero', location: 'Taguig City', ratings: '4.3', service: 'Car Mechanic', price: 'min Php 420', src: require("../../assets/providers/provider-a.png")},
-  ]
+    { providerID:'1', name: 'Alex Guerrero', location: 'Boni Avenue Corner Barangka Drive Mandaluyong City Metro Manila Philippines', serviceRatings:'4.3', typeName: 'Car Mechanic', initialCost: 'min Php 420', 
+    src:require("../../assets/providers/provider-a.png"), icon},
+  ]  
   const price = '420.00'
 
   const changeRating = (rate) => {

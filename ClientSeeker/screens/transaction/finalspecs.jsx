@@ -74,7 +74,7 @@ export default function FinalSpecs({ route, navigation }) {
         seekerID, providerID, serviceID, paymentMethod, paymentStatus, amount: parseFloat(cost)
       });
       
-      let transactionStat = 1;
+      let transactionStat = 2;
       let paymentID = payment.body.paymentID;
       let transaction = await TransactionReportServices.createTransactionReport({
         bookingID, paymentID, specsID, seekerID, providerID, serviceID, transactionStat
@@ -84,10 +84,11 @@ export default function FinalSpecs({ route, navigation }) {
       let bookingStatus = 3;
       let referencedID = transaction.body.reportID;
       await BookingServices.patchBooking( bookingID, { bookingStatus });
-      await ServiceSpecsServices.patchServiceSpecs(specsID, { referencedID , specsStatus });
+      await ServiceSpecsServices.patchServiceSpecs( specsID, { referencedID , specsStatus });
 
+      let reportID = transaction.body.reportID;
       navigation.dispatch(StackActions.popToTop()), navigation.dispatch(StackActions.popToTop()),
-      navigation.navigate('ServeStack', {service: typeName, icon: icon})
+      navigation.navigate('ServeStack', {typeName, icon, reportID })
     } catch (err) {
       Alert.alert('Error', err+'.', [ {text: 'OK'} ]);
     }

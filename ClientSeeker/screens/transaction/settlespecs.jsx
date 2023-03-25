@@ -45,6 +45,7 @@ export default function SettleSpecs({ route, navigation }) {
           setProviderDP({uri : getImageURL(user.providerDp)});
       } catch (err) {
         Alert.alert('Error', err+'.', [ {text: 'OK'} ]);
+        navigation.goBack();
       }
       setLoading(false);
     })(); 

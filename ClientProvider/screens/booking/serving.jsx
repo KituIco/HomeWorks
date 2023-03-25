@@ -1,8 +1,6 @@
 import { StyleSheet, View, Text, Image, ScrollView, TouchableWithoutFeedback, } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useState } from 'react';
-import { MaterialCommunityIcons } from '@expo/vector-icons'; 
-
 
 export default function Serving({navigation}) {
   const [paid, setPaid] = useState(false);

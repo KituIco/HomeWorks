@@ -1,6 +1,6 @@
 import { StyleSheet, View, Text, Image, ScrollView, TouchableWithoutFeedback, TextInput, Modal, Animated, Easing, Alert } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons'; 
-import { LinearGradient, } from 'expo-linear-gradient';
+import { LinearGradient } from 'expo-linear-gradient';
 import MapView, {Marker} from 'react-native-maps';
 import { useState } from 'react';
 

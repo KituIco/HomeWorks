@@ -20,27 +20,31 @@ export default function Listing( props ) {
 
   const providersList = data => {
     return (
-      <LinearGradient colors={color} start={{ x:0, y:0.95 }} end={{ x:0, y:0.98 }} style={shadow} key={data.key}>
-      <View style={listing} key={data.key}>
-        <Image style={styles.image} source={data.src} />
+      <LinearGradient colors={color} start={{ x:0, y:0.95 }} end={{ x:0, y:0.98 }} style={shadow} key={data.providerID}>
+      <View style={listing}>
+        { data.src && <Image style={styles.image} source={data.src} />}
+        { !data.src && <MaterialCommunityIcons name={data.icon} size={90} color={'#000000'}/>}
         <View style={styles.details}>
 
           <View style={styles.detailstop}>
-            <Text style={styles.names}>{data.key}</Text>
+            <Text style={styles.names}>{data.name}</Text>
+            { data.serviceRatings &&
             <View style={{ flexDirection: 'row', alignItems: 'flex-end', paddingBottom: 7}}>
               <MaterialCommunityIcons name={'star'} size={14} color="#9C54D5"/>
-              <Text style={styles.ratings}>{data.ratings}</Text>
+              <Text style={styles.ratings}>{data.serviceRatings}</Text> 
             </View>
+            }
+            { !data.serviceRatings && <Text style={styles.unrated}>New</Text> }
           </View>
           
-          <Text style={styles.location}>{data.location}</Text>
+          <Text numberOfLines={1} style={styles.location}>{data.location}</Text>
 
           <View style={styles.detailsbot}>
             <LinearGradient colors={['#9C54D5', '#462964']} start={{ x:0.6, y:-1 }} end={{ x:0.1, y:1 }} style={styles.tag}>
-              <Text style={styles.serve}>{data.service}</Text>
+              <Text style={styles.serve}>{data.typeName}</Text>
             </LinearGradient>
             
-            { !props.solo && <Text style={styles.price}>{data.price}</Text> }
+            { !props.solo && <Text style={styles.price}>min Php <Text style={{fontFamily: 'quicksand-medium',}}>{parseFloat(data.initialCost).toFixed(2)}</Text></Text> }
             { props.solo && 
               <Text style={[styles.price,{textDecorationLine: 'underline'}]}>View Provider</Text> 
             }
@@ -123,12 +127,21 @@ const styles = StyleSheet.create({
     fontFamily: 'quicksand-medium',
     fontSize: 14
   },
+  unrated: {
+    fontFamily: 'quicksand-medium',
+    fontSize: 14,
+    color: "#9C54D5", 
+    alignSelf:'flex-end', 
+    paddingBottom:7, 
+    letterSpacing:-0.2
+  },
 
   location: {
     fontFamily: 'quicksand',
     fontSize: 12,
     marginTop: -5,
-    marginBottom: 16
+    marginBottom: 16,
+    marginRight: 20,
   },
   price: {
     fontFamily: 'quicksand',

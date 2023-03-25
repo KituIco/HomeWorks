@@ -7,7 +7,7 @@ const Stack = createStackNavigator();
 
 
 export default function ServeStack({ route }) {
-  const { service, icon } = route.params;
+  const { typeName, icon, reportID } = route.params;
 
   const header = {
     headerTransparent: true,
@@ -27,7 +27,7 @@ export default function ServeStack({ route }) {
         <Stack.Screen 
           name='Serving' 
           component={Serving}
-          initialParams={{ service: service, icon: icon}}
+          initialParams={{ typeName, icon, reportID }}
           options={() => header}
         />
 

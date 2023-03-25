@@ -5,7 +5,10 @@ export const requestHelper = async(requests, services, types) => {
   for (let i=0; i<requests.length; i++) {
     let passed = false;
     for (let j=0; j<services.length; j++){
-      if(requests[i].typeID == services[j].typeID && time - requests[i].specsTimestamp < 900000){
+      if(time - requests[i].specsTimestamp > 900000 || requests[i].specsStatus!=1) {
+        break;
+      }
+      if(requests[i].typeID == services[j].typeID){
         requests[i]['seconds'] = (time - requests[i].specsTimestamp)/1000;
         requests[i]['serviceID'] = services[j].serviceID;
 
