@@ -4,7 +4,7 @@ import { addressHandler } from '../utils/addressHandler';
 import { LinearGradient, } from 'expo-linear-gradient';
 import { useEffect, useState } from 'react';
 
-import AddressService from '../services/address/address-services';
+import AddressServices from '../services/address/address-services';
 import Loading from '../hooks/loading';
 
 
@@ -61,12 +61,12 @@ export default function AddAddress( props ) {
     setLoading(true);
     try {
       if (addressID){
-        await AddressService.patchAddress(addressID, {
+        await AddressServices.patchAddress(addressID, {
           userFullName, userNum, latitude, longitude, city, district,
           postalCode, region, street, streetNumber, name, isoCountryCode, isDefault
         });
       } else {
-        await AddressService.createAddress({
+        await AddressServices.createAddress({
           userID, userFullName, userNum, latitude, longitude, city, district,
           postalCode, region, street, streetNumber, name, isoCountryCode, isDefault
         });

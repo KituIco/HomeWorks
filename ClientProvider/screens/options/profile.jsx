@@ -6,7 +6,7 @@ import { useState, useEffect } from 'react';
 
 import CredentialsServices from '../../services/user/credentials-services';
 import ProviderServices from '../../services/user/provider-services';
-import AddressService from '../../services/address/address-services';
+import AddressServices from '../../services/address/address-services';
 import ImageService from '../../services/image/image-services';
 import EditCredentials from '../../components/editCredentials';
 import EditProfile from '../../components/editProfile';
@@ -43,7 +43,7 @@ export default function Profile({ navigation }) {
     ( async() => {
       try {
         let userID = await getUserID();
-        let address = await AddressService.getAllAddressOfUser(userID);
+        let address = await AddressServices.getAllAddressOfUser(userID);
         if(address.body.length == 0){
           navigation.replace('HomeStack');
           navigation.navigate('HomeStack', { screen:'OptionsStack', 

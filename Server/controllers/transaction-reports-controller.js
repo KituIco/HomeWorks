@@ -21,6 +21,7 @@ class TransactionReportsController {
                 seekerID,
                 providerID,
                 serviceID,
+                reviewID,
                 transactionStat
             } = req.body;
 
@@ -50,6 +51,7 @@ class TransactionReportsController {
                 seekerID,
                 providerID,
                 serviceID,
+                reviewID,
                 transactionStat
             );
 
@@ -79,6 +81,7 @@ class TransactionReportsController {
                 seekerID,
                 providerID,
                 serviceID,
+                reviewID,
                 transactionStat
             } = req.body;
 
@@ -112,6 +115,7 @@ class TransactionReportsController {
                 seekerID,
                 providerID,
                 serviceID,
+                reviewID,
                 transactionStat
             );
 

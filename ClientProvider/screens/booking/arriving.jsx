@@ -7,31 +7,6 @@ import Back from '../../hooks/back';
 
 export default function Arriving({navigation}){
   const address = 'UP AECH, P. Velasquez Street, Diliman, Quezon City, 1800 Metro Manila';
-  const [opacity, setOpacity] = useState(0.1)
-  const [accepted, setAccepted] = useState(false);
-  const spinValue = new Animated.Value(0);
-
-  Animated.loop(
-    Animated.timing(
-      spinValue,
-      {
-       toValue: 1,
-       duration: 1200,
-       easing: Easing.linear,
-       useNativeDriver: true
-      }
-    )
-   ).start();
-
-   const spin = spinValue.interpolate({
-    inputRange: [0, 1],
-    outputRange: ['0deg', '360deg']
-  })
-
-  const changeStatus = () => {
-    setAccepted(true);
-    setOpacity(0.8);
-  }
 
   return (
     <View style={styles.container}>
@@ -43,29 +18,13 @@ export default function Arriving({navigation}){
       <View style={{flex:1, width:'100%'}}>
         <LinearGradient colors={['rgba(255,255,255,1)','rgba(255,255,255,0)'  ]} start={{ x:0, y:0 }} end={{ x:0, y:1 }} style={{height:14, zIndex:5}}/>
           <ScrollView style={{marginVertical:-14}}>
-            <Image style={[styles.image,{opacity: opacity}]} source={require("../../assets/map.png")} />     
+            <Image style={[styles.image]} source={require("../../assets/map.png")} />     
           </ScrollView>
         <LinearGradient colors={['rgba(255,255,255,1)','rgba(255,255,255,0)'  ]} start={{ x:0, y:1 }} end={{ x:0, y:0 }} style={{height:14, zIndex:5}}/>
       </View>
 
-      { !accepted &&
-      <View style={styles.waiting}>
-        <Animated.View style={{transform:[{rotate:spin}]}}>
-          <MaterialCommunityIcons name={'loading'} size={60} color={'#9C54D5'}/>
-        </Animated.View>
-        <Text style={styles.subheading}>Waiting for the Customer to Agree with the Service Cost and Details submitted.</Text>
-      </View>
-      }
-      
+     
       <View style={{alignItems:'center', width:'100%'}}>
-        { !accepted &&
-        <TouchableWithoutFeedback onPress={() => changeStatus()}>
-          <Text style={styles.header}>Please Standby</Text>
-        </TouchableWithoutFeedback>
-        }
-
-
-        { accepted &&
         <View style={{width:'80%'}}>
         <TouchableWithoutFeedback onPress={() => navigation.navigate('Serving')}>
           <LinearGradient colors={['rgba(0,0,0,0.7)','rgba(0,0,0,0.1)'  ]} start={{ x:0, y:0.65 }} end={{ x:0, y:0.98 }} style={styles.shadow}>
@@ -77,8 +36,6 @@ export default function Arriving({navigation}){
           </LinearGradient>
         </TouchableWithoutFeedback>
         </View>
-        }
-
       </View>
       <LinearGradient colors={['rgba(255,255,255,1)','rgba(233,233,233,1)' ]} start={{ x:0, y:0.5 }} end={{ x:0, y:1 }} style={{width:'100%', height:14, zIndex:5}}/>
     </View>
@@ -137,6 +94,7 @@ const styles = StyleSheet.create({
     height: 700,
     width: '250%',
     alignSelf:'center',
+    opacity: 0.8,
   },
 
   address: {

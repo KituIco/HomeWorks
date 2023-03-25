@@ -8,7 +8,7 @@ import { Modal } from 'react-native';
 
 import ServiceSpecsServices from '../../services/service-specs/service-specs-services';
 import BookingServices from '../../services/booking/booking-services';
-import AddressService from '../../services/address/address-services';
+import AddressServices from '../../services/address/address-services';
 
 import { addressHandler } from '../../utils/addressHandler';
 import { getImageURL } from '../../utils/getImageURL';
@@ -40,7 +40,7 @@ export default function Details({route, navigation}) {
   useEffect(() =>{
     (async() => {
       try {
-        let data = await AddressService.getAddressByID(addressID);
+        let data = await AddressServices.getAddressByID(addressID);
         setLocation(data.body);
         setLatitude(data.body.latitude);
         setLongitude(data.body.longitude);

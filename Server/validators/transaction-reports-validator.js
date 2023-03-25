@@ -48,6 +48,10 @@ class TransactionReportsValidator extends Validator {
                 required: true,
                 type: 'string'
             },
+            reviewID: {
+                required: false,
+                type: 'string'
+            },
             transactionStat: {
                 required: false,
                 type: 'number'

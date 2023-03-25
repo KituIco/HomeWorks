@@ -8,6 +8,7 @@ CREATE PROCEDURE `create_transaction_report`(
     IN `seker_id` VARCHAR(14),
     IN `prov_id` VARCHAR(14),
     IN `srvc_id` VARCHAR(14),
+    IN `revw_id` VARCHAR(14),
     IN `stat` INT
 )
 BEGIN
@@ -20,6 +21,7 @@ BEGIN
             seeker_id,
             provider_id,
             service_id,
+            review_id,
             transaction_stat
         )
     VALUES(
@@ -30,6 +32,7 @@ BEGIN
         seker_id,
         prov_id,
         srvc_id,
+        revw_id,
         stat
     );
 END;
@@ -44,6 +47,7 @@ CREATE PROCEDURE `patch_transaction_report`(
     IN `seker_id` VARCHAR(14),
     IN `prov_id` VARCHAR(14),
     IN `srvc_id` VARCHAR(14),
+    IN `revw_id` VARCHAR(14),
     IN `stat` INT
 )
 BEGIN
@@ -56,6 +60,7 @@ BEGIN
         seeker_id = COALESCE(seker_id, seeker_id),
         provider_id = COALESCE(prov_id, provider_id),
         service_id = COALESCE(srvc_id, service_id),
+        review_id = COALESCE(revw_id, review_id),
         transaction_stat = COALESCE(stat, transaction_stat)
     WHERE
         report_id = rprt_id;
@@ -85,6 +90,7 @@ BEGIN
         seeker_id AS seekerID,
         provider_id AS providerID,
         service_id AS serviceID,
+        review_id AS reviewID,
         transaction_stat AS transactionStat
     FROM
         TransactionReports;
@@ -104,6 +110,7 @@ BEGIN
         seeker_id AS seekerID,
         provider_id AS providerID,
         service_id AS serviceID,
+        review_id AS reviewID,
         transaction_stat AS transactionStat
     FROM
         TransactionReports
@@ -125,6 +132,7 @@ BEGIN
         seeker_id AS seekerID,
         provider_id AS providerID,
         service_id AS serviceID,
+        review_id AS reviewID,
         transaction_stat AS transactionStat
     FROM
         TransactionReports
@@ -146,6 +154,7 @@ BEGIN
         seeker_id AS seekerID,
         provider_id AS providerID,
         service_id AS serviceID,
+        review_id AS reviewID,
         transaction_stat AS transactionStat
     FROM
         TransactionReports
@@ -167,6 +176,7 @@ BEGIN
         TransactionReports.seeker_id AS seekerID,
         TransactionReports.provider_id AS providerID,
         TransactionReports.service_id AS serviceID,
+        TransactionReports.review_id AS reviewID,
         TransactionReports.transaction_stat AS transactionStat
     FROM
         TransactionReports
@@ -204,6 +214,7 @@ BEGIN
         seeker_id AS seekerID,
         provider_id AS providerID,
         service_id AS serviceID,
+        review_id AS reviewID,
         transaction_stat AS transactionStat
     FROM
         TransactionReports
@@ -225,6 +236,7 @@ BEGIN
         seeker_id AS seekerID,
         provider_id AS providerID,
         service_id AS serviceID,
+        review_id AS reviewID,
         transaction_stat AS transactionStat
     FROM
         TransactionReports

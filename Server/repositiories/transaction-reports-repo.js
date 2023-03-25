@@ -12,10 +12,11 @@ class TransactionReportsRepository {
         seekerID,
         providerID,
         serviceID,
+        reviewID,
         transactionStat
     ) => {
         try {
-            let sqlQuery = `CALL create_transaction_report(?, ?, ?, ?, ?, ?, ?, ?)`;
+            let sqlQuery = `CALL create_transaction_report(?, ?, ?, ?, ?, ?, ?, ?, ?)`;
             await this.db.query(sqlQuery, [
                 reportID,
                 bookingID,
@@ -24,6 +25,7 @@ class TransactionReportsRepository {
                 seekerID,
                 providerID,
                 serviceID,
+                reviewID,
                 transactionStat
             ]);
         } catch (error) {
@@ -40,10 +42,11 @@ class TransactionReportsRepository {
         seekerID,
         providerID,
         serviceID,
+        reviewID,
         transactionStat
     ) => {
         try {
-            let sqlQuery = `CALL patch_transaction_report(?, ?, ?, ?, ?, ?, ?, ?)`;
+            let sqlQuery = `CALL patch_transaction_report(?, ?, ?, ?, ?, ?, ?, ?, ?)`;
             await this.db.query(sqlQuery, [
                 reportID,
                 bookingID,
@@ -52,6 +55,7 @@ class TransactionReportsRepository {
                 seekerID,
                 providerID,
                 serviceID,
+                reviewID,
                 transactionStat
             ]);
         } catch (error) {

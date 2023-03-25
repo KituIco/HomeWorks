@@ -4,6 +4,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { useState, useEffect } from 'react';
 
 import ServiceSpecsServices from '../../services/service-specs/service-specs-services';
+import BookingServices from '../../services/booking/booking-services';
 import SeekerServices from '../../services/seeker/seeker-services';
 
 import { addressHandler } from '../../utils/addressHandler';
@@ -16,6 +17,7 @@ export default function Chat({ navigation, route }) {
   const [value, onChangeText] = useState();
   const [loading, setLoading] = useState(true);
   let data = route.params;
+  let bookingID = data.bookingID;
 
   const [seekerName, setSeekerName] = useState('');
   const [seekerDP, setSeekerDP] = useState(require("../../assets/default.jpg"));
@@ -39,6 +41,7 @@ export default function Chat({ navigation, route }) {
   const onConfirm = async() => {
     try {
       await ServiceSpecsServices.patchServiceSpecs(data.specsID, { specsStatus:1, referencedID:addressHandler(data.location), specsTimeStamp:Date.now() });
+      await BookingServices.patchBooking(bookingID, { bookingStatus:4 });
       navigation.navigate('Requests')
     } catch (err) {
       Alert.alert('Error', err+'.', [ {text: 'OK'} ]);

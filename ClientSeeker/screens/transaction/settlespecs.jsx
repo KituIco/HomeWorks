@@ -16,9 +16,13 @@ import Back from '../../hooks/back';
 
 export default function SettleSpecs({ route, navigation }) {
   const { typeName, icon, address, specsID } = route.params;
+  const [bookingID, setBookingID] = useState();
+  const [serviceID, setServiceID] = useState();
+  const [providerID, setProviderID] = useState();
+  const [addressID, setAddressID] = useState();
+
   const [loading,setLoading] = useState(true);
   const [value, onChangeText] = useState();
-  
 
   const [providerName, setProviderName] = useState('');
   const [providerDP, setProviderDP] = useState(require("../../assets/default.jpg"));
@@ -30,8 +34,13 @@ export default function SettleSpecs({ route, navigation }) {
         let { body: booking } = await BookingServices.getBookingByID(specs.referencedID);
         let { body: service } = await ServiceServices.getService(booking.serviceID);
         let { body: user } = await ProviderServices.getProvider(service.providerID);
+        
+        setBookingID(specs.referencedID);
+        setServiceID(booking.serviceID);
+        setProviderID(service.providerID);
+        setAddressID(specs.addressID)
 
-        setProviderName(user.firstName + " " + user.lastName)
+        setProviderName(user.firstName + " " + user.lastName);
         if (user.providerDp)
           setProviderDP({uri : getImageURL(user.providerDp)});
       } catch (err) {
@@ -41,9 +50,14 @@ export default function SettleSpecs({ route, navigation }) {
     })(); 
   }, []);
 
+  const onUpdate = async() => {
+    navigation.navigate('FinalSpecs', { typeName, icon, specsID, bookingID, serviceID, providerID, addressID })
+  }
+
   const onConfirm = async() => {
     try {
       await ServiceSpecsServices.patchServiceSpecs(specsID, { specsStatus:1, referencedID:address, specsTimeStamp:Date.now() });
+      await BookingServices.patchBooking(bookingID, { bookingStatus:4 });
       navigation.goBack();
     } catch (err) {
       Alert.alert('Error', err+'.', [ {text: 'OK'} ]);
@@ -83,8 +97,7 @@ export default function SettleSpecs({ route, navigation }) {
         <LinearGradient colors={['rgba(0,0,0,0.1)','rgba(0,0,0,0)'  ]} start={{ x:0, y:0 }} end={{ x:0, y:1 }} style={{height:4}}/>
         <ScrollView style={{flex:1}}>
           <View style={{justifyContent:'center', alignItems:'center', marginTop:'60%'}}>
-            <TouchableWithoutFeedback onPress= {() => { navigation.navigate('FinalSpecs', {service: typeName, icon: icon})
-                }}>
+            <TouchableWithoutFeedback onPress= {() => onUpdate()}>
               <Text style={{fontFamily: 'lexend', fontSize: 15, textTransform:'uppercase'}}>Chat!</Text>
             </TouchableWithoutFeedback>
           </View>

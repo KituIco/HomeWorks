@@ -172,13 +172,15 @@ CREATE TABLE IF NOT EXISTS `TransactionReports`(
     `seeker_id` VARCHAR(14) NOT NULL,
     `provider_id` VARCHAR(14) NOT NULL,
     `service_id` VARCHAR(14) NOT NULL,
+    `review_id` VARCHAR(14),
     `transaction_stat` INT,
     PRIMARY KEY (`report_id`),
     FOREIGN KEY (`booking_id`) REFERENCES Booking(`booking_id`) ON DELETE CASCADE,
     FOREIGN KEY (`payment_id`) REFERENCES Payment(`payment_id`) ON DELETE CASCADE,
     FOREIGN KEY (`specs_id`) REFERENCES ServiceSpecs(`specs_id`) ON DELETE CASCADE,
     FOREIGN KEY (`provider_id`) REFERENCES Provider(`provider_id`) ON DELETE CASCADE,
-    FOREIGN KEY (`seeker_id`) REFERENCES Seeker(`seeker_id`) ON DELETE CASCADE
+    FOREIGN KEY (`seeker_id`) REFERENCES Seeker(`seeker_id`) ON DELETE CASCADE,
+    FOREIGN KEY (`review_id`) REFERENCES Review(`review_id`) ON DELETE CASCADE
 );
 
 -- DROP TABLE IF EXISTS `CardPayment`;

@@ -1,7 +1,7 @@
 import { postAxios, patchAxios, deleteAxios, getAxios } from '../../lib/axios';
 
 let url = '/address';
-let AddressService = {
+let AddressServices = {
     createAddress: async (data = {}) => {
         try {
             let res = await postAxios(url, data);
@@ -69,4 +69,4 @@ let AddressService = {
     }
 }
 
-module.exports = AddressService;
+module.exports = AddressServices;

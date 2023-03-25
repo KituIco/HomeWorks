@@ -1,4 +1,4 @@
-import AddressService from '../services/address/address-services';
+import AddressServices from '../services/address/address-services';
 
 export const requestHelper = async(requests, services, types) => {
   let time = Date.now();
@@ -21,7 +21,7 @@ export const requestHelper = async(requests, services, types) => {
       delete requests.splice(i,1);
       i--; continue;
     }
-    // let data = await AddressService.getAddressByID(requests[i]['addressID']);
+    // let data = await AddressServices.getAddressByID(requests[i]['addressID']);
     // requests[i]['location'] = data.body;
     // requests[i]['latitude'] = data.body.latitude;
     // requests[i]['longitude'] = data.body.longitude;

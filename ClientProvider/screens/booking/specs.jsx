@@ -1,6 +1,6 @@
-import { StyleSheet, View, Text, Image, ScrollView, TouchableWithoutFeedback, TextInput, Modal, Animated, Easing } from 'react-native';
-import { LinearGradient, } from 'expo-linear-gradient';
+import { StyleSheet, View, Text, Image, ScrollView, TouchableWithoutFeedback, TextInput, Modal, Animated, Easing, Alert } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons'; 
+import { LinearGradient, } from 'expo-linear-gradient';
 import MapView, {Marker} from 'react-native-maps';
 import { useState } from 'react';
 
@@ -16,7 +16,7 @@ export default function Specs({navigation, route}) {
     latitude, latitudeDelta: 0.0070,
     longitude, longitudeDelta: 0.0060,
   };
-  
+
   const [cost, setCost] = useState('');
   const [description, setDescription] = useState('');
   const [lines, setLines] = useState(4);
@@ -40,20 +40,39 @@ export default function Specs({navigation, route}) {
     outputRange: ['0deg', '360deg']
   })
 
+  const onAccept = async() => {
+    setOpen(false);
+    navigation.navigate('Arriving', {data: route.params.data});
+  }
 
-  const onSubmit = () => {
-    // setLoading(true);
-    // BookingServices.patchBooking(bookingID, { 
-    //   cost: parseFloat(cost).toFixed(2), description
-    // }).then(() => {
-    //   navigation.navigate('Arriving', {typeName, cost, bookingID})
-    //   setLoading(false);
-    // })
+  const onCancel = async() => {
+    setOpen(false);
+    try {
+      let bookingStatus = 1;
+      await BookingServices.patchBooking(bookingID, { bookingStatus });
+    } catch (err) {
+      Alert.alert('Error', err+'.', [ {text: 'OK'} ]);
+    }
+    // Alert.alert('Declined','Customer has declined the Service Details. Please go back to chat and discuss again with our customer.', [ {text: 'OK'} ]);
+  }
+
+  const onSubmit = async() => {
+    setLoading(true);
+    try {
+      let bookingStatus = 2;
+      await BookingServices.patchBooking(bookingID, {
+        cost: parseFloat(cost).toFixed(2), description, bookingStatus
+      });
+      setOpen(true);
+    } catch (err) {
+      Alert.alert('Error', err+'.', [ {text: 'OK'} ]);
+    }
+    setLoading(false);
   }
 
   return (
     <View style={styles.container}>
-      {loading && <Loading/> }
+      { loading && <Loading/> }
       <View style={{alignItems:'center'}}>
         <Text style={styles.header}>{typeName}</Text>
       </View>
@@ -62,15 +81,17 @@ export default function Specs({navigation, route}) {
       <Modal visible={open} transparent={true} animationType='slide'>
         <View style={styles.centered}>
           <View style={styles.modal}>
-          
-            <View style={styles.waiting}>
-              <Animated.View style={{transform:[{rotate:spin}]}}>
-                <MaterialCommunityIcons name={'loading'} size={60} color={'#9C54D5'}/>
-              </Animated.View>
-              <Text style={styles.subheading}>Waiting for the Customer to Agree with the Service Cost and Details submitted.</Text>
-            </View>
 
-            <TouchableWithoutFeedback>
+            <TouchableWithoutFeedback onPress={() => onAccept()}>
+              <View style={styles.waiting}>
+                <Animated.View style={{transform:[{rotate:spin}]}}>
+                  <MaterialCommunityIcons name={'loading'} size={60} color={'#9C54D5'}/>
+                </Animated.View>
+                <Text style={styles.subheading}>Waiting for the Customer to Agree with the Service Cost and Details submitted.</Text>
+              </View>
+            </TouchableWithoutFeedback>
+
+            <TouchableWithoutFeedback onPress={() => onCancel()}>
               <Text style={styles.enter}>CANCEL</Text>
             </TouchableWithoutFeedback>
 

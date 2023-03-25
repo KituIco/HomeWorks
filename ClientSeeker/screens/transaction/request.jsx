@@ -12,7 +12,7 @@ import Next from '../../components/transactnext';
 import Loading from '../../hooks/loading';
 
 import CredentialsServices from '../../services/user/credentials-services';
-import AddressService from '../../services/address/address-services';
+import AddressServices from '../../services/address/address-services';
 import SeekerServices from '../../services/user/seeker-services';
 import { addressHandler } from '../../utils/addressHandler';
 import { getUserID } from '../../utils/getUserID';
@@ -103,7 +103,7 @@ export default function Request({ route, navigation }) {
     setWaiting(true);
     try {
       let isDefault = 1;
-      let res = await AddressService.createAddress({
+      let res = await AddressServices.createAddress({
         ...region.raw, userID, userFullName, userNum, latitude:region.latitude, longitude:region.longitude, isDefault
       }) 
       let addressID = res.body.addressID;

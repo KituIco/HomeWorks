@@ -5,34 +5,114 @@ import { StackActions } from '@react-navigation/native';
 import MapView, {Marker} from 'react-native-maps';
 
 import Header from '../../components/transactheader';
+import { getUserID } from '../../utils/getUserID';
+import Loading from '../../hooks/loading';
+
+import TransactionReportServices from '../../services/transaction/transaction-reports-services';
+import ServiceSpecsServices from '../../services/service-specs/service-specs-services';
+import BookingServices from '../../services/booking/booking-services';
+import AddressServices from '../../services/address/address-services';
+import PaymentServices from '../../services/payment/payment-services';
+import { addressHandler } from '../../utils/addressHandler';
 
 export default function FinalSpecs({ route, navigation }) {
-  const [location, setLocation] = useState(null);
-  const [errorMsg, setErrorMsg] = useState(null);
+  const { typeName, icon, bookingID, addressID, providerID, specsID, serviceID } = route.params;
+  const [description, setDescription] = useState('');
+  const [seekerID, setSeekerID] = useState('');
+  const [cost, setCost] = useState();
 
-  const { service, icon }= route.params;
-  let region = {
-      latitude: 14.5759057598,
-      longitude: 121.041201492,
-      latitudeDelta: 0.0050,
-      longitudeDelta: 0.0050,
-  };
+  const [loading, setLoading] = useState(true);
+  const [processing, setProcessing] = useState(false);
+
+  const [location, setLocation] = useState('');
+  const [longitude, setLongitude] = useState();
+  const [latitude, setLatitude] = useState();
+  const [region, setRegion] = useState();
+
+  useEffect(() => {
+    ( async() => {
+      try {
+        let userID = await getUserID();
+        let { body: address } = await AddressServices.getAddressByID(addressID);
+        let { body: booking } = await BookingServices.getBookingByID(bookingID);
+        setDescription(booking.description);
+        setCost(booking.cost);
+        setSeekerID(userID);
+        
+        setLocation(addressHandler(address));
+        setLongitude(address.longitude);
+        setLatitude(address.latitude);
+        setRegion({
+          latitude: address.latitude,
+          longitude: address.longitude,
+          latitudeDelta: 0.0060,
+          longitudeDelta: 0.0050,
+        })
+      } catch (err) {
+        Alert.alert('Error', err+'.', [ {text: 'OK'} ]);
+      }
+      setLoading(false);
+    })();
+  }, [])
+
+  const onDecline = async() => {
+    try {
+      let bookingStatus = 1;
+      await BookingServices.patchBooking(bookingID, { bookingStatus });
+    } catch (err) {
+      Alert.alert('Error', err+'.', [ {text: 'OK'} ]);
+    }
+    navigation.goBack();
+  }
+
+  const onAccept = async() => {
+    setProcessing(true);
+    try {
+      let paymentMethod = 1;
+      let paymentStatus = 1;
+      let payment = await PaymentServices.createPayment({ 
+        seekerID, providerID, serviceID, paymentMethod, paymentStatus, amount: parseFloat(cost)
+      });
+      
+      let transactionStat = 1;
+      let paymentID = payment.body.paymentID;
+      let transaction = await TransactionReportServices.createTransactionReport({
+        bookingID, paymentID, specsID, seekerID, providerID, serviceID, transactionStat
+      });
+
+      let specsStatus = 3;
+      let bookingStatus = 3;
+      let referencedID = transaction.body.reportID;
+      await BookingServices.patchBooking( bookingID, { bookingStatus });
+      await ServiceSpecsServices.patchServiceSpecs(specsID, { referencedID , specsStatus });
+
+      navigation.dispatch(StackActions.popToTop()), navigation.dispatch(StackActions.popToTop()),
+      navigation.navigate('ServeStack', {service: typeName, icon: icon})
+    } catch (err) {
+      Alert.alert('Error', err+'.', [ {text: 'OK'} ]);
+    }
+    setProcessing(false);
+  }
+
+  
+  if(loading) return <View style={{flex:1}}><Loading/></View>
 
   return (
     <View style={{justifyContent: 'flex-end', flex:1}}>
-      <Header service={service} icon={icon} phase={2}/>
+      { processing && <Loading/> }
+      <Header service={typeName} icon={icon} phase={2}/>
 
       <ScrollView style={styles.container}>
         <Text style={styles.heading}>Cost and Address</Text>
         <View style={styles.details}>
-          <Text style={styles.content}>{service} Service</Text>
-          <Text style={[styles.content,{fontFamily: 'quicksand-bold', fontSize: 16}]}>Php 420.00</Text>
+          <Text style={styles.content}>{typeName} Service</Text>
+          <Text style={[styles.content,{fontFamily: 'quicksand-bold', fontSize: 16}]}>{cost}</Text>
         </View>
 
         <LinearGradient colors={['rgba(0,0,0,0.1)','rgba(0,0,0,0)'  ]} start={{ x:0, y:0 }} end={{ x:0, y:1 }} style={{height:4, zIndex:5}}/>
-        <View style={{width:'100%', height: 200, marginVertical:-4}}>
+        <View style={{width:'100%', height: 220, marginVertical:-4}}>
           <MapView style={{flex:1}} initialRegion={region}>
-            <Marker coordinate={{latitude: 14.5759057598, longitude: 121.041201492}}>
+            <Marker coordinate={{ latitude, longitude}}>
               <Image style={{height:38.2,width:28}} source={require("../../assets/pin.png")}/>
             </Marker>
           </MapView>
@@ -40,13 +120,12 @@ export default function FinalSpecs({ route, navigation }) {
         <LinearGradient colors={['rgba(0,0,0,0.1)','rgba(0,0,0,0)']} start={{ x:0, y:1 }} end={{ x:0, y:0 }} style={{height:4, zIndex:5}}/>
 
         <View style={styles.address}>
-          <Text style={styles.location}> McDonalds, Boni Avenue, Malamig, Mandaluyong, 1550 Metro Manila</Text>
+          <Text style={styles.location}>{location}</Text>
         </View>
         
         <Text style={styles.heading}>Service Description</Text>
         <View style={[styles.details, {marginBottom:30}]}>
-          <Text style={styles.content}>Replace the door. The materials to create the door will be provided by the customer. 
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit.</Text>
+          <Text style={styles.content}>{description}</Text>
         </View>
       
       </ScrollView>
@@ -55,10 +134,7 @@ export default function FinalSpecs({ route, navigation }) {
       <LinearGradient colors={['rgba(0,0,0,0.4)','rgba(0,0,0,0)']} start={{ x:0, y:0.2 }} end={{ x:0, y:0 }}>
 			<View style={styles.footer}>
 
-        <TouchableWithoutFeedback onPress= {() => {
-            navigation.dispatch(StackActions.popToTop()), navigation.dispatch(StackActions.popToTop()),
-            navigation.navigate('ServeStack', {service: service, icon: icon})
-          }}>
+        <TouchableWithoutFeedback onPress= {() => onAccept()}>
           <LinearGradient colors={['rgba(10,10,10,0.7)','rgba(10,10,10,0)']} start={{ x:0, y:0.65 }} end={{ x:0, y:0.98 }} style={styles.shadow}>
             <LinearGradient colors={['#9C54D5', '#462964']} start={{ x:0.4, y:1 }} end={{ x:0, y:1 }} style={styles.accept}>
               <Text style={styles.prompt}>Accept Service Specs</Text>
@@ -66,10 +142,10 @@ export default function FinalSpecs({ route, navigation }) {
           </LinearGradient>
         </TouchableWithoutFeedback>
 
-        <TouchableWithoutFeedback onPress= {() => { navigation.goBack(null)}}>
+        <TouchableWithoutFeedback onPress= {() => onDecline()}>
           <LinearGradient colors={['rgba(10,10,10,0.4)','rgba(10,10,10,0)'  ]} start={{ x:0, y:0.65 }} end={{ x:0, y:0.98 }} style={styles.shadow}>
             <View style={styles.decline}>
-              <Text style={[styles.prompt, {color:'#462964', fontSize: 14}]}>Go Back to Chat</Text>
+              <Text style={[styles.prompt, {color:'#462964', fontSize: 14}]}>Decline and Chat Again</Text>
             </View>         
           </LinearGradient>
         </TouchableWithoutFeedback>
@@ -119,7 +195,7 @@ const styles = StyleSheet.create({
   },
   location: {
     fontFamily: 'quicksand',
-    width: '80%',
+    width: '90%',
     fontSize: 12,
     color: '#888486',
   },
