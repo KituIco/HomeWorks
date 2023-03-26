@@ -34,7 +34,6 @@ export default function FinalSpecs({ route, navigation }) {
   useEffect(() => {
     ( async() => {
       try {
-        console.log(route.params)
         let userID = await getUserID();
         let { body: address } = await AddressServices.getAddressByID(addressID);
         let { body: booking } = await BookingServices.getBookingByID(bookingID);
@@ -62,6 +61,7 @@ export default function FinalSpecs({ route, navigation }) {
     try {
       let bookingStatus = 1;
       await BookingServices.patchBooking(bookingID, { bookingStatus });
+      socketService.decisionFinalizeServiceSpec( { roomID: "booking-" + bookingID, decision: false } );
     } catch (err) {
       Alert.alert('Error', err+'.', [ {text: 'OK'} ]);
     }
@@ -88,7 +88,8 @@ export default function FinalSpecs({ route, navigation }) {
       let referencedID = transaction.body.reportID;
       await BookingServices.patchBooking( bookingID, { bookingStatus });
       await ServiceSpecsServices.patchServiceSpecs( specsID, { referencedID , specsStatus });
-      socketService.acceptFinalizeServiceSpec("booking-" + bookingID);
+      socketService.decisionFinalizeServiceSpec( { roomID: "booking-" + bookingID, decision: true } );
+      socketService.offChat();
 
       let reportID = transaction.body.reportID;
       navigation.dispatch(StackActions.popToTop());

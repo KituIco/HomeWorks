@@ -71,7 +71,7 @@ export default function InitSpecs({ route, navigation }) {
         seekerID, typeID, addressID, referencedID, specsDesc, images, specsStatus, specsTimeStamp, 
       })
       socketService.createServiceSpec(JSON.stringify(res.body));
-      navigation.navigate('Matching', { specsID:res.body.specsID, icon, typeName, referencedID, minServiceCost});
+      navigation.replace('Matching', { specsID:res.body.specsID, icon, typeName, referencedID, minServiceCost});
     } catch (err) {
       Alert.alert('Error', err+'.', [ {text: 'OK'} ]);
     }

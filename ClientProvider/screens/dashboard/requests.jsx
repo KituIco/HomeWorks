@@ -1,5 +1,6 @@
 import { StyleSheet, View, Text, Image, ScrollView, TouchableWithoutFeedback, Alert, RefreshControl } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons'; 
+import { useFocusEffect } from '@react-navigation/native';
 import { useState, useEffect, useCallback } from 'react';
 import { LinearGradient, } from 'expo-linear-gradient';
 
@@ -8,6 +9,7 @@ import Loading from '../../hooks/loading';
 import { getUserID } from '../../utils/getUserID';
 import Listing from '../../components/requestListing';
 import { requestHelper } from '../../utils/requestHelper';
+import { removeRequest } from '../../utils/removeRequest';
 import { processRequest } from '../../utils/processRequest';
 
 import ServiceSpecsServices from '../../services/service-specs/service-specs-services';
@@ -58,22 +60,43 @@ export default function Requests({navigation}) {
     socketService.joinRoom('providers');
   }, []);
 
-  useEffect(() => {
-    if(!loading)
-    ( async() => {
-      try {
-        let request = await socketService.receiveNewServiceSpec();
-        let newReq = await processRequest(JSON.parse(request), serving, types); 
-        if (newReq) {
-          let newReqs = [newReq, ...services];
-          setServices(newReqs);
-          setWaiting(false);
+  useFocusEffect(
+    useCallback(() => {
+      if(!loading)
+      ( async() => {
+        try {
+          let request = await socketService.receiveNewServiceSpec();
+          let newReq = await processRequest(JSON.parse(request), serving, types); 
+          if (newReq) {
+            let newReqs = [newReq, ...services];
+            setServices(newReqs);
+            setWaiting(false);
+          }
+        } catch(err) {
+          Alert.alert('Error', err+'.', [ {text: 'OK'} ]);
         }
-      } catch(err) {
-        Alert.alert('Error', err+'.', [ {text: 'OK'} ]);
-      }
-    })();
-  }, [services]);
+      })();
+    }, [services])
+  )
+
+  useFocusEffect(
+    useCallback(() => {
+      if(!loading)
+      ( async() => {
+        try {
+          let specID = await socketService.receiveServiceSpecUnavailable();
+          let newReqs = await removeRequest(specID, services); 
+          if (newReqs) {
+            setServices(newReqs);
+            if (newReqs.length == 0)
+              setWaiting(true);
+          }
+        } catch(err) {
+          Alert.alert('Error', err+'.', [ {text: 'OK'} ]);
+        }
+      })();
+    }, [services])
+  )
 
   const onRefresh = useCallback (() => {
     ( async() => {  

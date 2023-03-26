@@ -14,25 +14,38 @@ io.on('connection', (socket) => {
         socket.to("providers").emit('receive-new-service-spec', data);
     })
 
+    socket.on('service-spec-unavailable', (data) => {
+        socket.to("providers").emit('receive-service-spec-unavailable', data);
+    })
+
     socket.on('accept-service-spec', (data) => {
-        socket.to(data.socketID).emit('receive-accept-service-spec', 'Service Specs Accepted');
-        socket.to('providers').emit('service-spec-already-accepted', data);
+        socket.to(data).emit('receive-accept-service-spec', 'Service Specs Accepted');
+    })
+
+    socket.on('provider-reject-chat', (data) => {
+        socket.to(data).emit('receive-provider-reject-chat', 'Provider has Rejected');
+    })
+
+    socket.on('seeker-reject-chat', (data) => {
+        socket.to(data).emit('receive-seeker-reject-chat', 'Seeker has Rejected');
     })
 
     socket.on('finalize-service-spec', (data) => {
         socket.to(data).emit('receive-finalize-service-spec', 'Final Specs Sent');
     })
 
-    socket.on('accept-finalize-service-spec', (data) => {
-        socket.to(data).emit('receive-accept-finalize-service-spec', 'Final Specs Accepted');
+    socket.on('decision-finalize-service-spec', (data) => {
+        socket.to(data.roomID).emit('receive-decision-finalize-service-spec', data.decision);
     })
 
     socket.on('provider-serving', (data) => {
         socket.to(data).emit('receive-provider-serving', 'Provider is Serving');
     })
+
     socket.on('payment-received', (data) => {
         socket.to(data).emit('receive-payment-received', 'Provider received Payment');
     })
+
     socket.on('provider-done', (data) => {
         socket.to(data).emit('receive-provider-done', 'Provider has Finished');
     })

@@ -1,6 +1,7 @@
 import { StyleSheet, View, Text, ImageBackground, TouchableWithoutFeedback, Animated, Easing, Alert } from 'react-native';
 import { MaterialCommunityIcons  } from '@expo/vector-icons';
-import { useEffect } from 'react';
+import { useFocusEffect } from '@react-navigation/native';
+import { useCallback, useEffect } from 'react';
 
 import ServiceSpecsServices from '../../services/service-specs/service-specs-services';
 import socketService from '../../services/sockets/sockets-services';
@@ -29,35 +30,38 @@ export default function Matching({ route, navigation }) {
     outputRange: ['0deg', '360deg']
   })
 
+  useFocusEffect(
+    useCallback(() => {
+      ( async() => {
+        try {
+          await socketService.receiveAcceptServiceSpec();
+          onNext();
+        } catch(err) {
+          Alert.alert('Error', err+'.', [ {text: 'OK'} ]);
+        }
+      })();
+    }, [])
+  )
+
   useEffect(() => {
     socketService.joinRoom('specs-' + specsID);
   }, []);
 
-  useEffect(() => {
-    ( async() => {
-      try {
-        await socketService.receiveAcceptServiceSpec();
-        onNext();
-      } catch(err) {
-        Alert.alert('Error', err+'.', [ {text: 'OK'} ]);
-      }
-    })();
-  }, []);
-
-  const onNext = async() => {
+  const onNext = () => {
     navigation.navigate('MatchStack', { typeName, icon, address: referencedID, specsID })
   }
   
   const onConfirm = async() => {
     await ServiceSpecsServices.patchServiceSpecs(specsID, { specsStatus:4 })
-    navigation.navigate('Dashboard')
+    socketService.serviceSpecUnavailable(specsID);
+    socketService.offReceiveAcceptServiceSpec();
+    navigation.navigate('HomeStack')
   }
 
   const onCancel = async() => {
     Alert.alert('Cancel Request', 'The request will be inactive and will not be seen by Service Providers. To resend this request, visit your History.', [
       {
         text: 'Cancel',
-        onPress: () => console.log('Cancel Pressed'),
       },
       {text: 'OK', 
         onPress: () => onConfirm(),

@@ -7,11 +7,30 @@ let socketService = {
     createServiceSpec: (data) => {
         socket.emit('new-service-spec', data);
     },
+    serviceSpecUnavailable: (data) => {
+        socket.emit('service-spec-unavailable', data);
+    },
+
     receiveAcceptServiceSpec: () => {
         return new Promise((resolve, reject) => {
             socket.on('receive-accept-service-spec', (data) => {
                 resolve(data);
                 socket.off('receive-accept-service-spec');
+            });
+        });
+    },
+    offReceiveAcceptServiceSpec: () => {
+        socket.off('receive-accept-service-spec');
+    },
+
+    rejectChat: (data) => {
+        socket.emit('seeker-reject-chat', data)
+    },
+    receiveRejectChat: () => {
+        return new Promise((resolve, reject) => {
+            socket.on('receive-provider-reject-chat', (data) => {
+                resolve(data);
+                socket.off('receive-reject-chat');
             });
         });
     },
@@ -23,8 +42,13 @@ let socketService = {
             });
         });
     },
-    acceptFinalizeServiceSpec: (data) => {
-        socket.emit('accept-finalize-service-spec', data);
+    offChat: () => {
+        socket.off('receive-provider-reject-chat');
+        socket.off('receive-finalize-service-spec');
+    },
+
+    decisionFinalizeServiceSpec: (data) => {
+        socket.emit('decision-finalize-service-spec', data);
     },
 
     receiveProviderServing: () => {

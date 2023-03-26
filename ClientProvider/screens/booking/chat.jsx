@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react';
 
 import ServiceSpecsServices from '../../services/service-specs/service-specs-services';
 import BookingServices from '../../services/booking/booking-services';
+import socketService from '../../services/sockets/sockets-services';
 import SeekerServices from '../../services/seeker/seeker-services';
 
 import { addressHandler } from '../../utils/addressHandler';
@@ -37,25 +38,57 @@ export default function Chat({ navigation, route }) {
       setLoading(false);
     })(); 
   }, [])
+
+  useEffect(() => {
+    if(!loading)
+      socketService.joinRoom('booking-' + bookingID);
+  },[loading]);
+
+  useEffect(() => {
+    if(!loading)
+    ( async() => {
+      try {
+        await socketService.receiveRejectChat();
+        onReject();
+      } catch(err) {
+        Alert.alert('Error', err+'.', [ {text: 'OK'} ]);
+      }
+    })();
+  }, [loading]);
   
   const onConfirm = async() => {
     try {
       await ServiceSpecsServices.patchServiceSpecs(data.specsID, { specsStatus:1, referencedID:addressHandler(data.location), specsTimeStamp:Date.now() });
       await BookingServices.patchBooking(bookingID, { bookingStatus:4 });
-      navigation.navigate('Requests')
+
+      socketService.rejectChat('booking-' + bookingID)
+      navigation.navigate('Requests');
     } catch (err) {
       Alert.alert('Error', err+'.', [ {text: 'OK'} ]);
     }
+  }
+
+  const onRejection = () => {
+    socketService.offChat();
+    socketService.offDecision();
+    navigation.navigate('Requests');
   }
 
   const onDecline = async() => {
     Alert.alert('Decline the Request', 'Are you sure you want to decline this request?', [
       {
         text: 'Cancel',
-        onPress: () => console.log('Cancel Pressed'),
       },
       {text: 'OK', 
         onPress: () => onConfirm(),
+      }
+    ]);
+  }
+
+  const onReject = async() => {
+    Alert.alert('Seeker Declined', 'We are sorry. The seeker has declined your service.', [
+      {text: 'OK', 
+        onPress: () => onRejection(),
       }
     ]);
   }

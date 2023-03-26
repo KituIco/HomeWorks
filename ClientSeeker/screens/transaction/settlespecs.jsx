@@ -1,7 +1,8 @@
 import { StyleSheet, View, Text, Image, ScrollView, TextInput, TouchableWithoutFeedback, Alert } from 'react-native';
 import { MaterialCommunityIcons  } from '@expo/vector-icons';
+import { useFocusEffect } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import ServiceSpecsServices from '../../services/service-specs/service-specs-services';
 import ProviderServices from '../../services/provider/provider-services';
@@ -23,6 +24,7 @@ export default function SettleSpecs({ route, navigation }) {
 
   const [loading,setLoading] = useState(true);
   const [value, onChangeText] = useState();
+  
 
   const [providerName, setProviderName] = useState('');
   const [providerDP, setProviderDP] = useState(require("../../assets/default.jpg"));
@@ -56,20 +58,36 @@ export default function SettleSpecs({ route, navigation }) {
       socketService.joinRoom('booking-' + bookingID);
   },[loading]);
 
-  useEffect(() => {
-    if(!loading)
-    ( async() => {
-      try {
-        await socketService.receiveFinalizeServiceSpec();
-        onUpdate();
-      } catch(err) {
-        Alert.alert('Error', err+'.', [ {text: 'OK'} ]);
-      }
-    })();
-  }, [loading]);
+  useFocusEffect(
+    useCallback(() => {
+      if(!loading)
+      ( async() => {
+        try {
+          await socketService.receiveRejectChat();
+          onReject();
+        } catch(err) {
+          Alert.alert('Error', err+'.', [ {text: 'OK'} ]);
+        }
+      })();
+    }, [loading])
+  )
+
+  useFocusEffect(
+    useCallback(() => {
+      if(!loading)
+      ( async() => {
+        try {
+          await socketService.receiveFinalizeServiceSpec();
+          onUpdate();
+        } catch(err) {
+          Alert.alert('Error', err+'.', [ {text: 'OK'} ]);
+        }
+      })();
+    }, [loading])
+  )
+  
 
   const onUpdate = async() => {
-    console.log(addressID)
     navigation.navigate('FinalSpecs', { typeName, icon, specsID, bookingID, serviceID, providerID, addressID })
   }
 
@@ -77,20 +95,35 @@ export default function SettleSpecs({ route, navigation }) {
     try {
       await ServiceSpecsServices.patchServiceSpecs(specsID, { specsStatus:1, referencedID:address, specsTimeStamp:Date.now() });
       await BookingServices.patchBooking(bookingID, { bookingStatus:4 });
+      socketService.rejectChat('booking-' + bookingID);
+
+      socketService.offChat();
       navigation.goBack();
     } catch (err) {
       Alert.alert('Error', err+'.', [ {text: 'OK'} ]);
     }
   }
 
+  const onRejection = () => {
+    socketService.offChat();
+    navigation.goBack();
+  }
+
   const onDecline = async() => {
     Alert.alert('Decline the Provider', 'Are you sure you want to decline this service provider? If you declined, we will search another service provider for you.', [
       {
         text: 'Cancel',
-        onPress: () => console.log('Cancel Pressed'),
       },
       {text: 'OK', 
         onPress: () => onConfirm(),
+      }
+    ]);
+  }
+
+  const onReject = async() => {
+    Alert.alert('Provider Declined', 'We are sorry. The provider has declined your service request. We will search another service provider for you.', [
+      {text: 'OK', 
+        onPress: () => onRejection(),
       }
     ]);
   }

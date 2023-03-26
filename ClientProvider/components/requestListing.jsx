@@ -3,9 +3,15 @@ import { MaterialCommunityIcons  } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { addressHandler } from '../utils/addressHandler';
 
+import socketService from '../services/sockets/sockets-services';
 
 export default function Listing( props ) {
   const services = props.listings;
+  
+  const onSelect = (data) => {
+    socketService.offReceiveSpecs();
+    props.navigation.navigate('Details', {data});
+  }
   
   const servicesList = data => {
     return (
@@ -23,7 +29,7 @@ export default function Listing( props ) {
             </View>
           </View>
 
-          <TouchableWithoutFeedback onPress={() => props.navigation.navigate('Details', {data})}>
+          <TouchableWithoutFeedback onPress={() => onSelect(data)}>
             <LinearGradient colors={['#9C54D5', '#462964']} start={{ x:0.6, y:-1 }} end={{ x:0.1, y:1 }} style={styles.button}>
               <LinearGradient colors={['rgba(0, 0, 0, 0.4)','rgba(0, 0, 0, 0)']} start={{ x: 0.5, y: 0.01 }} end={{ x: 0.5, y: 0.15 }} style={styles.ledge}>
                 <Text style={styles.details}>View Request Details</Text>

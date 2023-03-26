@@ -14,6 +14,8 @@ export default function Specs({navigation, route}) {
   const { latitude, longitude, typeName, location, bookingID } = route.params.data;
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
+  const [decs, setDecs] = useState(0);
+
   let region = {
     latitude, latitudeDelta: 0.0070,
     longitude, longitudeDelta: 0.0060,
@@ -49,29 +51,39 @@ export default function Specs({navigation, route}) {
   useEffect(() => {
     ( async() => {
       try {
-        await socketService.receiveAcceptFinalizeServiceSpec();
-        onAccept();
+        let decision = await socketService.receiveDecisionFinalizeServiceSpec();
+        setDecs( decs+1 );
+
+        if (decision)
+          onAccept();
+        else 
+          onDecline();
       } catch(err) {
         Alert.alert('Error', err+'.', [ {text: 'OK'} ]);
       }
     })();
-  }, []);
+  }, [decs]);
 
   const onAccept = async() => {
     setOpen(false);
+    socketService.offChat();
     navigation.navigate('Arriving', {data: route.params.data});
   }
 
-  const onCancel = async() => {
+  const onDecline = async() => {
     setOpen(false);
-    try {
-      let bookingStatus = 1;
-      await BookingServices.patchBooking(bookingID, { bookingStatus });
-    } catch (err) {
-      Alert.alert('Error', err+'.', [ {text: 'OK'} ]);
-    }
-    // Alert.alert('Declined','Customer has declined the Service Details. Please go back to chat and discuss again with our customer.', [ {text: 'OK'} ]);
+    Alert.alert('Declined','Customer has declined the Service Details. Please go back to chat and discuss again with our customer.', [ {text: 'OK'} ]);
   }
+
+  // const onCancel = async() => {
+  //   setOpen(false);
+  //   try {
+  //     let bookingStatus = 1;
+  //     await BookingServices.patchBooking(bookingID, { bookingStatus });
+  //   } catch (err) {
+  //     Alert.alert('Error', err+'.', [ {text: 'OK'} ]);
+  //   }
+  // }
 
   const onSubmit = async() => {
     setLoading(true);
@@ -100,18 +112,16 @@ export default function Specs({navigation, route}) {
         <View style={styles.centered}>
           <View style={styles.modal}>
 
-            <TouchableWithoutFeedback onPress={() => onAccept()}>
-              <View style={styles.waiting}>
-                <Animated.View style={{transform:[{rotate:spin}]}}>
-                  <MaterialCommunityIcons name={'loading'} size={60} color={'#9C54D5'}/>
-                </Animated.View>
-                <Text style={styles.subheading}>Waiting for the Customer to Agree with the Service Cost and Details submitted.</Text>
-              </View>
-            </TouchableWithoutFeedback>
+            <View style={styles.waiting}>
+              <Animated.View style={{transform:[{rotate:spin}]}}>
+                <MaterialCommunityIcons name={'loading'} size={60} color={'#9C54D5'}/>
+              </Animated.View>
+              <Text style={styles.subheading}>Waiting for the Customer to Agree with the Service Cost and Details submitted.</Text>
+            </View>
 
-            <TouchableWithoutFeedback onPress={() => onCancel()}>
+            {/* <TouchableWithoutFeedback onPress={() => onCancel()}>
               <Text style={styles.enter}>CANCEL</Text>
-            </TouchableWithoutFeedback>
+            </TouchableWithoutFeedback> */}
 
           </View>
         </View>

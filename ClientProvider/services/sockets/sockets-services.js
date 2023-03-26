@@ -12,26 +12,51 @@ let socketService = {
             });
         });
     },
-    serviceSpecAlreadyAccepted: () => {
+    receiveServiceSpecUnavailable: () => {
         return new Promise((resolve, reject) => {
-            socket.on('service-spec-already-accepted', (data) => {
+            socket.on('receive-service-spec-unavailable', (data) => {
                 resolve(data);
+                socket.off('receive-service-spec-unavailable');
             });
         });
     },
-    acceptServiceSpec: (data) => {
-        socket.emit('accept-service-spec', data);
+    offReceiveSpecs: () => {
+        socket.off('receive-new-service-spec');
+        socket.off('receive-service-spec-unavailable');
     },
+    acceptServiceSpec: (data) => {
+        socket.emit('accept-service-spec', "specs-" + data);
+        socket.emit('service-spec-unavailable', data);
+    },
+
+    rejectChat: (data) => {
+        socket.emit('provider-reject-chat', data)
+    },
+    receiveRejectChat: () => {
+        return new Promise((resolve, reject) => {
+            socket.on('receive-seeker-reject-chat', (data) => {
+                resolve(data);
+                socket.off('receive-seeker-reject-chat');
+            });
+        });
+    },
+    offChat: () => {
+        socket.off('receive-seeker-reject-chat');
+    },
+    
     finalizeServiceSpec: (data) => {
         socket.emit('finalize-service-spec', data);
     },
-    receiveAcceptFinalizeServiceSpec: () => {
+    receiveDecisionFinalizeServiceSpec: () => {
         return new Promise((resolve, reject) => {
-            socket.on('receive-accept-finalize-service-spec', (data) => {
+            socket.on('receive-decision-finalize-service-spec', (data) => {
                 resolve(data);
-                socket.off('receive-accept-finalize-service-spec');
+                socket.off('receive-decision-finalize-service-spec');
             });
         });
+    },
+    offDecision: () => {
+        socket.off('receive-decision-finalize-service-spec');
     },
 
     providerServing: (data) => {
