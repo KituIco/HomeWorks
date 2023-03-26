@@ -1,10 +1,21 @@
-import { useState } from 'react';
 import { StyleSheet, View, Text, TouchableWithoutFeedback, ScrollView, TextInput } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
+import { useState, useEffect } from 'react';
 
 import Header from '../../components/transactheader';
 import Listing from '../../components/serviceListing';
+
+import TransactionReportServices from '../../services/transaction/transaction-reports-services';
+import ServiceSpecsServices from '../../services/service-specs/service-specs-services';
+import ProviderServices from '../../services/provider/provider-services';
+import BookingServices from '../../services/booking/booking-services';
+import ServiceServices from '../../services/service/service-services';
+import AddressServices from '../../services/address/address-services';
+
+import { addressHandler } from '../../utils/addressHandler';
+import { getImageURL } from '../..//utils/getImageURL';
+import Loading from '../../hooks/loading';
 
 export default function Complete({route, navigation}) {
   const { typeName, icon, reportID } = route.params;
@@ -15,11 +26,38 @@ export default function Complete({route, navigation}) {
   const starList = ['star-outline','star-outline','star-outline','star-outline','star-outline']
   const [stars, setStars] = useState(starList);
 
-  const provider = [
-    { providerID:'1', name: 'Alex Guerrero', location: 'Boni Avenue Corner Barangka Drive Mandaluyong City Metro Manila Philippines', serviceRatings:'4.3', typeName: 'Car Mechanic', initialCost: 'min Php 420', 
-    src:require("../../assets/providers/provider-a.png"), icon},
-  ]  
-  const price = '420.00'
+  const [loading, setLoading] = useState(true);
+  const [address, setAddress] = useState();
+  const [cost, setCost] = useState();
+  const [desc, setDesc] = useState();
+  const [list, setList] = useState();
+
+  useEffect(() => {
+    ( async() => {
+      try {
+        let { body: report } = await TransactionReportServices.getTransactionReportsByID(reportID);
+        let { body: booking } = await BookingServices.getBookingByID(report.bookingID);
+        let { body: specs } = await ServiceSpecsServices.getSpecsByID(report.specsID);
+
+        let { body: provider } = await ProviderServices.getProvider(report.providerID);
+        let { body: address } = await AddressServices.getAddressByID(specs.addressID);
+        let { body: service } = await ServiceServices.getService(report.serviceID)
+        
+        let providerInfo = [{
+          providerID: report.providerID, name: provider.firstName+" "+provider.lastName, location: addressHandler(address),
+          serviceRatings: service.serviceRating, typeName: service.typeName, initialCost: service.initialCost, icon, src: {uri : getImageURL(provider.providerDp)}
+        }];
+
+        setAddress(addressHandler(address))
+        setDesc(booking.description);
+        setCost(booking.cost);
+        setList(providerInfo);
+      } catch(err) {
+        Alert.alert('Error', err+'.', [ {text: 'OK'} ]);
+      }
+      setLoading(false);
+    })();
+  }, [])
 
   const changeRating = (rate) => {
     let newList = ['star-outline','star-outline','star-outline','star-outline','star-outline'];
@@ -43,6 +81,8 @@ export default function Complete({route, navigation}) {
     )
   }
 
+  if(loading) return <View style={{flex:1}}><Loading/></View>
+
   return (
     <View style={{flex:1}}>
       <Header service={typeName} icon={icon} phase={4}/>
@@ -54,18 +94,23 @@ export default function Complete({route, navigation}) {
           </View>
         
         <Text style={styles.heading}>Your Service Provider</Text>
-        <Listing listings={provider} solo={true}/>
+        <Listing listings={list} solo={true}/>
 
         <Text style={styles.heading}>Service Payment</Text>
         <View style={styles.subheading}>
           <Text style={[{width: '60%'},styles.texts]}>{typeName} Service</Text>
           <TouchableWithoutFeedback onPress={() => changePaid()}>
-            <Text style={styles.texts}> Starts at <Text style={{fontFamily: 'quicksand-bold'}}>Php {price}</Text></Text>
+            <Text style={[styles.texts, {fontFamily:'quicksand-bold'}]}>Php {cost}</Text>
           </TouchableWithoutFeedback>
         </View>
 
+        <Text style={styles.heading}>Service Description</Text>
+        <Text style={[{marginHorizontal:24},styles.texts]}>{desc}</Text>
+        <Text style={[styles.texts, {marginHorizontal:24, marginBottom:20, marginTop:6, color:'#9C54D5', fontFamily:'quicksand-bold'}]}>
+          Service Location: <Text style={{color:'#000000', fontFamily:'quicksand-medium'}}>{address}</Text> </Text>
+
         { answered &&
-        <View style={{marginTop:-24}}>
+        <View style={{marginTop:-24, marginBottom: 40}}>
           <Text style={styles.heading}>My Feedback</Text>
           <View style={styles.subheading}>
             <Text style={[{width: '85%', paddingBottom:4},styles.texts]}>{value} </Text>
@@ -156,7 +201,7 @@ const styles = StyleSheet.create({
   subheading: {
     flexDirection: 'row', 
     justifyContent:'space-between',
-    margin: 24,
+    marginHorizontal: 24,
     marginTop: -4,
     alignItems: 'center',
   },

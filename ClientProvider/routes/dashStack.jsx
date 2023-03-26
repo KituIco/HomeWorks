@@ -8,7 +8,7 @@ import Chat from '../screens/booking/chat';
 import Specs from '../screens/booking/specs';
 import Arriving from '../screens/booking/arriving';
 import Serving from '../screens/booking/serving';
-
+import Done from '../screens/booking/done';
 
 const Stack = createStackNavigator();
 
@@ -64,6 +64,13 @@ export default function DashStack({ navigation }) {
         routes: [{ name: 'Serving', params: params }],
       });
     }
+    else if (route === 'Done' && initialRoute !== 'Done') {
+      setInitialRoute('Done');
+      navigation.reset({
+        index: 0,
+        routes: [{ name: 'Done', params: params }],
+      });
+    }
   }
 
   return (
@@ -116,6 +123,12 @@ export default function DashStack({ navigation }) {
       <Stack.Screen 
         name='Serving' 
         component={Serving}
+        options={{ headerShown: false }}
+      />
+
+      <Stack.Screen 
+        name='Done' 
+        component={Done}
         options={{ headerShown: false }}
       />
 

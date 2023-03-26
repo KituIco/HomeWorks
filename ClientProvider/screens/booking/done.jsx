@@ -7,15 +7,13 @@ import ServiceSpecsServices from '../../services/service-specs/service-specs-ser
 import BookingServices from '../../services/booking/booking-services';
 import AddressServices from '../../services/address/address-services';
 import ServiceServices from '../../services/service/service-services';
-import socketService from '../../services/sockets/sockets-services';
 
 import { addressHandler } from '../../utils/addressHandler';
 import Loading from '../../hooks/loading';
 import Back from '../../hooks/back';
 
-export default function Serving({ navigation, route }) {
-  const { reportID, specsID, location } = route.params;
-  const [paid, setPaid] = useState(false);
+export default function Done({ navigation, route }) {
+  const { reportID } = route.params;
   const [open, setOpen] = useState(false);
 
   const [loading, setLoading] = useState(true);
@@ -45,14 +43,8 @@ export default function Serving({ navigation, route }) {
     })();
   }, [])
 
-  const changePaid = () => {
-    setPaid(true);
-    socketService.paymentReceived("report-" + reportID);
-  };
-
   const onDone = () => {
-    socketService.providerDone("report-" + reportID);
-    navigation.navigate('Done', {reportID})
+    navigation.navigate('Requests');
   }
 
   if(loading) return <View style={{flex:1}}><Loading/></View>
@@ -60,37 +52,21 @@ export default function Serving({ navigation, route }) {
   return (
     <View style={styles.container}>
       <Back navigation={navigation}/>  
-      <Text style={styles.heading}>Currently Serving!</Text>
+      <Text style={styles.heading}>Well Done, Provider!</Text>
 
-      { !paid &&
+      
       <View>
-        <Text style={styles.subheading}>Please click the Paid Button below if the Customer gave Cash Payment to you.</Text>
-        <TouchableWithoutFeedback onPress= {() => changePaid()}>          
-          <LinearGradient colors={['rgba(10,10,10,0.2)','rgba(10,10,10,0.1)'  ]} start={{ x:0, y:0.5 }} end={{ x:0, y:1 }} style={styles.shadow}>
-            <View style={[styles.border,{backgroundColor:'#462964'}]}>
-              <LinearGradient colors={['#F9F9F9', '#E9E9E9']} start={{ x:0.5, y:0 }} end={{ x:-0.3, y:0.8 }} style={styles.button}>
-                <Text style={[styles.ready,{color:'#462964'}]}>Paid</Text>
-              </LinearGradient>
-            </View>
-          </LinearGradient>
-        </TouchableWithoutFeedback>
-      </View>
-      }
-
-      { paid &&
-      <View>
-        <Text style={styles.subheading}>Please click the Done Button below if the Service has completely been Provided.</Text>
+        <Text style={styles.subheading}>You successfully completed this service. You may go back to requests page.</Text>
         <TouchableWithoutFeedback onPress= {() => onDone()}>          
           <LinearGradient colors={['rgba(10,10,10,0.2)','rgba(10,10,10,0.1)'  ]} start={{ x:0, y:0.5 }} end={{ x:0, y:1 }} style={styles.shadow}>
           <View style={styles.border}>
-              <LinearGradient colors={['#9C54D5', '#462964']} start={{ x:0.5, y:0 }} end={{ x:-0.3, y:0.8 }} style={styles.button}>
-                <Text style={styles.ready}>Done</Text>
+              <LinearGradient colors={['#338B93', '#247E44']} start={{ x:0.5, y:0 }} end={{ x:-0.3, y:0.8 }} style={styles.button}>
+                <Text style={styles.ready}>Return</Text>
               </LinearGradient>
             </View>
           </LinearGradient>
         </TouchableWithoutFeedback>
       </View>
-      }
 
       <Text style={styles.footer}>Service Cost</Text>
       <View style={styles.details}>
@@ -199,7 +175,7 @@ const styles = StyleSheet.create({
   ready: {
     fontFamily: 'lexend',
     color: '#F9F9F9',
-    fontSize: 38,
+    fontSize: 32,
     textTransform: 'uppercase',
     letterSpacing: -1
   },
