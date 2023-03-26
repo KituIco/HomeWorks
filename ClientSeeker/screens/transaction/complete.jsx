@@ -124,7 +124,7 @@ export default function Complete({route, navigation}) {
 
       </ScrollView>
 
-      <LinearGradient colors={['rgba(0,0,0,0.9)','rgba(0,0,0,0)'  ]} start={{ x:0, y:0.2 }} end={{ x:0, y:0 }}>
+      <LinearGradient colors={['rgba(0,0,0,0.9)','rgba(0,0,0,0)']} start={{ x:0, y:0.2 }} end={{ x:0, y:0 }}>
         { !answered &&
         <View style={styles.bottom}>
 
