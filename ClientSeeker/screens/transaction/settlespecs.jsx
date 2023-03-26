@@ -3,11 +3,11 @@ import { MaterialCommunityIcons  } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useEffect, useState } from 'react';
 
-
 import ServiceSpecsServices from '../../services/service-specs/service-specs-services';
 import ProviderServices from '../../services/provider/provider-services';
 import ServiceServices from '../../services/service/service-services';
 import BookingServices from '../../services/booking/booking-services';
+import socketService from '../../services/sockets/sockets-services';
 
 import { getImageURL } from '../../utils/getImageURL';
 import Header from '../../components/transactheader';
@@ -38,7 +38,7 @@ export default function SettleSpecs({ route, navigation }) {
         setBookingID(specs.referencedID);
         setServiceID(booking.serviceID);
         setProviderID(service.providerID);
-        setAddressID(specs.addressID)
+        setAddressID(specs.addressID);
 
         setProviderName(user.firstName + " " + user.lastName);
         if (user.providerDp)
@@ -51,7 +51,25 @@ export default function SettleSpecs({ route, navigation }) {
     })(); 
   }, []);
 
+  useEffect(() => {
+    if(!loading)
+      socketService.joinRoom('booking' + bookingID);
+  },[loading]);
+
+  useEffect(() => {
+    if(!loading)
+    ( async() => {
+      try {
+        await socketService.receiveFinalizeServiceSpec();
+        onUpdate();
+      } catch(err) {
+        Alert.alert('Error', err+'.', [ {text: 'OK'} ]);
+      }
+    })();
+  }, [loading]);
+
   const onUpdate = async() => {
+    console.log(addressID)
     navigation.navigate('FinalSpecs', { typeName, icon, specsID, bookingID, serviceID, providerID, addressID })
   }
 
@@ -98,9 +116,7 @@ export default function SettleSpecs({ route, navigation }) {
         <LinearGradient colors={['rgba(0,0,0,0.1)','rgba(0,0,0,0)'  ]} start={{ x:0, y:0 }} end={{ x:0, y:1 }} style={{height:4}}/>
         <ScrollView style={{flex:1}}>
           <View style={{justifyContent:'center', alignItems:'center', marginTop:'60%'}}>
-            <TouchableWithoutFeedback onPress= {() => onUpdate()}>
-              <Text style={{fontFamily: 'lexend', fontSize: 15, textTransform:'uppercase'}}>Chat!</Text>
-            </TouchableWithoutFeedback>
+            <Text style={{fontFamily: 'lexend', fontSize: 15, textTransform:'uppercase'}}>Chat!</Text>
           </View>
         </ScrollView>
         <LinearGradient colors={['rgba(0,0,0,0.1)','rgba(0,0,0,0)'  ]} start={{ x:0, y:1 }} end={{ x:0, y:0 }} style={{height:4}}/>

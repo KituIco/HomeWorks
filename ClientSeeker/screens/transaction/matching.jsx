@@ -1,7 +1,10 @@
 import { StyleSheet, View, Text, ImageBackground, TouchableWithoutFeedback, Animated, Easing, Alert } from 'react-native';
 import { MaterialCommunityIcons  } from '@expo/vector-icons';
+import { useEffect } from 'react';
 
 import ServiceSpecsServices from '../../services/service-specs/service-specs-services';
+import socketService from '../../services/sockets/sockets-services';
+
 import Header from '../../components/transactheader';
 import Next from '../../components/transactnext';
 import Back from '../../hooks/back';
@@ -26,6 +29,21 @@ export default function Matching({ route, navigation }) {
     outputRange: ['0deg', '360deg']
   })
 
+  useEffect(() => {
+    socketService.joinRoom('specs' + specsID);
+  },[]);
+
+  useEffect(() => {
+    ( async() => {
+      try {
+        await socketService.receiveAcceptServiceSpec();
+        onNext();
+      } catch(err) {
+        Alert.alert('Error', err+'.', [ {text: 'OK'} ]);
+      }
+    })();
+  }, []);
+
   const onNext = async() => {
     navigation.navigate('MatchStack', { typeName, icon, address: referencedID, specsID })
   }
@@ -47,7 +65,6 @@ export default function Matching({ route, navigation }) {
     ]);
   }
 
-
   return (
     <View style={{justifyContent: 'flex-end', flex:1}}>
       <Header service={typeName} icon={icon} phase={2}/>
@@ -56,17 +73,15 @@ export default function Matching({ route, navigation }) {
       <View style={styles.container}>
         <ImageBackground source={require("../../assets/map.png")} imageStyle= {{opacity:0.2}} resizeMode="cover">
             <View style={styles.map}>
-              <TouchableWithoutFeedback onPress= {() => onNext()}>
-                <View>
-                  <MaterialCommunityIcons name={'account-search-outline'} size={140} color="#9C54D5" style={{marginTop:-60}}/>
-                  <View style={styles.waiting}>
-                  <Animated.View style={{transform:[{rotate:spin}]}}>
-                    <MaterialCommunityIcons name={'loading'} size={54} color={'#FFFFFF'}/>
-                  </Animated.View>
-                  </View>
+              
+              <View>
+                <MaterialCommunityIcons name={'account-search-outline'} size={140} color="#9C54D5" style={{marginTop:-60}}/>
+                <View style={styles.waiting}>
+                <Animated.View style={{transform:[{rotate:spin}]}}>
+                  <MaterialCommunityIcons name={'loading'} size={54} color={'#FFFFFF'}/>
+                </Animated.View>
                 </View>
-                
-              </TouchableWithoutFeedback>
+              </View>
                 
               <Text style={styles.texts}>Reaching out to your service provider.</Text>
               <Text style={styles.texts}>This may take a while.</Text>

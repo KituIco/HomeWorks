@@ -4,6 +4,7 @@ import { StyleSheet, View, Text, ScrollView, Image, TouchableWithoutFeedback, Al
 import { StackActions } from '@react-navigation/native';
 import MapView, {Marker} from 'react-native-maps';
 
+import { addressHandler } from '../../utils/addressHandler';
 import Header from '../../components/transactheader';
 import { getUserID } from '../../utils/getUserID';
 import Loading from '../../hooks/loading';
@@ -13,7 +14,8 @@ import ServiceSpecsServices from '../../services/service-specs/service-specs-ser
 import BookingServices from '../../services/booking/booking-services';
 import AddressServices from '../../services/address/address-services';
 import PaymentServices from '../../services/payment/payment-services';
-import { addressHandler } from '../../utils/addressHandler';
+import socketService from '../../services/sockets/sockets-services';
+
 
 export default function FinalSpecs({ route, navigation }) {
   const { typeName, icon, bookingID, addressID, providerID, specsID, serviceID } = route.params;
@@ -32,6 +34,7 @@ export default function FinalSpecs({ route, navigation }) {
   useEffect(() => {
     ( async() => {
       try {
+        console.log(route.params)
         let userID = await getUserID();
         let { body: address } = await AddressServices.getAddressByID(addressID);
         let { body: booking } = await BookingServices.getBookingByID(bookingID);
@@ -85,10 +88,12 @@ export default function FinalSpecs({ route, navigation }) {
       let referencedID = transaction.body.reportID;
       await BookingServices.patchBooking( bookingID, { bookingStatus });
       await ServiceSpecsServices.patchServiceSpecs( specsID, { referencedID , specsStatus });
+      socketService.acceptFinalizeServiceSpec("booking" + bookingID);
 
       let reportID = transaction.body.reportID;
-      navigation.dispatch(StackActions.popToTop()), navigation.dispatch(StackActions.popToTop()),
-      navigation.navigate('ServeStack', {typeName, icon, reportID })
+      navigation.dispatch(StackActions.popToTop());
+      navigation.dispatch(StackActions.popToTop());
+      navigation.navigate('ServeStack', {typeName, icon, reportID });
     } catch (err) {
       Alert.alert('Error', err+'.', [ {text: 'OK'} ]);
     }

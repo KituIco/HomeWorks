@@ -2,9 +2,11 @@ import { StyleSheet, View, Text, Image, ScrollView, TouchableWithoutFeedback, Te
 import { MaterialCommunityIcons } from '@expo/vector-icons'; 
 import { LinearGradient } from 'expo-linear-gradient';
 import MapView, {Marker} from 'react-native-maps';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import BookingServices from '../../services/booking/booking-services';
+import socketService from '../../services/sockets/sockets-services';
+
 import { addressHandler } from '../../utils/addressHandler';
 import Loading from '../../hooks/loading';
 
@@ -40,6 +42,21 @@ export default function Specs({navigation, route}) {
     outputRange: ['0deg', '360deg']
   })
 
+  useEffect(() => {
+    socketService.joinRoom('booking' + bookingID);
+  },[]);
+
+  useEffect(() => {
+    ( async() => {
+      try {
+        await socketService.receiveAcceptFinalizeServiceSpec();
+        onAccept();
+      } catch(err) {
+        Alert.alert('Error', err+'.', [ {text: 'OK'} ]);
+      }
+    })();
+  }, []);
+
   const onAccept = async() => {
     setOpen(false);
     navigation.navigate('Arriving', {data: route.params.data});
@@ -63,6 +80,7 @@ export default function Specs({navigation, route}) {
       await BookingServices.patchBooking(bookingID, {
         cost: parseFloat(cost).toFixed(2), description, bookingStatus
       });
+      socketService.finalizeServiceSpec("booking" + bookingID);
       setOpen(true);
     } catch (err) {
       Alert.alert('Error', err+'.', [ {text: 'OK'} ]);

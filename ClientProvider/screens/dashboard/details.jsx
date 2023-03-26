@@ -9,6 +9,7 @@ import { Modal } from 'react-native';
 import ServiceSpecsServices from '../../services/service-specs/service-specs-services';
 import BookingServices from '../../services/booking/booking-services';
 import AddressServices from '../../services/address/address-services';
+import socketService from '../../services/sockets/sockets-services';
 
 import { addressHandler } from '../../utils/addressHandler';
 import { getImageURL } from '../../utils/getImageURL';
@@ -75,16 +76,15 @@ export default function Details({route, navigation}) {
         seekerID, serviceID, specsID, bookingStatus, dateTimestamp
       });
       let { bookingID } = res.body;
-      
       checkAvailability();
+
       await ServiceSpecsServices.patchServiceSpecs(specsID, {referencedID: bookingID, specsStatus: 2})
-      navigation.navigate('Chat', { specsID, bookingID, latitude, longitude, location, typeName })
-        
+      socketService.acceptServiceSpec( "specs" + specsID);
+      navigation.navigate('Chat', { specsID, bookingID, latitude, longitude, location, typeName }) 
     } catch (err) {
       Alert.alert('Error', err+'.', [ {text: 'OK'} ]);
     }
     setLoading(false);
-   
   }
 
   if(loading) return <View style={{flex:1}}><Loading/></View>
