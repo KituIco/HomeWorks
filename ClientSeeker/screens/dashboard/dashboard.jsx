@@ -18,7 +18,7 @@ export default function Dashboard({navigation}) {
   const [services, setServices] = useState([]);
 
   useEffect(() => {
-    ( async() => {service:
+    ( async() => {
       try {
         let data = await ServiceTypeServices.getServiceTypes()
         let patched = await typeHandler(data.body);

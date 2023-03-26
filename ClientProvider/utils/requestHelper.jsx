@@ -1,5 +1,3 @@
-import AddressServices from '../services/address/address-services';
-
 export const requestHelper = async(requests, services, types) => {
   let time = Date.now();
   for (let i=0; i<requests.length; i++) {
@@ -24,10 +22,6 @@ export const requestHelper = async(requests, services, types) => {
       delete requests.splice(i,1);
       i--; continue;
     }
-    // let data = await AddressServices.getAddressByID(requests[i]['addressID']);
-    // requests[i]['location'] = data.body;
-    // requests[i]['latitude'] = data.body.latitude;
-    // requests[i]['longitude'] = data.body.longitude;
 
   
     if(requests[i].typeID == '0') requests[i]['typeName'] = 'Carpentry'
@@ -58,5 +52,5 @@ export const requestHelper = async(requests, services, types) => {
     else if (requests[i].typeName == 'Manicurists') requests[i]['icon'] = 'hand-clap';
     else if (requests[i].typeName == 'Hair Dresser') requests[i]['icon'] = 'face-woman-shimmer';
   }
-  return requests
+  return requests;
 }

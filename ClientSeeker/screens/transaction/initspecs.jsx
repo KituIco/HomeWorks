@@ -4,6 +4,7 @@ import * as ImagePicker from 'expo-image-picker';
 import { useState, useEffect } from 'react';
 
 import ServiceSpecsServices from '../../services/service-specs/service-specs-services';
+import socketService from '../../services/sockets/sockets-services';
 import ImageService from '../../services/image/image-services';
 import { getUserID } from '../../utils/getUserID';
 
@@ -69,6 +70,7 @@ export default function InitSpecs({ route, navigation }) {
       let res = await ServiceSpecsServices.createServiceSpecs({
         seekerID, typeID, addressID, referencedID, specsDesc, images, specsStatus, specsTimeStamp, 
       })
+      socketService.createServiceSpec(JSON.stringify(res.body));
       navigation.navigate('Matching', { specsID:res.body.specsID, icon, typeName, referencedID, minServiceCost});
     } catch (err) {
       Alert.alert('Error', err+'.', [ {text: 'OK'} ]);

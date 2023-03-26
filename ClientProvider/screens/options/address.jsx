@@ -1,4 +1,4 @@
-import { StyleSheet, View, Text, Image, TouchableWithoutFeedback, Modal, Keyboard } from 'react-native';
+import { StyleSheet, View, Text, Image, TouchableWithoutFeedback, Modal, Keyboard, Alert } from 'react-native';
 import { LinearGradient, } from 'expo-linear-gradient';
 import { useState, useEffect } from 'react';
 import * as Location from 'expo-location';

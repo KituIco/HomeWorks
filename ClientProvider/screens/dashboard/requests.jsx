@@ -3,22 +3,26 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useState, useEffect, useCallback } from 'react';
 import { LinearGradient, } from 'expo-linear-gradient';
 
-
 import Back from '../../hooks/back';
 import Loading from '../../hooks/loading';
 import { getUserID } from '../../utils/getUserID';
 import Listing from '../../components/requestListing';
 import { requestHelper } from '../../utils/requestHelper';
+import { processRequest } from '../../utils/processRequest';
 
 import ServiceSpecsServices from '../../services/service-specs/service-specs-services';
 import ServiceTypesServices from '../../services/service-types/service-types-services';
 import ServiceServices from '../../services/service/service-services';
+import socketService from '../../services/sockets/sockets-services';
 
 export default function Requests({navigation}) {
   const [refreshing, setRefreshing] = useState(false);
   const [waiting, setWaiting] = useState(true);
   const [services, setServices] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  const [types, setTypes] = useState();
+  const [serving, setServing] = useState();
 
   const getRequests = async() => {
     let userID = await getUserID();
@@ -27,6 +31,9 @@ export default function Requests({navigation}) {
 
     let myServices = await ServiceServices.getProviderServices(userID);
     let service = await requestHelper(allService.body, myServices.body, serviceTypes.body);
+
+    setTypes(serviceTypes.body);
+    setServing(myServices.body);
     if(service.length > 0) {
       setServices(service);
       setWaiting(false);
@@ -46,6 +53,27 @@ export default function Requests({navigation}) {
       setLoading(false);
     })();
   }, []);
+
+  useEffect(() => {
+    socketService.joinRoom('providers');
+  },[]);
+
+  useEffect(() => {
+    if(!loading)
+    ( async() => {
+      try {
+        let request = await socketService.receiveNewServiceSpec();
+        let newReq = await processRequest(JSON.parse(request), serving, types); 
+        if (newReq) {
+          let newReqs = [newReq, ...services];
+          setServices(newReqs);
+          setWaiting(false);
+        }
+      } catch(err) {
+        Alert.alert('Error', err+'.', [ {text: 'OK'} ]);
+      }
+    })();
+  }, [services]);
 
   const onRefresh = useCallback (() => {
     ( async() => {  

@@ -37,9 +37,22 @@ export default function Details({route, navigation}) {
   if(urls[2]) viewer.push({url : getImageURL(urls[2])});
   if(urls[3]) viewer.push({url : getImageURL(urls[3])});
 
+  const checkAvailability = async() => {
+    let specs = await ServiceSpecsServices.getSpecsByID(specsID);
+    if (specs.body.specsStatus != 1) {
+      Alert.alert('Request Unavailable', 
+        'This request is now unavailable.', [
+        {text: 'OK'},
+      ]);
+      navigation.replace('Requests');
+      return;
+    }
+  }
+
   useEffect(() =>{
     (async() => {
       try {
+        checkAvailability();
         let data = await AddressServices.getAddressByID(addressID);
         setLocation(data.body);
         setLatitude(data.body.latitude);
@@ -62,6 +75,8 @@ export default function Details({route, navigation}) {
         seekerID, serviceID, specsID, bookingStatus, dateTimestamp
       });
       let { bookingID } = res.body;
+      
+      checkAvailability();
       await ServiceSpecsServices.patchServiceSpecs(specsID, {referencedID: bookingID, specsStatus: 2})
       navigation.navigate('Chat', { specsID, bookingID, latitude, longitude, location, typeName })
         
