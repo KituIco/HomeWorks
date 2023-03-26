@@ -15,7 +15,8 @@ io.on('connection', (socket) => {
     })
 
     socket.on('accept-service-spec', (data) => {
-        socket.to(data).emit('receive-accept-service-spec', 'Service Specs Accepted');
+        socket.to(data.socketID).emit('receive-accept-service-spec', 'Service Specs Accepted');
+        socket.to('providers').emit('service-spec-already-accepted', data);
     })
 
     socket.on('finalize-service-spec', (data) => {

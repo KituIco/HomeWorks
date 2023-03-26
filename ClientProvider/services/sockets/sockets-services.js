@@ -12,6 +12,13 @@ let socketService = {
             });
         });
     },
+    serviceSpecAlreadyAccepted: () => {
+        return new Promise((resolve, reject) => {
+            socket.on('service-spec-already-accepted', (data) => {
+                resolve(data);
+            });
+        });
+    },
     acceptServiceSpec: (data) => {
         socket.emit('accept-service-spec', data);
     },
