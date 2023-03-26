@@ -30,8 +30,8 @@ export default function Matching({ route, navigation }) {
   })
 
   useEffect(() => {
-    socketService.joinRoom('specs' + specsID);
-  },[]);
+    socketService.joinRoom('specs-' + specsID);
+  }, []);
 
   useEffect(() => {
     ( async() => {

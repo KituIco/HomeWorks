@@ -88,7 +88,7 @@ export default function FinalSpecs({ route, navigation }) {
       let referencedID = transaction.body.reportID;
       await BookingServices.patchBooking( bookingID, { bookingStatus });
       await ServiceSpecsServices.patchServiceSpecs( specsID, { referencedID , specsStatus });
-      socketService.acceptFinalizeServiceSpec("booking" + bookingID);
+      socketService.acceptFinalizeServiceSpec("booking-" + bookingID);
 
       let reportID = transaction.body.reportID;
       navigation.dispatch(StackActions.popToTop());

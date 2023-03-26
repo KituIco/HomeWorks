@@ -5,6 +5,8 @@ import { useEffect, useState } from 'react';
 
 import TransactionReportServices from '../../services/transaction/transaction-reports-services';
 import ServiceSpecsServices from '../../services/service-specs/service-specs-services';
+import socketService from '../../services/sockets/sockets-services';
+
 import { addressHandler } from '../../utils/addressHandler';
 import Loading from '../../hooks/loading';
 import Back from '../../hooks/back';
@@ -30,13 +32,14 @@ export default function Arriving({ navigation, route }) {
       }
       setLoading(false);
     })();
-  },[])
+  }, [])
 
   const onArrive = async() => {
     setProcessing(true);
     try {
-      await TransactionReportServices.patchTransactionReport(reportID, {transactionStat:2})
-      navigation.navigate('Serving');
+      await TransactionReportServices.patchTransactionReport(reportID, {transactionStat:2});
+      socketService.providerServing("report-" + reportID);
+      navigation.navigate('Serving', { reportID, specsID, location });
     } catch (err) {
       Alert.alert('Error', err+'.', [ {text: 'OK'} ]);
     }

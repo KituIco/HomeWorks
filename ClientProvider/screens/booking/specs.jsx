@@ -43,8 +43,8 @@ export default function Specs({navigation, route}) {
   })
 
   useEffect(() => {
-    socketService.joinRoom('booking' + bookingID);
-  },[]);
+    socketService.joinRoom('booking-' + bookingID);
+  }, []);
 
   useEffect(() => {
     ( async() => {
@@ -80,7 +80,7 @@ export default function Specs({navigation, route}) {
       await BookingServices.patchBooking(bookingID, {
         cost: parseFloat(cost).toFixed(2), description, bookingStatus
       });
-      socketService.finalizeServiceSpec("booking" + bookingID);
+      socketService.finalizeServiceSpec("booking-" + bookingID);
       setOpen(true);
     } catch (err) {
       Alert.alert('Error', err+'.', [ {text: 'OK'} ]);

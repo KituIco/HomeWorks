@@ -56,7 +56,7 @@ export default function Requests({navigation}) {
 
   useEffect(() => {
     socketService.joinRoom('providers');
-  },[]);
+  }, []);
 
   useEffect(() => {
     if(!loading)

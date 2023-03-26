@@ -26,6 +26,17 @@ let socketService = {
             });
         });
     },
+
+    providerServing: (data) => {
+        socket.emit('provider-serving', data);
+    },
+    paymentReceived: (data) => {
+        socket.emit('payment-received', data);
+    },
+    providerDone: (data) => {
+        socket.emit('provider-done', data);
+    },
+
     joinRoom: (roomName) => {
         socket.emit('join-room', roomName);
     },

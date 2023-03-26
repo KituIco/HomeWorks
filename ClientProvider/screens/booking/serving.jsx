@@ -2,18 +2,28 @@ import { StyleSheet, View, Text, Image, ScrollView, TouchableWithoutFeedback, } 
 import { LinearGradient } from 'expo-linear-gradient';
 import { useState } from 'react';
 
-export default function Serving({navigation}) {
+import socketService from '../../services/sockets/sockets-services';
+import Back from '../../hooks/back';
+
+export default function Serving({ navigation, route }) {
+  const { reportID, specsID, location } = route.params;
   const [paid, setPaid] = useState(false);
   const service = 'Carpentry'
 
   const changePaid = () => {
     setPaid(true);
+    socketService.paymentReceived("report-" + reportID);
   };
+
+  const onDone = () => {
+    socketService.providerDone("report-" + reportID);
+    navigation.navigate('Requests')
+  }
 
   return (
     <View style={styles.container}>
+      <Back navigation={navigation}/>  
       <Text style={styles.heading}>Currently Serving!</Text>
-
 
       { !paid &&
       <View>
@@ -33,7 +43,7 @@ export default function Serving({navigation}) {
       { paid &&
       <View>
         <Text style={styles.subheading}>Please click the Done Button below if the Service has completely been Provided.</Text>
-        <TouchableWithoutFeedback onPress= {() => navigation.navigate('Requests')}>          
+        <TouchableWithoutFeedback onPress= {() => onDone()}>          
           <LinearGradient colors={['rgba(10,10,10,0.2)','rgba(10,10,10,0.1)'  ]} start={{ x:0, y:0.5 }} end={{ x:0, y:1 }} style={styles.shadow}>
           <View style={styles.border}>
               <LinearGradient colors={['#9C54D5', '#462964']} start={{ x:0.5, y:0 }} end={{ x:-0.3, y:0.8 }} style={styles.button}>

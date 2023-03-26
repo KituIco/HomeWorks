@@ -7,7 +7,7 @@ import Header from '../../components/transactheader';
 import Listing from '../../components/serviceListing';
 
 export default function Complete({route, navigation}) {
-  const { service, icon } = route.params;
+  const { typeName, icon, reportID } = route.params;
   const [value, onChangeText] = useState('');
   const [rates, setRates] = useState(0);
   const [answered, setAnswered] = useState(false);
@@ -45,7 +45,7 @@ export default function Complete({route, navigation}) {
 
   return (
     <View style={{flex:1}}>
-      <Header service={service} icon={icon} phase={4}/>
+      <Header service={typeName} icon={icon} phase={4}/>
 
       <ScrollView style={styles.container}>
         <Text style={styles.status}>Complete</Text>
@@ -58,7 +58,7 @@ export default function Complete({route, navigation}) {
 
         <Text style={styles.heading}>Service Payment</Text>
         <View style={styles.subheading}>
-          <Text style={[{width: '60%'},styles.texts]}>{service} Service</Text>
+          <Text style={[{width: '60%'},styles.texts]}>{typeName} Service</Text>
           <TouchableWithoutFeedback onPress={() => changePaid()}>
             <Text style={styles.texts}> Starts at <Text style={{fontFamily: 'quicksand-bold'}}>Php {price}</Text></Text>
           </TouchableWithoutFeedback>

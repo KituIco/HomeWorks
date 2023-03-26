@@ -57,6 +57,13 @@ export default function DashStack({ navigation }) {
         routes: [{ name: 'Arriving', params: params }],
       });
     }
+    else if (route === 'Serving' && initialRoute !== 'Serving') {
+      setInitialRoute('Serving');
+      navigation.reset({
+        index: 0,
+        routes: [{ name: 'Serving', params: params }],
+      });
+    }
   }
 
   return (

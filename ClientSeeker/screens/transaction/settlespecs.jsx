@@ -53,7 +53,7 @@ export default function SettleSpecs({ route, navigation }) {
 
   useEffect(() => {
     if(!loading)
-      socketService.joinRoom('booking' + bookingID);
+      socketService.joinRoom('booking-' + bookingID);
   },[loading]);
 
   useEffect(() => {

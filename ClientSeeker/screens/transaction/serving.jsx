@@ -14,6 +14,7 @@ import ProviderServices from '../../services/provider/provider-services';
 import BookingServices from '../../services/booking/booking-services';
 import ServiceServices from '../../services/service/service-services';
 import AddressServices from '../../services/address/address-services';
+import socketService from '../../services/sockets/sockets-services';
 
 import { addressHandler } from '../../utils/addressHandler';
 import { getImageURL } from '../..//utils/getImageURL';
@@ -23,7 +24,9 @@ import Loading from '../../hooks/loading';
 export default function Serving({route, navigation}) {
   const { typeName, icon, reportID } = route.params;
   const [loading, setLoading] = useState(true);
+  const [address, setAddress] = useState();
   const [cost, setCost] = useState();
+  const [desc, setDesc] = useState();
   
   const [statusIcon, setStatusIcon] = useState('train-car');
   const [status, setStatus] = useState('Arriving');
@@ -46,6 +49,8 @@ export default function Serving({route, navigation}) {
           serviceRatings: service.serviceRating, typeName: service.typeName, initialCost: service.initialCost, icon, src: {uri : getImageURL(provider.providerDp)}
         }];
 
+        setAddress(addressHandler(address))
+        setDesc(booking.description);
         setCost(booking.cost);
         setList(providerInfo);
       } catch(err) {
@@ -55,6 +60,43 @@ export default function Serving({route, navigation}) {
     })();
   }, [])
 
+  useEffect(() => {
+    socketService.joinRoom('report-' + reportID);
+  }, []);
+
+  useEffect(() => {
+    ( async() => {
+      try {
+        await socketService.receiveProviderServing();
+        changeStatus();
+      } catch(err) {
+        Alert.alert('Error', err+'.', [ {text: 'OK'} ]);
+      }
+    })();
+  }, []);
+
+  useEffect(() => {
+    ( async() => {
+      try {
+        await socketService.receivePaymentReceived();
+        changePaid();
+      } catch(err) {
+        Alert.alert('Error', err+'.', [ {text: 'OK'} ]);
+      }
+    })();
+  }, []);
+
+  useEffect(() => {
+    ( async() => {
+      try {
+        await socketService.receiveProviderDone();
+        onComplete();
+      } catch(err) {
+        Alert.alert('Error', err+'.', [ {text: 'OK'} ]);
+      }
+    })();
+  }, []);
+
   const changeStatus = () => {
     setStatus('Serving');
     setStatusIcon('progress-star');
@@ -62,6 +104,11 @@ export default function Serving({route, navigation}) {
 
   const changePaid = () => {
     setPaid(!paid)
+  }
+
+  const onComplete = () => {
+    navigation.dispatch(StackActions.popToTop()),
+    navigation.navigate('HistoryStack', { typeName, icon, reportID })
   }
   
   if(loading) return <View style={{flex:1}}><Loading/></View>
@@ -73,11 +120,9 @@ export default function Serving({route, navigation}) {
 
       <ScrollView style={styles.container}>
         <Text style={styles.status}>{status}</Text>
-        <TouchableWithoutFeedback onPress={() => changeStatus()}>
-          <View style={styles.circle}>
-            <MaterialCommunityIcons name={statusIcon} size={129} style={{color:'#9C54D5'}}/>
-          </View>
-        </TouchableWithoutFeedback>
+        <View style={styles.circle}>
+          <MaterialCommunityIcons name={statusIcon} size={129} style={{color:'#9C54D5'}}/>
+        </View>
         
         <Text style={styles.heading}>Your Service Provider</Text>
         <Listing listings={list} solo={true}/>
@@ -85,10 +130,14 @@ export default function Serving({route, navigation}) {
         <Text style={styles.heading}>Service Payment</Text>
         <View style={styles.subheading}>
           <Text style={[{width: '60%'},styles.texts]}>{typeName} Service</Text>
-          <TouchableWithoutFeedback onPress={() => changePaid()}>
-            <Text style={styles.texts}> Php <Text style={{fontFamily: 'quicksand-bold'}}>{cost}</Text></Text>
-          </TouchableWithoutFeedback>
+          <Text style={styles.texts}> Php <Text style={{fontFamily: 'quicksand-bold'}}>{cost}</Text></Text>
         </View>
+
+        <Text style={styles.heading}>Service Description</Text>
+        <Text style={[{marginHorizontal:24},styles.texts]}>{desc}</Text>
+        <Text style={[styles.texts, {marginHorizontal:24, marginBottom:20, marginTop:6, color:'#9C54D5', fontFamily:'quicksand-bold'}]}>
+          Service Location: <Text style={{color:'#000000', fontFamily:'quicksand-medium'}}>{address}</Text> </Text>
+
 
       </ScrollView>
 
@@ -98,10 +147,7 @@ export default function Serving({route, navigation}) {
 
       { paid &&
       <LinearGradient colors={['rgba(0,0,0,0.4)','rgba(0,0,0,0)'  ]} start={{ x:0, y:0.2 }} end={{ x:0, y:0 }}>
-        <TouchableWithoutFeedback onPress= {() => {
-          navigation.dispatch(StackActions.popToTop()),
-          navigation.navigate('HistoryStack', {service: typeName, icon: icon})
-        }}>
+        <TouchableWithoutFeedback onPress= {() => onComplete()}>
         <View style={styles.bottom}>
           <MaterialCommunityIcons name={'check-circle-outline'} size={26} style={{color:'#462964'}}/>
           <Text style={styles.bottext}>Payment has been Settled</Text>
@@ -168,7 +214,7 @@ const styles = StyleSheet.create({
   subheading: {
     flexDirection: 'row', 
     justifyContent:'space-between',
-    margin: 24,
+    marginHorizontal: 24,
     marginTop: -4,
     alignItems: 'center'
   },

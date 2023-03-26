@@ -25,6 +25,16 @@ io.on('connection', (socket) => {
     socket.on('accept-finalize-service-spec', (data) => {
         socket.to(data).emit('receive-accept-finalize-service-spec', 'Final Specs Accepted');
     })
+
+    socket.on('provider-serving', (data) => {
+        socket.to(data).emit('receive-provider-serving', 'Provider is Serving');
+    })
+    socket.on('payment-received', (data) => {
+        socket.to(data).emit('receive-payment-received', 'Provider received Payment');
+    })
+    socket.on('provider-done', (data) => {
+        socket.to(data).emit('receive-provider-done', 'Provider has Finished');
+    })
 });
 
 

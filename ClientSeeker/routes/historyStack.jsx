@@ -5,7 +5,7 @@ import Complete from '../screens/transaction/complete';
 const Stack = createStackNavigator();
 
 export default function HistoryStack({ route }) {
-  const { service, icon } = route.params;
+  const { reportID, icon, typeName } = route.params;
 
   const header = {
     headerTransparent: true,
@@ -25,7 +25,7 @@ export default function HistoryStack({ route }) {
         <Stack.Screen 
           name='Complete' 
           component={Complete}
-          initialParams={{ service: service, icon: icon}}
+          initialParams={{ reportID, icon, typeName }}
           options={() => header}
         />
 
