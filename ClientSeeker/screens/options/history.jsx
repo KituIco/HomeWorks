@@ -7,7 +7,7 @@ import { historyHelper } from '../../utils/historyHelper';
 import Listing from '../../components/historyListing';
 
 
-export default function History() {
+export default function History({navigation}) {
   const [waiting, setWaiting] = useState(true);
   const [history, setHistory] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -49,7 +49,7 @@ export default function History() {
       <ScrollView style={{width: '100%'}} refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }>
-        <Listing listings={history} />
+        <Listing listings={history} navigation={navigation} />
       </ScrollView>
     </View>
   );

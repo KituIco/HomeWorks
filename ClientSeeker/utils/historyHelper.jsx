@@ -32,10 +32,13 @@ export const historyHelper = async(specs) => {
 
     let status = ['', 'Active', 'Matching', 'Settled', 'Cancelled'];
     let colors = ['', styles.blue, styles.brown, styles.green, styles.red]
-    let button = ['', 'View Specs Form', 'View Booking Details', 'View Transaction', 'View Specs Form'];
+    let button = ['', 'Resend Request', 'View Booking Details', 'View Transaction', 'Resend Request'];
+    let goto = ['', 'Matching', 'SettleSpecs', 'Complete', 'Matching'];
+
     specs[i]['status'] = status[specs[i].specsStatus];
     specs[i]['button'] = button[specs[i].specsStatus];
     specs[i]['color'] = colors[specs[i].specsStatus];
+    specs[i]['goto'] = goto[specs[i].specsStatus];
 
     let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
     let date = new Date( specs[i].specsTimestamp);

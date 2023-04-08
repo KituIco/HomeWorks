@@ -4,6 +4,12 @@ import { LinearGradient } from 'expo-linear-gradient';
 
 export default function Listing( props ) {
   const services = props.listings;
+
+  const navigateTo = (data) => {
+    if(data.specsStatus == 4) {
+      
+    }
+  }
   
   const servicesList = data => {
     return (
@@ -26,7 +32,7 @@ export default function Listing( props ) {
           </View>
 
 
-          <TouchableWithoutFeedback>
+          <TouchableWithoutFeedback onPress={() => navigateTo(data)}>
             <LinearGradient colors={['#9C54D5', '#462964']} start={{ x:0.6, y:-1 }} end={{ x:0.1, y:1 }} style={styles.button}>
               <LinearGradient colors={['rgba(0, 0, 0, 0.4)','rgba(0, 0, 0, 0)']} start={{ x: 0.5, y: 0.01 }} end={{ x: 0.5, y: 0.15 }} style={styles.ledge}>
                 <Text style={styles.details}>{data.button}</Text>

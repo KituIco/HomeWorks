@@ -1,8 +1,8 @@
 import { createStackNavigator } from '@react-navigation/stack';
 
-import Login from '../screens/authentication/login';
-import Register from '../screens/authentication/register';
-import BasicInfo from '../screens/authentication/basicinfo';
+import Login from '../screens/authentication/login/login.comp';
+import Register from '../screens/authentication/register/register.comp';
+import UserInfo from '../screens/authentication/user-info/user-info.comp';
 
 const Stack = createStackNavigator();
 
@@ -34,8 +34,8 @@ export default function AuthStack() {
     />
 
     <Stack.Screen 
-      name='BasicInfo' 
-      component={BasicInfo}
+      name='UserInfo' 
+      component={UserInfo}
       options={() => header}
     />
     </Stack.Navigator>
