@@ -135,7 +135,7 @@ export default function Profile({ navigation }) {
     <View style={styles.container}>
       { loading && <Loading/> }
       <View style={styles.header}>
-        <Text numberOfLines={1} style={styles.heading}>{username}'s Profile!</Text>
+        <Text numberOfLines={1} style={styles.heading}>Welcome, {username}!</Text>
       </View>
       <Text numberOfLines={1} style={styles.head}>Update Picture</Text>
 
@@ -172,7 +172,7 @@ export default function Profile({ navigation }) {
     <View style={styles.container}>
       { loading && <Loading/> }
       <View style={styles.header}>
-        <Text numberOfLines={1} style={styles.heading}>{username}'s Profile!</Text>
+        <Text numberOfLines={1} style={styles.heading}>Welcome, {username}!</Text>
       </View>
       
       { open && <View style={styles.overlay}/> }
@@ -273,10 +273,9 @@ const styles = StyleSheet.create({
   heading: {
     fontFamily: 'lexend',   
     fontSize: 18,
-    textTransform:'uppercase',
     color: '#462964',
     marginBottom: 30,
-    letterSpacing: -0.8,
+    letterSpacing: -0.5,
     marginHorizontal: 50
   },
 

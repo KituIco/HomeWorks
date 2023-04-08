@@ -21,10 +21,7 @@ export default function Navigator( props ) {
         <Stack.Screen 
           name='HomeStack' 
           component={HomeStack}
-          options={{ 
-            headerShown: false, 
-            headerStyle: { backgroundColor: '#F2F1F4'} 
-          }}
+          options={{ headerShown: false }}
         />
 
         <Stack.Screen 

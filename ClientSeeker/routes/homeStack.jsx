@@ -1,15 +1,69 @@
+import { StyleSheet, View, Image, TouchableWithoutFeedback, Alert } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { useEffect, useState } from 'react';
 
 import Notifications from '../screens/options/notifications';
 import History from '../screens/options/history';
 import Options from '../screens/options/options';
 import DashStack from './dashStack';
 
+import SeekerServices from '../services/user/seeker-services';
+import { getImageURL } from '../utils/getImageURL';
+import { getUserID } from '../utils/getUserID';
+
 const Stack = createBottomTabNavigator();
 
 
-export default function HomeStack() {
+export default function HomeStack({ navigation }) {
+  const [image, setImage] = useState(require("../assets/default.jpg"));
+
+  useEffect(() => {
+    ( async() => {
+      try{
+        let userID = await getUserID();
+        let data = await SeekerServices.getSeeker(userID);
+        if(data.body.seekerDp)
+          setImage({uri : getImageURL(data.body.seekerDp)});
+
+      } catch (err) {
+        Alert.alert('Error', err+'.', [ {text: 'OK'} ]);
+        navigation.navigate('AuthStack')
+      }
+    })();
+  }, []);
+
+  const header = ({
+    headerLeft: () => (
+      <View style={{flexDirection:'row'}} >
+        <Image style={styles.dashboardIcon} source={require('../assets/HomeWorks-Icon.png')} />
+      </View>
+      ),
+
+    headerRight: () => (
+      <View style={{flexDirection:'row'}} >
+        <TouchableWithoutFeedback onPress= {() => navigation.navigate('ProfileStack')}>
+          <Image style={styles.profileIcon} source={image} />
+        </TouchableWithoutFeedback>
+      </View>
+    ),
+
+    headerStyle: {
+      backgroundColor: '#F9F9F9',
+      height: 110,
+    },
+    headerTintColor: '#fff',
+
+    headerTitleStyle: {
+      fontFamily: 'lexend',
+      textTransform:'uppercase',
+      fontSize: 24,
+      color: '#9C54D5',
+      letterSpacing: -1.5
+    },
+  })
+
+
   return (
       <Stack.Navigator initialRouteName='DashStack' 
         screenOptions={({ route }) => ({
@@ -45,18 +99,36 @@ export default function HomeStack() {
         <Stack.Screen 
           name='History' 
           component={History}
+          options={() =>  header }
         />
 
         <Stack.Screen 
           name='Notifications' 
           component={Notifications}
+          options={() =>  header }
         />
 
         <Stack.Screen 
           name='Options' 
           component={Options}
+          options={() =>  header }
         />
         
       </Stack.Navigator>
   );
 }
+
+const styles = StyleSheet.create({
+  dashboardIcon: {
+    width: 30, 
+    height: 30, 
+    marginLeft:15, 
+    marginRight:-5 
+  },
+  profileIcon: {
+    width: 40, 
+    height: 40, 
+    borderRadius: 40/2,
+    marginRight: 15
+  }
+});

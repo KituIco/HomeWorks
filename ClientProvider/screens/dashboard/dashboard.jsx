@@ -40,8 +40,8 @@ export default function Dashboard({navigation}) {
 
           if(address.body.length == 0 || service.body.length == 0)
             setVerified(false);
-          setName(fullname); 
         } 
+        setName(fullname); 
       } catch (err) {
         Alert.alert('Error', err+'.', [ {text: 'OK'} ]);
         navigation.navigate('AuthStack');
