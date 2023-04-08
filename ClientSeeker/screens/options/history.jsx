@@ -1,5 +1,6 @@
 import { StyleSheet, View, Alert, ScrollView, RefreshControl } from 'react-native';
 import { useState, useEffect, useCallback } from 'react';
+import { LinearGradient } from 'expo-linear-gradient';
 import { getUserID } from '../../utils/getUserID';
 
 import ServiceSpecsServices from '../../services/service-specs/service-specs-services';
@@ -46,9 +47,11 @@ export default function History({navigation}) {
 
   return (
     <View style={styles.container}>
-      <ScrollView style={{width: '100%'}} refreshControl={
+      <LinearGradient colors={['rgba(255,255,255,1)','rgba(255,255,255,0)']} start={{ x:0, y:0 }} end={{ x:0, y:1 }} style={{height:10, width:'100%', zIndex:5}}/>
+      <ScrollView style={{width: '100%', marginTop:-10}} refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }>
+        <View style={{height:20}}/>
         <Listing listings={history} navigation={navigation} />
       </ScrollView>
     </View>
@@ -58,9 +61,10 @@ export default function History({navigation}) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#FFFFFF',
     alignItems: 'center',
     justifyContent: 'center',
+    width:'100%',
   },
   content: {
     fontFamily: 'lexend',   

@@ -1,7 +1,6 @@
 import { StyleSheet, View, Text, TouchableWithoutFeedback } from 'react-native';
 import { MaterialCommunityIcons  } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
-import { addressHandler } from '../utils/addressHandler';
 
 import socketService from '../services/sockets/sockets-services';
 
@@ -10,7 +9,7 @@ export default function Listing( props ) {
   
   const onSelect = (data) => {
     socketService.offReceiveSpecs();
-    props.navigation.navigate('Details', {data});
+    props.navigation.navigate('RequestSpecs', {data});
   }
   
   const servicesList = data => {

@@ -44,7 +44,7 @@ export default function Done({ navigation, route }) {
   }, [])
 
   const onDone = () => {
-    navigation.navigate('Requests');
+    navigation.navigate('RequestList');
   }
 
   if(loading) return <View style={{flex:1}}><Loading/></View>

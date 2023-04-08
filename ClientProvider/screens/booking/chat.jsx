@@ -62,7 +62,7 @@ export default function Chat({ navigation, route }) {
       await BookingServices.patchBooking(bookingID, { bookingStatus:4 });
 
       socketService.rejectChat('booking-' + bookingID)
-      navigation.navigate('Requests');
+      navigation.navigate('RequestList');
     } catch (err) {
       Alert.alert('Error', err+'.', [ {text: 'OK'} ]);
     }
@@ -71,7 +71,7 @@ export default function Chat({ navigation, route }) {
   const onRejection = () => {
     socketService.offChat();
     socketService.offDecision();
-    navigation.navigate('Requests');
+    navigation.navigate('RequestList');
   }
 
   const onDecline = async() => {

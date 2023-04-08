@@ -1,9 +1,10 @@
 import { createStackNavigator } from '@react-navigation/stack';
 import { useState } from 'react';
 
-import Dashboard from '../screens/dashboard/dashboard';
-import Requests from '../screens/dashboard/requests';
-import Details from '../screens/dashboard/details';
+import Dashboard from '../screens/dashboard/dashboard/dashboard.comp';
+import RequestList from '../screens/dashboard/request-list/request-list.comp';
+import RequestSpecs from '../screens/dashboard/request-specs/request-specs.comp';
+
 import Chat from '../screens/booking/chat';
 import Specs from '../screens/booking/specs';
 import Arriving from '../screens/booking/arriving';
@@ -36,11 +37,11 @@ export default function DashStack({ navigation }) {
         routes: [{ name: 'Dashboard', params: params }],
       }));
     }
-    else if (route === 'Requests' && initialRoute !== 'Requests') {
-      setInitialRoute('Requests');
+    else if (route === 'RequestList' && initialRoute !== 'RequestList') {
+      setInitialRoute('RequestList');
       navigation.reset({
         index: 0,
-        routes: [{ name: 'Requests', params: params }],
+        routes: [{ name: 'RequestList', params: params }],
       });
     }
     else if (route === 'Chat' && initialRoute !== 'Chat') {
@@ -91,14 +92,14 @@ export default function DashStack({ navigation }) {
       />
 
       <Stack.Screen 
-        name='Requests' 
-        component={Requests}
+        name='RequestList' 
+        component={RequestList}
         options={{ headerShown: false }}
       />
 
       <Stack.Screen 
-        name='Details' 
-        component={Details}
+        name='RequestSpecs' 
+        component={RequestSpecs}
         options={() => header}
       />
 
