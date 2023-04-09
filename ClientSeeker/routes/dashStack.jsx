@@ -2,10 +2,10 @@ import { StyleSheet, View, Image, TouchableWithoutFeedback, Alert } from 'react-
 import { createStackNavigator } from '@react-navigation/stack';
 import { useEffect, useState } from 'react';
 
-import Dashboard from '../screens/dashboard/dashboard';
-import Services from '../screens/dashboard/services';
-import Featured from '../screens/dashboard/featured';
-import Explore from '../screens/dashboard/explore';
+import Dashboard from '../screens/dashboard/dashboard/dashboard.comp';
+import ServiceList from '../screens/dashboard/services-list/services-list.comp';
+import ProviderFeatured from '../screens/dashboard/provider-featured/provider-featured.comp';
+import ProviderExplore from '../screens/dashboard/provider-explore/provider-explore.comp';
 
 import SeekerServices from '../services/user/seeker-services';
 import { getImageURL } from '../utils/getImageURL';
@@ -88,20 +88,20 @@ export default function DashStack({ navigation }) {
     />
 
     <Stack.Screen 
-      name='Services' 
-      component={Services}
+      name='ServiceList' 
+      component={ServiceList}
       options={() => header}
     />
 
     <Stack.Screen 
-      name='Explore' 
-      component={Explore}
+      name='ProviderExplore' 
+      component={ProviderExplore}
       options={() => header}
     />
 
     <Stack.Screen 
-      name='Featured' 
-      component={Featured}
+      name='ProviderFeatured' 
+      component={ProviderFeatured}
       options={() => header}
     />
 

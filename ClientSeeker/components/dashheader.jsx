@@ -2,12 +2,13 @@ import { StyleSheet, View, Text, TouchableWithoutFeedback } from 'react-native';
 
 export default function Header ( props ) {
   const title = props.title;
+  const screen = props.screen;
   const services = props.listings;
 
   return (
     <View style={styles.contentheader}>
       <Text style={styles.contentname}>{title}</Text>
-      <TouchableWithoutFeedback style={{alignSelf:'flex-end'}} onPress= {() => props.navigation.navigate(title, {service: services})}>
+      <TouchableWithoutFeedback style={{alignSelf:'flex-end'}} onPress= {() => props.navigation.navigate(screen, {service: services})}>
         <Text style={styles.viewall}>View all</Text>
       </TouchableWithoutFeedback>
     </View>
