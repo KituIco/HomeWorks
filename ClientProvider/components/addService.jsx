@@ -44,7 +44,7 @@ export default function AddService( props ) {
       setTimeout(() => {
         props.navigation.replace('HomeStack');
         props.navigation.navigate('HomeStack', { screen:'OptionsStack', 
-         params: { screen: 'Services', initial:false} });
+         params: { screen: 'ServiceList', initial:false} });
       }, 1000)
     }
   }, [done]);

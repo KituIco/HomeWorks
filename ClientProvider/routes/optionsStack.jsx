@@ -1,9 +1,10 @@
 import { createStackNavigator } from '@react-navigation/stack';
 
-import Options from '../screens/options/options';
-import Services from '../screens/options/services';
-import Address from '../screens/options/address';
-import Profile from '../screens/options/profile'
+import Options from '../screens/options/options/options.comp';
+import Profile from '../screens/options/profile/profile.comp'
+import ProfileAddress from '../screens/options/profile-address/profile-address.comp';
+import ServiceList from '../screens/options/service-list/service-list.comp';
+
 
 const Stack = createStackNavigator();
 
@@ -38,14 +39,14 @@ export default function OptionsStack() {
       />
 
       <Stack.Screen 
-        name='Address' 
-        component={Address}
+        name='ProfileAddress' 
+        component={ProfileAddress}
         options={() => header}
       />
 
       <Stack.Screen 
-        name='Services' 
-        component={Services}
+        name='ServiceList' 
+        component={ServiceList}
         options={() => header}
       />
 

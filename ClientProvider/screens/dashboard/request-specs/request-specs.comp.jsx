@@ -15,7 +15,7 @@ export default function RequestSpecs({route, navigation}) {
   const {
     minServiceCost, typeName, specsDesc, location, latitude, longitude, region, 
     open, loading, noImage, viewer, setOpen, onSettle,
-  } = hook( route, navigation )
+  } = hook( route, navigation );
 
   if(loading) return <View style={{flex:1}}><Loading/></View>
 
