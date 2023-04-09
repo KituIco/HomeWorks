@@ -6,18 +6,15 @@ export default function Loading () {
 
   Animated.loop(
     Animated.timing(
-      spinValue,
-      {
-        toValue: 1,
-        duration: 1000,
+      spinValue, {
+        toValue: 1, duration: 1000,
         easing: Easing.linear,
         useNativeDriver: true
-      }
-    )
-    ).start();
+    })
+  ).start();
 
-    const spin = spinValue.interpolate({
-    inputRange: [0, 1],
+  const spin = spinValue.interpolate({
+    inputRange: [0, 1], 
     outputRange: ['0deg', '360deg']
   })
 
@@ -32,13 +29,8 @@ export default function Loading () {
 
 const styles = StyleSheet.create({
   waiting: {
-    position: 'absolute', 
-    top: 0, left: 0, right: 0, bottom: 0, 
-    justifyContent: 'center', 
-    alignItems: 'center',
-    zIndex: 5,
-    height: '100%',
-    width: '100%',
-    backgroundColor: '#FFFFFF90'
+    position: 'absolute', justifyContent: 'center', alignItems: 'center',
+    top: 0, left: 0, right: 0, bottom: 0, zIndex: 20,
+    height: '100%', width: '100%', backgroundColor: '#FFFFFF90'
   },
-}) 
+})

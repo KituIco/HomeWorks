@@ -72,7 +72,7 @@ export default ( route, navigation ) => {
       await ServiceSpecsServices.patchServiceSpecs(specsID, {referencedID: bookingID, specsStatus: 2});
       socketService.acceptServiceSpec( specsID );
       
-      navigation.navigate('Chat', { specsID, bookingID, latitude, longitude, location, typeName });
+      navigation.navigate('BookingChat', { specsID, bookingID, latitude, longitude, location, typeName });
     } catch (err) {
       Alert.alert('Error', err+'.', [ {text: 'OK'} ]);
     }

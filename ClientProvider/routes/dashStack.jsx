@@ -5,11 +5,11 @@ import Dashboard from '../screens/dashboard/dashboard/dashboard.comp';
 import RequestList from '../screens/dashboard/request-list/request-list.comp';
 import RequestSpecs from '../screens/dashboard/request-specs/request-specs.comp';
 
-import Chat from '../screens/booking/chat';
-import Specs from '../screens/booking/specs';
-import Arriving from '../screens/booking/arriving';
-import Serving from '../screens/booking/serving';
-import Done from '../screens/booking/done';
+import BookingChat from '../screens/booking/booking-chat/booking-chat.comp';
+import BookingSpecs from '../screens/booking/booking-specs/booking-specs.comp';
+import TransactingArrive from '../screens/booking/transacting-arrive/transacting-arrive.comp';
+import TransactingServe from '../screens/booking/transacting-serve/transacting-serve.comp';
+import TransactionDone from '../screens/booking/transaction-done/transaction-done.comp';
 
 const Stack = createStackNavigator();
 
@@ -44,32 +44,32 @@ export default function DashStack({ navigation }) {
         routes: [{ name: 'RequestList', params: params }],
       });
     }
-    else if (route === 'Chat' && initialRoute !== 'Chat') {
-      setInitialRoute('Chat');
+    else if (route === 'BookingChat' && initialRoute !== 'BookingChat') {
+      setInitialRoute('BookingChat');
       navigation.reset({
         index: 0,
-        routes: [{ name: 'Chat', params: params }],
+        routes: [{ name: 'BookingChat', params: params }],
       });
     }
-    else if (route === 'Arriving' && initialRoute !== 'Arriving') {
-      setInitialRoute('Arriving');
+    else if (route === 'TransactingArrive' && initialRoute !== 'TransactingArrive') {
+      setInitialRoute('TransactingArrive');
       navigation.reset({
         index: 0,
-        routes: [{ name: 'Arriving', params: params }],
+        routes: [{ name: 'TransactingArrive', params: params }],
       });
     }
-    else if (route === 'Serving' && initialRoute !== 'Serving') {
-      setInitialRoute('Serving');
+    else if (route === 'TransactingServe' && initialRoute !== 'TransactingServe') {
+      setInitialRoute('TransactingServe');
       navigation.reset({
         index: 0,
-        routes: [{ name: 'Serving', params: params }],
+        routes: [{ name: 'TransactingServe', params: params }],
       });
     }
-    else if (route === 'Done' && initialRoute !== 'Done') {
-      setInitialRoute('Done');
+    else if (route === 'TransactionDone' && initialRoute !== 'TransactionDone') {
+      setInitialRoute('TransactionDone');
       navigation.reset({
         index: 0,
-        routes: [{ name: 'Done', params: params }],
+        routes: [{ name: 'TransactionDone', params: params }],
       });
     }
   }
@@ -104,32 +104,32 @@ export default function DashStack({ navigation }) {
       />
 
       <Stack.Screen 
-        name='Chat' 
-        component={Chat}
+        name='BookingChat' 
+        component={BookingChat}
         options={{ headerShown: false }}
       />
 
       <Stack.Screen 
-        name='Specs' 
-        component={Specs}
+        name='BookingSpecs' 
+        component={BookingSpecs}
         options={() => header}
       />
 
       <Stack.Screen 
-        name='Arriving' 
-        component={Arriving}
+        name='TransactingArrive' 
+        component={TransactingArrive}
         options={{ headerShown: false }}
       />
 
       <Stack.Screen 
-        name='Serving' 
-        component={Serving}
+        name='TransactingServe' 
+        component={TransactingServe}
         options={{ headerShown: false }}
       />
 
       <Stack.Screen 
-        name='Done' 
-        component={Done}
+        name='TransactionDone' 
+        component={TransactionDone}
         options={{ headerShown: false }}
       />
 

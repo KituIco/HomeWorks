@@ -5,25 +5,18 @@ export default function Back ( props ) {
   const [count, setCount] = useState(0);
 
   const backAction = () => {
-    if (!props.navigation.isFocused()) {
-      return false;
-    }
-    setTimeout(() => {
-      setCount(0);
-    }, 2000); 
+    if (!props.navigation.isFocused()) return false;
+    setTimeout(() => { setCount(0); }, 2000); 
 
-    if (count === 0) {
-      setCount(count + 1);
-    } else if (count === 1) {
-      BackHandler.exitApp();
-    }
+    if (count === 0) setCount(count + 1);
+    else if (count === 1) BackHandler.exitApp();
+
     return true;
   };
 
   useEffect(() => {
     const backHandler = BackHandler.addEventListener(
-      'hardwareBackPress',
-      backAction,
+      'hardwareBackPress', backAction,
     );
 
     return () => backHandler.remove();
@@ -31,6 +24,3 @@ export default function Back ( props ) {
 
   return;
 };
-
-
-
