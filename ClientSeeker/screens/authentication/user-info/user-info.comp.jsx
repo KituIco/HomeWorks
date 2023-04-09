@@ -1,19 +1,18 @@
-import { View, Text, Image, TouchableWithoutFeedback, TextInput, ScrollView, Modal, Alert } from 'react-native';
+import { View, Text, Image, TouchableWithoutFeedback, TextInput, ScrollView, Modal } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 
-import { contactHandler } from '../../../utils/contactHandler';
 import { dateHandler } from '../../../utils/dateHandler';
+import { contactHandler } from '../../../utils/contactHandler';
 import DatePicker from 'react-native-modern-datepicker';
-import Loading from '../../../hooks/loading';
 
+import Loading from '../../../hooks/loading';
 import styles from './user-info.style';
 import hook from './user-info.hook';
 
-
 export default function UserInfo({ navigation, route }) {
   const {
-    firstname, lastname, username, contact, birthday, usernameCHK, contactCHK, birthdayCHK, open, image, id, loading, 
+    firstname, lastname, username, contact, birthday, usernameCHK, contactCHK, birthdayCHK, open, image, loading, 
     setUsername, setContact, setBirthday, pickImage, removeImage, onOpen, onRegister, onCheck,
   } = hook( navigation, route );
 
@@ -29,12 +28,15 @@ export default function UserInfo({ navigation, route }) {
         <Text style={styles.subheading}>Fill up the fields below to complete the creation of your account.</Text>
 
         <View style={[styles.textbox, usernameCHK]}>
-          <TextInput style={styles.input} onChangeText={setUsername} value={username} placeholder="Username" onBlur={() => onCheck('username')}/>
+          <TextInput style={styles.input} onChangeText={setUsername} value={username}
+            placeholder="Username" onBlur={() => onCheck('username')}/>
         </View>
+
         <View style={[styles.textbox, contactCHK]}>
           <TextInput numberOfLines={1} style={styles.input} onChangeText={setContact} value={contactHandler(contact)} placeholder="Contact Number"
             onFocus={() => { if(!contact) setContact('+63') }} onBlur={() => { onCheck('contact'); if(contact == '+63' || contact == '+6') setContact('')} }/>
         </View>
+        
         <TouchableWithoutFeedback onPress={() => onOpen()}>
           <View style={[styles.textbox, birthdayCHK]}>
             { !birthday && <Text style={[styles.input,{color:'#A0A0A0'}]}>Birthday</Text>}
@@ -42,7 +44,6 @@ export default function UserInfo({ navigation, route }) {
           </View>
         </TouchableWithoutFeedback>
 
-        { open && <View style={styles.overlay}/> }
         <Modal visible={open} transparent={true} animationType='slide'>
           <View style={styles.centered}>
             <View style={styles.modal}>
@@ -54,31 +55,9 @@ export default function UserInfo({ navigation, route }) {
           </View>
         </Modal>
 
-        <Text style={styles.govID}>Government ID</Text>
-        { !id &&
-        <TouchableWithoutFeedback onPress={() => pickImage('id')}>
-          <View style={styles.uploader}>
-            <MaterialCommunityIcons name={'cloud-upload'} size={40}/>
-            <Text style={styles.title}><Text style={{color:'#9C54D5', fontFamily:'quicksand-bold'}}>Click to Upload</Text> your Government ID.</Text>
-            <Text style={styles.subtitle}>make sure it's clear and visible</Text>
-          </View>
-        </TouchableWithoutFeedback>
-        }
-
-        { id &&
-        <View style={{marginHorizontal:24}}>
-          <Image source={{ uri: id }} style={styles.id} />
-          <TouchableWithoutFeedback onPress={() => removeImage('id')}>
-            <View style={styles.closeId}>
-              <MaterialCommunityIcons name={'close-box'} size={20} color={'#323941'}/> 
-            </View>
-          </TouchableWithoutFeedback>
-        </View>
-        }
-
         <Text style={styles.govID}>Diplay Picture (Optional)</Text>
         { !image &&
-        <TouchableWithoutFeedback onPress={() => pickImage('icon')}>
+        <TouchableWithoutFeedback onPress={() => pickImage()}>
           <View style={styles.uploader}>
             <MaterialCommunityIcons name={'cloud-upload'} size={40}/>
             <Text style={styles.title}><Text style={{color:'#9C54D5', fontFamily:'quicksand-bold'}}>Click to Upload</Text> your Picture.</Text>
@@ -90,7 +69,7 @@ export default function UserInfo({ navigation, route }) {
         { image &&
         <View style={styles.holder}>
           <Image source={{ uri: image }} style={styles.image} />
-          <TouchableWithoutFeedback onPress={() => removeImage('icon')}>
+          <TouchableWithoutFeedback onPress={() => removeImage()}>
             <View style={styles.close}>
               <MaterialCommunityIcons name={'close-box'} size={20} color={'#9C54D5'}/> 
             </View>

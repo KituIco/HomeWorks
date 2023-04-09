@@ -9,7 +9,7 @@ import Back from '../../../hooks/back';
 import styles from './transacting-arrive.style';
 import hook from './transacting-arrive.hook';
 
-export default function Arriving({ navigation, route }) {
+export default function TransactingArrive({ navigation, route }) {
   const {
     latitude, longitude, location, region,
     processing, loading, onArrive,

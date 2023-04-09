@@ -9,7 +9,7 @@ import Loading from '../../../hooks/loading';
 import styles from './booking-specs.style';
 import hook from './booking-specs.hook';
 
-export default function Specs({navigation, route}) {
+export default function BookingSpecs({navigation, route}) {
   const {
     latitude, longitude, typeName, location, loading, open, description, lines, cost, region, spin, 
     setDescription, setLines, setCost, onSubmit,

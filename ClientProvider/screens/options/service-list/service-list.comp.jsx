@@ -9,7 +9,7 @@ import Loading from '../../../hooks/loading';
 import styles from './service-list.style';
 import hook from './service-list.hook';
 
-export default function Services({ navigation }) {
+export default function ServiceList({ navigation }) {
   const {
     userID, loading, open,  services, noService, isKeyboardVisible, 
     setOpen, fromChild, onClose,

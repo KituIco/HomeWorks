@@ -8,7 +8,7 @@ import styles from './transaction.done.style';
 import hook from './transaction-done.hook';
 
 
-export default function Done({ navigation, route }) {
+export default function TransactionDone({ navigation, route }) {
   const {
     open, loading, address, type, cost, desc,
     setOpen, onDone,

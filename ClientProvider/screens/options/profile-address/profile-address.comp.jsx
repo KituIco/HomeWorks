@@ -9,7 +9,7 @@ import Back from '../../../hooks/back';
 import styles from './profile-address.style';
 import hook from './profile-address.hook';
 
-export default function Address({ navigation, route }) {
+export default function ProfileAddress({ navigation, route }) {
   const {
     addressID, processing, region,  userID, userFullName, userNum, open, isKeyboardVisible, 
     setOpen, fromChild, regionChange,

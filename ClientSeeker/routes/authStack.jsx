@@ -1,9 +1,9 @@
 import { createStackNavigator } from '@react-navigation/stack';
 
-import Homepage from '../screens/authentication/homepage';
-import Login from '../screens/authentication/login';
-import Register from '../screens/authentication/register';
-import Credentials from '../screens/authentication/credentials';
+import Homepage from '../screens/authentication/homepage/homepage.comp';
+import Login from '../screens/authentication/login/login.comp';
+import Register from '../screens/authentication/register/register.comp';
+import UserInfo from '../screens/authentication/user-info/user-info.comp';
 
 const Stack = createStackNavigator();
 
@@ -41,8 +41,8 @@ export default function AuthStack() {
     />
 
     <Stack.Screen 
-      name='Credentials' 
-      component={Credentials}
+      name='UserInfo' 
+      component={UserInfo}
       options={() => header}
     />
 

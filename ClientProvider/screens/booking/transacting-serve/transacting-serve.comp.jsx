@@ -7,7 +7,7 @@ import Back from '../../../hooks/back';
 import styles from './transacting-serve.style';
 import hook from './transacting-serve.hook';
 
-export default function Serving({ navigation, route }) {
+export default function TransactingServe({ navigation, route }) {
   const {
     paid, open,  loading, address, type, cost, desc, 
     setOpen, changePaid, onDone,

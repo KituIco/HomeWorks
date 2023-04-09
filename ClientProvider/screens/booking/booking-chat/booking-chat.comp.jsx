@@ -9,7 +9,7 @@ import styles from './booking-chat.style';
 import hook from './booking-chat.hook';
 
 
-export default function Chat({ navigation, route }) {
+export default function BookingChat({ navigation, route }) {
   const {
     value, loading, seekerName, seekerDP, 
     data, onChangeText, onDecline,
