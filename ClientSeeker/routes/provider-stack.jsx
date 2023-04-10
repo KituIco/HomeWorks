@@ -1,6 +1,6 @@
 import { createStackNavigator } from '@react-navigation/stack';
 
-import Complete from '../screens/transaction/complete';
+import Complete from '../screens/transaction/transaction-complete/transaction-complete.comp';
 
 const Stack = createStackNavigator();
 

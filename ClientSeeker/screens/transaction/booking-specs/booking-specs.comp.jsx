@@ -4,17 +4,17 @@ import { StyleSheet, View, Text, ScrollView, Image, TouchableWithoutFeedback, Al
 import { StackActions } from '@react-navigation/native';
 import MapView, {Marker} from 'react-native-maps';
 
-import { addressHandler } from '../../utils/addressHandler';
-import Header from '../../components/transactheader';
-import { getUserID } from '../../utils/getUserID';
-import Loading from '../../hooks/loading';
+import { addressHandler } from '../../../utils/addressHandler';
+import Header from '../../../components/transactheader';
+import { getUserID } from '../../../utils/getUserID';
+import Loading from '../../../hooks/loading';
 
-import TransactionReportServices from '../../services/transaction/transaction-reports-services';
-import ServiceSpecsServices from '../../services/service-specs/service-specs-services';
-import BookingServices from '../../services/booking/booking-services';
-import AddressServices from '../../services/address/address-services';
-import PaymentServices from '../../services/payment/payment-services';
-import socketService from '../../services/sockets/sockets-services';
+import TransactionReportServices from '../../../services/transaction/transaction-reports-services';
+import ServiceSpecsServices from '../../../services/service-specs/service-specs-services';
+import BookingServices from '../../../services/booking/booking-services';
+import AddressServices from '../../../services/address/address-services';
+import PaymentServices from '../../../services/payment/payment-services';
+import socketService from '../../../services/sockets/sockets-services';
 
 
 export default function FinalSpecs({ route, navigation }) {
@@ -120,7 +120,7 @@ export default function FinalSpecs({ route, navigation }) {
         <View style={{width:'100%', height: 220, marginVertical:-4}}>
           <MapView style={{flex:1}} initialRegion={region}>
             <Marker coordinate={{ latitude, longitude}}>
-              <Image style={{height:38.2,width:28}} source={require("../../assets/pin.png")}/>
+              <Image style={{height:38.2,width:28}} source={require("../../../assets/pin.png")}/>
             </Marker>
           </MapView>
         </View>

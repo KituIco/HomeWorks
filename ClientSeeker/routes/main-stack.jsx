@@ -1,13 +1,13 @@
 import { NavigationContainer } from '@react-navigation/native'; 
 import { createStackNavigator } from '@react-navigation/stack';
 
-import HomeStack from './homeStack';
-import ProfileStack from './profileStack';
-import RequestStack from './requestStack';
-import MatchStack from './matchStack';
-import ServeStack from './serveStack';
-import HistoryStack from './historyStack';
-import AuthStack from './authStack';
+import HomeStack from './home-stack';
+import ProfileStack from './profile-stack';
+import RequestStack from './request-stack';
+import MatchStack from './match-stack';
+import ServeStack from './serve-stack';
+import ProviderStack from './provider-stack';
+import AuthStack from './auth-stack';
 
 const Stack = createStackNavigator();
 
@@ -49,8 +49,8 @@ export default function Navigator( props ) {
         />
 
         <Stack.Screen 
-          name='HistoryStack' 
-          component={HistoryStack}
+          name='ProviderStack' 
+          component={ProviderStack}
           options={{ headerShown: false }}
         />
 

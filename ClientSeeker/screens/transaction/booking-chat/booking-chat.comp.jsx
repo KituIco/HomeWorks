@@ -4,16 +4,16 @@ import { useFocusEffect } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useCallback, useEffect, useState } from 'react';
 
-import ServiceSpecsServices from '../../services/service-specs/service-specs-services';
-import ProviderServices from '../../services/provider/provider-services';
-import ServiceServices from '../../services/service/service-services';
-import BookingServices from '../../services/booking/booking-services';
-import socketService from '../../services/sockets/sockets-services';
+import ServiceSpecsServices from '../../../services/service-specs/service-specs-services';
+import ProviderServices from '../../../services/provider/provider-services';
+import ServiceServices from '../../../services/service/service-services';
+import BookingServices from '../../../services/booking/booking-services';
+import socketService from '../../../services/sockets/sockets-services';
 
-import { getImageURL } from '../../utils/getImageURL';
-import Header from '../../components/transactheader';
-import Loading from '../../hooks/loading';
-import Back from '../../hooks/back';
+import { getImageURL } from '../../../utils/getImageURL';
+import Header from '../../../components/transactheader';
+import Loading from '../../../hooks/loading';
+import Back from '../../../hooks/back';
 
 export default function SettleSpecs({ route, navigation }) {
   const { typeName, icon, address, specsID } = route.params;
@@ -27,7 +27,7 @@ export default function SettleSpecs({ route, navigation }) {
   
 
   const [providerName, setProviderName] = useState('');
-  const [providerDP, setProviderDP] = useState(require("../../assets/default.jpg"));
+  const [providerDP, setProviderDP] = useState(require("../../../assets/default.jpg"));
 
   useEffect(() => {
     ( async() => {

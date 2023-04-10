@@ -3,19 +3,19 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useState, useEffect } from 'react';
 
-import Header from '../../components/transactheader';
-import Listing from '../../components/serviceListing';
+import Header from '../../../components/transactheader';
+import Listing from '../../../components/serviceListing';
 
-import TransactionReportServices from '../../services/transaction/transaction-reports-services';
-import ServiceSpecsServices from '../../services/service-specs/service-specs-services';
-import ProviderServices from '../../services/provider/provider-services';
-import BookingServices from '../../services/booking/booking-services';
-import ServiceServices from '../../services/service/service-services';
-import AddressServices from '../../services/address/address-services';
+import TransactionReportServices from '../../../services/transaction/transaction-reports-services';
+import ServiceSpecsServices from '../../../services/service-specs/service-specs-services';
+import ProviderServices from '../../../services/provider/provider-services';
+import BookingServices from '../../../services/booking/booking-services';
+import ServiceServices from '../../../services/service/service-services';
+import AddressServices from '../../../services/address/address-services';
 
-import { addressHandler } from '../../utils/addressHandler';
-import { getImageURL } from '../..//utils/getImageURL';
-import Loading from '../../hooks/loading';
+import { addressHandler } from '../../../utils/addressHandler';
+import { getImageURL } from '../../../utils/getImageURL';
+import Loading from '../../../hooks/loading';
 
 export default function Complete({route, navigation}) {
   const { typeName, icon, reportID } = route.params;

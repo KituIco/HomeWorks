@@ -3,7 +3,7 @@ import AppLoading from 'expo-app-loading';
 import * as Font from "expo-font";
 import * as SecureStore from 'expo-secure-store';
 
-import Navigator from './routes/mainStack';
+import Navigator from './routes/main-stack';
 
 const getFonts = () => Font.loadAsync({
   'lexend': require('./assets/fonts/Lexend-Regular.ttf'),

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { StyleSheet, View, Text, ScrollView, TouchableWithoutFeedback, Image } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
-import Next from '../../components/transactnext';
+import Next from '../../../components/transactnext';
 
 export default function Payment({route, navigation}) {
   const { service, icon } = route.params;
@@ -18,9 +18,9 @@ export default function Payment({route, navigation}) {
   ]
 
   for (let i=0; i<baseMethods.length; i++) {
-    if(baseMethods[i].type == 'Cash') baseMethods[i]['src'] = require("../../assets/cash.png");
-    else if(baseMethods[i].type == 'G-Cash') baseMethods[i]['src'] = require("../../assets/GCash.png");
-    else if(baseMethods[i].type == 'PayMaya') baseMethods[i]['src'] = require("../../assets/PayMaya.jpg");
+    if(baseMethods[i].type == 'Cash') baseMethods[i]['src'] = require("../../../assets/cash.png");
+    else if(baseMethods[i].type == 'G-Cash') baseMethods[i]['src'] = require("../../../assets/GCash.png");
+    else if(baseMethods[i].type == 'PayMaya') baseMethods[i]['src'] = require("../../../assets/PayMaya.jpg");
   }
 
   const [methods, setMethods] = useState(baseMethods);

@@ -1,8 +1,8 @@
 import { createStackNavigator } from '@react-navigation/stack';
 
-import Request from '../screens/transaction/request';
-import InitSpecs from '../screens/transaction/initspecs';
-import Matching from '../screens/transaction/matching';
+import RequestAddress from '../screens/request/request-address/request-address.comp';
+import RequestForm from '../screens/request/request-form/request-form.comp';
+import RequestMatch from '../screens/request/request-match/request-match.comp';
 
 const Stack = createStackNavigator();
 
@@ -24,24 +24,24 @@ export default function RequesttStack({ route }) {
 
 
   return (
-      <Stack.Navigator initialRouteName='Request' >
+      <Stack.Navigator initialRouteName='RequestAddress' >
 
         <Stack.Screen
-          name="Request"
-          component={Request}
+          name="RequestAddress"
+          component={RequestAddress}
           initialParams={{ data }}
           options={() => header}
         />
 
         <Stack.Screen
-          name="InitSpecs"
-          component={InitSpecs}
+          name="RequestForm"
+          component={RequestForm}
           options={() => header}
         />
 
         <Stack.Screen
-          name="Matching"
-          component={Matching}
+          name="RequestMatch"
+          component={RequestMatch}
           options={{ headerShown: false }}
         />
 

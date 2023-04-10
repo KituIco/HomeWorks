@@ -1,7 +1,7 @@
 import { createStackNavigator } from '@react-navigation/stack';
 
-import Serving from '../screens/transaction/serving';
-import Payment from '../screens/transaction/payment';
+import Serving from '../screens/transaction/transacting-serve/transacting-serve.comp';
+import Payment from '../screens/transaction/transacting-payment/transacting-payment.comp';
 
 const Stack = createStackNavigator();
 

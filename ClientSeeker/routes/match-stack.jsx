@@ -1,7 +1,7 @@
 import { createStackNavigator } from '@react-navigation/stack';
 
-import SettleSpecs from '../screens/transaction/settlespecs';
-import FinalSpecs from '../screens/transaction/finalspecs';
+import SettleSpecs from '../screens/transaction/booking-chat/booking-chat.comp';
+import FinalSpecs from '../screens/transaction/booking-specs/booking-specs.comp';
 
 const Stack = createStackNavigator();
 

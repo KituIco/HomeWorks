@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import Notifications from '../screens/options/notifs/notifs.comp';
 import History from '../screens/options/history/history.comp';
 import Options from '../screens/options/options/options.comp';
-import DashStack from './dashStack';
+import DashStack from './dash-stack';
 
 import SeekerServices from '../services/user/seeker-services';
 import { getImageURL } from '../utils/getImageURL';

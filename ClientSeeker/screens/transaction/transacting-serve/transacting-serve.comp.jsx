@@ -4,21 +4,21 @@ import { StackActions } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useEffect, useState } from 'react';
 
-import Listing from '../../components/serviceListing';
-import Header from '../../components/transactheader';
-import Next from '../../components/transactnext';
+import Listing from '../../../components/serviceListing';
+import Header from '../../../components/transactheader';
+import Next from '../../../components/transactnext';
 
-import TransactionReportServices from '../../services/transaction/transaction-reports-services';
-import ServiceSpecsServices from '../../services/service-specs/service-specs-services';
-import ProviderServices from '../../services/provider/provider-services';
-import BookingServices from '../../services/booking/booking-services';
-import ServiceServices from '../../services/service/service-services';
-import AddressServices from '../../services/address/address-services';
-import socketService from '../../services/sockets/sockets-services';
+import TransactionReportServices from '../../../services/transaction/transaction-reports-services';
+import ServiceSpecsServices from '../../../services/service-specs/service-specs-services';
+import ProviderServices from '../../../services/provider/provider-services';
+import BookingServices from '../../../services/booking/booking-services';
+import ServiceServices from '../../../services/service/service-services';
+import AddressServices from '../../../services/address/address-services';
+import socketService from '../../../services/sockets/sockets-services';
 
-import { addressHandler } from '../../utils/addressHandler';
-import { getImageURL } from '../..//utils/getImageURL';
-import Loading from '../../hooks/loading';
+import { addressHandler } from '../../../utils/addressHandler';
+import { getImageURL } from '../../../utils/getImageURL';
+import Loading from '../../../hooks/loading';
 
 
 export default function Serving({route, navigation}) {
@@ -108,7 +108,7 @@ export default function Serving({route, navigation}) {
 
   const onComplete = () => {
     navigation.dispatch(StackActions.popToTop()),
-    navigation.navigate('HistoryStack', { typeName, icon, reportID })
+    navigation.navigate('ProviderStack', { typeName, icon, reportID })
   }
   
   if(loading) return <View style={{flex:1}}><Loading/></View>
