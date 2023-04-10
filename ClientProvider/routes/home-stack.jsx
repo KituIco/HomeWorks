@@ -2,8 +2,8 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { StyleSheet, Text,View } from 'react-native';
 import { useState } from 'react';
 
-import DashStack from './dashStack';
-import OptionsStack from './optionsStack';
+import DashStack from './dash-stack';
+import OptionsStack from './options-stack';
 
 const Stack = createBottomTabNavigator();
 
