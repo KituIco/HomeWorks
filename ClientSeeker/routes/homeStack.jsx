@@ -3,9 +3,9 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useEffect, useState } from 'react';
 
-import Notifications from '../screens/options/notifications';
-import History from '../screens/options/history';
-import Options from '../screens/options/options';
+import Notifications from '../screens/options/notifs/notifs.comp';
+import History from '../screens/options/history/history.comp';
+import Options from '../screens/options/options/options.comp';
 import DashStack from './dashStack';
 
 import SeekerServices from '../services/user/seeker-services';

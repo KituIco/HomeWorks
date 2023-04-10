@@ -1,6 +1,6 @@
 import { createStackNavigator } from '@react-navigation/stack';
 
-import Profile from '../screens/options/profile'
+import Profile from '../screens/options/profile/profile.comp'
 
 const Stack = createStackNavigator();
 
