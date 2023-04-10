@@ -8,7 +8,7 @@ import AddressServices from '../../../services/address/address-services';
 import ServiceServices from '../../../services/service/service-services';
 import socketService from '../../../services/sockets/sockets-services';
 
-import { addressHandler } from '../../../utils/addressHandler';
+import { addressHandler } from '../../../utils/address-handler';
 
 export default ( navigation, route ) => {
   const { reportID, specsID, location } = route.params;

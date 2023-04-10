@@ -1,7 +1,7 @@
 import * as ImagePicker from 'expo-image-picker';
 import { Alert } from 'react-native';
 import { useState } from 'react';
-import { dateHandler } from '../../../utils/dateHandler';
+import { dateHandler } from '../../../utils/date-handler';
 
 import CredentialsServices from '../../../services/user/credentials-services';
 import ProviderServices from '../../../services/user/provider-services';

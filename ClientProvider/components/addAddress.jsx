@@ -1,6 +1,6 @@
 import { StyleSheet, View, Text, TextInput, ScrollView, TouchableWithoutFeedback, Alert } from 'react-native';
 import { MaterialCommunityIcons  } from '@expo/vector-icons';
-import { addressHandler } from '../utils/addressHandler';
+import { addressHandler } from '../utils/address-handler';
 import { LinearGradient, } from 'expo-linear-gradient';
 import { useEffect, useState } from 'react';
 
@@ -143,7 +143,7 @@ export default function AddAddress( props ) {
           </LinearGradient> 
         </TouchableWithoutFeedback>
       </ScrollView>
-      <LinearGradient colors={['rgba(255,255,255,1)','rgba(255,255,255,0)'  ]} start={{ x:0, y:1 }} end={{ x:0, y:0 }} style={{height:11, zIndex:5, marginBottom:10}}/>
+      <LinearGradient colors={['rgba(255,255,255,1)','rgba(255,255,255,0)']} start={{ x:0, y:1 }} end={{ x:0, y:0 }} style={{height:11, zIndex:5, marginBottom:10}}/>
 
     </View>
   )

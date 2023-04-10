@@ -5,7 +5,7 @@ import ImageViewer from 'react-native-image-zoom-viewer';
 import MapView, {Marker} from 'react-native-maps';
 import { Modal } from 'react-native';
 
-import { addressHandler } from '../../../utils/addressHandler';
+import { addressHandler } from '../../../utils/address-handler';
 import Loading from '../../../hooks/loading';
 import styles from './request-specs.style';
 import hook from './request-specs.hook';

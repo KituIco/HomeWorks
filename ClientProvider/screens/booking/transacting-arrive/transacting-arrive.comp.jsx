@@ -2,7 +2,7 @@ import { View, Text, Image, TouchableWithoutFeedback } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import MapView, {Marker} from 'react-native-maps';
 
-import { addressHandler } from '../../../utils/addressHandler';
+import { addressHandler } from '../../../utils/address-handler';
 import Loading from '../../../hooks/loading';
 import Back from '../../../hooks/back';
 

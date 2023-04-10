@@ -1,8 +1,8 @@
 import { View, Text, ScrollView, Image, TouchableWithoutFeedback, Alert, Keyboard, Modal } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient'
-import { contactHandler } from '../../../utils/contactHandler';
-import { addressHandler } from '../../../utils/addressHandler';
+import { contactHandler } from '../../../utils/contact-handler';
+import { addressHandler } from '../../../utils/address-handler';
 
 import EditCredentials from '../../../components/editCredentials';
 import EditProfile from '../../../components/editProfile';

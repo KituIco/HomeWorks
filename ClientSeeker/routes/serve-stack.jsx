@@ -1,7 +1,7 @@
 import { createStackNavigator } from '@react-navigation/stack';
 
-import Serving from '../screens/transaction/transacting-serve/transacting-serve.comp';
-import Payment from '../screens/transaction/transacting-payment/transacting-payment.comp';
+import TransactingServe from '../screens/transaction/transacting-serve/transacting-serve.comp';
+import TransactingPayment from '../screens/transaction/transacting-payment/transacting-payment.comp';
 
 const Stack = createStackNavigator();
 
@@ -22,18 +22,18 @@ export default function ServeStack({ route }) {
   }
 
   return (
-      <Stack.Navigator initialRouteName='Serving' >
+      <Stack.Navigator initialRouteName='TransactingServe' >
 
         <Stack.Screen 
-          name='Serving' 
-          component={Serving}
+          name='TransactingServe' 
+          component={TransactingServe}
           initialParams={{ typeName, icon, reportID }}
           options={() => header}
         />
 
         <Stack.Screen 
-          name='Payment' 
-          component={Payment}
+          name='TransactingPayment' 
+          component={TransactingPayment}
           options={() => header}
         />
 

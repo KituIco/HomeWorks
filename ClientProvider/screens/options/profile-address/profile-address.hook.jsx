@@ -4,8 +4,8 @@ import * as Location from 'expo-location';
 
 import CredentialsServices from '../../../services/user/credentials-services';
 import ProviderServices from '../../../services/user/provider-services';
-import { addressHandler } from '../../../utils/addressHandler';
-import { getUserID } from '../../../utils/getUserID';
+import { addressHandler } from '../../../utils/address-handler';
+import { getUserID } from '../../../utils/get-userID';
 
 export default ( navigation, route ) => {
   let addressID = route.params ? route.params.addressID : null;

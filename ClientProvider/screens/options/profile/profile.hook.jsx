@@ -7,8 +7,8 @@ import ProviderServices from '../../../services/user/provider-services';
 import AddressServices from '../../../services/address/address-services';
 import ImageService from '../../../services/image/image-services';
 
-import { getUserID } from '../../../utils/getUserID';
-import { getImageURL } from '../../../utils/getImageURL';
+import { getUserID } from '../../../utils/get-userID';
+import { getImageURL } from '../../../utils/get-imageURL';
 
 
 export default ( navigation ) => {

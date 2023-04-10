@@ -1,106 +1,18 @@
+import { View, Text, ScrollView, Image, TouchableWithoutFeedback } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { useState, useEffect } from 'react';
-import { StyleSheet, View, Text, ScrollView, Image, TouchableWithoutFeedback, Alert } from 'react-native';
-import { StackActions } from '@react-navigation/native';
 import MapView, {Marker} from 'react-native-maps';
 
-import { addressHandler } from '../../../utils/addressHandler';
 import Header from '../../../components/transactheader';
-import { getUserID } from '../../../utils/getUserID';
 import Loading from '../../../hooks/loading';
 
-import TransactionReportServices from '../../../services/transaction/transaction-reports-services';
-import ServiceSpecsServices from '../../../services/service-specs/service-specs-services';
-import BookingServices from '../../../services/booking/booking-services';
-import AddressServices from '../../../services/address/address-services';
-import PaymentServices from '../../../services/payment/payment-services';
-import socketService from '../../../services/sockets/sockets-services';
+import styles from './booking-specs.style';
+import hook from './booking-specs.hook';
 
-
-export default function FinalSpecs({ route, navigation }) {
-  const { typeName, icon, bookingID, addressID, providerID, specsID, serviceID } = route.params;
-  const [description, setDescription] = useState('');
-  const [seekerID, setSeekerID] = useState('');
-  const [cost, setCost] = useState();
-
-  const [loading, setLoading] = useState(true);
-  const [processing, setProcessing] = useState(false);
-
-  const [location, setLocation] = useState('');
-  const [longitude, setLongitude] = useState();
-  const [latitude, setLatitude] = useState();
-  const [region, setRegion] = useState();
-
-  useEffect(() => {
-    ( async() => {
-      try {
-        let userID = await getUserID();
-        let { body: address } = await AddressServices.getAddressByID(addressID);
-        let { body: booking } = await BookingServices.getBookingByID(bookingID);
-        setDescription(booking.description);
-        setCost(booking.cost);
-        setSeekerID(userID);
-        
-        setLocation(addressHandler(address));
-        setLongitude(address.longitude);
-        setLatitude(address.latitude);
-        setRegion({
-          latitude: address.latitude,
-          longitude: address.longitude,
-          latitudeDelta: 0.0060,
-          longitudeDelta: 0.0050,
-        })
-      } catch (err) {
-        Alert.alert('Error', err+'.', [ {text: 'OK'} ]);
-      }
-      setLoading(false);
-    })();
-  }, [])
-
-  const onDecline = async() => {
-    try {
-      let bookingStatus = 1;
-      await BookingServices.patchBooking(bookingID, { bookingStatus });
-      socketService.decisionFinalizeServiceSpec( { roomID: "booking-" + bookingID, decision: false } );
-    } catch (err) {
-      Alert.alert('Error', err+'.', [ {text: 'OK'} ]);
-    }
-    navigation.goBack();
-  }
-
-  const onAccept = async() => {
-    setProcessing(true);
-    try {
-      let paymentMethod = 1;
-      let paymentStatus = 1;
-      let payment = await PaymentServices.createPayment({ 
-        seekerID, providerID, serviceID, paymentMethod, paymentStatus, amount: parseFloat(cost)
-      });
-      
-      let transactionStat = 2;
-      let paymentID = payment.body.paymentID;
-      let transaction = await TransactionReportServices.createTransactionReport({
-        bookingID, paymentID, specsID, seekerID, providerID, serviceID, transactionStat
-      });
-
-      let specsStatus = 3;
-      let bookingStatus = 3;
-      let referencedID = transaction.body.reportID;
-      await BookingServices.patchBooking( bookingID, { bookingStatus });
-      await ServiceSpecsServices.patchServiceSpecs( specsID, { referencedID , specsStatus });
-      socketService.decisionFinalizeServiceSpec( { roomID: "booking-" + bookingID, decision: true } );
-      socketService.offChat();
-
-      let reportID = transaction.body.reportID;
-      navigation.dispatch(StackActions.popToTop());
-      navigation.dispatch(StackActions.popToTop());
-      navigation.navigate('ServeStack', {typeName, icon, reportID });
-    } catch (err) {
-      Alert.alert('Error', err+'.', [ {text: 'OK'} ]);
-    }
-    setProcessing(false);
-  }
-
+export default function BookingSpecs({ route, navigation }) {
+  const {
+    typeName, icon, description, cost, loading, processing, location, longitude, latitude, region, 
+    onDecline, onAccept,
+  } = hook( navigation, route );
   
   if(loading) return <View style={{flex:1}}><Loading/></View>
 
@@ -162,114 +74,3 @@ export default function FinalSpecs({ route, navigation }) {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container:{
-    marginBottom:-6, 
-    backgroundColor: '#FFFFFF',
-  },
-  heading: {
-    fontFamily: 'notosans-medium',
-    fontVariant: ['small-caps'],
-    fontSize: 18,
-    color: '#9C54D5',
-    letterSpacing: -0.8,
-    marginVertical: 8,
-    paddingHorizontal: 20,
-  },
-
-  image: {
-    height: 200,
-    width: '250%',
-    alignSelf:'center',
-  },
-  pin: {
-    width: null,
-    resizeMode: 'contain',
-    height: 40,
-    marginTop: -140,
-    marginBottom: 100
-  },
-
-  address: {
-    marginHorizontal: 24,
-    marginVertical: 10,
-    
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center'
-  },
-  location: {
-    fontFamily: 'quicksand',
-    width: '90%',
-    fontSize: 12,
-    color: '#888486',
-  },
-
-
-  details: {
-    marginHorizontal: 24,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    marginBottom: 4,
-  },
-  content: {
-    fontFamily: 'quicksand',
-    letterSpacing: -0.5,
-    fontSize: 13,
-    marginBottom: 6,
-  },
-  subcontent: {
-    fontFamily: 'quicksand',
-    fontSize: 11,
-    marginBottom: 20,
-    marginTop: -6,
-    marginHorizontal: 24,
-    color: '#888486'
-  },
-
-  footer: {
-    height: 120,
-    backgroundColor: '#F9F9F9',
-    marginTop:6,
-    justifyContent: 'center'
-  },
-  shadow: {
-    marginHorizontal: 30,
-    borderRadius: 6
-  },
-  accept: {
-    height: 40,
-    borderRadius: 4,
-    justifyContent: 'center',
-    marginBottom: 8
-  },
-  decline: {
-    height: 30,
-    borderRadius: 4,
-    justifyContent: 'center',
-    marginBottom: 8,
-    backgroundColor:'#F9F9F9', 
-    borderWidth: 0.6, 
-    borderColor: '#462964', 
-  },
-
-
-  prompt: {
-    textAlign: 'center',
-    fontFamily: 'lexend',
-    color: '#E9E9E9',
-    letterSpacing: -1,
-    fontSize: 16
-  },
-
-  subheading: {
-    flexDirection: 'row', 
-    justifyContent:'space-between',
-    margin: 12,
-    marginTop: -4,
-    alignItems: 'center'
-  }
-});

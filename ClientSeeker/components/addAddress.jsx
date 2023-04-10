@@ -1,6 +1,6 @@
 import { StyleSheet, View, Text, TextInput, ScrollView, TouchableWithoutFeedback, Alert } from 'react-native';
 import { MaterialCommunityIcons  } from '@expo/vector-icons';
-import { addressHandler } from '../utils/addressHandler';
+import { addressHandler } from '../utils/address-handler';
 import { LinearGradient, } from 'expo-linear-gradient';
 import { useEffect, useState } from 'react';
 

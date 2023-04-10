@@ -9,8 +9,8 @@ import Options from '../screens/options/options/options.comp';
 import DashStack from './dash-stack';
 
 import SeekerServices from '../services/user/seeker-services';
-import { getImageURL } from '../utils/getImageURL';
-import { getUserID } from '../utils/getUserID';
+import { getImageURL } from '../utils/get-imageURL';
+import { getUserID } from '../utils/get-userID';
 
 const Stack = createBottomTabNavigator();
 

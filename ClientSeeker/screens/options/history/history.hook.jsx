@@ -3,8 +3,8 @@ import { useState, useEffect, useCallback } from 'react';
 import { Alert } from 'react-native';
 
 import ServiceSpecsServices from '../../../services/service-specs/service-specs-services';
-import { historyHelper } from '../../../utils/historyHelper';
-import { getUserID } from '../../../utils/getUserID';
+import { historyHelper } from '../../../utils/history-helper';
+import { getUserID } from '../../../utils/get-userID';
 
 export default ( ) => {
   const [waiting, setWaiting] = useState(true);

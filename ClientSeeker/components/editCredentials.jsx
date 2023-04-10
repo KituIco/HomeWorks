@@ -4,7 +4,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { useEffect, useState } from 'react';
 
 import CredentialsServices from '../services/user/credentials-services';
-import { contactHandler } from '../utils/contactHandler';
+import { contactHandler } from '../utils/contact-handler';
 import Loading from '../hooks/loading';
 
 export default function EditCredentials( props ) {

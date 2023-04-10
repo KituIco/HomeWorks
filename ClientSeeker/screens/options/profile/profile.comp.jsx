@@ -2,7 +2,7 @@ import { View, Text, ScrollView, Image, TouchableWithoutFeedback, Modal } from '
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 
-import { contactHandler } from '../../../utils/contactHandler';
+import { contactHandler } from '../../../utils/contact-handler';
 import EditCredentials from '../../../components/editCredentials';
 import EditProfile from '../../../components/editProfile';
 import Loading from '../../../hooks/loading';

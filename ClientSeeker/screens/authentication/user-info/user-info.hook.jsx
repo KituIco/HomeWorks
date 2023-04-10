@@ -6,7 +6,7 @@ import CredentialsServices from '../../../services/user/credentials-services';
 import SeekerServices from '../../../services/user/seeker-services';
 import ImageService from '../../../services/image/image-services';
 
-import { dateHandler } from '../../../utils/dateHandler';
+import { dateHandler } from '../../../utils/date-handler';
 import styles from './user-info.style';
 
 async function onSubmit( navigation, data ) {

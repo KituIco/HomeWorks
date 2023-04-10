@@ -6,8 +6,8 @@ import BookingServices from '../../../services/booking/booking-services';
 import socketService from '../../../services/sockets/sockets-services';
 import SeekerServices from '../../../services/seeker/seeker-services';
 
-import { addressHandler } from '../../../utils/addressHandler';
-import { getImageURL } from '../../../utils/getImageURL';
+import { addressHandler } from '../../../utils/address-handler';
+import { getImageURL } from '../../../utils/get-imageURL';
 
 export default ( navigation, route ) => {
   const [value, onChangeText] = useState();

@@ -7,7 +7,7 @@ import BookingServices from '../../../services/booking/booking-services';
 import AddressServices from '../../../services/address/address-services';
 import ServiceServices from '../../../services/service/service-services';
 
-import { addressHandler } from '../../../utils/addressHandler';
+import { addressHandler } from '../../../utils/address-handler';
 
 export default ( navigation, route ) => {
   const { reportID } = route.params;

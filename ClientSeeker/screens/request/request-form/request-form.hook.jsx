@@ -5,7 +5,7 @@ import { Alert } from 'react-native';
 import ServiceSpecsServices from '../../../services/service-specs/service-specs-services';
 import socketService from '../../../services/sockets/sockets-services';
 import ImageService from '../../../services/image/image-services';
-import { getUserID } from '../../../utils/getUserID';
+import { getUserID } from '../../../utils/get-userID';
 
 
 export default ( navigation, route ) => {

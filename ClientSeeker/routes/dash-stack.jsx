@@ -8,8 +8,8 @@ import ProviderFeatured from '../screens/dashboard/provider-featured/provider-fe
 import ProviderExplore from '../screens/dashboard/provider-explore/provider-explore.comp';
 
 import SeekerServices from '../services/user/seeker-services';
-import { getImageURL } from '../utils/getImageURL';
-import { getUserID } from '../utils/getUserID';
+import { getImageURL } from '../utils/get-imageURL';
+import { getUserID } from '../utils/get-userID';
 
 const Stack = createStackNavigator();
 

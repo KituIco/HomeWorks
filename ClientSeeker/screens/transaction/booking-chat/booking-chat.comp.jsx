@@ -1,132 +1,18 @@
-import { StyleSheet, View, Text, Image, ScrollView, TextInput, TouchableWithoutFeedback, Alert } from 'react-native';
+import { View, Text, Image, ScrollView, TextInput, TouchableWithoutFeedback } from 'react-native';
 import { MaterialCommunityIcons  } from '@expo/vector-icons';
-import { useFocusEffect } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { useCallback, useEffect, useState } from 'react';
 
-import ServiceSpecsServices from '../../../services/service-specs/service-specs-services';
-import ProviderServices from '../../../services/provider/provider-services';
-import ServiceServices from '../../../services/service/service-services';
-import BookingServices from '../../../services/booking/booking-services';
-import socketService from '../../../services/sockets/sockets-services';
-
-import { getImageURL } from '../../../utils/getImageURL';
 import Header from '../../../components/transactheader';
 import Loading from '../../../hooks/loading';
 import Back from '../../../hooks/back';
 
-export default function SettleSpecs({ route, navigation }) {
-  const { typeName, icon, address, specsID } = route.params;
-  const [bookingID, setBookingID] = useState();
-  const [serviceID, setServiceID] = useState();
-  const [providerID, setProviderID] = useState();
-  const [addressID, setAddressID] = useState();
+import styles from './booking-chat.style';
+import hook from './booking-chat.hook';
 
-  const [loading,setLoading] = useState(true);
-  const [value, onChangeText] = useState();
-  
-
-  const [providerName, setProviderName] = useState('');
-  const [providerDP, setProviderDP] = useState(require("../../../assets/default.jpg"));
-
-  useEffect(() => {
-    ( async() => {
-      try {
-        let { body: specs } = await ServiceSpecsServices.getSpecsByID(specsID);
-        let { body: booking } = await BookingServices.getBookingByID(specs.referencedID);
-        let { body: service } = await ServiceServices.getService(booking.serviceID);
-        let { body: user } = await ProviderServices.getProvider(service.providerID);
-        
-        setBookingID(specs.referencedID);
-        setServiceID(booking.serviceID);
-        setProviderID(service.providerID);
-        setAddressID(specs.addressID);
-
-        setProviderName(user.firstName + " " + user.lastName);
-        if (user.providerDp)
-          setProviderDP({uri : getImageURL(user.providerDp)});
-      } catch (err) {
-        Alert.alert('Error', err+'.', [ {text: 'OK'} ]);
-        navigation.goBack();
-      }
-      setLoading(false);
-    })(); 
-  }, []);
-
-  useEffect(() => {
-    if(!loading)
-      socketService.joinRoom('booking-' + bookingID);
-  },[loading]);
-
-  useFocusEffect(
-    useCallback(() => {
-      if(!loading)
-      ( async() => {
-        try {
-          await socketService.receiveRejectChat();
-          onReject();
-        } catch(err) {
-          Alert.alert('Error', err+'.', [ {text: 'OK'} ]);
-        }
-      })();
-    }, [loading])
-  )
-
-  useFocusEffect(
-    useCallback(() => {
-      if(!loading)
-      ( async() => {
-        try {
-          await socketService.receiveFinalizeServiceSpec();
-          onUpdate();
-        } catch(err) {
-          Alert.alert('Error', err+'.', [ {text: 'OK'} ]);
-        }
-      })();
-    }, [loading])
-  )
-  
-
-  const onUpdate = async() => {
-    navigation.navigate('FinalSpecs', { typeName, icon, specsID, bookingID, serviceID, providerID, addressID })
-  }
-
-  const onConfirm = async() => {
-    try {
-      await ServiceSpecsServices.patchServiceSpecs(specsID, { specsStatus:1, referencedID:address, specsTimeStamp:Date.now() });
-      await BookingServices.patchBooking(bookingID, { bookingStatus:4 });
-      socketService.rejectChat('booking-' + bookingID);
-
-      socketService.offChat();
-      navigation.goBack();
-    } catch (err) {
-      Alert.alert('Error', err+'.', [ {text: 'OK'} ]);
-    }
-  }
-
-  const onRejection = () => {
-    socketService.offChat();
-    navigation.goBack();
-  }
-
-  const onDecline = async() => {
-    Alert.alert('Decline the Provider', 'Are you sure you want to decline this service provider? If you declined, we will search another service provider for you.', [
-      {
-        text: 'Cancel',
-      },
-      {text: 'OK', 
-        onPress: () => onConfirm(),
-      }
-    ]);
-  }
-
-  const onReject = async() => {
-    Alert.alert('Provider Declined', 'We are sorry. The provider has declined your service request. We will search another service provider for you.', [
-      {text: 'OK', 
-        onPress: () => onRejection(),
-      }
-    ]);
-  }
+export default function BookingChat({ route, navigation }) {
+  const {
+    typeName, icon, loading, value, providerName, providerDP, onChangeText,
+  } = hook( navigation, route );
 
   if (loading) return <View style={{flex:1}}><Loading/></View>
   
@@ -166,57 +52,3 @@ export default function SettleSpecs({ route, navigation }) {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#FFFFFF',
-  },
-  header: {
-    height: 75,
-    backgroundColor: '#F9F9F9',
-    justifyContent: 'space-between',
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 10,
-  },
-
-  profileIcon: {
-    width: 40, 
-    height: 40, 
-    borderRadius: 40/2,
-    marginRight: 15,
-    marginLeft: 10
-  },
-  names: {
-    fontFamily: 'notosans',
-    fontSize: 18,
-    letterSpacing: -0.5,
-    fontVariant: ['small-caps'],
-    fontWeight: '400',
-  },
-
-  footer: {
-    height: 75,
-    backgroundColor: '#F9F9F9',
-    justifyContent: 'center',
-    paddingHorizontal: 10
-  },
-  message: {
-    height: 56,
-    backgroundColor: '#FFFFFF',
-    justifyContent: 'space-between',
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 10,
-    borderRadius: 6,
-  },
-  text: {
-    height: 50,
-    width: '85%',
-    // placeholderTextColor: '#888486',
-    fontFamily: 'quicksand',
-    letterSpacing: -0.5,
-    fontSize: 16
-  }
-});

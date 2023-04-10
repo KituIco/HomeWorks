@@ -1,39 +1,15 @@
-import { useState } from 'react';
-import { StyleSheet, View, Text, ScrollView, TouchableWithoutFeedback, Image } from 'react-native';
+import { View, Text, ScrollView, TouchableWithoutFeedback, Image } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
 import Next from '../../../components/transactnext';
 
-export default function Payment({route, navigation}) {
-  const { service, icon } = route.params;
-  
-  const baseMethods = [
-    { id: 0, type: 'Cash', toggled: true},
-    // { id: 1, type: 'G-Cash', account: '+639** *** 6424', toggled: false},
-    // { id: 2, type: 'G-Cash', account: '+639** *** 3492', toggled: false},
-    // { id: 3, type: 'G-Cash', account: '+639** *** 7831', toggled: false},
-    // { id: 4, type: 'PayMaya', account: '+639** *** 6333', toggled: false},
-    // { id: 5, type: 'PayMaya', account: '+639** *** 8882', toggled: false},
-    // { id: 6, type: 'PayMaya', account: '+639** *** 3241', toggled: false},
-  ]
+import styles from './transacting-payment.style';
+import hook from './transacting-payment.hook';
 
-  for (let i=0; i<baseMethods.length; i++) {
-    if(baseMethods[i].type == 'Cash') baseMethods[i]['src'] = require("../../../assets/cash.png");
-    else if(baseMethods[i].type == 'G-Cash') baseMethods[i]['src'] = require("../../../assets/GCash.png");
-    else if(baseMethods[i].type == 'PayMaya') baseMethods[i]['src'] = require("../../../assets/PayMaya.jpg");
-  }
-
-  const [methods, setMethods] = useState(baseMethods);
-
-  const changeToggle = (id) => {
-    let newMethods = [...methods];
-    for (let i=0; i<newMethods.length; i++){
-      newMethods[i].toggled = false;
-    }
-    newMethods[id].toggled = true;
-    setMethods(newMethods);
-  }
-
+export default function TransactingPayment({route, navigation}) {
+  const { 
+    service, icon, methods, changeToggle,
+  } = hook( route );
 
   const methodsList = data => {
     return (
@@ -53,7 +29,7 @@ export default function Payment({route, navigation}) {
         </TouchableWithoutFeedback>
       </View>
     );
-  };
+  }; 
 
   return (
     <View style={{flex: 1}}>
@@ -69,80 +45,7 @@ export default function Payment({route, navigation}) {
         </View>
       </ScrollView>
       
-      <Next icon={icon} service={service} navigation={navigation} title={'Choose this Option'} screen={'Serving'}/>
+      <Next icon={icon} service={service} navigation={navigation} title={'Choose this Option'} screen={'TransactingServe'}/>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#FFFFFF',
-  },
-  content: {
-    fontFamily: 'lexend',   
-    fontSize: 15,
-    textTransform:'uppercase'
-  },
-  header: {
-    height: 110,
-  },
-  title: {
-    marginTop: 55,
-    marginLeft: 55,
-    fontFamily: 'lexend',
-    fontSize: 20,
-    color: '#FFFFFF'
-  },
-
-  list: {
-    flexDirection:'row', 
-    justifyContent:'space-between',
-    marginVertical: 2,
-    marginHorizontal: 12,
-  },
-
-  options: {
-    flexDirection: 'row',
-    marginVertical: 14,
-    alignItems: 'center',
-  },
-  image: {
-    height: 36,
-    width: 48,
-  },
-  label: {
-    marginLeft: 10,
-  },
-  type: {
-    fontFamily: 'notosans',
-    fontSize: 18,
-    letterSpacing: -0.5,
-    fontVariant: ['small-caps'],
-    fontWeight: '400',
-    lineHeight: 20,
-  },
-  account: {
-    fontFamily: 'quicksand',
-    fontSize: 12,
-    color: '#171717',
-    lineHeight: 12,
-  },
-
-  select: {
-    borderRadius: 12,
-    height: 24,
-    width: 24,
-    borderColor: '#171717',
-    borderWidth: 1,
-    alignSelf: 'center',
-    justifyContent: 'center',
-  },
-  selected: {
-    borderRadius: 9,
-    height: 18,
-    width: 18,
-    backgroundColor: '#9C54D5',
-    alignSelf: 'center',
-  }
-});

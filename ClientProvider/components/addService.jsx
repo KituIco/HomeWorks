@@ -6,8 +6,8 @@ import { useEffect, useState } from 'react';
 import ServiceTypesServices from '../services/service-types/service-types-services';
 import ServiceServices from '../services/service/service-services';
 
-import { removeExisting } from '../utils/removeExisitng';
-import { typeHandler } from '../utils/typeHandler';
+import { removeRegistered } from '../utils/remove-registered';
+import { typeHandler } from '../utils/type-handler';
 import Loading from '../hooks/loading';
 
 export default function AddService( props ) {
@@ -30,7 +30,7 @@ export default function AddService( props ) {
     ( async() =>{
       try {
         let data = await ServiceTypesServices.getServiceTypes();
-        let list = removeExisting(data.body,existing);
+        let list = removeRegistered(data.body,existing);
         setServices(typeHandler(list));
       } catch (err) {
         Alert.alert('Error', err+'.', [ {text: 'OK'} ]);

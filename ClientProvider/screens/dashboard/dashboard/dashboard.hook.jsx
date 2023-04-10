@@ -4,7 +4,7 @@ import { Alert } from 'react-native';
 import ProviderServices from '../../../services/user/provider-services';
 import AddressServices from '../../../services/address/address-services';
 import ServiceServices from '../../../services/service/service-services';
-import { getUserID } from '../../../utils/getUserID';
+import { getUserID } from '../../../utils/get-userID';
 
 export default ( navigation ) => {
   const [verified, setVerified] = useState(true);

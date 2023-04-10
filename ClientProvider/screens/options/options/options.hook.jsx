@@ -1,5 +1,5 @@
-import { getImageURL } from '../../../utils/getImageURL';
-import { getUserID } from '../../../utils/getUserID';
+import { getImageURL } from '../../../utils/get-imageURL';
+import { getUserID } from '../../../utils/get-userID';
 import { useState, useEffect } from 'react';
 import { Alert } from 'react-native';
 

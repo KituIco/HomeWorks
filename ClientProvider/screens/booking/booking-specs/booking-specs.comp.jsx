@@ -3,7 +3,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import MapView, {Marker} from 'react-native-maps';
 
-import { addressHandler } from '../../../utils/addressHandler';
+import { addressHandler } from '../../../utils/address-handler';
 import Loading from '../../../hooks/loading';
 
 import styles from './booking-specs.style';

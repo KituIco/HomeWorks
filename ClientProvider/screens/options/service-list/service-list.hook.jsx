@@ -4,8 +4,8 @@ import { useState, useEffect } from 'react';
 import ProviderServices from '../../../services/user/provider-services';
 import ServiceServices from '../../../services/service/service-services';
 
-import { typeHandler } from '../../../utils/typeHandler';
-import { getUserID } from '../../../utils/getUserID';
+import { typeHandler } from '../../../utils/type-handler';
+import { getUserID } from '../../../utils/get-userID';
 
 
 export default ( ) => {

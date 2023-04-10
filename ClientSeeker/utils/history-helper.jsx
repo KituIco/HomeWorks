@@ -33,7 +33,7 @@ export const historyHelper = async(specs) => {
     let status = ['', 'Active', 'Matching', 'Settled', 'Cancelled'];
     let colors = ['', styles.blue, styles.brown, styles.green, styles.red]
     let button = ['', 'Resend Request', 'View Booking Details', 'View Transaction', 'Resend Request'];
-    let goto = ['', 'Matching', 'SettleSpecs', 'Complete', 'Matching'];
+    let goto = ['', 'RequestMatch', 'MatchStack', 'ProviderStack', 'RequestMatch'];
 
     specs[i]['status'] = status[specs[i].specsStatus];
     specs[i]['button'] = button[specs[i].specsStatus];

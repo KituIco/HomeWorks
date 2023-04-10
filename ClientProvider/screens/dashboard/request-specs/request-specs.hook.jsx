@@ -1,4 +1,4 @@
-import { getImageURL } from '../../../utils/getImageURL';
+import { getImageURL } from '../../../utils/get-imageURL';
 import { useEffect, useState } from 'react';
 import { Alert } from 'react-native';
 

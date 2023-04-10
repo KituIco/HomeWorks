@@ -6,9 +6,9 @@ import CredentialsServices from '../../../services/user/credentials-services';
 import SeekerServices from '../../../services/user/seeker-services';
 import ImageService from '../../../services/image/image-services';
 
-import { contactHandler } from '../../../utils/contactHandler';
-import { getImageURL } from '../../../utils/getImageURL';
-import { getUserID } from '../../../utils/getUserID';
+import { contactHandler } from '../../../utils/contact-handler';
+import { getImageURL } from '../../../utils/get-imageURL';
+import { getUserID } from '../../../utils/get-userID';
 
 
 

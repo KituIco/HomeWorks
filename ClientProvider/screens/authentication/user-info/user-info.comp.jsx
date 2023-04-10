@@ -2,8 +2,8 @@ import { View, Text, Image, TouchableWithoutFeedback, TextInput, ScrollView, Mod
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 
-import { contactHandler } from '../../../utils/contactHandler';
-import { dateHandler } from '../../../utils/dateHandler';
+import { contactHandler } from '../../../utils/contact-handler';
+import { dateHandler } from '../../../utils/date-handler';
 import DatePicker from 'react-native-modern-datepicker';
 import Loading from '../../../hooks/loading';
 

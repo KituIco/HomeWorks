@@ -1,6 +1,6 @@
 import { createStackNavigator } from '@react-navigation/stack';
 
-import Complete from '../screens/transaction/transaction-complete/transaction-complete.comp';
+import TransactionComplete from '../screens/transaction/transaction-complete/transaction-complete.comp';
 
 const Stack = createStackNavigator();
 
@@ -20,11 +20,11 @@ export default function HistoryStack({ route }) {
   }
 
   return (
-      <Stack.Navigator initialRouteName='Complete' >
+      <Stack.Navigator initialRouteName='TransactionComplete' >
 
         <Stack.Screen 
-          name='Complete' 
-          component={Complete}
+          name='TransactionComplete' 
+          component={TransactionComplete}
           initialParams={{ reportID, icon, typeName }}
           options={() => header}
         />

@@ -7,7 +7,7 @@ import Loading from '../hooks/loading';
 import DatePicker from 'react-native-modern-datepicker';
 
 import SeekerServices from '../services/user/seeker-services';
-import { dateHandler } from '../utils/dateHandler';
+import { dateHandler } from '../utils/date-handler';
 
 
 export default function EditProfile( props ) {

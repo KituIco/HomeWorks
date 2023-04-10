@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Alert } from 'react-native';
 
 import ServiceTypeServices from '../../../services/service/service-type-services';
-import { typeHandler } from '../../../utils/typeHandler';
+import { typeHandler } from '../../../utils/type-handler';
 
 export default ( ) => {
   const [processing, setProcessing] = useState(true);

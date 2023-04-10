@@ -2,10 +2,10 @@ import { useFocusEffect } from '@react-navigation/native';
 import { useState, useEffect, useCallback } from 'react';
 import { Alert } from 'react-native';
 
-import { getUserID } from '../../../utils/getUserID';
-import { requestHelper } from '../../../utils/requestHelper';
-import { removeRequest } from '../../../utils/removeRequest';
-import { processRequest } from '../../../utils/processRequest';
+import { getUserID } from '../../../utils/get-userID';
+import { requestHelper } from '../../../utils/request-helper';
+import { removeRequest } from '../../../utils/remove-request';
+import { processRequest } from '../../../utils/process-request';
 
 import ServiceSpecsServices from '../../../services/service-specs/service-specs-services';
 import ServiceTypesServices from '../../../services/service-types/service-types-services';
