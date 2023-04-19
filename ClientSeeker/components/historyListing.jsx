@@ -1,19 +1,35 @@
-import { StyleSheet, View, Text, TouchableWithoutFeedback } from 'react-native';
-import { MaterialCommunityIcons  } from '@expo/vector-icons';
+import { StyleSheet, View, Text, TouchableWithoutFeedback, Modal } from 'react-native';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
+import { useState } from 'react';
 
 export default function Listing( props ) {
   const services = props.listings;
+  const [openSpecs, setOpenSpecs] = useState(false);
 
   const navigateTo = (data) => {
-    if(data.specsStatus == 4) {
-      
+    if(data.specsStatus == 4 || data.specsStatus == 1) {
+      setOpenSpecs(true);
     }
   }
   
   const servicesList = data => {
     return (
-      <LinearGradient colors={['rgba(0,0,0,0.3)','rgba(0,0,0,0.12)'  ]} start={{ x:0, y:0.95 }} end={{ x:0, y:0.98 }} style={styles.shadow} key={data.specsID}>
+      <LinearGradient colors={['rgba(0,0,0,0.3)','rgba(0,0,0,0.12)']} start={{ x:0, y:0.95 }} end={{ x:0, y:0.98 }} style={styles.shadow} key={data.specsID}>
+        { openSpecs && <View style={styles.overlay}/> }
+        <Modal visible={openSpecs} transparent={true} animationType='slide'>
+          <View style={styles.centered}>
+            <View style={styles.modal}>
+
+              
+              <TouchableWithoutFeedback onPress= {() => setOpenSpecs(false)}>
+                <Text style={styles.enter}>CLOSE</Text>
+              </TouchableWithoutFeedback>
+
+            </View>
+          </View>
+        </Modal>
+
         <View style={styles.box}>
 
           <View style={styles.content}>
@@ -41,6 +57,7 @@ export default function Listing( props ) {
           </TouchableWithoutFeedback>
 
         </View>
+
       </LinearGradient>
     );
   };
@@ -127,5 +144,35 @@ const styles = StyleSheet.create({
     alignSelf:'flex-end', 
     fontSize:13, 
     marginTop:-2
+  },
+
+  centered: {
+    flex:1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modal: {
+    borderRadius: 20,
+    backgroundColor: 'white',
+    width: '90%',
+    padding: 10,
+    height: '75%'
+  },
+  enter: {
+    fontSize:16,
+    color:'#000', 
+    alignSelf:'center', 
+    fontFamily: 'lexend',
+    marginBottom: 10,
+    letterSpacing: -0.5,
+  },
+
+  overlay: {
+    position: 'absolute', 
+    top: 0, left: 0, right: 0, bottom: 0, 
+    justifyContent: 'center', 
+    alignItems: 'center',
+    zIndex: 15,
+    backgroundColor: '#E9E9E9A0'
   },
 });
