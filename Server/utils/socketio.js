@@ -10,6 +10,7 @@ io.on('connection', (socket) => {
         socket.join(roomName)
     })
 
+    // ============================== request phase ============================== //
     socket.on('new-service-spec', (data) => {
         socket.to("providers").emit('receive-new-service-spec', data);
     })
@@ -22,6 +23,11 @@ io.on('connection', (socket) => {
         socket.to(data).emit('receive-accept-service-spec', 'Service Specs Accepted');
     })
 
+    // ============================== match phase ============================== //
+    socket.on('send-message', (data) => {
+        socket.to(data.roomID).emit('receive-message', data.message);
+    })
+    
     socket.on('provider-reject-chat', (data) => {
         socket.to(data).emit('receive-provider-reject-chat', 'Provider has Rejected');
     })
@@ -38,6 +44,7 @@ io.on('connection', (socket) => {
         socket.to(data.roomID).emit('receive-decision-finalize-service-spec', data.decision);
     })
 
+    // ============================== serve phase ============================== //
     socket.on('provider-serving', (data) => {
         socket.to(data).emit('receive-provider-serving', 'Provider is Serving');
     })

@@ -1,11 +1,12 @@
+import { useCallback, useEffect, useState, useRef } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
-import { useCallback, useEffect, useState } from 'react';
 import { Alert } from 'react-native';
 
 import ServiceSpecsServices from '../../../services/service-specs/service-specs-services';
 import ProviderServices from '../../../services/provider/provider-services';
 import ServiceServices from '../../../services/service/service-services';
 import BookingServices from '../../../services/booking/booking-services';
+import MessageServices from '../../../services/message/message-services';
 import socketService from '../../../services/sockets/sockets-services';
 
 import { getImageURL } from '../../../utils/get-imageURL';
@@ -17,11 +18,16 @@ export default ( navigation, route ) => {
   const [providerID, setProviderID] = useState();
   const [addressID, setAddressID] = useState();
 
+  const [refreshing, setRefreshing] = useState(false);
+  const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  const [counter, setCounter] = useState(10000);
   const [value, onChangeText] = useState();
 
   const [providerName, setProviderName] = useState('');
   const [providerDP, setProviderDP] = useState(require("../../../assets/default.jpg"));
+  const scrollViewRef = useRef();
 
   useEffect(() => {
     ( async() => {
@@ -50,7 +56,23 @@ export default ( navigation, route ) => {
   useEffect(() => {
     if(!loading)
       socketService.joinRoom('booking-' + bookingID);
+      socketService.joinRoom('booking-' + bookingID + '-seeker');
   },[loading]);
+
+  useFocusEffect(
+    useCallback(() => {
+      if(!loading)
+      ( async() => {
+        try {
+          let newMessage = await socketService.receiveMessage();
+          let newMessages = [...messages, newMessage];
+          setMessages(newMessages);
+        } catch(err) {
+          Alert.alert('Error', err+'.', [ {text: 'OK'} ]);
+        }
+      })();
+    }, [loading, messages])
+  )
 
   useFocusEffect(
     useCallback(() => {
@@ -115,9 +137,43 @@ export default ( navigation, route ) => {
       [ { text: 'OK', onPress: () => onRejection(), } ]);
   }
 
+  const onSendMsg = async() => {
+    try {
+      await MessageServices.createMessage({ bookingID, userID:providerID, message:value, dateTimestamp:Date.now()})
+      let newMessage = { bookingID, userID:providerID, message:value, dateTimestamp:Date.now(), messageID:counter.toString() };
+      let newMessages = [...messages, newMessage];
+      let newCounter = counter + 1;
+
+      socketService.sendMessage({ roomID: 'booking-' + bookingID + '-provider', message: newMessage });
+      setMessages(newMessages);
+      setCounter(newCounter);
+      onChangeText('');
+    } catch (err) {
+      Alert.alert('Error', err+'.', [ {text: 'OK'} ]);
+    }
+  }
+
+  const getMessages = async() => {
+    let message = await MessageServices.getBookingMessages(bookingID);
+    // let message = await historyHelper(specs.body);
+    setMessages(message.body);
+  }
+
+  const onRefresh = useCallback (() => {
+    if(bookingID)
+    ( async() => {  
+      setRefreshing(true);
+      try {
+        getMessages();
+      } catch (err) {
+        Alert.alert('Error', err+'.', [ {text: 'OK'} ]);
+      }
+      setRefreshing(false);
+    })();
+  }, [bookingID]);
 
   return {
-    typeName, icon, address, specsID, 
+    typeName, icon, address, specsID, scrollViewRef,
     bookingID, setBookingID,
     serviceID, setServiceID,
     providerID, setProviderID,
@@ -128,8 +184,13 @@ export default ( navigation, route ) => {
   
     providerName, setProviderName,
     providerDP, setProviderDP,
+    refreshing, setRefreshing,
+    messages, setMessages,
 
     onUpdate,
     onConfirm,
+    onDecline,
+    onSendMsg,
+    onRefresh,
   }
 }

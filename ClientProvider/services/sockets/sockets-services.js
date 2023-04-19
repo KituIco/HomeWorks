@@ -4,6 +4,7 @@ import {REACT_NATIVE_PACKAGER_HOSTNAME} from '@env';
 let socket = io(`http://${REACT_NATIVE_PACKAGER_HOSTNAME}:3000`);
 
 let socketService = {
+    // ============================== request phase ============================== //
     receiveNewServiceSpec: () => {
         return new Promise((resolve, reject) => {
             socket.on('receive-new-service-spec', (data) => {
@@ -29,8 +30,20 @@ let socketService = {
         socket.emit('service-spec-unavailable', data);
     },
 
+    // ============================== match phase ============================== //
     rejectChat: (data) => {
         socket.emit('provider-reject-chat', data)
+    },
+    sendMessage: (data) => {
+        socket.emit('send-message', data)
+    },
+    receiveMessage: () => {
+        return new Promise((resolve, reject) => {
+            socket.on('receive-message', (data) => {
+                resolve(data);
+                socket.off('receive-message');
+            });
+        });
     },
     receiveRejectChat: () => {
         return new Promise((resolve, reject) => {
@@ -42,6 +55,7 @@ let socketService = {
     },
     offChat: () => {
         socket.off('receive-seeker-reject-chat');
+        socket.off('receive-message');
     },
     
     finalizeServiceSpec: (data) => {
@@ -59,6 +73,7 @@ let socketService = {
         socket.off('receive-decision-finalize-service-spec');
     },
 
+    // ============================== serve phase ============================== //
     providerServing: (data) => {
         socket.emit('provider-serving', data);
     },

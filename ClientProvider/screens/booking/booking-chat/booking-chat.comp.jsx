@@ -1,7 +1,8 @@
-import { View, Text, Image, ScrollView, TextInput, TouchableWithoutFeedback } from 'react-native';
+import { View, Text, Image, ScrollView, TextInput, TouchableWithoutFeedback, RefreshControl } from 'react-native';
 import { MaterialCommunityIcons  } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 
+import Listing from '../../../components/messageListing';
 import Loading from '../../../hooks/loading';
 import Back from '../../../hooks/back';
 
@@ -11,8 +12,8 @@ import hook from './booking-chat.hook';
 
 export default function BookingChat({ navigation, route }) {
   const {
-    value, loading, seekerName, seekerDP, 
-    data, onChangeText, onDecline,
+    value, loading, seekerName, seekerDP, seekerID, refreshing, messages, scrollViewRef, data, 
+    onChangeText, onDecline, onSendMsg, onRefresh, 
   } = hook( navigation, route );
 
   if (loading) return <View style={{flex:1}}><Loading/></View>
@@ -49,10 +50,12 @@ export default function BookingChat({ navigation, route }) {
         
 
         <LinearGradient colors={['rgba(0,0,0,0.1)','rgba(0,0,0,0)'  ]} start={{ x:0, y:0 }} end={{ x:0, y:1 }} style={{height:4}}/>
-        <ScrollView style={{flex:1}}>
-          <View style={{justifyContent:'center', alignItems:'center', marginTop:'60%'}}>
-              <Text style={{fontFamily: 'lexend', fontSize: 15, textTransform:'uppercase'}}>Chat!</Text>
-          </View>
+        <ScrollView style={{flex:1, width: '100%'}} 
+          refreshControl={ <RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>}
+          ref={scrollViewRef}
+          onContentSizeChange={() => scrollViewRef.current.scrollToEnd({ animated: true })}
+        >
+          <Listing listings={messages} userID={seekerID} />
         </ScrollView>
         <LinearGradient colors={['rgba(0,0,0,0.1)','rgba(0,0,0,0)'  ]} start={{ x:0, y:1 }} end={{ x:0, y:0 }} style={{height:4}}/>
 
@@ -60,7 +63,13 @@ export default function BookingChat({ navigation, route }) {
           <View style={styles.message}> 
             <TextInput multiline numberOfLines={5} onChangeText={text => onChangeText(text)} value={value} style={styles.text}
               placeholder='Text Message'/>
-            <MaterialCommunityIcons name={'send'} color={'#9C54D5'} size={24}/>
+            
+            { value &&
+              <TouchableWithoutFeedback onPress={() => onSendMsg()}>
+                 <MaterialCommunityIcons name={'send'} color={'#9C54D5'} size={24}/>
+              </TouchableWithoutFeedback>
+            }
+            
           </View>
         </View>
       </View> 

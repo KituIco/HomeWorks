@@ -4,6 +4,7 @@ import {REACT_NATIVE_PACKAGER_HOSTNAME} from '@env';
 let socket = io(`http://${REACT_NATIVE_PACKAGER_HOSTNAME}:3000`);
 
 let socketService = {
+    // ============================== request phase ============================== //
     createServiceSpec: (data) => {
         socket.emit('new-service-spec', data);
     },
@@ -23,8 +24,20 @@ let socketService = {
         socket.off('receive-accept-service-spec');
     },
 
+    // ============================== match phase ============================== //
     rejectChat: (data) => {
         socket.emit('seeker-reject-chat', data)
+    },
+    sendMessage: (data) => {
+        socket.emit('send-message', data)
+    },
+    receiveMessage: () => {
+        return new Promise((resolve, reject) => {
+            socket.on('receive-message', (data) => {
+                resolve(data);
+                socket.off('receive-message');
+            });
+        });
     },
     receiveRejectChat: () => {
         return new Promise((resolve, reject) => {
@@ -45,12 +58,14 @@ let socketService = {
     offChat: () => {
         socket.off('receive-provider-reject-chat');
         socket.off('receive-finalize-service-spec');
+        socket.off('receive-message');
     },
 
     decisionFinalizeServiceSpec: (data) => {
         socket.emit('decision-finalize-service-spec', data);
     },
 
+    // ============================== serve phase ============================== //
     receiveProviderServing: () => {
         return new Promise((resolve, reject) => {
             socket.on('receive-provider-serving', (data) => {
@@ -59,6 +74,7 @@ let socketService = {
             });
         });
     },
+    
     receivePaymentReceived: () => {
         return new Promise((resolve, reject) => {
             socket.on('receive-payment-received', (data) => {
