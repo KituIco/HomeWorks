@@ -100,4 +100,64 @@ export default StyleSheet.create({
     alignItems: 'center',
     width: '100%'
   },
+
+  close: {
+    zIndex: 5,
+    position: 'absolute',
+    width: 30,
+    height: 30, 
+    borderRadius: 15,
+    backgroundColor: '#9C54D5',
+    right: 20,
+    top: 20,
+    zIndex: 20,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+
+  viewImage: {
+    height: 56,
+    backgroundColor: '#FFFFFF',
+    justifyContent: 'center',
+    flexDirection: 'row',
+    paddingHorizontal: 10,
+    borderRadius: 6,
+    width:'70%',
+    borderWidth: 1,
+    borderColor: '#9C54D5',
+  },
+  viewFont: {
+    fontFamily:'quicksand-medium', 
+    fontSize:16, 
+    color:'#9C54D5', 
+    marginTop:16
+  },
+  viewSubscript: {
+    fontFamily:'quicksand-light', 
+    fontSize:9, 
+    color:'#9C54D5', 
+    lineHeight: 36, 
+    marginTop:16
+  },
+
+  sendImage: {
+    height: 56,
+    backgroundColor: '#9C54D5',
+    justifyContent: 'center',
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 10,
+    borderRadius: 6,
+    width:'15%'
+  },
+  removeImage: {
+    height: 56,
+    backgroundColor: '#FFD0DB',
+    justifyContent: 'center',
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 10,
+    borderRadius: 6,
+    width:'12%'
+  }
 });

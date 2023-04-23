@@ -1,9 +1,8 @@
-import { View, Text, Image, ScrollView, TouchableWithoutFeedback, Alert } from 'react-native';
+import { View, Text, Image, ScrollView, TouchableWithoutFeedback, Modal } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons'; 
 import { LinearGradient } from 'expo-linear-gradient';
 import ImageViewer from 'react-native-image-zoom-viewer';
 import MapView, {Marker} from 'react-native-maps';
-import { Modal } from 'react-native';
 
 import { addressHandler } from '../../../utils/address-handler';
 import Loading from '../../../hooks/loading';

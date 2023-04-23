@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
+import * as ImagePicker from 'expo-image-picker';
 import { Alert } from 'react-native';
 
 import ServiceSpecsServices from '../../../services/service-specs/service-specs-services';
@@ -6,6 +7,7 @@ import BookingServices from '../../../services/booking/booking-services';
 import MessageServices from '../../../services/message/message-services';
 import socketService from '../../../services/sockets/sockets-services';
 import SeekerServices from '../../../services/seeker/seeker-services';
+import ImageService from '../../../services/image/image-services';
 
 import { addressHandler } from '../../../utils/address-handler';
 import { getImageURL } from '../../../utils/get-imageURL';
@@ -19,6 +21,10 @@ export default ( navigation, route ) => {
   let data = route.params;
   let bookingID = data.bookingID;
   const scrollViewRef = useRef();
+
+  const [images, setImages] = useState(null);
+  const [open, setOpen] = useState(false);
+  const [viewer, setViewer] = useState();
   
   const [counter, setCounter] = useState(0);
   const [seekerID, setSeekerID] = useState();
@@ -53,8 +59,19 @@ export default ( navigation, route ) => {
     ( async() => {
       try {
         let newMessage = await socketService.receiveMessage();
-        let newMessages = [...messages, newMessage];
-        setMessages(newMessages);
+        if(newMessage.message) {
+          setMessages([...messages, newMessage]);
+        }
+        else if(newMessage.images && newMessage.userID != seekerID) {
+          setMessages([...messages, newMessage]);
+          socketService.sendMessage({ roomID: 'booking-' + bookingID + '-seeker', message: newMessage });
+        } 
+        else if(newMessage.images) {
+          setMessages([...messages.filter((data) => data.messageID !== newMessage.messageID), newMessage]);
+        }
+        else {
+          setMessages(messages.filter((data) => data.messageID !== newMessage.messageID));
+        }
       } catch(err) {
         Alert.alert('Error', err+'.', [ {text: 'OK'} ]);
       }
@@ -121,9 +138,67 @@ export default ( navigation, route ) => {
 
   const getMessages = async() => {
     let message = await MessageServices.getBookingMessages(bookingID);
-    // let message = await historyHelper(specs.body);
     setMessages(message.body);
   }
+
+  const pickImages = async () => {
+    try {
+      let result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.All,
+        allowsMultipleSelection: true,
+        selectionLimit:4,
+        quality: 1,
+      });
+      let image = [];
+      let uriImage = []
+      for( let i=0; i<result.assets.length && i<4; i++) {
+        image.push(result.assets[i].uri);
+        uriImage.push({url: result.assets[i].uri})
+      }
+      setImages(image);
+      setViewer(uriImage);
+    } catch (err) {
+      Alert.alert('Error', err+'.', [ {text: 'OK'} ]);
+    }
+  }
+
+  const removeImages = async () => {
+    setImages();
+    setViewer();
+  }
+
+  const viewImages = async () => {
+    setOpen(true);
+  }
+
+  const sendImages = async () => {
+    let loadingID;
+    let newMessage = { bookingID, userID:seekerID, dateTimestamp:Date.now(), messageID:counter.toString() };
+    try{
+      let newMessages = [...messages, newMessage];
+      let newCounter = counter + 1;
+
+      setMessages(newMessages);
+      setCounter(newCounter);
+      setImages();
+      setViewer();
+
+      loadingID = newCounter - 1;
+      let urls = await ImageService.uploadFiles(images);
+      urls = JSON.stringify(urls);
+      
+      await MessageServices.createMessage({ bookingID, userID:seekerID, images:urls, dateTimestamp:Date.now()})
+      newMessage = { bookingID, userID:seekerID, images:urls, dateTimestamp:Date.now(), messageID:loadingID.toString() };
+      // newMessages = [...messages.filter((data) => data.messageID !== newCounter.toString()), newMessage];
+
+      socketService.sendMessage({ roomID: 'booking-' + bookingID + '-seeker', message: newMessage });
+    } catch (err) {
+      Alert.alert('Error', err+'.', [ {text: 'OK'} ]);
+      socketService.sendMessage({ roomID: 'booking-' + bookingID + '-seeker', message: newMessage });
+    }
+    
+  }
+
 
   const onRefresh = useCallback (() => {
     if(bookingID)
@@ -145,13 +220,21 @@ export default ( navigation, route ) => {
     seekerName, setSeekerName,
     seekerDP, setSeekerDP,
     seekerID, setSeekerID,
+    viewer, setViewer,
+    open, setOpen,
 
     data, bookingID, scrollViewRef,
     refreshing, setRefreshing,
     messages, setMessages,
+    images, setImages,
     
     onDecline,
     onSendMsg,
     onRefresh,
+
+    pickImages,
+    viewImages,
+    removeImages,
+    sendImages,
   }
 }
