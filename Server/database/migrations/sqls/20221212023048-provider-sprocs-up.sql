@@ -24,7 +24,15 @@ BEGIN
             valid_id,
             agency_id,
             verified,
-            ave_rating
+            accepting,
+            ave_rating,
+            total_reviews,
+            review_count,
+            five_star,
+            four_star,
+            three_star,
+            two_star,
+            one_star
         )
     VALUES(
         provID,
@@ -36,7 +44,15 @@ BEGIN
         valID,
         agncyID,
         vrfy,
-        aveRtng
+        0,
+        aveRtng,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
     );
 END;
 
@@ -52,7 +68,15 @@ CREATE PROCEDURE `patch_provider`(
     IN `valID` VARCHAR(255),
     IN `agncyID` VARCHAR(14),
     IN `vrfy` TINYINT,
-    IN `aveRtng` FLOAT
+    IN `accpting` TINYINT,
+    IN `aveRtng` FLOAT,
+    IN `ttlRvws` INT,
+    IN `rvwCnt` INT,
+    IN `fvStr` INT,
+    IN `fStr` INT,
+    IN `tStr` INT,
+    IN `twStr` INT,
+    IN `oStr` INT
 )
 BEGIN
     UPDATE
@@ -66,7 +90,15 @@ BEGIN
         valid_id = COALESCE(valID, valid_id),
         agency_id = COALESCE(agncyID, agency_id),
         verified = COALESCE(vrfy, verified),
-        ave_rating = COALESCE(aveRtng, ave_rating)
+        accepting = COALESCE(accpting, accepting),
+        ave_rating = COALESCE(aveRtng, ave_rating),
+        total_reviews = COALESCE(ttlRvws, total_reviews),
+        review_count = COALESCE(rvwCnt, review_count),
+        five_star = COALESCE(fvStr, five_star),
+        four_star = COALESCE(fStr, four_star),
+        three_star = COALESCE(tStr, three_star),
+        two_star = COALESCE(twStr, two_star),
+        one_star = COALESCE(oStr, one_star)
     WHERE
         provider_id = provID;
 END;
@@ -97,7 +129,15 @@ BEGIN
         valid_id AS validId,
         agency_id AS agencyId,
         verified,
-        ave_rating AS aveRating
+        accepting,
+        ave_rating AS aveRating,
+        total_reviews AS totalReviews,
+        review_count AS reviewCount,
+        five_star AS fiveStar,
+        four_star AS fourStar,
+        three_star AS threeStar,
+        two_star AS twoStar,
+        one_star AS oneStar
     FROM
         Provider;
 END;
@@ -118,7 +158,15 @@ BEGIN
         valid_id AS validId,
         agency_id AS agencyId,
         verified,
-        ave_rating AS aveRating
+        accepting,
+        ave_rating AS aveRating,
+        total_reviews AS totalReviews,
+        review_count AS reviewCount,
+        five_star AS fiveStar,
+        four_star AS fourStar,
+        three_star AS threeStar,
+        two_star AS twoStar,
+        one_star AS oneStar
     FROM
         Provider
     WHERE

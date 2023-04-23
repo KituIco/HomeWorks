@@ -161,7 +161,15 @@ class ProviderController {
                 validID,
                 agencyID,
                 verified,
-                aveRating
+                accepting,
+                aveRating,
+                totalReviews,
+                reviewCount,
+                fiveStar,
+                fourStar,
+                threeStar,
+                twoStar,
+                oneStar
             } = req.body;
 
             let { providerID } = req.params;
@@ -184,7 +192,15 @@ class ProviderController {
                 validID,
                 agencyID,
                 verified,
-                aveRating
+                accepting,
+                aveRating,
+                totalReviews,
+                reviewCount,
+                fiveStar,
+                fourStar,
+                threeStar,
+                twoStar,
+                oneStar
             );
 
             let patchedProvider = {

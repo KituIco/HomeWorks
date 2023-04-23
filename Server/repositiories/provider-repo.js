@@ -46,10 +46,18 @@ class ProviderRepository {
         validID,
         agencyID,
         verified,
-        aveRating
+        accepting,
+        aveRating,
+        totalReviews,
+        reviewCount,
+        fiveStar,
+        fourStar,
+        threeStar,
+        twoStar,
+        oneStar
     ) => {
         try {
-            let sqlQuery = `CALL patch_provider(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+            let sqlQuery = `CALL patch_provider(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
             await this.db.query(sqlQuery, [
                 providerID,
                 firstName,
@@ -60,7 +68,15 @@ class ProviderRepository {
                 validID,
                 agencyID,
                 verified,
-                aveRating
+                accepting,
+                aveRating,
+                totalReviews,
+                reviewCount,
+                fiveStar,
+                fourStar,
+                threeStar,
+                twoStar,
+                oneStar
             ]);
         } catch (error) {
             // TODO: Handle SQL error

@@ -61,7 +61,39 @@ class ProviderValidator extends CredentialsValidator {
                 required: false,
                 type: 'number'
             },
+            accepting: {
+                required: false,
+                type: 'number'
+            },
             aveRating : {
+                required: false,
+                type: 'number'
+            },
+            totalReviews: {
+                required: false,
+                type: 'number'
+            },
+            reviewCount: {
+                required: false,
+                type: 'number'
+            },
+            fiveStar: {
+                required: false,
+                type: 'number'
+            },
+            fourStar: {
+                required: false,
+                type: 'number'
+            },
+            threeStar: {
+                required: false,
+                type: 'number'
+            },
+            twoStar: {
+                required: false,
+                type: 'number'
+            },
+            oneStar: {
                 required: false,
                 type: 'number'
             }
