@@ -31,9 +31,8 @@ BEGIN
     );
     
     CALL concurrent_updates_service(srvceID, rvwRtng, 1);
-    DECLARE serviceProviderId VARCHAR(14);
-    SELECT provider_id INTO serviceProviderId FROM Service WHERE service_id = srvceID LIMIT 1;
-    CALL concurrent_updates_provider(serviceProviderId, rvwRtng, 1);
+    SELECT provider_id INTO @serviceProviderId FROM Service WHERE service_id = srvceID LIMIT 1;
+    CALL concurrent_updates_provider(@serviceProviderId, rvwRtng, 1);
 END;
 
 -- Patch existing review by review_id

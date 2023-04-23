@@ -233,8 +233,8 @@ CREATE TABLE IF NOT EXISTS `Address`(
     `is_default` TINYINT NOT NULL,
     PRIMARY KEY (`address_id`),
     FOREIGN KEY (`user_id`) REFERENCES User(`user_id`) ON DELETE CASCADE,
-    SPATIAL INDEX coordinates_index USING SPATIAL RTree (`coordinates`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+    SPATIAL INDEX coordinates_index (`coordinates`)
+);
 
 -- DROP TABLE IF EXISTS `Message`;
 CREATE TABLE IF NOT EXISTS `Message`(
