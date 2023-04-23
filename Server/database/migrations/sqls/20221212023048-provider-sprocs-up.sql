@@ -172,3 +172,142 @@ BEGIN
     WHERE
         provider_id = provID;
 END;
+
+-- Concurrently update ave_rating, total_reviews, review_count, five_star, four_star, three_star, two_star, one_star
+DROP PROCEDURE IF EXISTS `concurrent_updates_provider`;
+CREATE PROCEDURE `concurrent_updates_provider`(
+    IN `provID` VARCHAR(14),
+    IN `rating` INT,
+    IN `mult` INT
+)
+BEGIN
+    DECLARE current_ave_rating FLOAT;
+    DECLARE current_total_reviews INT;
+    DECLARE current_review_count INT;
+    DECLARE current_five_star INT;
+    DECLARE current_four_star INT;
+    DECLARE current_three_star INT;
+    DECLARE current_two_star INT;
+    DECLARE current_one_star INT;
+    IF rating = 5 THEN
+        START TRANSACTION;
+            SELECT
+                ave_rating,
+                total_reviews,
+                review_count,
+                five_star
+            INTO
+                current_ave_rating,
+                current_total_reviews,
+                current_review_count,
+                current_five_star
+            FROM Provider
+            WHERE provider_id = provID;
+            UPDATE 
+                Provider
+            SET
+                ave_rating = (current_total_reviews + (rating * mult)) / (current_review_count + mult),
+                total_reviews = current_total_reviews + (rating * mult),
+                review_count = current_review_count + mult,
+                five_star = current_five_star + mult
+            WHERE
+                provider_id = provID;
+        COMMIT;
+    ELSEIF rating = 4 THEN
+        START TRANSACTION;
+            SELECT
+                ave_rating,
+                total_reviews,
+                review_count,
+                four_star
+            INTO
+                current_ave_rating,
+                current_total_reviews,
+                current_review_count,
+                current_four_star
+            FROM Provider
+            WHERE provider_id = provID;
+            UPDATE 
+                Provider
+            SET
+                ave_rating = (current_total_reviews + (rating * mult)) / (current_review_count + mult),
+                total_reviews = current_total_reviews + (rating * mult),
+                review_count = current_review_count + mult,
+                four_star = current_four_star + mult
+            WHERE
+                provider_id = provID;
+        COMMIT;
+    ELSEIF rating = 3 THEN
+        START TRANSACTION;
+            SELECT
+                ave_rating,
+                total_reviews,
+                review_count,
+                three_star
+            INTO
+                current_ave_rating,
+                current_total_reviews,
+                current_review_count,
+                current_three_star
+            FROM Provider
+            WHERE provider_id = provID;
+            UPDATE 
+                Provider
+            SET
+                ave_rating = (current_total_reviews + (rating * mult)) / (current_review_count + mult),
+                total_reviews = current_total_reviews + (rating * mult),
+                review_count = current_review_count + mult,
+                three_star = current_three_star + mult
+            WHERE
+                provider_id = provID;
+        COMMIT;
+    ELSEIF rating = 2 THEN
+        START TRANSACTION;
+            SELECT
+                ave_rating,
+                total_reviews,
+                review_count,
+                two_star
+            INTO
+                current_ave_rating,
+                current_total_reviews,
+                current_review_count,
+                current_two_star
+            FROM Provider
+            WHERE provider_id = provID;
+            UPDATE 
+                Provider
+            SET
+                ave_rating = (current_total_reviews + (rating * mult)) / (current_review_count + mult),
+                total_reviews = current_total_reviews + (rating * mult),
+                review_count = current_review_count + mult,
+                two_star = current_two_star + mult
+            WHERE
+                provider_id = provID;
+        COMMIT;
+    ELSEIF rating = 1 THEN
+        START TRANSACTION;
+            SELECT
+                ave_rating,
+                total_reviews,
+                review_count,
+                one_star
+            INTO
+                current_ave_rating,
+                current_total_reviews,
+                current_review_count,
+                current_one_star
+            FROM Provider
+            WHERE provider_id = provID;
+            UPDATE 
+                Provider
+            SET
+                ave_rating = (current_total_reviews + (rating * mult)) / (current_review_count + mult),
+                total_reviews = current_total_reviews + (rating * mult),
+                review_count = current_review_count + mult,
+                one_star = current_one_star + mult
+            WHERE
+                provider_id = provID;
+        COMMIT;
+    END IF;
+END;

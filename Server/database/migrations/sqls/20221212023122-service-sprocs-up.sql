@@ -257,3 +257,87 @@ BEGIN
     WHERE
         service_id = srvce_id;
 END;
+
+-- Concurrently update service_rating, total_reviews, reviews_count, five_star, four_star, three_star, two_star, one_star
+DROP PROCEDURE IF EXISTS `concurrent_updates_service`;
+CREATE PROCEDURE `concurrent_updates_service`(
+    IN `srvce_id` VARCHAR(14), 
+    IN `rating` INT,
+    IN `mult` INT
+)
+BEGIN
+    DECLARE current_service_rating FLOAT;
+    DECLARE current_total_reviews INT;
+    DECLARE current_reviews_count INT;
+    DECLARE current_five_star INT;
+    DECLARE current_four_star INT;
+    DECLARE current_three_star INT;
+    DECLARE current_two_star INT;
+    DECLARE current_one_star INT;
+    IF rating = 5 THEN
+        START TRANSACTION;
+            SELECT service_rating, total_reviews, reviews_count, five_star INTO current_service_rating, current_total_reviews, current_reviews_count, current_five_star FROM Service WHERE service_id = srvce_id FOR UPDATE;
+            UPDATE 
+                Service
+            SET
+                service_rating = (current_total_reviews + mult*(rating)) / (current_reviews_count + mult*(1)),
+                total_reviews = current_total_reviews + mult*(rating),
+                reviews_count = current_reviews_count + mult*(1),
+                five_star = current_five_star + mult*(1)
+            WHERE
+                service_id = srvce_id;
+        COMMIT;
+    ELSEIF rating = 4 THEN
+        START TRANSACTION;
+            SELECT service_rating, total_reviews, reviews_count, four_star INTO current_service_rating, current_total_reviews, current_reviews_count, current_four_star FROM Service WHERE service_id = srvce_id FOR UPDATE;
+            UPDATE 
+                Service
+            SET
+                service_rating = (current_total_reviews + mult*(rating)) / (current_reviews_count + mult*(1)),
+                total_reviews = current_total_reviews + mult*(rating),
+                reviews_count = current_reviews_count + mult*(1),
+                four_star = current_four_star + mult*(1)
+            WHERE
+                service_id = srvce_id;
+        COMMIT;
+    ELSEIF rating = 3 THEN
+        START TRANSACTION;
+            SELECT service_rating, total_reviews, reviews_count, three_star INTO current_service_rating, current_total_reviews, current_reviews_count, current_three_star FROM Service WHERE service_id = srvce_id FOR UPDATE;
+            UPDATE 
+                Service
+            SET
+                service_rating = (current_total_reviews + mult*(rating)) / (current_reviews_count + mult*(1)),
+                total_reviews = current_total_reviews + mult*(rating),
+                reviews_count = current_reviews_count + mult*(1),
+                three_star = current_three_star + mult*(1)
+            WHERE
+                service_id = srvce_id;
+        COMMIT;
+    ELSEIF rating = 2 THEN
+        START TRANSACTION;
+            SELECT service_rating, total_reviews, reviews_count, two_star INTO current_service_rating, current_total_reviews, current_reviews_count, current_two_star FROM Service WHERE service_id = srvce_id FOR UPDATE;
+            UPDATE 
+                Service
+            SET
+                service_rating = (current_total_reviews + mult*(rating)) / (current_reviews_count + mult*(1)),
+                total_reviews = current_total_reviews + mult*(rating),
+                reviews_count = current_reviews_count + mult*(1),
+                two_star = current_two_star + mult*(1)
+            WHERE
+                service_id = srvce_id;
+        COMMIT;
+    ELSEIF rating = 1 THEN
+        START TRANSACTION;
+            SELECT service_rating, total_reviews, reviews_count, one_star INTO current_service_rating, current_total_reviews, current_reviews_count, current_one_star FROM Service WHERE service_id = srvce_id FOR UPDATE;
+            UPDATE 
+                Service
+            SET
+                service_rating = (current_total_reviews + mult*(rating)) / (current_reviews_count + mult*(1)),
+                total_reviews = current_total_reviews + mult*(rating),
+                reviews_count = current_reviews_count + mult*(1),
+                one_star = current_one_star + mult*(1)
+            WHERE
+                service_id = srvce_id;
+        COMMIT;
+    END IF;
+END;

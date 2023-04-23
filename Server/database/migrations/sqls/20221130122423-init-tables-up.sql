@@ -127,7 +127,7 @@ CREATE TABLE IF NOT EXISTS `Review`(
     `service_id` VARCHAR(14) NOT NULL,
     `seeker_id` VARCHAR(14) NOT NULL,
     `date_timestamp` BIGINT NOT NULL,
-    `rating` FLOAT NOT NULL,
+    `rating` INT NOT NULL,
     `comment` TEXT,
     `images` TEXT,
     PRIMARY KEY (`review_id`),

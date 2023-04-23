@@ -5,7 +5,7 @@ CREATE PROCEDURE `create_review`(
     IN `srvceID` VARCHAR(14),
     IN `skrID` VARCHAR(14),
     IN `dateTS` BIGINT,
-    IN `rvwRtng` FLOAT,
+    IN `rvwRtng` INT,
     IN `rvwCmnt` TEXT,
     IN `rvwImg` TEXT
 )
@@ -29,6 +29,11 @@ BEGIN
         rvwCmnt,
         rvwImg
     );
+    
+    CALL concurrent_updates_service(srvceID, rvwRtng, 1);
+    DECLARE serviceProviderId VARCHAR(14);
+    SELECT provider_id INTO serviceProviderId FROM Service WHERE service_id = srvceID LIMIT 1;
+    CALL concurrent_updates_provider(serviceProviderId, rvwRtng, 1);
 END;
 
 -- Patch existing review by review_id
@@ -38,11 +43,22 @@ CREATE PROCEDURE `patch_review`(
     IN `srvceID` VARCHAR(14),
     IN `skrID` VARCHAR(14),
     IN `dateTS` BIGINT,
-    IN `rvwRtng` FLOAT,
+    IN `rvwRtng` INT,
     IN `rvwCmnt` TEXT,
     IN `rvwImg` TEXT
 )
 BEGIN
+    DECLARE current_rating INT;
+    DECLARE current_provider_id VARCHAR(14);
+    IF rvwRtng IS NOT NULL THEN
+        SELECT rating INTO current_rating FROM Review WHERE review_id = rvwID;
+        SELECT provider_id INTO current_provider_id FROM Service WHERE service_id = srvceID LIMIT 1;
+        CALL concurrent_updates_service(srvceID, current_rating, -1);
+        CALL concurrent_updates_provider(current_provider_id, current_rating, -1);
+        CALL concurrent_updates_service(srvceID, rvwRtng, 1);
+        CALL concurrent_updates_provider(current_provider_id, rvwRtng, 1);
+    END IF;
+
     UPDATE
         Review
     SET
@@ -62,6 +78,14 @@ CREATE PROCEDURE `delete_review`(
     IN `rvwID` VARCHAR(14)
 )
 BEGIN
+    DECLARE current_rating INT;
+    DECLARE current_service_id VARCHAR(14);
+    DECLARE current_provider_id VARCHAR(14);
+    SELECT service_id, rating INTO current_service_id, current_rating FROM Review WHERE review_id = rvwID LIMIT 1;
+    SELECT provider_id INTO current_provider_id FROM Service WHERE service_id = current_service_id LIMIT 1;
+    CALL concurrent_updates_service(current_service_id, current_rating, -1);
+    CALL concurrent_updates_provider(current_provider_id, current_rating, -1);
+
     DELETE FROM
         Review
     WHERE
