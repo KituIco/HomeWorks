@@ -330,6 +330,27 @@ class ServiceSpecsController {
             next(error);
         }
     };
+
+    getSpecsByCoords = async (req, res, next) => {
+        try {
+            let {
+                latitude,
+                longitude,
+                radius
+            } = req.query;
+
+            this.serviceSpecsValidator.checkRequiredQueryParameters(req.query, ['latitude', 'longitude', 'radius']);
+
+            let specsByCoords = await this.serviceSpecsRepo.getSpecsByCoords(latitude, longitude, radius);
+
+            res.status(200).json({
+                message: `Service Specs within ${radius}km of (${latitude}, ${longitude}) retrieved successfully`,
+                body: specsByCoords
+            });
+        } catch (error) {
+            next(error);
+        }
+    };
 }
 
 module.exports = ServiceSpecsController;

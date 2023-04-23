@@ -43,5 +43,6 @@ router.get('/seeker/:seekerID/status/:statusID', [serviceSpecsController.getSeek
 router.get('/type/:typeID', [serviceSpecsController.getSpecsByType, errorHandler]);
 router.get('/status/:statusID', [serviceSpecsController.getSpecsByStatus, errorHandler]);
 router.get('/:specsID', [serviceSpecsController.getSpecsByID, errorHandler]);
+router.get('/coordinates', [serviceSpecsController.getSpecsByCoords, errorHandler]);
 
 module.exports = router;

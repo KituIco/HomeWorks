@@ -218,8 +218,7 @@ CREATE TABLE IF NOT EXISTS `Address`(
     `user_id` VARCHAR(14) NOT NULL,
     `user_full_name` VARCHAR(128) NOT NULL,
     `user_num` VARCHAR(20) NOT NULL,
-    `latitude` DOUBLE NOT NULL,
-    `longitude` DOUBLE NOT NULL,
+    `coordinates` POINT NOT NULL,
     `city` VARCHAR(25),
     `country` VARCHAR(60),
     `district` VARCHAR(90),
@@ -233,8 +232,9 @@ CREATE TABLE IF NOT EXISTS `Address`(
     `time_zone` VARCHAR(50),
     `is_default` TINYINT NOT NULL,
     PRIMARY KEY (`address_id`),
-    FOREIGN KEY (`user_id`) REFERENCES User(`user_id`) ON DELETE CASCADE
-);
+    FOREIGN KEY (`user_id`) REFERENCES User(`user_id`) ON DELETE CASCADE,
+    SPATIAL INDEX coordinates_index USING SPATIAL RTree (`coordinates`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- DROP TABLE IF EXISTS `Message`;
 CREATE TABLE IF NOT EXISTS `Message`(

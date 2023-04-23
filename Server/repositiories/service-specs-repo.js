@@ -172,6 +172,16 @@ class ServiceSpecsRepository {
             throw error;
         }
     };
+
+    getSpecsByCoords = async (latitude, longitude, radius) => {
+        try {
+            let sqlQuery = `CALL get_specs_by_coords(?, ?, ?)`;
+            let [result, _] = await this.db.query(sqlQuery, [latitude, longitude, radius]);
+            return result[0];
+        } catch (error) {
+            throw error;
+        }
+    };
 }
 
 module.exports = ServiceSpecsRepository;

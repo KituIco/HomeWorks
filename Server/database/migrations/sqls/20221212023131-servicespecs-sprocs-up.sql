@@ -281,3 +281,31 @@ BEGIN
     WHERE
         specs_id = spcs_id;
 END;
+
+-- Get service specs by coordinates and given radius
+DROP PROCEDURE IF EXISTS `get_specs_by_coords`;
+CREATE PROCEDURE `get_specs_by_coords`(
+    IN `lat` DOUBLE,
+    IN `lng` DOUBLE,
+    IN `rad` DOUBLE
+)
+BEGIN
+    SELECT
+        ServiceSpecs.specs_id AS specsID,
+        ServiceSpecs.seeker_id AS seekerID,
+        ServiceSpecs.type_id AS typeID,
+        ServiceSpecs.address_id AS addressID,
+        ServiceSpecs.referenced_id AS referencedID,
+        ServiceSpecs.specs_desc AS specsDesc,
+        ServiceSpecs.images AS images,
+        ServiceSpecs.specs_status AS specsStatus,
+        ServiceSpecs.specs_timestamp AS specsTimestamp
+    FROM
+        ServiceSpecs
+    INNER JOIN
+        Address
+    ON
+        ServiceSpecs.address_id = Address.address_id
+    WHERE
+        ST_Distance_Sphere(Address.coordinates, POINT(RADIANS(lat), RADIANS(lng))) <= (rad * 1000);
+END;
