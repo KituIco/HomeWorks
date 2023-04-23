@@ -34,17 +34,33 @@ class ServiceRepository {
         typeID,
         typeName,
         initialCost,
-        serviceRating
+        serviceEnabled,
+        serviceRating,
+        totalReviews,
+        reviewsCount,
+        fiveStar,
+        fourStar,
+        threeStar,
+        twoStar,
+        oneStar
     ) => {
         try {
-            let sqlQuery = `CALL patch_service(?, ?, ?, ?, ?, ?)`;
+            let sqlQuery = `CALL patch_service(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
             await this.db.query(sqlQuery, [
                 serviceID,
                 providerID,
                 typeID,
                 typeName,
                 initialCost,
-                serviceRating
+                serviceEnabled,
+                serviceRating,
+                totalReviews,
+                reviewsCount,
+                fiveStar,
+                fourStar,
+                threeStar,
+                twoStar,
+                oneStar
             ]);
         } catch (error) {
             // TODO: Handle SQL error

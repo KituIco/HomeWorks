@@ -65,7 +65,15 @@ class ServiceController {
                 typeID,
                 typeName,
                 initialCost,
-                serviceRating
+                serviceEnabled,
+                serviceRating,
+                totalReviews,
+                reviewsCount,
+                fiveStar,
+                fourStar,
+                threeStar,
+                twoStar,
+                oneStar
             } = req.body;
 
             let {serviceID} = req.params;
@@ -88,7 +96,15 @@ class ServiceController {
                 typeID,
                 typeName,
                 initialCost,
-                serviceRating
+                serviceEnabled,
+                serviceRating,
+                totalReviews,
+                reviewsCount,
+                fiveStar,
+                fourStar,
+                threeStar,
+                twoStar,
+                oneStar
             );
 
             let patchedService = {

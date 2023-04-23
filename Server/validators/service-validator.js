@@ -32,7 +32,39 @@ class ServiceValidator extends Validator {
                 required: false,
                 type: 'number'
             },
+            serviceEnabled: {
+                required: false,
+                type: 'number'
+            },
             serviceRating: {
+                required: false,
+                type: 'number'
+            },
+            totalReviews: {
+                required: false,
+                type: 'number'
+            },
+            reviewsCount: {
+                required: false,
+                type: 'number'
+            },
+            fiveStar: {
+                required: false,
+                type: 'number'
+            },
+            fourStar: {
+                required: false,
+                type: 'number'
+            },
+            threeStar: {
+                required: false,
+                type: 'number'
+            },
+            twoStar: {
+                required: false,
+                type: 'number'
+            },
+            oneStar: {
                 required: false,
                 type: 'number'
             }

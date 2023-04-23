@@ -96,7 +96,7 @@ CREATE TABLE IF NOT EXISTS `Service`(
     `type_id` VARCHAR(14) NOT NULL,
     `type_name` VARCHAR(50) NOT NULL,
     `initial_cost` DECIMAL(10,2),
-    `enabled` TINYINT,
+    `service_enabled` TINYINT,
     `service_rating` FLOAT,
     `total_reviews` INT,
     `reviews_count` INT,

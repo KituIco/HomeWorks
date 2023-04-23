@@ -16,7 +16,15 @@ BEGIN
             type_id,
             type_name,
             initial_cost,
-            service_rating
+            service_enabled,
+            service_rating,
+            total_reviews,
+            reviews_count,
+            five_star,
+            four_star,
+            three_star,
+            two_star,
+            one_star
         )
     VALUES(
         srvce_id,
@@ -24,7 +32,15 @@ BEGIN
         typ_id,
         typ_name,
         init_cost,
-        srvce_rating
+        1,
+        srvce_rating,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
     );
 END;
 
@@ -36,7 +52,15 @@ CREATE PROCEDURE `patch_service`(
     IN `typ_id` VARCHAR (14),
     IN `typ_name` VARCHAR(50),
     IN `init_cost` DECIMAL(10,2),
-    IN `srvce_rating` FLOAT
+    IN `srvce_enabled` TINYINT,
+    IN `srvce_rating` FLOAT,
+    IN `tot_reviews` INT,
+    IN `rev_count` INT,
+    IN `fvStar` INT,
+    IN `frStar` INT,
+    IN `thStar` INT,
+    IN `twStar` INT,
+    IN `onStar` INT
 )
 BEGIN
     UPDATE
@@ -46,7 +70,15 @@ BEGIN
         type_id = COALESCE(typ_id, type_id),
         type_name = COALESCE(typ_name, type_name),
         initial_cost = COALESCE(init_cost, initial_cost),
-        service_rating = COALESCE(srvce_rating, service_rating)
+        service_enabled = COALESCE(srvce_enabled, service_enabled),
+        service_rating = COALESCE(srvce_rating, service_rating),
+        total_reviews = COALESCE(tot_reviews, total_reviews),
+        reviews_count = COALESCE(rev_count, reviews_count),
+        five_star = COALESCE(fvStar, five_star),
+        four_star = COALESCE(frStar, four_star),
+        three_star = COALESCE(thStar, three_star),
+        two_star = COALESCE(twStar, two_star),
+        one_star = COALESCE(onStar, one_star)
     WHERE
         service_id = srvce_id;
 END;
@@ -73,7 +105,15 @@ BEGIN
         type_id AS typeID,
         type_name AS typeName,
         initial_cost AS initialCost,
-        service_rating AS serviceRating
+        service_enabled AS serviceEnabled,
+        service_rating AS serviceRating,
+        total_reviews AS totalReviews,
+        reviews_count AS reviewsCount,
+        five_star AS fiveStar,
+        four_star AS fourStar,
+        three_star AS threeStar,
+        two_star AS twoStar,
+        one_star AS oneStar
     FROM
         Service;
 END;
@@ -90,7 +130,15 @@ BEGIN
         type_id AS typeID,
         type_name AS typeName,
         initial_cost AS initialCost,
-        service_rating AS serviceRating
+        service_enabled AS serviceEnabled,
+        service_rating AS serviceRating,
+        total_reviews AS totalReviews,
+        reviews_count AS reviewsCount,
+        five_star AS fiveStar,
+        four_star AS fourStar,
+        three_star AS threeStar,
+        two_star AS twoStar,
+        one_star AS oneStar
     FROM
         Service
     WHERE
@@ -109,7 +157,15 @@ BEGIN
         type_id AS typeID,
         type_name AS typeName,
         initial_cost AS initialCost,
-        service_rating AS serviceRating
+        service_enabled AS serviceEnabled,
+        service_rating AS serviceRating,
+        total_reviews AS totalReviews,
+        reviews_count AS reviewsCount,
+        five_star AS fiveStar,
+        four_star AS fourStar,
+        three_star AS threeStar,
+        two_star AS twoStar,
+        one_star AS oneStar
     FROM
         Service
     WHERE
@@ -130,7 +186,15 @@ BEGIN
         type_id AS typeID,
         type_name AS typeName,
         initial_cost AS initialCost,
-        service_rating AS serviceRating
+        service_enabled AS serviceEnabled,
+        service_rating AS serviceRating,
+        total_reviews AS totalReviews,
+        reviews_count AS reviewsCount,
+        five_star AS fiveStar,
+        four_star AS fourStar,
+        three_star AS threeStar,
+        two_star AS twoStar,
+        one_star AS oneStar
     FROM
         Service
     WHERE
@@ -152,7 +216,15 @@ BEGIN
         type_id AS typeID,
         type_name AS typeName,
         initial_cost AS initialCost,
-        service_rating AS serviceRating
+        service_enabled AS serviceEnabled,
+        service_rating AS serviceRating,
+        total_reviews AS totalReviews,
+        reviews_count AS reviewsCount,
+        five_star AS fiveStar,
+        four_star AS fourStar,
+        three_star AS threeStar,
+        two_star AS twoStar,
+        one_star AS oneStar
     FROM
         Service
     WHERE
@@ -171,7 +243,15 @@ BEGIN
         type_id AS typeID,
         type_name AS typeName,
         initial_cost AS initialCost,
-        service_rating AS serviceRating
+        service_enabled AS serviceEnabled,
+        service_rating AS serviceRating,
+        total_reviews AS totalReviews,
+        reviews_count AS reviewsCount,
+        five_star AS fiveStar,
+        four_star AS fourStar,
+        three_star AS threeStar,
+        two_star AS twoStar,
+        one_star AS oneStar
     FROM
         Service
     WHERE
