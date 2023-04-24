@@ -35,6 +35,7 @@ router.patch('/:serviceID', [cookieJwtAuth], [serviceController.patchService, er
 router.delete('/:serviceID', [cookieJwtAuth], [serviceController.deleteService, errorHandler]);
 router.get('', [serviceController.getAllServices, errorHandler]);
 router.get('/provider/:providerID', [serviceController.getProviderServiceByKeyword, serviceController.getProviderServicesSorted, serviceController.getProviderServices, errorHandler]);
+router.get('/recommended', [serviceController.getServiceRecommendations, errorHandler]);
 router.get('/:serviceID', [serviceController.getService, errorHandler]);
 
 module.exports = router;

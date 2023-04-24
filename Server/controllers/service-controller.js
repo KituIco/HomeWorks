@@ -244,6 +244,45 @@ class ServiceController {
         }
     };
 
+    // GET: "/recommended"
+    getServiceRecommendations = async (req, res, next) => {
+        try {
+            let {
+                latitude,
+                longitude,
+                innerRadius,
+                outerRadius,
+                offsetMultiplier,
+                sizeLimit
+            } = req.query;
+
+            this.serviceValidator.checkRequiredQueryParameters(req.query, [
+                'latitude',
+                'longitude',
+                'innerRadius',
+                'outerRadius',
+                'offsetMultiplier',
+                'sizeLimit'
+            ]);
+
+            let services = await this.serviceRepo.getServiceRecommendations(
+                latitude,
+                longitude,
+                innerRadius,
+                outerRadius,
+                offsetMultiplier,
+                sizeLimit
+            );
+
+            res.status(200).json({
+                message: `Recommended services retrieved successfully`,
+                body: services
+            });
+        } catch (error) {
+            next(error);
+        }
+    };
+
     // GET: "/:serviceID"
     getService = async (req, res, next) => {
         try {

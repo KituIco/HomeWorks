@@ -341,3 +341,39 @@ BEGIN
         COMMIT;
     END IF;
 END;
+
+-- Get service recommendations from location and sort by service_rating
+DROP PROCEDURE IF EXISTS `get_service_recommendations`;
+CREATE PROCEDURE `get_service_recommendations`(
+    IN `lat` FLOAT,
+    IN `lng` FLOAT,
+    IN `inner_radius` FLOAT,
+    IN `outer_radius` FLOAT,
+    IN `offset_mult` INT,
+    IN `return_size` INT
+)
+BEGIN
+    SELECT
+        Service.service_id AS serviceID,
+        Service.provider_id AS providerID,
+        Service.type_id AS typeID,
+        Service.type_name AS typeName,
+        Service.initial_cost AS initialCost,
+        Service.service_enabled AS serviceEnabled,
+        Service.service_rating AS serviceRating,
+        Service.total_reviews AS totalReviews,
+        Service.reviews_count AS reviewsCount,
+        Service.five_star AS fiveStar,
+        Service.four_star AS fourStar,
+        Service.three_star AS threeStar,
+        Service.two_star AS twoStar,
+        Service.one_star AS oneStar
+    FROM
+        Service
+            INNER JOIN
+        Address ON Service.provider_id = Address.provider_id AND Address.is_default = 1 AND Service.service_enabled = 1
+    WHERE
+        ST_Distance_Sphere(Address.coordinates, POINT(lat, lng)) BETWEEN (inner_radius*1000) AND (outer_radius*1000)
+    ORDER BY service_rating DESC
+    LIMIT offset_mult*return_size, return_size;
+END;

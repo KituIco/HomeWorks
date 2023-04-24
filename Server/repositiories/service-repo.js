@@ -143,6 +143,30 @@ class ServiceRepository {
             throw error;
         }
     };
+
+    getServiceRecommendations = async (
+        latitude,
+        longitude,
+        innerRadius,
+        outerRadius,
+        offsetMultiplier,
+        sizeLimit
+    ) => {
+        try {
+            let sqlQuery = `CALL get_service_recommendations(?, ?, ?, ?, ?, ?)`;
+            let [result, _] = await this.db.query(sqlQuery, [
+                latitude,
+                longitude,
+                innerRadius,
+                outerRadius,
+                offsetMultiplier,
+                sizeLimit
+            ]);
+            return result[0];
+        } catch (error) {
+            throw error;
+        }
+    };
 }
 
 module.exports = ServiceRepository;
