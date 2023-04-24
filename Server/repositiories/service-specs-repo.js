@@ -173,10 +173,10 @@ class ServiceSpecsRepository {
         }
     };
 
-    getSpecsByCoords = async (latitude, longitude, radius) => {
+    getSpecsByCoords = async (latitude, longitude, innerRadius, outerRadius) => {
         try {
-            let sqlQuery = `CALL get_specs_by_coords(?, ?, ?)`;
-            let [result, _] = await this.db.query(sqlQuery, [latitude, longitude, radius]);
+            let sqlQuery = `CALL get_specs_by_coords(?, ?, ?, ?)`;
+            let [result, _] = await this.db.query(sqlQuery, [latitude, longitude, innerRadius, outerRadius]);
             return result[0];
         } catch (error) {
             throw error;

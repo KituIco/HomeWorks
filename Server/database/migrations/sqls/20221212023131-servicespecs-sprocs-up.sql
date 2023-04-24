@@ -287,7 +287,8 @@ DROP PROCEDURE IF EXISTS `get_specs_by_coords`;
 CREATE PROCEDURE `get_specs_by_coords`(
     IN `lat` DOUBLE,
     IN `lng` DOUBLE,
-    IN `rad` DOUBLE
+    IN `inner_radius` DOUBLE,
+    IN `outer_radius` DOUBLE
 )
 BEGIN
     SELECT
@@ -307,5 +308,6 @@ BEGIN
     ON
         ServiceSpecs.address_id = Address.address_id
     WHERE
-        ST_Distance_Sphere(Address.coordinates, POINT(lat, lng)) <= (rad * 1000);
+        ST_Distance_Sphere(Address.coordinates, POINT(lat, lng)) BETWEEN (inner_radius * 1000) AND (outer_radius * 1000)
+        ORDER BY specsTimestamp ASC;
 END;

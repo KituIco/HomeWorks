@@ -336,13 +336,14 @@ class ServiceSpecsController {
             let {
                 latitude,
                 longitude,
-                radius,
+                innerRadius,
+                outerRadius,
                 providerServices
             } = req.query;
 
-            this.serviceSpecsValidator.checkRequiredQueryParameters(req.query, ['latitude', 'longitude', 'radius', 'providerServices']);
+            this.serviceSpecsValidator.checkRequiredQueryParameters(req.query, ['latitude', 'longitude', 'innerRadius', 'outerRadius', 'providerServices']);
 
-            let specsByCoords = await this.serviceSpecsRepo.getSpecsByCoords(latitude, longitude, radius);
+            let specsByCoords = await this.serviceSpecsRepo.getSpecsByCoords(latitude, longitude, innerRadius, outerRadius);
 
             let providerServiceHash = {};
 
