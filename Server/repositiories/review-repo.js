@@ -77,10 +77,10 @@ class ReviewRepository {
         }
     };
 
-    getServiceReviews = async (serviceID) => {
+    getServiceReviews = async (serviceID, offsetMultiplier, sizeLimit) => {
         try {
-            let sqlQuery = `CALL get_service_reviews(?)`;
-            let [result, _] = await this.db.query(sqlQuery, [serviceID]);
+            let sqlQuery = `CALL get_service_reviews(?, ?, ?)`;
+            let [result, _] = await this.db.query(sqlQuery, [serviceID, offsetMultiplier, sizeLimit]);
             return result[0];
         } catch (error) {
             // TODO: Handle SQL error

@@ -145,18 +145,21 @@ class ReviewController {
         }
     };
 
-    // GET: "service/:serviceID"
+    // GET: "service/:serviceID?offsetMultiplier=0&sizeLimit=10"
     getServiceReviews = async (req, res, next) => {
         try {
             let { serviceID } = req.params;
+            let { offsetMultiplier, sizeLimit } = req.query;
 
             // TODO: Pre-query validation
                 // validate if serviceID is not null
             this.reviewValidator.checkRequiredParameters(req.params, ['serviceID']);
+                // validate query parameters
+            this.reviewValidator.checkRequiredQueryParameters(req.query, ['offsetMultiplier', 'sizeLimit']);
                 // validate if serviceID exists
             await this.reviewValidator.validateExistence(serviceID, 'service');
             
-            let reviews = await this.reviewRepo.getServiceReviews(serviceID);
+            let reviews = await this.reviewRepo.getServiceReviews(serviceID, offsetMultiplier, sizeLimit);
 
             res.status(200).json({
                 message: `All reviews for Service ${serviceID} retrieved successfully`,

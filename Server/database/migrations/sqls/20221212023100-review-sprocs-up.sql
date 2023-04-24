@@ -110,7 +110,9 @@ END;
 -- Get all reviews for a service via service_id
 DROP PROCEDURE IF EXISTS `get_service_reviews`;
 CREATE PROCEDURE `get_service_reviews`(
-    IN `srvceID` VARCHAR(14)
+    IN `srvceID` VARCHAR(14),
+    IN `offsetMult` INT,
+    IN `sizeLimit` INT
 )
 BEGIN
     SELECT
@@ -124,7 +126,9 @@ BEGIN
     FROM
         Review
     WHERE
-        service_id = srvceID;
+        service_id = srvceID
+    ORDER BY date_timestamp DESC
+    LIMIT offsetMult * sizeLimit, sizeLimit;
 END;
 
 -- Get particular review
