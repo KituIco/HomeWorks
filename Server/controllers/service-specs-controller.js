@@ -340,7 +340,7 @@ class ServiceSpecsController {
                 providerServices
             } = req.query;
 
-            this.serviceSpecsValidator.checkRequiredQueryParameters(req.query, ['latitude', 'longitude', 'radius']);
+            this.serviceSpecsValidator.checkRequiredQueryParameters(req.query, ['latitude', 'longitude', 'radius', 'providerServices']);
 
             let specsByCoords = await this.serviceSpecsRepo.getSpecsByCoords(latitude, longitude, radius);
 
