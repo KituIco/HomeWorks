@@ -89,7 +89,7 @@ export default ( navigation, route ) => {
       let reportID = transaction.body.reportID;
       navigation.dispatch(StackActions.popToTop());
       navigation.dispatch(StackActions.popToTop());
-      navigation.navigate('ServeStack', {typeName, icon, reportID });
+      navigation.navigate('ServeStack', { typeName, icon, reportID });
     } catch (err) {
       Alert.alert('Error', err+'.', [ {text: 'OK'} ]);
     }

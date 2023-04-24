@@ -14,10 +14,15 @@ export default ( navigation, route ) => {
     latitude, latitudeDelta: 0.0070,
     longitude, longitudeDelta: 0.0060,
   };
-
-  const [cost, setCost] = useState('');
-  const [description, setDescription] = useState('');
+  
+  let initialDescription = '';
+  if (route.params.message) {
+    initialDescription = route.params.message;
+  }
+  
+  const [description, setDescription] = useState(initialDescription);
   const [lines, setLines] = useState(4);
+  const [cost, setCost] = useState('');
   
   const spinValue = new Animated.Value(0);
 

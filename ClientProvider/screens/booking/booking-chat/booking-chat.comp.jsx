@@ -56,7 +56,7 @@ export default function BookingChat({ navigation, route }) {
           ref={scrollViewRef}
           onContentSizeChange={() => scrollViewRef.current.scrollToEnd({ animated: true })}
         >
-          <Listing listings={messages} userID={seekerID} />
+          <Listing listings={messages} userID={seekerID} data={data} navigation={navigation}/>
         </ScrollView>
         <LinearGradient colors={['rgba(0,0,0,0.1)','rgba(0,0,0,0)'  ]} start={{ x:0, y:1 }} end={{ x:0, y:0 }} style={{height:4}}/>
 

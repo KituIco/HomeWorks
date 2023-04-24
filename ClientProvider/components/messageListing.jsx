@@ -1,4 +1,4 @@
-import { StyleSheet, View, Text, Animated, Easing, TouchableWithoutFeedback, Modal  } from 'react-native';
+import { StyleSheet, View, Text, Animated, Easing, TouchableWithoutFeedback, Modal, Alert  } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import ImageViewer from 'react-native-image-zoom-viewer';
@@ -8,6 +8,9 @@ import { useState } from 'react';
 export default function Listing( props ) {
   const messages = props.listings;
   const userID = props.userID;
+  
+  const navigation = props.navigation;
+  const data = props.data;
   
   const [urls, setUrls] = useState();
   const [open, setOpen] = useState(false);
@@ -42,6 +45,13 @@ export default function Listing( props ) {
     setOpen(false);
   }
 
+  const sendAsSpecs = async(message) => {
+    Alert.alert('Send as Service Details', 'Do you want to finalize cost and details using this message as service details?', [
+      { text: 'Cancel', },
+      { text: 'OK',  onPress: () => navigation.navigate('BookingSpecs', {data, message})}
+    ]);
+  }
+
   const messagesList = data => {
     if (data.userID == userID) {
       if(!data.message && !data.images)
@@ -57,10 +67,13 @@ export default function Listing( props ) {
 
       else if (data.message)
       return (
+        
         <View key={data.messageID} style={styles.containerSelf}>
-          <View style={styles.backgroundSelf}>
-            <Text style={styles.textSelf}>{data.message}</Text>    
-          </View>
+          <TouchableWithoutFeedback onLongPress={() => sendAsSpecs(data.message)}>
+            <View style={styles.backgroundSelf}>
+              <Text style={styles.textSelf}>{data.message}</Text>
+            </View>
+          </TouchableWithoutFeedback>
         </View>
       );
       
@@ -82,9 +95,11 @@ export default function Listing( props ) {
       if (data.message)
       return (
         <View key={data.messageID} style={styles.containerOther}>
-          <View style={styles.backgroundOther}>
-            <Text style={styles.textOther}>{data.message}</Text>    
-          </View>
+          <TouchableWithoutFeedback onLongPress={() => sendAsSpecs(data.message)}>
+            <View style={styles.backgroundOther}>
+              <Text style={styles.textOther}>{data.message}</Text>    
+            </View>
+          </TouchableWithoutFeedback>
         </View>
       );
 

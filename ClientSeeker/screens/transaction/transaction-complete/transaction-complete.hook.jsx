@@ -11,7 +11,7 @@ import { addressHandler } from '../../../utils/address-handler';
 import { getImageURL } from '../../../utils/get-imageURL';
 
 
-export default ( route ) => {
+export default ( navigation, route ) => {
   const { typeName, icon, reportID } = route.params;
   const [value, onChangeText] = useState('');
   const [rates, setRates] = useState(0);

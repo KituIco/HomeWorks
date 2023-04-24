@@ -4,7 +4,7 @@ import TransactionComplete from '../screens/transaction/transaction-complete/tra
 
 const Stack = createStackNavigator();
 
-export default function HistoryStack({ route }) {
+export default function ProviderStack({ route }) {
   const { reportID, icon, typeName } = route.params;
 
   const header = {

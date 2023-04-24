@@ -11,7 +11,7 @@ import hook from './transaction-complete.hook';
 
 export default function TransactionComplete({route, navigation}) {
   const {
-    typeName, icon, value, rates, answered, stars, loading, cost, desc, list, 
+    typeName, icon, value, rates, answered, stars, loading, cost, desc, list, address,
     onChangeText, changeRating, changeStatus,
   } = hook( navigation, route );
   
