@@ -307,5 +307,5 @@ BEGIN
     ON
         ServiceSpecs.address_id = Address.address_id
     WHERE
-        ST_Distance_Sphere(Address.coordinates, POINT(RADIANS(lat), RADIANS(lng))) <= (rad * 1000);
+        ST_Distance_Sphere(Address.coordinates, POINT(lat, lng)) <= (rad * 1000);
 END;
