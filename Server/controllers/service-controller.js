@@ -270,7 +270,7 @@ class ServiceController {
                 longitude,
                 innerRadius,
                 outerRadius,
-                offsetMultiplier,
+                offsetMultiplier*sizeLimit,
                 sizeLimit
             );
 

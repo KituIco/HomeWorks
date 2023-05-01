@@ -349,7 +349,7 @@ CREATE PROCEDURE `get_service_recommendations`(
     IN `lng` FLOAT,
     IN `inner_radius` FLOAT,
     IN `outer_radius` FLOAT,
-    IN `offset_mult` INT,
+    IN `offset` INT,
     IN `return_size` INT
 )
 BEGIN
@@ -375,5 +375,5 @@ BEGIN
     WHERE
         ST_Distance_Sphere(Address.coordinates, POINT(lat, lng)) BETWEEN (inner_radius*1000) AND (outer_radius*1000)
     ORDER BY service_rating DESC
-    LIMIT offset_mult*return_size, return_size;
+    LIMIT offset, return_size;
 END;

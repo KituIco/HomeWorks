@@ -159,7 +159,7 @@ class ReviewController {
                 // validate if serviceID exists
             await this.reviewValidator.validateExistence(serviceID, 'service');
             
-            let reviews = await this.reviewRepo.getServiceReviews(serviceID, offsetMultiplier, sizeLimit);
+            let reviews = await this.reviewRepo.getServiceReviews(serviceID, offsetMultiplier*sizeLimit, sizeLimit);
 
             res.status(200).json({
                 message: `All reviews for Service ${serviceID} retrieved successfully`,

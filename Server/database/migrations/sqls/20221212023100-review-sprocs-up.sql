@@ -111,7 +111,7 @@ END;
 DROP PROCEDURE IF EXISTS `get_service_reviews`;
 CREATE PROCEDURE `get_service_reviews`(
     IN `srvceID` VARCHAR(14),
-    IN `offsetMult` INT,
+    IN `offset` INT,
     IN `sizeLimit` INT
 )
 BEGIN
@@ -128,7 +128,7 @@ BEGIN
     WHERE
         service_id = srvceID
     ORDER BY date_timestamp DESC
-    LIMIT offsetMult * sizeLimit, sizeLimit;
+    LIMIT offset, sizeLimit;
 END;
 
 -- Get particular review
