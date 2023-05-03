@@ -1,7 +1,5 @@
-import { StyleSheet, View, Text, Image, ScrollView, TouchableWithoutFeedback, Alert, RefreshControl } from 'react-native';
+import { View, Text, ScrollView, TouchableWithoutFeedback, Alert, RefreshControl } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons'; 
-import { useFocusEffect } from '@react-navigation/native';
-import { useState, useEffect, useCallback } from 'react';
 import { LinearGradient, } from 'expo-linear-gradient';
 
 import Listing from '../../../components/requestListing';

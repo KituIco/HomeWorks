@@ -1,16 +1,43 @@
-import { StyleSheet, View, Text, TouchableWithoutFeedback, Modal } from 'react-native';
+import { StyleSheet, View, ScrollView, Image, Text, TouchableWithoutFeedback, Modal } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useState } from 'react';
 
+import ImageViewer from 'react-native-image-zoom-viewer';
+import MapView, {Marker} from 'react-native-maps';
+
+import AddressServices from '../services/address/address-services';
+import { addressHandler } from '../utils/address-handler';
+
 export default function Listing( props ) {
   const services = props.listings;
   const [openSpecs, setOpenSpecs] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-  const navigateTo = (data) => {
+  const [region, setRegion] = useState();
+  const [location, setLocation] = useState();
+  const [latitude, setLatitude] = useState();
+  const [longitude, setLongitude] = useState();
+
+  const navigateTo = async(data) => {
     if(data.specsStatus == 4 || data.specsStatus == 1) {
       setOpenSpecs(true);
+      let { body } = await AddressServices.getAddressByID(data.addressID);
+      setLatitude(body.latitude);
+      setLongitude(body.longitude);
+
+      setLocation(addressHandler(body));
+      setRegion({
+        latitude: body.latitude, latitudeDelta: 0.0060,
+        longitude: body.longitude, longitudeDelta: 0.0040,
+      });
+      setLoading(false);
     }
+  }
+
+  const closeSpecs = async() => {
+    setOpenSpecs(false);
+    setLoading(true);
   }
   
   const servicesList = data => {
@@ -21,8 +48,53 @@ export default function Listing( props ) {
           <View style={styles.centered}>
             <View style={styles.modal}>
 
+              <View style={{height:'90%'}}>
+                { !loading &&
+                <ScrollView style={{margin:-10}}>
+                  <View style={{width:'100%', height: 200}}>
+                    <MapView style={{flex:1}} initialRegion={region}>
+                      <Marker coordinate={{latitude, longitude}}>
+                        <Image style={{height:44,width:32.3}} source={require("../assets/pin.png")}/>
+                      </Marker>
+                    </MapView>
+                  </View>
+
+                  <View style={{height:130, width:130, backgroundColor:'#F4F4F4', borderRadius:120, marginTop:-60, alignItems:'center', justifyContent:'center', zIndex:15}}>
+                    <MaterialCommunityIcons name={data.icon} size={90} color={'#9C54D5'}/>
+                  </View>
+                  <View style={{height:60, width:'95%', marginTop:-50, marginRight:20, alignItems:'flex-end'}}>
+                    <Text style={styles.time}>{data.date}</Text>
+                    <Text style={[styles.status,data.color]}>{data.status}</Text>
+                  </View>
+                  
+                  <View style={{marginHorizontal:20, marginTop:-20, zIndex:15}}>
+                    
+
+                    <Text style={styles.head}>{data.typeName}</Text>
+                    <Text style={styles.desc}>Shown below are the service description, the location, and the minimum service cost of your request. </Text>
+                    <Text style={styles.desc}>To resend this request, please scroll down and click the resend button below</Text>
+
+                    <Text style={styles.subhead}>Service Description</Text>
+                    <Text style={styles.desc}>{data.specsDesc}</Text>
+
+                    <Text style={styles.subhead}>Service Location</Text>
+                    <Text style={[styles.desc]}>{location}</Text>
+
+                    <Text style={styles.subhead}>Minimum Service Cost</Text>
+                    <View style={styles.details}>
+                      <Text style={styles.desc}>{data.typeName} Service</Text>
+                      <Text style={[styles.desc,{fontFamily:'quicksand-bold'}]}>Php </Text>
+                    </View>
+
+                  </View>
+                  
+                </ScrollView>
+                }
+
+              </View>
               
-              <TouchableWithoutFeedback onPress= {() => setOpenSpecs(false)}>
+              
+              <TouchableWithoutFeedback onPress= {() => closeSpecs()}>
                 <Text style={styles.enter}>CLOSE</Text>
               </TouchableWithoutFeedback>
 
@@ -51,7 +123,7 @@ export default function Listing( props ) {
           <TouchableWithoutFeedback onPress={() => navigateTo(data)}>
             <LinearGradient colors={['#9C54D5', '#462964']} start={{ x:0.6, y:-1 }} end={{ x:0.1, y:1 }} style={styles.button}>
               <LinearGradient colors={['rgba(0, 0, 0, 0.4)','rgba(0, 0, 0, 0)']} start={{ x: 0.5, y: 0.01 }} end={{ x: 0.5, y: 0.15 }} style={styles.ledge}>
-                <Text style={styles.details}>{data.button}</Text>
+                <Text style={styles.touchable}>{data.button}</Text>
               </LinearGradient>
             </LinearGradient> 
           </TouchableWithoutFeedback>
@@ -132,7 +204,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  details: {
+  touchable: {
     fontFamily: 'quicksand-semibold',
     color: '#E9E9E9',
     letterSpacing: -0.5,
@@ -153,7 +225,7 @@ const styles = StyleSheet.create({
   },
   modal: {
     borderRadius: 20,
-    backgroundColor: 'white',
+    backgroundColor: '#F4F4F4',
     width: '90%',
     padding: 10,
     height: '75%'
@@ -163,7 +235,7 @@ const styles = StyleSheet.create({
     color:'#000', 
     alignSelf:'center', 
     fontFamily: 'lexend',
-    marginBottom: 10,
+    marginTop: 30,
     letterSpacing: -0.5,
   },
 
@@ -174,5 +246,40 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     zIndex: 15,
     backgroundColor: '#E9E9E9A0'
+  },
+
+  typename: {
+    fontFamily: 'notosans-light',
+    fontSize: 30,
+    letterSpacing: -1,
+    fontVariant: ['small-caps'],
+  },
+  description: {
+    flex:1,
+    marginTop: 10,
+  },
+  head: {
+    fontFamily: 'notosans',
+    fontSize: 24,
+    letterSpacing: -0.5,
+    fontVariant: ['small-caps'],
+  },
+  desc: {
+    fontFamily: 'quicksand',
+    fontSize: 13,
+    letterSpacing: -0.2,
+    color: '#323941',
+  },
+
+  subhead: {
+    fontFamily: 'notosans-medium',
+    fontSize: 16,
+    letterSpacing: -0.5,
+    marginTop: 16,
+  },
+  details: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
 });
