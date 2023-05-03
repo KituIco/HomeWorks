@@ -135,7 +135,9 @@ class ServiceSpecsController {
             
             await this.serviceSpecsRepo.deleteServiceSpecs(specsID);
 
-            res.status(204);
+            res.status(204).json({
+                message: `Service Specs ${specsID} removed successfully`,
+            });
         } catch (error) {
             // TODO: Handle error
             next(error);

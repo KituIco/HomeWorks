@@ -1,28 +1,51 @@
-import { StyleSheet, View, ScrollView, Image, Text, TouchableWithoutFeedback, Modal } from 'react-native';
+import { StyleSheet, View, ScrollView, Image, Text, TouchableWithoutFeedback, Modal, Alert } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import ImageViewer from 'react-native-image-zoom-viewer';
 import MapView, {Marker} from 'react-native-maps';
 
+import ServiceTypesServices from '../services/service-types/service-types-services';
+import ServiceSpecsServices from '../services/service-specs/service-specs-services';
 import AddressServices from '../services/address/address-services';
-import { addressHandler } from '../utils/address-handler';
 
+import { addressHandler } from '../utils/address-handler';
+import { removeRequest } from '../utils/remove-request';
 export default function Listing( props ) {
-  const services = props.listings;
+  // let services = props.listings;
+  const [services, setServices] = useState([]);
   const [openSpecs, setOpenSpecs] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [price, setPrice] = useState()
 
   const [region, setRegion] = useState();
   const [location, setLocation] = useState();
-  const [latitude, setLatitude] = useState();
-  const [longitude, setLongitude] = useState();
+  const [latitude, setLatitude] = useState(0);
+  const [longitude, setLongitude] = useState(0);
+
+  useEffect(() => {
+    ( async() => {  
+      try {
+        setServices(props.listings)
+      } catch (err) {
+        Alert.alert('Error', err+'.', [ {text: 'OK'} ]);
+      }
+    })();
+  }, [props]);
 
   const navigateTo = async(data) => {
     if(data.specsStatus == 4 || data.specsStatus == 1) {
       setOpenSpecs(true);
       let { body } = await AddressServices.getAddressByID(data.addressID);
+      let serviceTypes = await ServiceTypesServices.getServiceTypes();
+
+      for (let i=0; i<serviceTypes.body.length; i++) {
+        if (serviceTypes.body[i].typeName == data.typeName) {
+          setPrice(serviceTypes.body[i].minServiceCost);
+        }
+      }
+
       setLatitude(body.latitude);
       setLongitude(body.longitude);
 
@@ -39,18 +62,49 @@ export default function Listing( props ) {
     setOpenSpecs(false);
     setLoading(true);
   }
+
+  const confirmDelete = async(specsID) => {
+    try {
+      await ServiceSpecsServices.deleteServiceSpecs(specsID);
+      let newServices = await removeRequest(specsID, services);
+
+      setServices(newServices);
+      setOpenSpecs(false);
+      setLoading(true);
+    } catch (err) {
+      Alert.alert('Error', err+'.', [ {text: 'OK'} ]);
+    }
+  }
   
+  const deleteSpecs = async(data) => {
+    try {
+      Alert.alert('Delete this Request', 'Are you sure you want to this request? Upon deletion of the request, this request will no longer appear in you history.', [
+        { text: 'Cancel', },
+        { text: 'OK',  onPress: () => confirmDelete(data.specsID)}
+      ]);
+    } catch (err) {
+      Alert.alert('Error', err+'.', [ {text: 'OK'} ]);
+    } 
+  }
+
   const servicesList = data => {
     return (
       <LinearGradient colors={['rgba(0,0,0,0.3)','rgba(0,0,0,0.12)']} start={{ x:0, y:0.95 }} end={{ x:0, y:0.98 }} style={styles.shadow} key={data.specsID}>
         { openSpecs && <View style={styles.overlay}/> }
-        <Modal visible={openSpecs} transparent={true} animationType='slide'>
+        <Modal visible={openSpecs} transparent={true}>
           <View style={styles.centered}>
             <View style={styles.modal}>
 
+              <TouchableWithoutFeedback onPress = {() => deleteSpecs(data)}>
+                <View style={{width:40, height: 40, borderRadius:40, backgroundColor:'#9C54D5', position:'absolute', zIndex:20, right:10, top:10, alignItems:'center', justifyContent:'center'}}>
+                  <MaterialCommunityIcons name={'trash-can'} size={24} color={'#F4F4F4'}/>
+                </View>
+              </TouchableWithoutFeedback>
+              
+
               <View style={{height:'90%'}}>
                 { !loading &&
-                <ScrollView style={{margin:-10}}>
+                <ScrollView style={{margin:-9}}>
                   <View style={{width:'100%', height: 200}}>
                     <MapView style={{flex:1}} initialRegion={region}>
                       <Marker coordinate={{latitude, longitude}}>
@@ -69,7 +123,6 @@ export default function Listing( props ) {
                   
                   <View style={{marginHorizontal:20, marginTop:-20, zIndex:15}}>
                     
-
                     <Text style={styles.head}>{data.typeName}</Text>
                     <Text style={styles.desc}>Shown below are the service description, the location, and the minimum service cost of your request. </Text>
                     <Text style={styles.desc}>To resend this request, please scroll down and click the resend button below</Text>
@@ -83,7 +136,7 @@ export default function Listing( props ) {
                     <Text style={styles.subhead}>Minimum Service Cost</Text>
                     <View style={styles.details}>
                       <Text style={styles.desc}>{data.typeName} Service</Text>
-                      <Text style={[styles.desc,{fontFamily:'quicksand-bold'}]}>Php </Text>
+                      <Text style={[styles.desc,{fontFamily:'quicksand-bold'}]}>Php {price}</Text>
                     </View>
 
                   </View>
@@ -92,8 +145,7 @@ export default function Listing( props ) {
                 }
 
               </View>
-              
-              
+
               <TouchableWithoutFeedback onPress= {() => closeSpecs()}>
                 <Text style={styles.enter}>CLOSE</Text>
               </TouchableWithoutFeedback>
