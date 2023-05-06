@@ -37,8 +37,9 @@ export default ( route, navigation ) => {
         {text: 'OK'},
       ]);
       navigation.replace('RequestList');
-      return;
-    }
+      return false;
+    } 
+    return true;
   }
 
   useEffect(() =>{
@@ -67,12 +68,12 @@ export default ( route, navigation ) => {
         seekerID, serviceID, specsID, bookingStatus, dateTimestamp
       });
       let { bookingID } = res.body;
-      checkAvailability();
-
-      await ServiceSpecsServices.patchServiceSpecs(specsID, {referencedID: bookingID, specsStatus: 2});
-      socketService.acceptServiceSpec( specsID );
-      
-      navigation.navigate('BookingChat', { specsID, bookingID, latitude, longitude, location, typeName });
+      let available = await checkAvailability();
+      if(available) {
+        await ServiceSpecsServices.patchServiceSpecs(specsID, {referencedID: bookingID, specsStatus: 2});
+        socketService.acceptServiceSpec( specsID );
+        navigation.navigate('BookingChat', { specsID, bookingID, latitude, longitude, location, typeName });
+      }
     } catch (err) {
       Alert.alert('Error', err+'.', [ {text: 'OK'} ]);
     }

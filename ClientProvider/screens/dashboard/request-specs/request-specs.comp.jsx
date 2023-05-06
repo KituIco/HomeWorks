@@ -54,7 +54,7 @@ export default function RequestSpecs({route, navigation}) {
           { !noImage &&
           <View  style={{width:'90%', alignSelf:'center', marginTop: 30}}>
             <TouchableWithoutFeedback onPress={() => setOpen(true)}>
-            <LinearGradient colors={['rgba(0,0,0,0.7)','rgba(0,0,0,0.1)'  ]} start={{ x:0, y:0.65 }} end={{ x:0, y:0.98 }} style={styles.shadow}>
+            <LinearGradient colors={['rgba(0,0,0,0.7)','rgba(0,0,0,0.1)']} start={{ x:0, y:0.65 }} end={{ x:0, y:0.98 }} style={styles.shadow}>
               <View style={[styles.button, {borderWidth:1, borderColor: '#9C54D5', height:34,}]}>
                 <Text style={[styles.next, {color: '#606060', fontSize:14}]}>Click here to see Specs Images</Text>
               </View>

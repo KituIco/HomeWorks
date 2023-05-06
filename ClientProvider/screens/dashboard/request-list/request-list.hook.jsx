@@ -40,7 +40,8 @@ export default () => {
     }
   }
 
-  useEffect(() => {
+  useFocusEffect(
+    useCallback(() => {
     ( async() => {  
       try {
         getRequests();
@@ -49,7 +50,8 @@ export default () => {
       }
       setLoading(false);
     })();
-  }, []);
+  }, [])
+  );
 
   useEffect(() => {
     socketService.joinRoom('providers');
