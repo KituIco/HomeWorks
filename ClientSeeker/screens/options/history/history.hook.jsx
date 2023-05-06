@@ -1,5 +1,6 @@
 
-import { useState, useEffect, useCallback } from 'react';
+import { useFocusEffect } from '@react-navigation/native';
+import { useState, useCallback } from 'react';
 import { Alert } from 'react-native';
 
 import ServiceSpecsServices from '../../../services/service-specs/service-specs-services';
@@ -9,6 +10,8 @@ import { getUserID } from '../../../utils/get-userID';
 export default ( ) => {
   const [waiting, setWaiting] = useState(true);
   const [history, setHistory] = useState([]);
+  const [empty, setEmpty] = useState(false);
+
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
 
@@ -16,10 +19,14 @@ export default ( ) => {
     let userID = await getUserID();
     let specs = await ServiceSpecsServices.getSortedSeekerSpecs(userID, 'desc');
     let history = await historyHelper(specs.body);
+
+    if(history.length == 0) setEmpty(true);
+    else setEmpty(false);
     setHistory(history);
   }
 
-  useEffect(() => {
+  useFocusEffect(
+    useCallback(() => {
     ( async() => {  
       try {
         getHistory();
@@ -29,7 +36,8 @@ export default ( ) => {
       }
       setLoading(false);
     })();
-  }, []);
+  }, [])
+  )
 
   const onRefresh = useCallback (() => {
     ( async() => {  
@@ -48,6 +56,7 @@ export default ( ) => {
     history, setHistory,
     loading, setLoading,
     refreshing, setRefreshing,
+    empty, setEmpty,
 
     onRefresh,
   }

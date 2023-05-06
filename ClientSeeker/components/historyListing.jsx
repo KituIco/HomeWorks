@@ -9,9 +9,11 @@ import MapView, {Marker} from 'react-native-maps';
 import ServiceTypesServices from '../services/service-types/service-types-services';
 import ServiceSpecsServices from '../services/service-specs/service-specs-services';
 import AddressServices from '../services/address/address-services';
+import socketService from '../services/sockets/sockets-services';
 
 import { addressHandler } from '../utils/address-handler';
 import { removeRequest } from '../utils/remove-request';
+
 export default function Listing( props ) {
   // let services = props.listings;
   const [services, setServices] = useState([]);
@@ -87,6 +89,24 @@ export default function Listing( props ) {
     } 
   }
 
+  const onResend = async(data) => {
+    try {
+      let { referencedID, specsID, typeName, icon } = data;
+      let minServiceCost = price;
+
+      await ServiceSpecsServices.patchServiceSpecs(specsID, { specsStatus:1, specsTimeStamp:Date.now() });
+      socketService.createServiceSpec(JSON.stringify(data));
+      props.navigation.navigate('RequestStack', { screen:'RequestMatch', params: {
+        referencedID, minServiceCost, specsID, typeName, icon
+      }});
+
+      setOpenSpecs(false);
+      setLoading(true);
+    } catch (err) {
+      Alert.alert('Error', err+'.', [ {text: 'OK'} ]);
+    } 
+  }
+
   const servicesList = data => {
     return (
       <LinearGradient colors={['rgba(0,0,0,0.3)','rgba(0,0,0,0.12)']} start={{ x:0, y:0.95 }} end={{ x:0, y:0.98 }} style={styles.shadow} key={data.specsID}>
@@ -134,10 +154,19 @@ export default function Listing( props ) {
                     <Text style={[styles.desc]}>{location}</Text>
 
                     <Text style={styles.subhead}>Minimum Service Cost</Text>
-                    <View style={styles.details}>
+                    <View style={[styles.details,{marginBottom:20}]}>
                       <Text style={styles.desc}>{data.typeName} Service</Text>
                       <Text style={[styles.desc,{fontFamily:'quicksand-bold'}]}>Php {price}</Text>
                     </View>
+
+
+                    <TouchableWithoutFeedback onPress={() => onResend(data)}>
+                      <LinearGradient colors={['#9C54D5', '#462964']} start={{ x:0.6, y:-1 }} end={{ x:0.1, y:1 }} style={styles.button}>
+                        <LinearGradient colors={['rgba(0, 0, 0, 0.4)','rgba(0, 0, 0, 0)']} start={{ x: 0.5, y: 0.01 }} end={{ x: 0.5, y: 0.15 }} style={styles.ledge}>
+                          <Text style={styles.touchable}>{data.button}</Text>
+                        </LinearGradient>
+                      </LinearGradient> 
+                    </TouchableWithoutFeedback>
 
                   </View>
                   

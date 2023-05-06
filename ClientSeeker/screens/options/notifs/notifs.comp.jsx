@@ -8,7 +8,7 @@ export default function Notifications() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.content}> Notifications!</Text>
+      <Text style={styles.content}>Notifs Tab is Empty!</Text>
     </View>
   );
 }

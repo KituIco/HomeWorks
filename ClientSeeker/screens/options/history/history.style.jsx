@@ -12,5 +12,9 @@ export default StyleSheet.create({
     fontFamily: 'lexend',   
     fontSize: 15,
     textTransform:'uppercase'
+  },
+  subcontent: {
+    fontFamily: 'notosans-light',   
+    fontSize: 12,
   }
 });

@@ -41,7 +41,7 @@ export default ( navigation ) => {
         if(address.body.length == 0){
           navigation.replace('HomeStack');
           navigation.navigate('HomeStack', { screen:'OptionsStack', 
-            params: { screen: 'ProfileAddress', initial:false} });
+            params: { screen: 'ProfileAddress', initial:false } });
         }
 
         let provider = await ProviderServices.getProvider(userID);
@@ -118,7 +118,7 @@ export default ( navigation ) => {
       await ProviderServices.patchProvider(providerID, { providerDp });
       navigation.replace('HomeStack');
       navigation.navigate('HomeStack', { screen:'OptionsStack', 
-        params: { screen: 'Profile', initial:false} });
+        params: { screen: 'Profile', initial:false } });
     } catch (err) {
       Alert.alert('Error', err, [ {text: 'OK'} ]);
       navigation.goBack()

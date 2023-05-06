@@ -62,6 +62,7 @@ export default ( navigation, route ) => {
       let res = await ServiceSpecsServices.createServiceSpecs({
         seekerID, typeID, addressID, referencedID, specsDesc, images, specsStatus, specsTimeStamp, 
       })
+
       socketService.createServiceSpec(JSON.stringify(res.body));
       navigation.replace('RequestMatch', { specsID:res.body.specsID, icon, typeName, referencedID, minServiceCost});
     } catch (err) {

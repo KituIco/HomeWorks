@@ -31,7 +31,7 @@ export default function EditProfile( props ) {
       setTimeout(() => {
         props.navigation.replace('HomeStack');
         props.navigation.navigate('HomeStack', { screen:'OptionsStack', 
-          params: { screen: 'Profile', initial:false} });
+          params: { screen: 'Profile', initial:false } });
       }, 1000)
     }
   }, [done]);
