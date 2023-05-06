@@ -42,15 +42,23 @@ export default function Listing( props ) {
   }, [props]);
 
   const navigateTo = async(data) => {
+    if(data.specsStatus == 2) {
+      let { body } = await AddressServices.getAddressByID(data.addressID);
+      let address = addressHandler(body)
+
+      let { specsID, typeName, icon } = data;
+      props.navigation.navigate('MatchStack', { address, specsID, typeName, icon });
+    }
+
     if(data.specsStatus == 4 || data.specsStatus == 1) {
       setOpenSpecs(true);
-      let { body } = await AddressServices.getAddressByID(data.addressID);
-      let serviceTypes = await ServiceTypesServices.getServiceTypes();
+      let { body: address } = await AddressServices.getAddressByID(data.addressID);
+      let { body: serviceTypes } = await ServiceTypesServices.getServiceTypes();
       let images = JSON.parse(data.images);
 
-      for (let i=0; i<serviceTypes.body.length; i++) {
-        if (serviceTypes.body[i].typeName == data.typeName) {
-          setPrice(serviceTypes.body[i].minServiceCost);
+      for (let i=0; i<serviceTypes.length; i++) {
+        if (serviceTypes[i].typeName == data.typeName) {
+          setPrice(serviceTypes[i].minServiceCost);
         }
       }
 
@@ -66,13 +74,13 @@ export default function Listing( props ) {
       setViewer(urls);
       setCurrentData(data);
 
-      setLatitude(body.latitude);
-      setLongitude(body.longitude);
+      setLatitude(address.latitude);
+      setLongitude(address.longitude);
 
-      setLocation(addressHandler(body));
+      setLocation(addressHandler(address));
       setRegion({
-        latitude: body.latitude, latitudeDelta: 0.0060,
-        longitude: body.longitude, longitudeDelta: 0.0040,
+        latitude: address.latitude, latitudeDelta: 0.0060,
+        longitude: address.longitude, longitudeDelta: 0.0040,
       });
       setLoading(false);
     }
@@ -173,7 +181,6 @@ export default function Listing( props ) {
       return servicesList(value);
     })}
 
-      { openSpecs && <View style={styles.overlay}/> }
       <Modal visible={openSpecs} transparent={true}>
         <View style={styles.centered}>
           <View style={styles.modal}>
@@ -208,7 +215,7 @@ export default function Listing( props ) {
                   
                   <Text style={styles.head}>{currentData.typeName}</Text>
                   <Text style={styles.desc}>Shown below are the service description, the location, and the minimum service cost of your request. </Text>
-                  <Text style={styles.desc}>To resend this request, please scroll down and click the resend button below</Text>
+                  <Text style={[styles.desc,{marginTop:6}]}>To {currentData.button.toLowerCase()}, please scroll down and click the corresponding button below</Text>
 
                   <Text style={styles.subhead}>Service Description</Text>
                   <Text style={styles.desc}>{currentData.specsDesc}</Text>
@@ -217,13 +224,13 @@ export default function Listing( props ) {
                   <Text style={[styles.desc]}>{location}</Text>
 
                   <Text style={styles.subhead}>Minimum Service Cost</Text>
-                  <View style={[styles.details,{marginBottom:20}]}>
+                  <View style={[styles.details,{marginBottom:6}]}>
                     <Text style={styles.desc}>{currentData.typeName} Service</Text>
                     <Text style={[styles.desc,{fontFamily:'quicksand-bold'}]}>Php {price}</Text>
                   </View>
 
                   { !noImage &&
-                  <View  style={{width:'100%', alignSelf:'center'}}>
+                  <View  style={{width:'100%', alignSelf:'center', marginTop:10}}>
                     <TouchableWithoutFeedback onPress={() => setOpen(true)}>
                     <LinearGradient colors={['rgba(0,0,0,0.7)','rgba(0,0,0,0.1)']} start={{ x:0, y:0.65 }} end={{ x:0, y:0.98 }} style={styles.froimage}>
                       <View style={styles.image}>
@@ -363,15 +370,6 @@ const styles = StyleSheet.create({
     fontFamily: 'lexend',
     marginTop: 30,
     letterSpacing: -0.5,
-  },
-
-  overlay: {
-    position: 'absolute', 
-    top: 0, left: 0, right: 0, bottom: 0, 
-    justifyContent: 'center', 
-    alignItems: 'center',
-    zIndex: 15,
-    backgroundColor: '#E9E9E9A0'
   },
 
   typename: {

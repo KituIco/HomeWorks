@@ -41,15 +41,27 @@ export default ( navigation, route ) => {
         let { body: booking } = await BookingServices.getBookingByID(specs.referencedID);
         let { body: service } = await ServiceServices.getService(booking.serviceID);
         let { body: user } = await ProviderServices.getProvider(service.providerID);
+        let { body: message } = await MessageServices.getBookingMessages(booking.bookingID);
         
         setBookingID(specs.referencedID);
         setServiceID(booking.serviceID);
         setProviderID(service.providerID);
         setAddressID(specs.addressID);
+        
+        setMessages(message);
+        setCounter(counter+message.length);
 
         setProviderName(user.firstName + " " + user.lastName);
         if (user.providerDp)
           setProviderDP({uri : getImageURL(user.providerDp)});
+
+        let bookingID = booking.bookingID;
+        let serviceID = booking.serviceID;
+        let providerID = service.providerID;
+        let addressID = specs.addressID;
+        if(booking.bookingStatus == 2)
+          navigation.navigate('BookingSpecs', { typeName, icon, specsID, bookingID, serviceID, providerID, addressID });
+        
       } catch (err) {
         Alert.alert('Error', err+'.', [ {text: 'OK'} ]);
         navigation.goBack();
@@ -238,6 +250,7 @@ export default ( navigation, route ) => {
       setRefreshing(true);
       try {
         getMessages();
+        scrollViewRef.current.scrollToEnd({ animated: true })
       } catch (err) {
         Alert.alert('Error', err+'.', [ {text: 'OK'} ]);
       }

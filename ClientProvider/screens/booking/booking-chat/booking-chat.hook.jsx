@@ -36,6 +36,10 @@ export default ( navigation, route ) => {
       try {
         let { body: specs } = await ServiceSpecsServices.getSpecsByID(data.specsID);
         let { body: user } = await SeekerServices.getSeeker(specs.seekerID);
+        let { body: message } = await MessageServices.getBookingMessages(bookingID);
+
+        setMessages(message);
+        setCounter(counter+message.length);
 
         setSeekerName(user.firstName + " " + user.lastName);
         setSeekerID(specs.seekerID);
@@ -206,12 +210,13 @@ export default ( navigation, route ) => {
       setRefreshing(true);
       try {
         getMessages();
+        scrollViewRef.current.scrollToEnd({ animated: true })
       } catch (err) {
         Alert.alert('Error', err+'.', [ {text: 'OK'} ]);
       }
       setRefreshing(false);
     })();
-  }, [bookingID]);
+  }, [bookingID, loading]);
 
   return {
     value, onChangeText,

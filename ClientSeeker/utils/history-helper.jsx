@@ -30,9 +30,9 @@ export const historyHelper = async(specs) => {
     else if (specs[i].typeName == 'Manicurists') specs[i]['icon'] = 'hand-clap';
     else if (specs[i].typeName == 'Hair Dresser') specs[i]['icon'] = 'face-woman-shimmer';
 
-    let status = ['', 'Active', 'Matching', 'Settled', 'Cancelled'];
-    let colors = ['', styles.blue, styles.brown, styles.green, styles.red]
-    let button = ['', 'Resend Request', 'View Booking Details', 'View Transaction', 'Resend Request'];
+    let status = ['', 'Searching', 'Matching', 'Settled', 'Cancelled'];
+    let colors = ['', styles.orange, styles.blue, styles.green, styles.red]
+    let button = ['', 'View Request', 'View Matched Booking', 'View Transaction', 'Resend Request'];
     let goto = ['', 'RequestMatch', 'MatchStack', 'ProviderStack', 'RequestMatch'];
 
     specs[i]['status'] = status[specs[i].specsStatus];
@@ -56,8 +56,8 @@ const styles = StyleSheet.create ({
   blue: {
     color: 'blue'
   },
-  brown: {
-    color: 'brown'
+  orange: {
+    color: 'orange'
   },
   green: {
     color: 'green'

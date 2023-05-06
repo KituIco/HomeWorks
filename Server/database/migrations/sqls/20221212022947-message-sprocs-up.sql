@@ -94,7 +94,9 @@ BEGIN
     FROM
         Message
     WHERE
-        booking_id = bkngID;
+        booking_id = bkngID
+    ORDER BY
+        date_timestamp ASC;
 END;
 
 -- Get all messages containing keyword in particular booking

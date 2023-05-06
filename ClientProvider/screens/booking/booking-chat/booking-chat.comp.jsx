@@ -52,7 +52,7 @@ export default function BookingChat({ navigation, route }) {
 
         <LinearGradient colors={['rgba(0,0,0,0.1)','rgba(0,0,0,0)'  ]} start={{ x:0, y:0 }} end={{ x:0, y:1 }} style={{height:4}}/>
         <ScrollView style={{flex:1, width: '100%'}} 
-          refreshControl={ <RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>}
+          refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>}
           ref={scrollViewRef}
           onContentSizeChange={() => scrollViewRef.current.scrollToEnd({ animated: true })}
         >
