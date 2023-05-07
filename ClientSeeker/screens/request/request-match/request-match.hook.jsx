@@ -47,7 +47,7 @@ export default ( navigation, route ) => {
   }
   
   const onConfirm = async() => {
-    await ServiceSpecsServices.patchServiceSpecs(specsID, { specsStatus:4 })
+    await ServiceSpecsServices.patchServiceSpecs(specsID, { specsStatus:5 })
     socketService.serviceSpecUnavailable(specsID);
     socketService.offReceiveAcceptServiceSpec();
     navigation.navigate('HomeStack')

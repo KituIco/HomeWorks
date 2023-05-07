@@ -3,6 +3,7 @@ import { Alert } from 'react-native';
 
 import TransactionReportServices from '../../../services/transaction/transaction-reports-services';
 import ServiceSpecsServices from '../../../services/service-specs/service-specs-services';
+import PaymentServices from '../../../services/payment/payment-services';
 import BookingServices from '../../../services/booking/booking-services';
 import AddressServices from '../../../services/address/address-services';
 import ServiceServices from '../../../services/service/service-services';
@@ -14,6 +15,7 @@ export default ( navigation, route ) => {
   const { reportID, specsID, location } = route.params;
   const [paid, setPaid] = useState(false);
   const [open, setOpen] = useState(false);
+  const [paymentID, setPaymentID] = useState();
 
   const [loading, setLoading] = useState(true);
   const [address, setAddress] = useState();
@@ -32,6 +34,7 @@ export default ( navigation, route ) => {
         let { body: service } = await ServiceServices.getService(report.serviceID)
 
         setAddress(addressHandler(address));
+        setPaymentID(report.paymentID);
         setType(service.typeName);
         setDesc(booking.description);
         setCost(booking.cost);
@@ -42,12 +45,19 @@ export default ( navigation, route ) => {
     })();
   }, [])
 
-  const changePaid = () => {
-    setPaid(true);
-    socketService.paymentReceived("report-" + reportID);
+  const changePaid = async() => {
+    try{
+      await PaymentServices.patchPayment(paymentID, {paymentStatus:2});
+      socketService.paymentReceived("report-" + reportID);
+      setPaid(true);
+    } catch (err) {
+      Alert.alert('Error', err+'.', [ {text: 'OK'} ]);
+    }
   };
 
-  const onDone = () => {
+  const onDone = async () => {
+    await TransactionReportServices.patchTransactionReport(reportID, {transactionStat:3});
+    await ServiceSpecsServices.patchServiceSpecs(specsID, {specsStatus:4});
     socketService.providerDone("report-" + reportID);
     navigation.navigate('TransactionDone', {reportID})
   }

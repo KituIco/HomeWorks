@@ -80,13 +80,7 @@ class PaymentController {
             await this.paymentValidator.validateExistence(paymentID, 'payment');
                 // Validate if not all fields are null
             this.paymentValidator.validatePatchPayload(req.body);
-                // validate if seekerID exists
-            await this.paymentValidator.validateExistence(seekerID, 'seeker');
-                // validate if providerID exists
-            await this.paymentValidator.validateExistence(providerID, 'provider');
-                // validate if serviceID exists
-            await this.paymentValidator.validateExistence(serviceID, 'service');
-
+            
             await this.paymentRepo.patchPayment(
                 paymentID,
                 seekerID,

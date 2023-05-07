@@ -5,6 +5,7 @@ import { Alert } from 'react-native';
 import TransactionReportServices from '../../../services/transaction/transaction-reports-services';
 import ServiceSpecsServices from '../../../services/service-specs/service-specs-services';
 import ProviderServices from '../../../services/provider/provider-services';
+import PaymentServices from '../../../services/payment/payment-services';
 import BookingServices from '../../../services/booking/booking-services';
 import ServiceServices from '../../../services/service/service-services';
 import AddressServices from '../../../services/address/address-services';
@@ -29,6 +30,7 @@ export default ( navigation, route ) => {
     ( async() => {
       try {
         let { body: report } = await TransactionReportServices.getTransactionReportsByID(reportID);
+        let { body: payment } = await PaymentServices.getPaymentByID(report.paymentID);
         let { body: booking } = await BookingServices.getBookingByID(report.bookingID);
         let { body: specs } = await ServiceSpecsServices.getSpecsByID(report.specsID);
 
@@ -40,6 +42,9 @@ export default ( navigation, route ) => {
           providerID: report.providerID, name: provider.firstName+" "+provider.lastName, location: addressHandler(address),
           serviceRatings: service.serviceRating, typeName: service.typeName, initialCost: service.initialCost, icon, src: {uri : getImageURL(provider.providerDp)}
         }];
+
+        if(report.transactionStat == 2) changeStatus();
+        if(payment.paymentStatus == 2) changePaid();
 
         setAddress(addressHandler(address))
         setDesc(booking.description);

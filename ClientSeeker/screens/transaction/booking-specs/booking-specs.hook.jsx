@@ -72,7 +72,7 @@ export default ( navigation, route ) => {
         seekerID, providerID, serviceID, paymentMethod, paymentStatus, amount: parseFloat(cost)
       });
       
-      let transactionStat = 2;
+      let transactionStat = 1;
       let paymentID = payment.body.paymentID;
       let transaction = await TransactionReportServices.createTransactionReport({
         bookingID, paymentID, specsID, seekerID, providerID, serviceID, transactionStat

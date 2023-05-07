@@ -1,5 +1,7 @@
 import { StyleSheet } from "react-native";
 
+import TransactionReportServices from '../services/transaction/transaction-reports-services';
+
 export const historyHelper = async(specs) => {
   for (let i=0; i<specs.length; i++) {
     if(specs[i].typeID == '0') specs[i]['typeName'] = 'Carpentry'
@@ -30,15 +32,20 @@ export const historyHelper = async(specs) => {
     else if (specs[i].typeName == 'Manicurists') specs[i]['icon'] = 'hand-clap';
     else if (specs[i].typeName == 'Hair Dresser') specs[i]['icon'] = 'face-woman-shimmer';
 
-    let status = ['', 'Searching', 'Matching', 'Settled', 'Cancelled'];
-    let colors = ['', styles.orange, styles.blue, styles.green, styles.red]
-    let button = ['', 'View Request', 'View Matched Booking', 'View Transaction', 'Resend Request'];
-    let goto = ['', 'RequestMatch', 'MatchStack', 'ProviderStack', 'RequestMatch'];
+    let status = ['', 'Searching', 'Matching', 'Settled', 'Complete', 'Cancelled'];
+    let colors = ['', styles.brown, styles.orange, styles.blue, styles.green, styles.red]
+    let button = ['', 'View Ongoing Request', 'View Matched Booking', 'View Ongoing Service', 'View Completed Transaction', 'Resend Cancelled Request'];
+
+    if(specs[i].specsStatus == 3){
+      let { body: report } = await TransactionReportServices.getTransactionReportsByID(specs[i].referencedID);
+      if(report.transactionStat == 1) status[3] = 'Arriving';
+      else if(report.transactionStat == 2) status[3] = 'Serving';
+      else if(report.transactionStat == 3) status[3] = 'Complete';
+    }
 
     specs[i]['status'] = status[specs[i].specsStatus];
     specs[i]['button'] = button[specs[i].specsStatus];
     specs[i]['color'] = colors[specs[i].specsStatus];
-    specs[i]['goto'] = goto[specs[i].specsStatus];
 
     let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
     let date = new Date( specs[i].specsTimestamp);
@@ -64,6 +71,9 @@ const styles = StyleSheet.create ({
   },
   red: {
     color: 'red'
+  },
+  brown: {
+    color: 'brown'
   }
 
 });

@@ -50,7 +50,19 @@ export default function Listing( props ) {
       props.navigation.navigate('MatchStack', { address, specsID, typeName, icon });
     }
 
-    if(data.specsStatus == 4 || data.specsStatus == 1) {
+    if(data.specsStatus == 3) {
+      let { icon, typeName, referencedID } = data;
+      let reportID = referencedID;
+      props.navigation.navigate('ServeStack', { typeName, icon, reportID });
+    }
+
+    if(data.specsStatus == 4) {
+      let { icon, typeName, referencedID } = data;
+      let reportID = referencedID;
+      props.navigation.navigate('ProviderStack', { typeName, icon, reportID })
+    }
+
+    if(data.specsStatus == 5 || data.specsStatus == 1) {
       setOpenSpecs(true);
       let { body: address } = await AddressServices.getAddressByID(data.addressID);
       let { body: serviceTypes } = await ServiceTypesServices.getServiceTypes();
@@ -123,7 +135,7 @@ export default function Listing( props ) {
       let { referencedID, specsID, typeName, icon } = data;
       let minServiceCost = price;
 
-      if(data.specsStatus == 4) {
+      if(data.specsStatus == 5) {
         await ServiceSpecsServices.patchServiceSpecs(specsID, { specsStatus:1, specsTimeStamp:Date.now() });
         socketService.createServiceSpec(JSON.stringify(data));
       }
