@@ -6,6 +6,7 @@
     "start": "./node_modules/.bin/nodemon ./bin/www"
   },
   "dependencies": {
+    "@adyen/api-library": "^13.1.3",
     "axios": "^1.3.4",
     "bcryptjs": "^2.4.3",
     "cookie-parser": "~1.4.4",

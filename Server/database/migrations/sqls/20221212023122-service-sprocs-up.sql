@@ -373,7 +373,7 @@ BEGIN
             INNER JOIN
         Address ON Service.provider_id = Address.provider_id AND Address.is_default = 1 AND Service.service_enabled = 1
     WHERE
-        ST_Distance_Sphere(Address.coordinates, POINT(lat, lng)) BETWEEN (inner_radius*1000) AND (outer_radius*1000)
+        ST_Distance_Sphere(POINT(RADIANS(ST_X(Address.coordinates)), RADIANS(ST_Y(Address.coordinates))), POINT(RADIANS(lat), RADIANS(lng))) BETWEEN (inner_radius*1000) AND (outer_radius*1000)
     ORDER BY service_rating DESC
     LIMIT offset, return_size;
 END;
