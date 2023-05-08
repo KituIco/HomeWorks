@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Alert } from 'react-native';
 
 import TransactionReportServices from '../../../services/transaction/transaction-reports-services';
 import ServiceSpecsServices from '../../../services/service-specs/service-specs-services';
@@ -6,6 +7,7 @@ import ProviderServices from '../../../services/provider/provider-services';
 import BookingServices from '../../../services/booking/booking-services';
 import ServiceServices from '../../../services/service/service-services';
 import AddressServices from '../../../services/address/address-services';
+import ReviewServices from '../../../services/review/review-services';
 
 import { addressHandler } from '../../../utils/address-handler';
 import { getImageURL } from '../../../utils/get-imageURL';
@@ -38,9 +40,16 @@ export default ( navigation, route ) => {
         let { body: service } = await ServiceServices.getService(report.serviceID)
         
         let providerInfo = [{
-          providerID: report.providerID, name: provider.firstName+" "+provider.lastName, location: addressHandler(address),
+          providerID: report.providerID, name: provider.firstName+" "+provider.lastName, location: addressHandler(address), serviceID: report.serviceID, seekerID: report.seekerID,
           serviceRatings: service.serviceRating, typeName: service.typeName, initialCost: service.initialCost, icon, src: {uri : getImageURL(provider.providerDp)}
         }];
+
+        if(report.transactionStat == 4){
+          let { body: review } = await ReviewServices.getReview(report.reviewID);
+          setRates(review.rating);
+          onChangeText(review.comment);
+          setAnswered(true);
+        }
 
         setAddress(addressHandler(address))
         setDesc(booking.description);
@@ -62,8 +71,20 @@ export default ( navigation, route ) => {
     setRates(rate+1);
   }
 
-  const changeStatus = () => {
-    setAnswered(true);
+  const changeStatus = async() => {
+    try {
+      let { body: review } = await ReviewServices.createReview({ 
+        serviceID: list[0].serviceID, 
+        seekerID: list[0].seekerID, 
+        dateTimestamp: Date.now(), 
+        rating: rates, comment: value
+      });
+      await TransactionReportServices.patchTransactionReport(reportID, { transactionStat:4, reviewID:review.reviewID });
+      setAnswered(true);
+    } catch (err) {
+      Alert.alert('Error', err+'.', [ {text: 'OK'} ]);
+    }
+    
   }
 
   return {

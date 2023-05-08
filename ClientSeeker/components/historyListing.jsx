@@ -192,7 +192,7 @@ export default function Listing( props ) {
     {services.map((value, index) => {
       return servicesList(value);
     })}
-
+      { openSpecs && <View style={styles.overlay}/> }
       <Modal visible={openSpecs} transparent={true}>
         <View style={styles.centered}>
           <View style={styles.modal}>
@@ -289,6 +289,14 @@ export default function Listing( props ) {
 }
 
 const styles = StyleSheet.create({
+
+  overlay: {
+    position: 'absolute', 
+    top: -50, left: 0, right: 0, bottom: 0, 
+    zIndex: 15,
+    backgroundColor: '#FFFFFF'
+  },
+  
   shadow: {
     marginHorizontal: 30,
     borderRadius: 10,
