@@ -248,3 +248,14 @@ CREATE TABLE IF NOT EXISTS `Message`(
     FOREIGN KEY (`booking_id`) REFERENCES Booking(`booking_id`) ON DELETE CASCADE,
     FOREIGN KEY (`user_id`) REFERENCES User(`user_id`) ON DELETE CASCADE
 );
+
+CREATE TABLE IF NOT EXISTS `Payout` (
+    `payout_id` VARCHAR(14) NOT NULL,
+    `seeker_id` VARCHAR(14) NOT NULL,
+    `provider_id` VARCHAR(14) NOT NULL,
+    `amount` INT NOT NULL,
+    `date_timestamp` BIGINT NOT NULL,
+    `payout_status` INT NOT NULL,
+    PRIMARY KEY (`payout_id`),
+    FOREIGN KEY (`provider_id`) REFERENCES Provider(`provider_id`) ON DELETE CASCADE
+);

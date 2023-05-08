@@ -3,14 +3,16 @@ class AdyenController {
         checkout,
         clientErrors,
         adyenValidator,
-        paymentTransactionRepo,
-        nanoid
+        payoutRepo,
+        nanoid,
+        NodeRSA
     ) {
         this.checkout = checkout;
         this.clientErrors = clientErrors;
         this.adyenValidator = adyenValidator;
-        this.paymentTransactionRepo = paymentTransactionRepo;
+        this.payoutRepo = payoutRepo;
         this.nanoid = nanoid;
+        this.NodeRSA = NodeRSA;
     }
 
     // Get: "/paymentMethods"
@@ -42,7 +44,7 @@ class AdyenController {
     makePayment = async (req, res, next) => {
         try {
             let {cntryCode, crncy, val} = req.query;
-            let {paymentMethod, returnUrl} = req.body;
+            let {paymentMethod, returnUrl, providerID, seekerID} = req.body;
 
             const paymentsResponse = await this.checkout.payments(
                 {
@@ -59,9 +61,68 @@ class AdyenController {
                 }
             )
 
+            let paymentID = this.nanoid(14);
+
+            await this.payoutRepo.createPayout(
+                paymentID,
+                seekerID,
+                providerID,
+                val,
+                Date.now(),
+                1
+            )
+
             res.status(200).json({
                 message: "Payment methods retrieved successfully",
                 body: paymentsResponse
+            });
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    // POST: '/payout'
+    makePayout = async (req, res, next) => {
+        try {
+            let {crncy, val} = req.query;
+            let {cardDetails, payoutID} = req.body;
+
+            const privateKey = process.env.RSA_PRIVATE_KEY;
+
+            const rsa = new this.NodeRSA(privateKey);
+
+            const decryptedCardDetails = JSON.parse(rsa.decrypt(cardDetails, 'utf8'));
+
+            const payoutsResponse = await this.checkout.payouts(
+                {
+                    merchantAccount: merchantAccount,
+                    amount: {
+                        currency: crncy,
+                        value: val
+                    },
+                    reference: 'Test payout',
+                    card: {
+                        cvc : decryptedCardDetails.cvc,
+                        expiryMonth : decryptedCardDetails.expiryMonth,
+                        expiryYear : decryptedCardDetails.expiryYear,
+                        holderName : decryptedCardDetails.holderName,
+                        number : decryptedCardDetails.number
+                    }
+                }
+            )
+
+            await this.payoutRepo.patchPayout(
+                payoutID,
+                null,
+                null,
+                null,
+                null,
+                2
+            )
+
+            res.status(200).json({
+                message: "Payouts retrieved successfully",
+                body: payoutsResponse
             });
         } catch (error) {
             next(error);
