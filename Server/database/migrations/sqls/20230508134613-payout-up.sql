@@ -5,8 +5,8 @@ CREATE PROCEDURE `create_payout`(
     IN `sekerID` VARCHAR(14),
     IN `provID` VARCHAR(14),
     IN `amnt` INT,
-    IN `timestmp` BIGINT
-    IN `stat` INT,
+    IN `timestmp` BIGINT,
+    IN `stat` INT
 )
 BEGIN
     INSERT INTO 
@@ -35,8 +35,8 @@ CREATE PROCEDURE `patch_payout`(
     IN `sekerID` VARCHAR(14),
     IN `provID` VARCHAR(14),
     IN `amnt` INT,
-    IN `timestmp` BIGINT
-    IN `stat` INT,
+    IN `timestmp` BIGINT,
+    IN `stat` INT
 )
 BEGIN
     UPDATE

@@ -46,7 +46,7 @@ BEGIN
         usrID, 
         usrFullName, 
         usrNum, 
-        POINT(lat, long),
+        POINT(lat, lon),
         ct,
         cntry,
         dstrct,
