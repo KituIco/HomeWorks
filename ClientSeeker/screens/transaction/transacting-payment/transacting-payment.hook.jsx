@@ -1,11 +1,14 @@
 import { useState } from 'react';
+import { Alert } from 'react-native';
+
+import AdyenServices from '../../../services/adyen/adyen-services';
 
 export default ( route ) => {
   const { service, icon } = route.params;
   
   const baseMethods = [
     { id: 0, type: 'Cash', toggled: true},
-    // { id: 1, type: 'G-Cash', account: '+639** *** 6424', toggled: false},
+    { id: 1, type: 'G-Cash', account: '+639** *** 6424', toggled: false},
     // { id: 2, type: 'G-Cash', account: '+639** *** 3492', toggled: false},
     // { id: 3, type: 'G-Cash', account: '+639** *** 7831', toggled: false},
     // { id: 4, type: 'PayMaya', account: '+639** *** 6333', toggled: false},
@@ -21,6 +24,15 @@ export default ( route ) => {
 
   const [methods, setMethods] = useState(baseMethods);
 
+  const getPaymentMethods = async() => {
+    try {
+      let methods = await AdyenServices.getPaymentMethods();
+      console.log(methods)
+    } catch (err) {
+      Alert.alert('Error', err+'.', [ {text: 'OK'} ]);
+    }
+  }
+
   const changeToggle = (id) => {
     let newMethods = [...methods];
     for (let i=0; i<newMethods.length; i++){
@@ -28,6 +40,7 @@ export default ( route ) => {
     }
     newMethods[id].toggled = true;
     setMethods(newMethods);
+    getPaymentMethods();
   }
 
   return { 

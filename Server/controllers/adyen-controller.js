@@ -1,3 +1,8 @@
+const dotenv = require("dotenv");
+dotenv.config({
+    path: "../.env",
+});
+
 class AdyenController {
     constructor(
         checkout,
@@ -18,24 +23,28 @@ class AdyenController {
     // Get: "/paymentMethods"
     getPaymentMethods = async (req, res, next) => {
         try {
-            let {cntryCode, crncy, val} = req.query;
-
+            // let {cntryCode, crncy, val} = req.query;
+            // console.log(req.query)
+            console.log(process.env)
             const paymentsResponse = await this.checkout.paymentMethods(
                 {
                     merchantAccount: process.env.ADYEN_MERCHANT_ACCOUNT,
-                    countryCode: cntryCode,
-                    amount: {
-                        currency: crncy,
-                        value: val
-                    }
+                    // countryCode: cntryCode,
+                    // amount: {
+                    //     currency: crncy,
+                    //     value: val
+                    // }
                 }
             )
+
+            console.log(paymentsResponse)
 
             res.status(200).json({
                 message: "Payment methods retrieved successfully",
                 body: paymentsResponse
             });
         } catch (error) {
+            console.log(error)
             next(error);
         }
     };
