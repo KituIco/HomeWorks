@@ -50,7 +50,7 @@ class AdyenController {
     makePayment = async (req, res, next) => {
         try {
             let {cntryCode, crncy, val} = req.query;
-            let {paymentMethod, returnUrl, providerID, seekerID} = req.body;
+            let {paymentMethod, providerID, seekerID} = req.body;
 
             const paymentsResponse = await this.checkout.payments(
                 {
@@ -62,7 +62,6 @@ class AdyenController {
                     },
                     reference: "Test payment",
                     paymentMethod: paymentMethod,
-                    returnUrl: returnUrl,
                     channel: "Web"
                 }
             )
