@@ -32,3 +32,6 @@ npm-debug.log
 .DS_Store
 
 .env
+
+# Google Drive Keys
+services/spheric-method-379716-483a5cebd2e8.json
