@@ -51,6 +51,7 @@ class AdyenController {
         try {
             let {cntryCode, crncy, val} = req.query;
             let {paymentMethod, providerID, seekerID} = req.body;
+            console.log(req.body)
 
             const paymentsResponse = await this.checkout.payments(
                 {

@@ -2,13 +2,14 @@ import { View, Text, ScrollView, TouchableWithoutFeedback, Image } from 'react-n
 import { LinearGradient } from 'expo-linear-gradient';
 
 import Next from '../../../components/transactnext';
+import Loading from '../../../hooks/loading';
 
 import styles from './transacting-payment.style';
 import hook from './transacting-payment.hook';
 
 export default function TransactingPayment({route, navigation}) {
   const { 
-    service, icon, methods, changeToggle,
+    service, icon, methods, loading, screen, reportID, changeToggle
   } = hook( route );
 
   const methodsList = data => {
@@ -17,7 +18,7 @@ export default function TransactingPayment({route, navigation}) {
         <View style={styles.options}>
           <Image style={styles.image} source={data.src} />
           <View style={styles.label}>
-            <Text style={styles.type}>{data.type}</Text>
+            <Text style={styles.type}>{data.name}</Text>
             { data.account && <Text style={styles.account}>{data.account}</Text>}
           </View>
          
@@ -30,6 +31,8 @@ export default function TransactingPayment({route, navigation}) {
       </View>
     );
   }; 
+
+  if(loading) return <View style={{flex:1}}><Loading/></View>
 
   return (
     <View style={{flex: 1}}>
@@ -45,7 +48,7 @@ export default function TransactingPayment({route, navigation}) {
         </View>
       </ScrollView>
       
-      <Next icon={icon} service={service} navigation={navigation} title={'Choose this Option'} screen={'TransactingServe'}/>
+      <Next icon={icon} service={service} reportID={reportID} navigation={navigation} title={'Choose this Option'} screen={screen}/>
     </View>
   );
 }

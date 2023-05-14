@@ -1,37 +1,54 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Alert } from 'react-native';
 
 import AdyenServices from '../../../services/adyen/adyen-services';
 
 export default ( route ) => {
-  const { service, icon } = route.params;
-  
-  const baseMethods = [
-    { id: 0, type: 'Cash', toggled: true},
-    { id: 1, type: 'G-Cash', account: '+639** *** 6424', toggled: false},
-    // { id: 2, type: 'G-Cash', account: '+639** *** 3492', toggled: false},
-    // { id: 3, type: 'G-Cash', account: '+639** *** 7831', toggled: false},
-    // { id: 4, type: 'PayMaya', account: '+639** *** 6333', toggled: false},
-    // { id: 5, type: 'PayMaya', account: '+639** *** 8882', toggled: false},
-    // { id: 6, type: 'PayMaya', account: '+639** *** 3241', toggled: false},
-  ]
+  const { service, icon, reportID } = route.params;
+  const [loading, setLoading] = useState(true);
+  const [screen, setScreen] = useState('TransactingServe')
 
-  for (let i=0; i<baseMethods.length; i++) {
-    if(baseMethods[i].type == 'Cash') baseMethods[i]['src'] = require("../../../assets/cash.png");
-    else if(baseMethods[i].type == 'G-Cash') baseMethods[i]['src'] = require("../../../assets/GCash.png");
-    else if(baseMethods[i].type == 'PayMaya') baseMethods[i]['src'] = require("../../../assets/PayMaya.jpg");
+  const addIcons = (methods) => {
+    for (let i=0; i<methods.length; i++) {
+      methods[i]['screen'] = JSON.stringify(methods[i]);
+      methods[i]['id'] = i;
+
+      if(!methods[i]['toggled']) methods[i]['toggled'] = false;
+      if(methods[i].name == 'Cash') methods[i]['screen'] = 'TransactingServe';
+      if(methods[i].name == 'Cash') methods[i]['src'] = require("../../../assets/cash.png");
+
+      else if(methods[i].name == 'GCash') methods[i]['src'] = require("../../../assets/GCash.png");
+      else if(methods[i].name == 'Maya Wallet') methods[i]['src'] = require("../../../assets/Maya.png");
+      else if(methods[i].name == 'Google Pay') methods[i]['src'] = require("../../../assets/GPay.png");
+      else if(methods[i].name == 'Credit Card') methods[i]['src'] = require("../../../assets/CreditCard.png");
+    }
+    return methods;
   }
+
+  let baseMethods = addIcons([
+    { name: 'Cash', toggled: true},
+    // { name: 'G-Cash', account: '+639** *** 6424', toggled: false},
+    // { name: 'G-Cash', account: '+639** *** 3492', toggled: false},
+    // { name: 'G-Cash', account: '+639** *** 7831', toggled: false},
+    // { name: 'PayMaya', account: '+639** *** 6333', toggled: false},
+    // { name: 'PayMaya', account: '+639** *** 8882', toggled: false},
+    // { name: 'PayMaya', account: '+639** *** 3241', toggled: false},
+  ])
 
   const [methods, setMethods] = useState(baseMethods);
-
-  const getPaymentMethods = async() => {
-    try {
-      let methods = await AdyenServices.getPaymentMethods();
-      console.log(methods)
-    } catch (err) {
-      Alert.alert('Error', err+'.', [ {text: 'OK'} ]);
-    }
-  }
+  
+  useEffect(() => {
+    ( async() => {
+      try {
+        let { body: methods } = await AdyenServices.getPaymentMethods();
+        let newMethods = [{ name: 'Cash', toggled: true},].concat(methods.paymentMethods)
+        setMethods(addIcons(newMethods))
+      } catch(err) {
+        Alert.alert('Error', err+'.', [ {text: 'OK'} ]);
+      }
+      setLoading(false);
+    })();
+  }, [])
 
   const changeToggle = (id) => {
     let newMethods = [...methods];
@@ -39,13 +56,17 @@ export default ( route ) => {
       newMethods[i].toggled = false;
     }
     newMethods[id].toggled = true;
+    setScreen(JSON.parse(newMethods[id].screen));
     setMethods(newMethods);
-    getPaymentMethods();
   }
 
   return { 
     service, icon,
     methods, setMethods,
+    loading, setLoading,
+    screen, setScreen,
+
+    reportID,
     changeToggle,
   }
 }

@@ -13,7 +13,7 @@ import hook from './transacting-serve.hook';
 export default function TransactingServe({ route, navigation }) {
   const {
     typeName, icon, loading, address, cost, desc, 
-    statusIcon, status, paid, list,
+    statusIcon, status, paid, list, reportID
   } = hook( navigation, route );
   
   if(loading) return <View style={{flex:1}}><Loading/></View>
@@ -47,7 +47,8 @@ export default function TransactingServe({ route, navigation }) {
       </ScrollView>
 
       { !paid &&
-      <Next icon={icon} service={typeName} navigation={navigation} title={'Settle Payment'} screen={'TransactingPayment'}/>
+      <Next icon={icon} service={typeName} reportID={reportID}
+        navigation={navigation} title={'Settle Payment'} screen={'TransactingPayment'}/>
       }
 
       { paid &&

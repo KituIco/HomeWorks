@@ -1,15 +1,42 @@
 import { StyleSheet, View, Text, TouchableWithoutFeedback  } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
+import { Alert } from 'react-native';
+
+import TransactionReportServices from '../services/transaction/transaction-reports-services';
+import AdyenServices from '../services/adyen/adyen-services';
 
 export default function Next ( props ) {
-  const { service, icon, title, screen, price, address } = props;
+  const { service, icon, title, screen, price, address, reportID } = props;
   let container = styles.container;
   if (price) {
     container = styles.container2
   }
 
+  const onPayment = async() => { 
+    try {
+      let { body: report } = await TransactionReportServices.getTransactionReportsByID(reportID);
+      let providerID = report.providerID;
+      let seekerID = report.seekerID;
+      let paymentMethod = screen;
+
+      let res = await AdyenServices.makePayment({paymentMethod, providerID, seekerID});
+      console.log(res);
+    } catch (err) {
+      Alert.alert('Error', err+'.', [ {text: 'OK'} ]);
+    }
+    
+  }
+
   const onPress = () => {
-    props.navigation.navigate(screen, {service, icon});
+    if (screen == 'TransactingPayment') {
+      props.navigation.navigate(screen, {service, icon, reportID});
+    }
+    else if(!screen.name) {
+      props.navigation.navigate(screen, {service, icon});
+    } 
+    else {
+      onPayment()
+    }
   }
 
   return (
