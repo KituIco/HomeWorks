@@ -41,10 +41,12 @@ export default function Options({ navigation }) {
           </View>
         </TouchableWithoutFeedback>
         
+        <TouchableWithoutFeedback onPress={() => navigation.navigate('TransactHistory')}>
         <View style={styles.options}>
           <MaterialCommunityIcons name={'book-clock'} size={36}/>
           <Text style={styles.tabs}>Visit Transaction History</Text>
         </View>
+        </TouchableWithoutFeedback>
         
         <View style={styles.options}>
           <MaterialCommunityIcons name={'chat-question'} size={36}/>

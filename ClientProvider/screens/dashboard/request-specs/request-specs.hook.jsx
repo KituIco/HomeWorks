@@ -64,8 +64,9 @@ export default ( route, navigation ) => {
   const onSettle = async() => {
     setLoading(true);
     try {
+      let description = specsDesc;
       let res = await BookingServices.createBooking({
-        seekerID, serviceID, specsID, bookingStatus, dateTimestamp
+        seekerID, serviceID, specsID, bookingStatus, dateTimestamp, description
       });
       let { bookingID } = res.body;
       let available = await checkAvailability();

@@ -132,7 +132,9 @@ BEGIN
         Service 
             ON Booking.service_id = Service.service_id
     WHERE 
-        Service.provider_id = prviderID;
+        Service.provider_id = prviderID
+    ORDER BY
+        Booking.date_timestamp DESC;
 END;
 
 -- Get booking by booking_id

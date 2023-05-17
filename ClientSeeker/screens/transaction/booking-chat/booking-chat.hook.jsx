@@ -9,6 +9,7 @@ import ServiceServices from '../../../services/service/service-services';
 import BookingServices from '../../../services/booking/booking-services';
 import MessageServices from '../../../services/message/message-services';
 import socketService from '../../../services/sockets/sockets-services';
+import SeekerServices from '../../../services/user/seeker-services';
 import ImageService from '../../../services/image/image-services';
 
 import { getImageURL } from '../../../utils/get-imageURL';
@@ -31,6 +32,7 @@ export default ( navigation, route ) => {
   const [open, setOpen] = useState(false);
 
   const [providerName, setProviderName] = useState('');
+  const [selfName, setSelfName] = useState('');
   const [providerDP, setProviderDP] = useState(require("../../../assets/default.jpg"));
   const scrollViewRef = useRef();
 
@@ -41,6 +43,7 @@ export default ( navigation, route ) => {
         let { body: booking } = await BookingServices.getBookingByID(specs.referencedID);
         let { body: service } = await ServiceServices.getService(booking.serviceID);
         let { body: user } = await ProviderServices.getProvider(service.providerID);
+        let { body: self } = await SeekerServices.getSeeker(specs.seekerID);
         let { body: message } = await MessageServices.getBookingMessages(booking.bookingID);
         
         setBookingID(specs.referencedID);
@@ -52,6 +55,7 @@ export default ( navigation, route ) => {
         setCounter(counter+message.length);
 
         setProviderName(user.firstName + " " + user.lastName);
+        setSelfName(self.firstName + " " + self.lastName);
         if (user.providerDp)
           setProviderDP({uri : getImageURL(user.providerDp)});
 
@@ -138,7 +142,7 @@ export default ( navigation, route ) => {
   const onConfirm = async() => {
     try {
       await ServiceSpecsServices.patchServiceSpecs(specsID, { specsStatus:1, referencedID:address, specsTimeStamp:Date.now() });
-      await BookingServices.patchBooking(bookingID, { bookingStatus:4 });
+      await BookingServices.patchBooking(bookingID, { bookingStatus:4,  description:`You accepted a service request from ${selfName}. However, the customer cancelled the booking after matching.` });
       socketService.rejectChat('booking-' + bookingID);
 
       socketService.offChat();

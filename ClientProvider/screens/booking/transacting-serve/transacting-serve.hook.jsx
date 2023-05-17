@@ -28,10 +28,13 @@ export default ( navigation, route ) => {
       try {
         let { body: report } = await TransactionReportServices.getTransactionReportsByID(reportID);
         let { body: booking } = await BookingServices.getBookingByID(report.bookingID);
+        let { body: payment } = await PaymentServices.getPaymentByID(report.paymentID);
 
         let { body: specs } = await ServiceSpecsServices.getSpecsByID(report.specsID);
         let { body: address } = await AddressServices.getAddressByID(specs.addressID);
-        let { body: service } = await ServiceServices.getService(report.serviceID)
+        let { body: service } = await ServiceServices.getService(report.serviceID);
+
+        if(payment.paymentStatus == 2) setPaid(true);
 
         setAddress(addressHandler(address));
         setPaymentID(report.paymentID);

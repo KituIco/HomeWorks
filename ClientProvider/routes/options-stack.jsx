@@ -4,6 +4,7 @@ import Options from '../screens/options/options/options.comp';
 import Profile from '../screens/options/profile/profile.comp'
 import ProfileAddress from '../screens/options/profile-address/profile-address.comp';
 import ServiceList from '../screens/options/service-list/service-list.comp';
+import TransactHistory from '../screens/options/transact-history/transact-history.comp';
 
 
 const Stack = createStackNavigator();
@@ -47,6 +48,12 @@ export default function OptionsStack() {
       <Stack.Screen 
         name='ServiceList' 
         component={ServiceList}
+        options={() => header}
+      />
+
+      <Stack.Screen 
+        name='TransactHistory' 
+        component={TransactHistory}
         options={() => header}
       />
 
