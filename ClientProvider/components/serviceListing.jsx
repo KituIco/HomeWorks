@@ -1,10 +1,40 @@
-import { StyleSheet, View, Text, TouchableWithoutFeedback } from 'react-native';
+import { StyleSheet, View, Text, TouchableWithoutFeedback, Alert } from 'react-native';
 import { MaterialCommunityIcons  } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
+import { useState, useEffect } from 'react';
 
+import ServiceServices from '../services/service/service-services';
+
+import { getUserID } from '../utils/get-userID';
 
 export default function Listing( props ) {
-  const services = props.listings;
+  const [services, setServices] = useState([]);
+
+  useEffect(() => {
+    ( async() => {  
+      try {
+        setServices(props.listings)
+      } catch (err) {
+        Alert.alert('Error', err+'.', [ {text: 'OK'} ]);
+      }
+    })();
+  }, [props]);
+
+  const changeEnabled = async(data) => {
+    try {
+      let serviceEnabled =  -1 * (data.serviceEnabled-3);
+      let newServices = [...services];
+
+      for (let i=0; i<newServices.length; i++) 
+        if (newServices[i].serviceID == data.serviceID)
+          newServices[i].serviceEnabled = serviceEnabled;
+
+      await ServiceServices.patchService(data.serviceID, {serviceEnabled: serviceEnabled});
+      setServices(newServices);
+    } catch (err) {
+      Alert.alert('Error', err+'.', [ {text: 'OK'} ]);
+    }
+  }
 
   const servicesList = data => {
     return (
@@ -16,25 +46,39 @@ export default function Listing( props ) {
             <View style={styles.texts}>
               <View style={styles.top}>
                 <Text style={styles.service}>{data.typeName}</Text>
-
-                { data.serviceRating &&
-                <View style={{ flexDirection: 'row', alignItems: 'flex-end', paddingBottom: 7}}>
-                  <MaterialCommunityIcons name={'star'} size={14} color="#9C54D5"/>
-                  <Text style={styles.rating}> {parseFloat(data.serviceRating).toFixed(1)}</Text>
-                </View>
+                { data.serviceEnabled == 1 &&
+                  <View>
+                    { data.serviceRating &&
+                    <View style={{ flexDirection: 'row', alignItems: 'flex-end', paddingBottom: 7}}>
+                      <MaterialCommunityIcons name={'star'} size={14} color="#9C54D5"/>
+                      <Text style={styles.rating}> {parseFloat(data.serviceRating).toFixed(1)}</Text>
+                    </View>
+                    }
+                    { !data.serviceRating && <Text style={styles.rating}>New</Text> }
+                  </View>
                 }
+                { data.serviceEnabled == 2 && <Text style={[styles.rating, {color: '#D00000'}]}>Disabled</Text> }
               </View>
               <Text style={styles.cost}>Cost starts at <Text style={{fontFamily: 'quicksand-bold'}}>Php {parseFloat(data.initialCost).toFixed(2)}</Text></Text>
             </View>
           </View>
 
-          <TouchableWithoutFeedback>
-            <View style={[styles.button, {borderWidth:1, borderColor: '#606060', height:24}]}>
-              <Text style={[styles.next]}>Disable Getting Requests</Text>
+          <TouchableWithoutFeedback onPress={() => changeEnabled(data)}>
+            <View>
+            { data.serviceEnabled == 1 &&
+              <View style={[styles.button, {borderWidth:1, borderColor: '#000000', height:24}]}>
+                  <Text style={[styles.next, {color: '#000000'}]}>Disable Getting Requests</Text>
+              </View>
+            }
+            { data.serviceEnabled == 2 &&
+              <View style={[styles.button, {borderWidth:1, borderColor: '#009000', height:24}]}>
+                  <Text style={[styles.next, {color: '#009000'}]}>Allow Getting Requests</Text>
+              </View>
+            }
             </View>
           </TouchableWithoutFeedback>
 
-          <TouchableWithoutFeedback>
+          <TouchableWithoutFeedback onPress={() => props.navigation.navigate('ServicePage', { serviceID: data.serviceID })}>
             <LinearGradient colors={['#9C54D5', '#462964']} start={{ x:0.6, y:-1 }} end={{ x:0.1, y:1 }} style={styles.button}>
               <LinearGradient colors={['rgba(0, 0, 0, 0.4)','rgba(0, 0, 0, 0)']} start={{ x: 0.5, y: 0.01 }} end={{ x: 0.5, y: 0.15 }} style={styles.ledge}>
                 <Text style={styles.details}>View Details</Text>

@@ -46,7 +46,7 @@ export const historyHelper = async(bookings) => {
       let { body: report } = await TransactionReportServices.getTransactionReportsByID(specs.referencedID);
       if(report.transactionStat == 1) status[3] = 'Arriving';
       else if(report.transactionStat == 2) status[3] = 'Serving';
-      else if(report.transactionStat == 3) { 
+      else if(report.transactionStat == 3 || report.transactionStat == 4) { 
         status[3] = 'Complete'; 
         button[3] = 'View Completed Service';
         colors[3] = styles.green;

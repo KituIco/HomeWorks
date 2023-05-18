@@ -36,7 +36,7 @@ export const historyHelper = async(specs) => {
     let colors = ['', styles.brown, styles.orange, styles.blue, styles.green, styles.red]
     let button = ['', 'View Ongoing Request', 'View Matched Booking', 'View Ongoing Service', 'View Completed Transaction', 'Resend Cancelled Request'];
 
-    if(specs[i].specsStatus == 3){
+    if(specs[i].specsStatus == 3) {
       let { body: report } = await TransactionReportServices.getTransactionReportsByID(specs[i].referencedID);
       if(report.transactionStat == 1) status[3] = 'Arriving';
       else if(report.transactionStat == 2) status[3] = 'Serving';

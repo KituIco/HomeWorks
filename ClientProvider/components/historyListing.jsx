@@ -1,23 +1,14 @@
-import { StyleSheet, View, ScrollView, Image, Text, TouchableWithoutFeedback, Modal, Alert } from 'react-native';
+import { StyleSheet, View, Text, TouchableWithoutFeedback,Alert } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useState, useEffect } from 'react';
 
-import ImageViewer from 'react-native-image-zoom-viewer';
-import MapView, {Marker} from 'react-native-maps';
-
-import ServiceTypesServices from '../services/service-types/service-types-services';
 import ServiceSpecsServices from '../services/service-specs/service-specs-services';
 import AddressServices from '../services/address/address-services';
-import socketService from '../services/sockets/sockets-services';
 
-import { addressHandler } from '../utils/address-handler';
-import { removeRequest } from '../utils/remove-request';
-import { getImageURL } from '../utils/get-imageURL';
 
 export default function Listing( props ) {
   const [services, setServices] = useState([]);
-  const [currentData, setCurrentData] = useState();
 
   useEffect(() => {
     ( async() => {  

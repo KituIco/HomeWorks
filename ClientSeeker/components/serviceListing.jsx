@@ -31,7 +31,7 @@ export default function Listing( props ) {
             { data.serviceRatings &&
             <View style={{ flexDirection: 'row', alignItems: 'flex-end', paddingBottom: 7}}>
               <MaterialCommunityIcons name={'star'} size={14} color="#9C54D5"/>
-              <Text style={styles.ratings}>{data.serviceRatings}</Text> 
+              <Text style={styles.ratings}>{parseFloat(data.serviceRatings).toFixed(1)}</Text> 
             </View>
             }
             { !data.serviceRatings && <Text style={styles.unrated}>New</Text> }

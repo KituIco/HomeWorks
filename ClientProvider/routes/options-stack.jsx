@@ -1,9 +1,10 @@
 import { createStackNavigator } from '@react-navigation/stack';
 
-import Options from '../screens/options/options/options.comp';
+import Options from '../screens/dashboard/options/options.comp';
 import Profile from '../screens/options/profile/profile.comp'
 import ProfileAddress from '../screens/options/profile-address/profile-address.comp';
 import ServiceList from '../screens/options/service-list/service-list.comp';
+import ServicePage from '../screens/options/service-page/service-page.comp';
 import TransactHistory from '../screens/options/transact-history/transact-history.comp';
 
 
@@ -48,6 +49,12 @@ export default function OptionsStack() {
       <Stack.Screen 
         name='ServiceList' 
         component={ServiceList}
+        options={() => header}
+      />
+
+      <Stack.Screen 
+        name='ServicePage' 
+        component={ServicePage}
         options={() => header}
       />
 

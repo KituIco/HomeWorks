@@ -1,5 +1,6 @@
+import { useFocusEffect } from '@react-navigation/native';
+import { useState, useCallback, useEffect } from 'react';
 import { Keyboard, Alert } from 'react-native';
-import { useState, useEffect } from 'react';
 
 import ProviderServices from '../../../services/user/provider-services';
 import ServiceServices from '../../../services/service/service-services';
@@ -17,22 +18,24 @@ export default ( ) => {
   const [noService, setNoService] = useState(false);
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
   
-  useEffect(() => {
-    ( async() => {
-      try {
-        let userID = await getUserID();
-        let data = await ServiceServices.getProviderServices(userID);
-        
-        setServices(typeHandler(data.body));
-        setUserID(userID);
-        if(data.body.length == 0) setNoService(true);
+  useFocusEffect(
+    useCallback(() => {
+      ( async() => {
+        try {
+          let userID = await getUserID();
+          let data = await ServiceServices.getProviderServices(userID);
+          
+          setServices(typeHandler(data.body));
+          setUserID(userID);
+          if(data.body.length == 0) setNoService(true);
 
-      } catch(err) {
-        Alert.alert('Error', err+'.', [ {text: 'OK'} ]);
-      }
-      setLoading(false);
-    })();
-  }, []);
+        } catch(err) {
+          Alert.alert('Error', err+'.', [ {text: 'OK'} ]);
+        }
+        setLoading(false);
+      })();
+    }, [])
+  );
 
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
