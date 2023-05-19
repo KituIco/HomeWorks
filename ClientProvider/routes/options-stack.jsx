@@ -1,4 +1,6 @@
 import { createStackNavigator } from '@react-navigation/stack';
+import { TouchableWithoutFeedback, View } from 'react-native';
+import { MaterialCommunityIcons  } from '@expo/vector-icons';
 
 import Options from '../screens/dashboard/options/options.comp';
 import Profile from '../screens/options/profile/profile.comp'
@@ -10,9 +12,29 @@ import TransactHistory from '../screens/options/transact-history/transact-histor
 
 const Stack = createStackNavigator();
 
-export default function OptionsStack() {
+export default function OptionsStack({ navigation }) {
 
   const header = {
+    headerTransparent: true,
+    headerStyle: {
+      height: 100,
+      backgroundColor: 'rgba(0,0,0,0)',
+    },
+    headerTintColor: "#9C54D5",
+    headerTitleStyle: {
+      display: "none"
+    },
+  }
+
+  const headerService = {
+    headerLeft: () => (
+      <TouchableWithoutFeedback onPress={() => navigation.pop()}>
+        <View style={{backgroundColor:'#FFFFFF', left:12, width:30, height:30, borderRadius:30, zIndex:-10, alignItems:'center', justifyContent:'center'}}>
+          <MaterialCommunityIcons name={'keyboard-backspace'} size={24} color={'#9C54D5'}/>
+        </View>
+      </TouchableWithoutFeedback>
+    ),
+
     headerTransparent: true,
     headerStyle: {
       height: 100,
@@ -55,7 +77,7 @@ export default function OptionsStack() {
       <Stack.Screen 
         name='ServicePage' 
         component={ServicePage}
-        options={() => header}
+        options={() => headerService}
       />
 
       <Stack.Screen 

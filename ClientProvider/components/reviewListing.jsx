@@ -6,7 +6,6 @@ import { useState, useEffect } from 'react';
 import ServiceSpecsServices from '../services/service-specs/service-specs-services';
 import AddressServices from '../services/address/address-services';
 
-
 export default function Listing( props ) {
   const [services, setServices] = useState([]);
 
@@ -90,9 +89,9 @@ export default function Listing( props ) {
 
   return (
     <View style={{marginVertical:16}}>
-    {services.map((value, index) => {
+    {/* {services.map((value, index) => {
       return servicesList(value);
-    })}
+    })} */}
     </View>
   )
 }

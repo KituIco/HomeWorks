@@ -3,8 +3,8 @@ import * as ImagePicker from 'expo-image-picker';
 import { useState, useEffect } from 'react';
 
 import CredentialsServices from '../../../services/user/credentials-services';
-import ProviderServices from '../../../services/user/provider-services';
 import AddressServices from '../../../services/address/address-services';
+import ProviderServices from '../../../services/user/provider-services';
 import ImageService from '../../../services/image/image-services';
 
 import { getUserID } from '../../../utils/get-userID';

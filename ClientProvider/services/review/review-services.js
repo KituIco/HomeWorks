@@ -12,9 +12,9 @@ let ReviewServices = {
         }
     },
 
-    getServiceReviews: async(serviceID) => {
+    getServiceReviews: async(serviceID, page, size) => {
         try {
-            let queryURL = `${url}/service/${serviceID}`;
+            let queryURL = `${url}/service/${serviceID}/?offsetMultiplier=${page}&sizeLimit=${size}`;
             let res = await getAxios(queryURL);
             return res;
         } catch (error) {

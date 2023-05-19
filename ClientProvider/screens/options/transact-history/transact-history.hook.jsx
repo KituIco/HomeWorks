@@ -8,7 +8,6 @@ import { getUserID } from '../../../utils/get-userID';
 
 
 export default ( ) => {
-  const [waiting, setWaiting] = useState(true);
   const [history, setHistory] = useState([]);
   const [empty, setEmpty] = useState(false);
 
@@ -30,7 +29,6 @@ export default ( ) => {
     ( async() => {  
       try {
         getHistory();
-        setWaiting(false);
       } catch (err) {
         Alert.alert('Error', err+'.', [ {text: 'OK'} ]);
       }
@@ -38,6 +36,10 @@ export default ( ) => {
     })();
   }, [])
   )
+
+  const fromChild = () => {
+    setLoading(!loading);
+  }
 
   const onRefresh = useCallback (() => {
     ( async() => {  
@@ -52,12 +54,12 @@ export default ( ) => {
   }, []);
 
   return {
-    waiting, setWaiting,
     history, setHistory,
     loading, setLoading,
     refreshing, setRefreshing,
     empty, setEmpty,
 
     onRefresh,
+    fromChild,
   }
 }

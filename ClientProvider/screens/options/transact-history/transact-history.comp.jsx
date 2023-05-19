@@ -6,10 +6,16 @@ import Listing from '../../../components/historyListing';
 import styles from './transact-history.style';
 import hook from './transact-history.hook';
 
+import Loading from '../../../hooks/loading';
+
 export default function TransactHistory({ navigation }) {
   const {
-    history, empty, refreshing, onRefresh,
+    history, empty, refreshing, loading,
+    onRefresh, fromChild,
   } = hook();
+
+  if (loading)
+    return <Loading/>
   
   return (
     <View style={styles.container}>
@@ -22,7 +28,7 @@ export default function TransactHistory({ navigation }) {
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }>
         <View style={{height:20}}/>
-        <Listing listings={history} navigation={navigation} />
+        <Listing listings={history} navigation={navigation} fromChild={fromChild}/>
         { empty && 
         <View style={{marginTop:'64%', alignItems:'center'}}>
           <Text style={styles.content}>History Tab is Empty!</Text>
