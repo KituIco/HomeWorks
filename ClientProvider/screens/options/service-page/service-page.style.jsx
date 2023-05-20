@@ -115,7 +115,8 @@ export default ({ props }) => StyleSheet.create({
     fontVariant:['small-caps'], 
     fontSize:22, 
     letterSpacing:-0.5, 
-    color:'#9C54D5'
+    color:'#9C54D5',
+    marginHorizontal:20,
   },
   title: {
     fontFamily:'quicksand-medium', 

@@ -1,4 +1,4 @@
-import { View, Image, Text, ScrollView, Modal, TouchableWithoutFeedback } from 'react-native';
+import { View, Image, Text } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 
@@ -123,14 +123,12 @@ export default function ServicePage({ navigation, route }) {
       </View>
 
       { average &&
-        <View style={{marginHorizontal:20, marginTop:36}}>
+        <View style={{marginTop:36, flex:1}}>
           <Text style={styling.subheader}>Reviews</Text>
 
-          <LinearGradient colors={['rgba(255,255,255,1)','rgba(255,255,255,0)'  ]} start={{ x:0, y:0 }} end={{ x:0, y:1 }} style={{height:11, zIndex:5, marginTop:10}}/>
-          <ScrollView style={{marginVertical:-10}}>
-            <Listing seviceID={serviceID}/>
-          </ScrollView>
-          <LinearGradient colors={['rgba(255,255,255,1)','rgba(255,255,255,0)']} start={{ x:0, y:1 }} end={{ x:0, y:0 }} style={{height:11, zIndex:5, marginBottom:10}}/>
+          <LinearGradient colors={['rgba(255,255,255,1)','rgba(255,255,255,0)'  ]} start={{ x:0, y:0 }} end={{ x:0, y:1 }} style={{height:16, zIndex:5, marginTop:6}}/>
+          <Listing serviceID={serviceID}/>
+          <LinearGradient colors={['rgba(255,255,255,1)','rgba(255,255,255,0)']} start={{ x:0, y:1 }} end={{ x:0, y:0 }} style={{height:16, zIndex:5, marginBottom:14}}/>
         </View>
       }
 

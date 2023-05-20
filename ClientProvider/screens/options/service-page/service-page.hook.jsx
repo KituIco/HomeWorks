@@ -1,12 +1,9 @@
 import { useState, useEffect } from 'react';
 import { Alert } from 'react-native';
 
-import CredentialsServices from '../../../services/user/credentials-services';
 import ServiceServices from '../../../services/service/service-services';
 import AddressServices from '../../../services/address/address-services';
 import ProviderServices from '../../../services/user/provider-services';
-
-// import ReviewServices from '../../../services/review/review-services';
 
 import { getUserID } from '../../../utils/get-userID';
 import { getImageURL } from '../../../utils/get-imageURL';
@@ -41,10 +38,7 @@ export default ({ route }) => {
         let userID = await getUserID();
         let { body: provider } = await ProviderServices.getProvider(userID);
         let { body: address } = await AddressServices.getAllAddressOfUser(userID);
-
         let { body: service } = await ServiceServices.getService(serviceID);
-        let { body: credentials } = await CredentialsServices.getUserCredentials(userID);
-        // let { body: reviews } = await ReviewServices.getServiceReviews(serviceID, 0, 5);
 
         setLocation(addressHandler(address[0]));
         setCover({uri : getImageURL(provider.providerDp)});
