@@ -91,7 +91,7 @@ BEGIN
         user_id = COALESCE(usrID, user_id),
         user_full_name = COALESCE(usrFullName, user_full_name),
         user_num = COALESCE(usrNum, user_num),
-        coordinates = COALESCE(POINT(lon, lat), coordinates),
+        coordinates = COALESCE(POINT(lat, lon), coordinates),
         city = COALESCE(ct, city),
         country = COALESCE(cntry, country),
         district = COALESCE(dstrct, district),

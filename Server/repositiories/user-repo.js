@@ -14,7 +14,6 @@ class UserRepository {
             ]);
         } catch (error) {
             // TODO: Handle SQL error
-            console.log(error);
             throw error;
         }
     };
@@ -29,7 +28,6 @@ class UserRepository {
             ]);
         } catch (error) {
             // TODO: Handle SQL error
-            console.log(error);
             throw error;
         }
     };
@@ -44,7 +42,6 @@ class UserRepository {
             ]);
             return results[0][0];
         } catch (error) {
-            console.log(error);
             throw error;
         }
     };
