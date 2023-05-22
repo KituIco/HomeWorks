@@ -37,7 +37,7 @@ class UserRepository {
     ) => {
         try {
             let sqlQuery = `CALL get_user(?)`;
-            let results = await this.db.query(sqlQuery, [
+            let [results, _] = await this.db.query(sqlQuery, [
                 userID
             ]);
             return results[0][0];

@@ -23,4 +23,8 @@ BEGIN
         Admin
     WHERE
         admin_id = admn_id;
+    DELETE FROM
+        User
+    WHERE
+        user_id = admn_id;
 END;
