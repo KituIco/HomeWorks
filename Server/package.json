@@ -3,7 +3,10 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "./node_modules/.bin/nodemon ./bin/www"
+    "start": "./node_modules/.bin/nodemon ./bin/www",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:detect-open-handles": "jest --detectOpenHandles"
   },
   "dependencies": {
     "@adyen/api-library": "^13.1.3",
@@ -27,5 +30,8 @@
     "node-rsa": "^1.1.1",
     "nodemon": "^2.0.20",
     "socket.io": "^4.5.4"
+  },
+  "devDependencies": {
+    "jest": "^29.5.0"
   }
 }
