@@ -54,7 +54,7 @@ export default function TransactingArrive({ navigation, route }) {
               end={{ x:0, y:1 }} style={styles.button}>
               <LinearGradient colors={['rgba(0, 0, 0, 0.4)','rgba(0, 0, 0, 0)']} start={{ x: 0.5, y: 0.01 }} 
                 end={{ x: 0.5, y: 0.15 }} style={styles.ledge}>
-                <Text style={styles.next}>Press button if you have Arrived</Text>
+                <Text style={styles.next}>Press this Button if you Arrived</Text>
               </LinearGradient>
             </LinearGradient>
 

@@ -41,7 +41,8 @@ export default ({ route }) => {
         let { body: service } = await ServiceServices.getService(serviceID);
 
         setLocation(addressHandler(address[0]));
-        setCover({uri : getImageURL(provider.providerDp)});
+        if (provider.providerDp) setCover({uri : getImageURL(provider.providerDp)});
+        else setCover(require("../../../assets/cover.png"))
 
         setName(`${provider.firstName} ${provider.lastName}`);
         setType(service.typeName);

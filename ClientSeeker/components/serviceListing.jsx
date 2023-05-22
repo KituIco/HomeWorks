@@ -22,8 +22,9 @@ export default function Listing( props ) {
     return (
       <LinearGradient colors={color} start={{ x:0, y:0.95 }} end={{ x:0, y:0.98 }} style={shadow} key={data.providerID}>
       <View style={listing}>
-        { data.src && <Image style={styles.image} source={data.src} />}
-        { !data.src && <MaterialCommunityIcons name={data.icon} size={90} color={'#000000'}/>}
+        { data.src.uri && <Image style={styles.image} source={data.src} />}
+        { data.temp && <Image style={styles.image} source={data.src} />}
+        { !data.src.uri && <MaterialCommunityIcons name={data.icon} size={90} color={'#000000'}/>}
         <View style={styles.details}>
 
           <View style={styles.detailstop}>

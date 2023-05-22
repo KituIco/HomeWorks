@@ -55,7 +55,9 @@ export default function RequestAddress({ route, navigation }) {
 
         <View style={styles.address}>
           <Text style={styles.location} numberOfLines={2}>{region.location}</Text>
-          <MaterialCommunityIcons name={'pencil-outline'} size={30} color="#9C54D5"/>
+          <TouchableWithoutFeedback onPress={() => setOpen(!open)}>
+            <MaterialCommunityIcons name={'pencil-outline'} size={30} color="#9C54D5"/>
+          </TouchableWithoutFeedback>
         </View>
 
 

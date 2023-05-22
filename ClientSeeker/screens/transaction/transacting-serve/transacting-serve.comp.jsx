@@ -46,9 +46,18 @@ export default function TransactingServe({ route, navigation }) {
 
       </ScrollView>
 
-      { !paid &&
+      {/* { !paid &&
       <Next icon={icon} service={typeName} reportID={reportID}
         navigation={navigation} title={'Settle Payment'} screen={'TransactingPayment'}/>
+      } */}
+
+    { !paid &&
+      <LinearGradient colors={['rgba(0,0,0,0.4)','rgba(0,0,0,0)'  ]} start={{ x:0, y:0.2 }} end={{ x:0, y:0 }}>
+        <View style={styles.bottom}>
+          <MaterialCommunityIcons name={'progress-alert'} size={26} style={{color:'#462964'}}/>
+          <Text style={styles.bottext}>Please Settle Payment</Text>
+        </View>
+      </LinearGradient>
       }
 
       { paid &&

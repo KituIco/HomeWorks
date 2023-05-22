@@ -122,7 +122,7 @@ export default function RequestForm({ route, navigation }) {
       </View>
 
       { !specsDesc && <View style={styles.overlay}/> }
-      <Next title={'Submit Initial Specs'}/>
+      <Next title={'Submit Request Form'}/>
     </View>
   );
 }
