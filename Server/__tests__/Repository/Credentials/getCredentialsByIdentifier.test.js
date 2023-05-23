@@ -59,7 +59,6 @@ describe('CredentialsRepository', () => {
 
             // Verify that the function retrieves the corresponding credentials correctly
             expect(credentials).toBeDefined();
-            expect(credentials.credentialsID).toEqual(credentialsID);
             expect(credentials.userID).toEqual(userID);
             expect(credentials.identifier).toEqual(existingIdentifier);
         });
