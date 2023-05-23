@@ -27,7 +27,7 @@ export default ( navigation ) => {
     })();
   }, []);
 
-  const onLogout = () => {
+  const onLogout = async() => {
     setLoading(true);
     CredentialsServices.logout()
     .then(() => {
@@ -36,10 +36,15 @@ export default ( navigation ) => {
     .catch(() => setLoading(false))
   }
 
+  const onContact = async() => {
+    Alert.alert('Sorry', 'Sorry for the inconvenience. Admins are currently unavailable. ', [ {text: 'OK'} ]);
+  }
+
   return {
     name, setName,
     loading, setLoading,
     image, setImage,
-    onLogout
+    onLogout,
+    onContact
   }
 }

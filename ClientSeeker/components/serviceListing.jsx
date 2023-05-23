@@ -20,22 +20,22 @@ export default function Listing( props ) {
 
   const providersList = data => {
     return (
-      <LinearGradient colors={color} start={{ x:0, y:0.95 }} end={{ x:0, y:0.98 }} style={shadow} key={data.providerID}>
+      <LinearGradient colors={color} start={{ x:0, y:0.95 }} end={{ x:0, y:0.98 }} style={shadow} key={data.serviceID}>
       <View style={listing}>
         { data.src.uri && <Image style={styles.image} source={data.src} />}
-        { data.temp && <Image style={styles.image} source={data.src} />}
+        { data.src.uri && <View style={styles.minicon}><MaterialCommunityIcons name={data.icon} size={20} color={'#000000'}/></View>}
         { !data.src.uri && <MaterialCommunityIcons name={data.icon} size={90} color={'#000000'}/>}
         <View style={styles.details}>
 
           <View style={styles.detailstop}>
             <Text style={styles.names}>{data.name}</Text>
-            { data.serviceRatings &&
+            { data.serviceRating &&
             <View style={{ flexDirection: 'row', alignItems: 'flex-end', paddingBottom: 7}}>
               <MaterialCommunityIcons name={'star'} size={14} color="#9C54D5"/>
-              <Text style={styles.ratings}>{parseFloat(data.serviceRatings).toFixed(1)}</Text> 
+              <Text style={styles.ratings}>{parseFloat(data.serviceRating).toFixed(1)}</Text> 
             </View>
             }
-            { !data.serviceRatings && <Text style={styles.unrated}>New</Text> }
+            { !data.serviceRating && <Text style={styles.unrated}>New</Text> }
           </View>
           
           <Text numberOfLines={1} style={styles.location}>{data.location}</Text>
@@ -160,6 +160,18 @@ const styles = StyleSheet.create({
     color: "#FFFFFF",
     fontFamily: 'lexend-light',
     fontSize: 12
+  },
+  minicon: {
+    marginLeft:-34,
+    backgroundColor:'#FFFFFFD0',
+    width:30,
+    height:30,
+    alignItems:'center',
+    justifyContent:'center',
+    borderRadius:24,
+    marginRight: 4,
+    marginTop: 56,
+    borderWidth: 1
   },
   hide:{}
 });

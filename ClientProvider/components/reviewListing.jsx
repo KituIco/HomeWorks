@@ -65,11 +65,15 @@ export default function Listing( props ) {
     return (
       <View key={item.reviewId} style={{marginHorizontal:10}}>
 
-        <View flexDirection='row' flex={1} style={{width:'100%', alignItems:'center', marginBottom:15}}>
+        <View flexDirection='row' style={{width:'100%', alignItems:'center', marginBottom:15}}>
           <Image source={item.icon} style={{width:60, height:60, borderRadius:30}} />
-          <View style={{marginLeft:10}}>
+          <View style={{marginLeft:10, flex:1}}>
             <Text style={{fontFamily:'notosans-medium', fontSize:16, letterSpacing:-0.5, fontVariant:['small-caps'], lineHeight:16}}>{item.name}</Text>
             <Text style={{fontFamily:'quicksand', fontSize:12, marginBottom:5, letterSpacing:-0.5, lineHeight:13 }}>{item.date}</Text>
+          </View>
+          <View style={{ flexDirection: 'row', alignItems: 'flex-end', paddingBottom: 7}}>
+            <MaterialCommunityIcons name={'star'} size={14} color="#9C54D5"/>
+            <Text style={styles.ratings}>{parseFloat(item.rating).toFixed(1)}</Text> 
           </View>
         </View>
 
@@ -164,5 +168,10 @@ const styles = StyleSheet.create({
     alignSelf:'flex-end', 
     fontSize:13, 
     marginTop:-2
+  },
+  ratings: {
+    fontFamily: 'quicksand-medium',
+    fontSize: 14,
+    marginLeft: 2
   },
 });

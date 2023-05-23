@@ -53,7 +53,17 @@ let ServiceServices = {
         } catch (error) {
             throw error;
         }
-    }
+    },
+
+    getServiceRecommendations: async(lat, lon, page, size) => {
+        try {
+            let queryURL = `${url}/recommended/?latitude=${lat}&longitude=${lon}&innerRadius=${0}&outerRadius=${0.125}&offsetMultiplier=${page}&sizeLimit=${size}`;
+            let res = await getAxios(queryURL);
+            return res;
+        } catch (error) {
+            throw error;
+        }
+    },
 }
 
 module.exports = ServiceServices;

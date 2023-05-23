@@ -10,7 +10,7 @@ export default function ProviderFeatured() {
   const { featured } = hook();
 
   return (
-    <View style={{justifyContent: 'flex-end', backgroundColor: '#FFFFFF',}}>
+    <View style={{justifyContent: 'flex-end', backgroundColor: '#FFFFFF', flex:1}}>
       <ListHeader title={"Featured"}/>
       <ScrollView>
         <View style={styles.container}>
