@@ -22,7 +22,7 @@ class CardPaymentRepository {
                 expiryDate,
                 cvv,
                 merchant,
-                cardType
+                cardType,
             ]);
         } catch (error) {
             // TODO: Handle SQL error
@@ -48,7 +48,7 @@ class CardPaymentRepository {
                 expiryDate,
                 cvv,
                 merchant,
-                cardType
+                cardType,
             ]);
         } catch (error) {
             // TODO: Handle SQL error
@@ -62,7 +62,7 @@ class CardPaymentRepository {
             await this.db.query(sqlQuery, [cardID]);
         } catch (error) {
             // TODO: Handle SQL error
-            console.log(error);
+            throw error;
         }
     };
 
