@@ -40,16 +40,18 @@ export default function EditProfile( props ) {
         'Valid inputs have input boxes with light green border.', [
         {text: 'OK'},
       ]);
-    } 
-    setLoading(true);
-    try {
-      await SeekerServices.patchSeeker(seekerID, {birthdate, firstName, lastName});
-      props.fromChild();
-      setDone(true);
-    } catch (err) {
-      Alert.alert('Error', err+'.', [ {text: 'OK'} ]);
-    } 
-    setLoading(false);
+    } else {
+      setLoading(true);
+      try {
+        await SeekerServices.patchSeeker(seekerID, {birthdate, firstName, lastName});
+        props.fromChild();
+        setDone(true);
+      } catch (err) {
+        Alert.alert('Error', err+'.', [ {text: 'OK'} ]);
+      } 
+      setLoading(false);
+    }
+    
   }
 
   const onCheck = (type) => {

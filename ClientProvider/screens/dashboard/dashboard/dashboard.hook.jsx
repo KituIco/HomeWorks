@@ -45,7 +45,7 @@ export default ( navigation ) => {
   }, []);
 
   const changeReg = () => {
-    setVerified(!verified);
+    // setVerified(!verified);
   };
 
   return {

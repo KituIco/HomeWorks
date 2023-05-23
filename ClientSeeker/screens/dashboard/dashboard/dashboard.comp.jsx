@@ -40,10 +40,10 @@ export default function Dashboard({ navigation }) {
         <Listing listings={featured}/>
       </View>
 
-      <Header title={'Explore'} screen={'ProviderExplore'} navigation={navigation}/>
+      {/* <Header title={'Explore'} screen={'ProviderExplore'} navigation={navigation}/>
       <View style={styles.sections}>
         <Listing listings={explore}/>
-      </View>
+      </View> */}
       
       <StatusBar style="auto" />
     </ScrollView>

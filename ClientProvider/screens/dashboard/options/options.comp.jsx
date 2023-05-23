@@ -8,7 +8,7 @@ import hook from './options.hook';
 
 export default function Options({ navigation }) {
   const {
-    name, loading, image, onLogout
+    name, loading, image, onLogout, onContact,
   } = hook( navigation );
 
   if (loading)
@@ -48,10 +48,12 @@ export default function Options({ navigation }) {
         </View>
         </TouchableWithoutFeedback>
         
+        <TouchableWithoutFeedback onPress={() => onContact()}>
         <View style={styles.options}>
           <MaterialCommunityIcons name={'chat-question'} size={36}/>
           <Text style={styles.tabs}>Contact Admin</Text>
         </View>
+        </TouchableWithoutFeedback>
 
         <TouchableWithoutFeedback>
             <View style={styles.changepw}>

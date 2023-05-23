@@ -37,21 +37,24 @@ export default function EditProfile( props ) {
   }, [done]);
 
   const onUpdate = async() => {
-    if(new Set([birthdayCHK, firstnameCHK, lastnameCHK]).has(styles.warning) ){
+    if (new Set([birthdayCHK, firstnameCHK, lastnameCHK]).has(styles.warning) ){
       Alert.alert('Check your Inputs', 
         'Valid inputs have input boxes with light green border.', [
         {text: 'OK'},
       ]);
     } 
-    setLoading(true);
-    try {
-      await ProviderServices.patchProvider(providerID, {birthdate, firstName, lastName});
-      props.fromChild();
-      setDone(true);
-    } catch (err) {
-      Alert.alert('Error', err+'.', [ {text: 'OK'} ]);
-    } 
-    setLoading(false);
+    else {
+      setLoading(true);
+      try {
+        await ProviderServices.patchProvider(providerID, {birthdate, firstName, lastName});
+        props.fromChild();
+        setDone(true);
+      } catch (err) {
+        Alert.alert('Error', err+'.', [ {text: 'OK'} ]);
+      } 
+      setLoading(false);
+    }
+    
   }
 
   const onCheck = (type) => {

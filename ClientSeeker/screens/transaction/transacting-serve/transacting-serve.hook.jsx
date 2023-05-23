@@ -39,7 +39,7 @@ export default ( navigation, route ) => {
         let { body: service } = await ServiceServices.getService(report.serviceID)
         
         let providerInfo = [{
-          providerID: report.providerID, name: provider.firstName+" "+provider.lastName, location: addressHandler(address),
+          providerID: report.providerID, name: provider.firstName+" "+provider.lastName, location: addressHandler(address), serviceID: service.serviceID,
           serviceRatings: service.serviceRating, typeName: service.typeName, initialCost: service.initialCost, icon, src: {uri : getImageURL(provider.providerDp)}
         }];
 

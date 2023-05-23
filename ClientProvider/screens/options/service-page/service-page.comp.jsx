@@ -14,11 +14,11 @@ export default function ServicePage({ navigation, route }) {
     count, average, enabled, cost, changeCost, changeEnabled,
   } = hook({ route });
 
-  const p1 = Math.max(star1/count*100,6).toFixed(2)+"%";
-  const p2 = Math.max(star2/count*100,6).toFixed(2)+"%";
-  const p3 = Math.max(star3/count*100,6).toFixed(2)+"%";
-  const p4 = Math.max(star4/count*100,6).toFixed(2)+"%";
-  const p5 = Math.max(star5/count*100,6).toFixed(2)+"%";
+  const p1 = Math.max(star1/count*90,6).toFixed(2)+"%";
+  const p2 = Math.max(star2/count*90,6).toFixed(2)+"%";
+  const p3 = Math.max(star3/count*90,6).toFixed(2)+"%";
+  const p4 = Math.max(star4/count*90,6).toFixed(2)+"%";
+  const p5 = Math.max(star5/count*90,6).toFixed(2)+"%";
   const props = { p1, p2, p3, p4, p5 };
 
   const styling = styles({ props });

@@ -42,5 +42,4 @@ export default StyleSheet.create({
       marginVertical: 20,
     }
   },
-
 });
