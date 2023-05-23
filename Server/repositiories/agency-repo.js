@@ -22,9 +22,9 @@ class AgencyRepository {
                 agencyDP,
                 agencyImages,
                 agencyServiceTypes,
-                agencyRating
+                agencyRating,
             ]);
-        } catch (error) { 
+        } catch (error) {
             //TODO: Handle SQL Error
             throw error;
         }
@@ -48,11 +48,11 @@ class AgencyRepository {
                 agencyDP,
                 agencyImages,
                 agencyServiceTypes,
-                agencyRating
+                agencyRating,
             ]);
         } catch (error) {
             //TODO: Handle SQL error
-            throw error;  
+            throw error;
         }
     };
 
@@ -134,7 +134,10 @@ class AgencyRepository {
     searchProviderInAgency = async (agencyID, searchQuery) => {
         try {
             let sqlQuery = `CALL search_provider_in_agency(?, ?)`;
-            let [result, _] = await this.db.query(sqlQuery, [agencyID, searchQuery]);
+            let [result, _] = await this.db.query(sqlQuery, [
+                agencyID,
+                searchQuery,
+            ]);
             return result[0];
         } catch (error) {
             //TODO: Handle SQL error
