@@ -1,37 +1,38 @@
 {
-  "name": "server",
-  "version": "0.0.0",
-  "private": true,
-  "scripts": {
-    "start": "./node_modules/.bin/nodemon ./bin/www",
-    "test": "jest",
-    "test:watch": "jest --watch",
-    "test:detect-open-handles": "jest --detectOpenHandles"
-  },
-  "dependencies": {
-    "@adyen/api-library": "^13.1.3",
-    "axios": "^1.3.4",
-    "bcryptjs": "^2.4.3",
-    "cookie-parser": "~1.4.4",
-    "cors": "^2.8.5",
-    "db-migrate": "^0.11.13",
-    "db-migrate-mysql": "^2.2.0",
-    "debug": "~2.6.9",
-    "ejs": "~2.6.1",
-    "express": "~4.16.1",
-    "googleapis": "^112.0.0",
-    "http-errors": "~1.6.3",
-    "ioredis": "^5.2.4",
-    "jsonwebtoken": "^9.0.0",
-    "morgan": "~1.9.1",
-    "multer": "^1.4.5-lts.1",
-    "mysql2": "^2.3.3",
-    "nanoid": "^3.3.4",
-    "node-rsa": "^1.1.1",
-    "nodemon": "^2.0.20",
-    "socket.io": "^4.5.4"
-  },
-  "devDependencies": {
-    "jest": "^29.5.0"
-  }
+    "name": "server",
+    "version": "0.0.0",
+    "private": true,
+    "scripts": {
+        "start": "./node_modules/.bin/nodemon ./bin/www",
+        "test": "jest",
+        "test:watch": "jest --watch",
+        "test:detect-open-handles": "jest --detectOpenHandles",
+        "test:coverage": "jest --coverage"
+    },
+    "dependencies": {
+        "@adyen/api-library": "^13.1.3",
+        "axios": "^1.3.4",
+        "bcryptjs": "^2.4.3",
+        "cookie-parser": "~1.4.4",
+        "cors": "^2.8.5",
+        "db-migrate": "^0.11.13",
+        "db-migrate-mysql": "^2.2.0",
+        "debug": "~2.6.9",
+        "ejs": "~2.6.1",
+        "express": "~4.16.1",
+        "googleapis": "^112.0.0",
+        "http-errors": "~1.6.3",
+        "ioredis": "^5.2.4",
+        "jsonwebtoken": "^9.0.0",
+        "morgan": "~1.9.1",
+        "multer": "^1.4.5-lts.1",
+        "mysql2": "^2.3.3",
+        "nanoid": "^3.3.4",
+        "node-rsa": "^1.1.1",
+        "nodemon": "^2.0.20",
+        "socket.io": "^4.5.4"
+    },
+    "devDependencies": {
+        "jest": "^29.5.0"
+    }
 }
