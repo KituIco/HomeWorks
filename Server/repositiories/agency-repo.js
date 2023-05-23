@@ -114,7 +114,7 @@ class AgencyRepository {
     addProviderToAgency = async (agencyID, providerID) => {
         try {
             let sqlQuery = `CALL add_provider_to_agency(?, ?)`;
-            await this.db.query(sqlQuery, [agencyID, providerID]);
+            await this.db.query(sqlQuery, [providerID, agencyID]);
         } catch (error) {
             //TODO: Handle SQL error
             throw error;

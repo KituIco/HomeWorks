@@ -89,9 +89,7 @@ describe('AgencyRepository', () => {
             const updatedProvider = await providerRepo.getProvider(providerID);
 
             // Verify that the provider has been successfully added to the agency
-            expect(updatedProvider.agencyId || updatedProvider.agencyID).toBe(
-                agencyID
-            );
+            expect(updatedProvider.agencyID).toBe(agencyID);
         });
 
         it('handles invalid input gracefully', async () => {
