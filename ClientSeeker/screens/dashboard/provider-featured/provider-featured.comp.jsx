@@ -6,7 +6,7 @@ import ListHeader from '../../../components/listheader';
 import styles from './provider-featured.style';
 import hook from './provider-featured.hook';
 
-export default function ProviderFeatured() {
+export default function ProviderFeatured({ navigation }) {
   const { featured } = hook();
 
   return (
@@ -14,7 +14,7 @@ export default function ProviderFeatured() {
       <ListHeader title={"Featured"}/>
       <ScrollView>
         <View style={styles.container}>
-          <Listing listings={featured}/>
+          <Listing listings={featured} navigation={navigation}/>
         </View>
       </ScrollView>
   </View>
