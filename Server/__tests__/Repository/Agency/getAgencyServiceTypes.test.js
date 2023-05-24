@@ -1,10 +1,10 @@
 const AgencyRepository = require('../../../repositiories/agency-repo');
 const db = require('../../../middlewares/mysql_data_access');
-var { nanoid } = require('nanoid');
+const { nanoid } = require('nanoid');
 
 describe('AgencyRepository', () => {
     let agencyRepo;
-    let agencyID = nanoid(10);
+    let agencyID;
 
     beforeAll(async () => {
         // Create a new agencyRepo instance before every test.
@@ -12,7 +12,9 @@ describe('AgencyRepository', () => {
     });
 
     beforeEach(async () => {
-        // create a new agency
+        // Create a new agency and store the agencyID
+        agencyID = nanoid(10);
+
         const agencyName = 'Test Agency';
         const agencyDesc = 'This is a test agency.';
         const agencyDP = 'path/to/agency-dp';
@@ -32,28 +34,21 @@ describe('AgencyRepository', () => {
     });
 
     afterEach(async () => {
-        // delete the agency
+        // Delete the created agency
         await agencyRepo.deleteAgency(agencyID);
     });
 
     afterAll(async () => {
-        // delete the agency
-        await agencyRepo.deleteAgency(agencyID);
+        // Close the database connection after all tests
         await db.end();
     });
 
     describe('getAgencyServiceTypes', () => {
         it('handles a valid agency ID and returns the expected result', async () => {
-            // Provide a valid agency ID
-            const validAgencyID = agencyID;
-
-            // Execute the function
-            const result = await agencyRepo.getAgencyServiceTypes(
-                validAgencyID
-            );
+            // Execute the function with a valid agency ID
+            const result = await agencyRepo.getAgencyServiceTypes(agencyID);
 
             // Verify that the function executes without throwing an error and returns the expected result
-            expect(result).toBeDefined();
             expect(result.agencyServiceTypes).toBe(
                 'Service Type 1, Service Type 2'
             );
@@ -63,22 +58,15 @@ describe('AgencyRepository', () => {
             // Provide an invalid agency ID, such as a non-existent ID or an ID of a different data type
             const invalidAgencyID = 'asdasdasdasdinvalid-id';
 
-            let error;
-
-            try {
-                // Execute the function with an invalid agency ID
-                await agencyRepo.getAgencyServiceTypes(invalidAgencyID);
-            } catch (err) {
-                error = err;
-            }
-
-            // Verify that the function handles the invalid input gracefully and throws an error or returns an error response
-            expect(error).toBeDefined();
+            // Execute the function with an invalid agency ID and verify that it throws an error or returns an error response
+            await expect(
+                agencyRepo.getAgencyServiceTypes(invalidAgencyID)
+            ).rejects.toThrow();
         });
 
         it('handles an agency ID with no service types and returns null or an empty result', async () => {
             // Create an agency with no associated service types
-            let newAgencyID = nanoid(10);
+            const newAgencyID = nanoid(10);
             await agencyRepo.createAgency(
                 newAgencyID,
                 'Test Agency',

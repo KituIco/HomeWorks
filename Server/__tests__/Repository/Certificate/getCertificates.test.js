@@ -62,7 +62,7 @@ describe('CertificateRepository', () => {
     });
 
     describe('getCertificates', () => {
-        test('Test with existing certificates', async () => {
+        it('Test with existing certificates', async () => {
             // Retrieve the certificates
             const certificates = await certificateRepo.getCertificates();
 
@@ -70,7 +70,7 @@ describe('CertificateRepository', () => {
             expect(certificates.length).toBeGreaterThan(0);
         });
 
-        test('Test with no certificates', async () => {
+        it('Test with no certificates', async () => {
             // Delete the certificate
             await certificateRepo.deleteCertificate(certificateID);
 
@@ -81,7 +81,7 @@ describe('CertificateRepository', () => {
             expect(certificates.length).toBeGreaterThanOrEqual(0);
         });
 
-        test('Test error handling', async () => {
+        it('Test error handling', async () => {
             // Mock an SQL error by causing a database query failure
             jest.spyOn(db, 'query').mockRejectedValue(
                 new Error('Database query failed')

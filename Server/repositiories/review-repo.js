@@ -22,7 +22,7 @@ class ReviewRepository {
                 dateTimestamp,
                 rating,
                 comment,
-                images
+                images,
             ]);
         } catch (error) {
             // TODO: Handle SQL error
@@ -48,7 +48,7 @@ class ReviewRepository {
                 dateTimestamp,
                 rating,
                 comment,
-                images
+                images,
             ]);
         } catch (error) {
             // TODO: Handle SQL error
@@ -80,7 +80,11 @@ class ReviewRepository {
     getServiceReviews = async (serviceID, offsetMultiplier, sizeLimit) => {
         try {
             let sqlQuery = `CALL get_service_reviews(?, ?, ?)`;
-            let [result, _] = await this.db.query(sqlQuery, [serviceID, offsetMultiplier, sizeLimit]);
+            let [result, _] = await this.db.query(sqlQuery, [
+                serviceID,
+                offsetMultiplier,
+                sizeLimit,
+            ]);
             return result[0];
         } catch (error) {
             // TODO: Handle SQL error

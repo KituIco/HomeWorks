@@ -47,7 +47,7 @@ describe('CredentialsRepository', () => {
     });
 
     describe('getCredentialsByID', () => {
-        test('Test with a valid credentials ID', async () => {
+        it('Test with a valid credentials ID', async () => {
             // Retrieve the credentials by ID
             const credentials = await credentialsRepo.getCredentialsByID(
                 credentialsID
@@ -60,7 +60,7 @@ describe('CredentialsRepository', () => {
             expect(credentials.identifier).toBe('test-identifier');
         });
 
-        test('Test with an invalid credentials ID', async () => {
+        it('Test with an invalid credentials ID', async () => {
             const invalidCredentialsID = 'nonexistent_credentials_id';
 
             // Retrieve the credentials by an invalid credentials ID
@@ -69,7 +69,7 @@ describe('CredentialsRepository', () => {
             ).rejects.toThrow();
         });
 
-        test('Test with a valid credentials ID and existing user', async () => {
+        it('Test with a valid credentials ID and existing user', async () => {
             // Create additional credentials associated with an existing user
             // ...
 

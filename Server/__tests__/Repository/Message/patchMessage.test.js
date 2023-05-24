@@ -119,7 +119,7 @@ describe('MessageRepository', () => {
     });
 
     describe('patchMessage', () => {
-        test('Test with valid input: Provide valid values for all parameters and ensure that the function executes without throwing an error. Verify that the message is successfully patched in the database.', async () => {
+        it('Test with valid input: Provide valid values for all parameters and ensure that the function executes without throwing an error. Verify that the message is successfully patched in the database.', async () => {
             // Prepare valid input values
             const newDateTimestamp = Date.now();
             const newMessage = 'updated-message';
@@ -144,7 +144,7 @@ describe('MessageRepository', () => {
             expect(patchedMessage.images).toBe(newImages);
         });
 
-        test('Test with invalid input: Pass invalid or incorrect values for some parameters, such as providing a non-existent message ID, booking ID, or user ID. Verify that the function handles the invalid input gracefully and throws an appropriate error or returns an error response.', async () => {
+        it('Test with invalid input: Pass invalid or incorrect values for some parameters, such as providing a non-existent message ID, booking ID, or user ID. Verify that the function handles the invalid input gracefully and throws an appropriate error or returns an error response.', async () => {
             // Prepare invalid input values
             const invalidMessageID = 'invalid-message-id';
             const invalidBookingID = 'invalid-booking-id';
@@ -163,7 +163,7 @@ describe('MessageRepository', () => {
             ).rejects.toThrow(/* Specify the expected error message or error type */);
         });
 
-        test('Test with missing or incomplete required fields: Omit some of the required parameters or provide empty values for them. Verify that the function validates the input and throws an error or returns an error response indicating the missing fields.', async () => {
+        it('Test with missing or incomplete required fields: Omit some of the required parameters or provide empty values for them. Verify that the function validates the input and throws an error or returns an error response indicating the missing fields.', async () => {
             // Call the patchMessage function with missing or incomplete required fields
             let beforePatch = await messageRepo.getMessage(messageID);
             await messageRepo.patchMessage(
