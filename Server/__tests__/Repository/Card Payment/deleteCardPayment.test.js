@@ -74,7 +74,7 @@ describe('CardPaymentRepository', () => {
             expect(cardPayment).toBeDefined();
         });
 
-        test('Test with a card ID that is associated with other data', async () => {
+        it('Test with a card ID that is associated with other data', async () => {
             // Create additional data associated with the card payment (e.g., transactions or user information)
             // ...
 

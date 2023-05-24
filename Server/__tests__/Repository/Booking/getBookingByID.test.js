@@ -107,7 +107,7 @@ describe('BookingRepository', () => {
     });
 
     describe('getBookingByID', () => {
-        test('Test with a valid booking ID', async () => {
+        it('Test with a valid booking ID', async () => {
             // Provide a valid booking ID that exists in the database
             const validBookingID = bookingID;
 
@@ -124,7 +124,7 @@ describe('BookingRepository', () => {
             expect(result.specsID).toBeNull();
         });
 
-        test('Test with an invalid booking ID', async () => {
+        it('Test with an invalid booking ID', async () => {
             // Pass an invalid or non-existent booking ID
             const invalidBookingID = 'invalid_id';
 
@@ -135,7 +135,7 @@ describe('BookingRepository', () => {
             expect(result).toBeUndefined();
         });
 
-        test('Test error handling', async () => {
+        it('Test error handling', async () => {
             // Simulate specific error conditions that can occur during the stored procedure call or database query
 
             // For example, testing with an incorrect SQL query

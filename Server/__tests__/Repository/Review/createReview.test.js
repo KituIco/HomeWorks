@@ -156,7 +156,7 @@ describe('ReviewRepository', () => {
             expect(reviews.length).toBeGreaterThan(0);
         });
 
-        test('throws an error if required parameters are missing', async () => {
+        it('throws an error if required parameters are missing', async () => {
             const createReviewParams = {
                 reviewID: null,
                 serviceID: null,

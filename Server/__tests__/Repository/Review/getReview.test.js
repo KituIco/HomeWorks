@@ -111,7 +111,7 @@ describe('ReviewRepository', () => {
     });
 
     describe('getReview', () => {
-        test('Test with an existing review ID', async () => {
+        it('Test with an existing review ID', async () => {
             // Call the getReview function with an existing review ID
             const result = await reviewRepo.getReview(reviewID);
 
@@ -123,7 +123,7 @@ describe('ReviewRepository', () => {
             expect(result.comment).toBe('test-comment');
         });
 
-        test('Test with a non-existent review ID', async () => {
+        it('Test with a non-existent review ID', async () => {
             const nonExistentReviewID = 'non-id';
 
             // Call the getReview function with a non-existent review ID
@@ -133,7 +133,7 @@ describe('ReviewRepository', () => {
             expect(result).not.toBeDefined();
         });
 
-        test('Test with invalid input', async () => {
+        it('Test with invalid input', async () => {
             // Call the getReview function with invalid inputs
             const longReviewID = '1234567890123456'.repeat(10);
 

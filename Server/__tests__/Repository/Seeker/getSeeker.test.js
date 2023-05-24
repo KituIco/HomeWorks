@@ -49,7 +49,7 @@ describe('SeekerRepository', () => {
 
     describe('getSeeker', () => {
         describe('getSeeker', () => {
-            test('Test with valid input: Provide a valid seeker ID that exists in the database', async () => {
+            it('Test with valid input: Provide a valid seeker ID that exists in the database', async () => {
                 const validSeekerID = userID; // Replace with a valid seeker ID that exists in the database
 
                 const seekerInfo = await seekerRepo.getSeeker(validSeekerID);
@@ -63,7 +63,7 @@ describe('SeekerRepository', () => {
                 expect(seekerInfo.seekerDp).toBe('path/to/seeker-dp');
             });
 
-            test('Test with invalid input: Pass an invalid or non-existent seeker ID', async () => {
+            it('Test with invalid input: Pass an invalid or non-existent seeker ID', async () => {
                 const invalidSeekerID = 'invalid_seeker_id'.repeat(2); // Replace with an invalid or non-existent seeker ID
 
                 // Assert that the function throws an appropriate error or returns an error response
@@ -75,7 +75,7 @@ describe('SeekerRepository', () => {
                 // await expect(seekerRepo.getSeeker(invalidSeekerID)).rejects.toHaveProperty('statusCode', 404);
             });
 
-            test('Test with missing seeker: Try to retrieve a seeker that does not exist in the database', async () => {
+            it('Test with missing seeker: Try to retrieve a seeker that does not exist in the database', async () => {
                 const nonExistentSeekerID = 'non__id'; // Replace with a seeker ID that does not exist in the database
 
                 const seekerInfo = await seekerRepo.getSeeker(

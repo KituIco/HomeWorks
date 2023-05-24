@@ -54,7 +54,7 @@ describe('SeekerRepository', () => {
     });
 
     describe('getSeekers', () => {
-        test('Test with valid data', async () => {
+        it('Test with valid data', async () => {
             // Call the getSeekers function
             const seekers = await seekerRepo.getSeekers();
 
@@ -72,7 +72,7 @@ describe('SeekerRepository', () => {
             }
         });
 
-        test('Test database integrity', async () => {
+        it('Test database integrity', async () => {
             // Insert sample seeker records into the Seeker table
             const sampleSeekers = [
                 {
@@ -116,7 +116,7 @@ describe('SeekerRepository', () => {
             );
         });
 
-        test('Test with an empty seeker table', async () => {
+        it('Test with an empty seeker table', async () => {
             // Mock the getSeekers function to return an empty array
             jest.spyOn(seekerRepo, 'getSeekers').mockImplementation(
                 async () => []

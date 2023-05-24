@@ -35,7 +35,7 @@ describe('ServiceTypeRepository', () => {
     });
 
     describe('deleteServiceType', () => {
-        test('Test with valid input: should delete service type', async () => {
+        it('Test with valid input: should delete service type', async () => {
             // Delete the service type
             await serviceTypeRepo.deleteServiceType(serviceTypeID);
 
@@ -46,7 +46,7 @@ describe('ServiceTypeRepository', () => {
             expect(deletedServiceType).not.toBeDefined();
         });
 
-        test('Test with invalid input: should throw an error for non-existent service type', async () => {
+        it('Test with invalid input: should throw an error for non-existent service type', async () => {
             const invalidTypeID = 'invalid_type_id'.repeat(5);
 
             // Try to delete a non-existent service type
@@ -60,7 +60,7 @@ describe('ServiceTypeRepository', () => {
             }
         });
 
-        test('Test database integrity: should fetch and delete the correct service type', async () => {
+        it('Test database integrity: should fetch and delete the correct service type', async () => {
             // Fetch the service type before deleting
             const fetchedServiceTypeBeforeDelete =
                 await serviceTypeRepo.getServiceTypeByID(serviceTypeID);

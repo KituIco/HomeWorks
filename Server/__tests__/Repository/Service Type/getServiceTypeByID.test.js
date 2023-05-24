@@ -35,7 +35,7 @@ describe('ServiceTypeRepository', () => {
     });
 
     describe('getServiceTypeByID', () => {
-        test('Test with valid input', async () => {
+        it('Test with valid input', async () => {
             // Provide a valid type ID
             const validTypeID = serviceTypeID;
 
@@ -52,7 +52,7 @@ describe('ServiceTypeRepository', () => {
             expect(serviceType.minServiceCost).toBe('400.99');
         });
 
-        test('Test with invalid input', async () => {
+        it('Test with invalid input', async () => {
             // Provide an invalid or non-existent type ID
             const invalidTypeID = 'invalid_id'.repeat(5);
 
@@ -65,7 +65,7 @@ describe('ServiceTypeRepository', () => {
             // expect(errorResponse).toHaveProperty('error');
         });
 
-        test('Test with missing type', async () => {
+        it('Test with missing type', async () => {
             // Provide a type ID that does not exist in the database
             const missingTypeID = 'missing_id';
 
