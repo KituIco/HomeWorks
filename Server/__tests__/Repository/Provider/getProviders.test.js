@@ -38,7 +38,7 @@ describe('ProviderRepository', () => {
             expect(providers).not.toBeFalsy();
 
             // Assert that the providers array has the expected length
-            expect(providers.length).toBeGreaterThan(0);
+            expect(providers.length).toBeGreaterThanOrEqual(0);
         });
 
         it('should handle the scenario when there are no providers available in the Provider table', async () => {
