@@ -4,19 +4,14 @@ class ServiceTypeRepository {
         this.errors = errors;
     }
 
-    createServiceType = async (
-        typeID, 
-        typeName, 
-        typeDesc,
-        minServiceCost
-    ) => {
+    createServiceType = async (typeID, typeName, typeDesc, minServiceCost) => {
         try {
             let sqlQuery = `CALL create_service_type(?, ?, ?, ?)`;
             await this.db.query(sqlQuery, [
                 typeID,
                 typeName,
                 typeDesc,
-                minServiceCost
+                minServiceCost,
             ]);
         } catch (error) {
             // TODO: Handle SQL error
@@ -24,19 +19,14 @@ class ServiceTypeRepository {
         }
     };
 
-    patchServiceType = async (
-        typeID,
-        typeName,
-        typeDesc,
-        minServiceCost
-    ) => {
+    patchServiceType = async (typeID, typeName, typeDesc, minServiceCost) => {
         try {
             let sqlQuery = `CALL patch_service_type(?, ?, ?, ?)`;
             await this.db.query(sqlQuery, [
                 typeID,
                 typeName,
                 typeDesc,
-                minServiceCost
+                minServiceCost,
             ]);
         } catch (error) {
             // TODO: Handle SQL error
