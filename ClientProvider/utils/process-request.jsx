@@ -1,10 +1,17 @@
+import { StyleSheet } from 'react-native';
+
+import AddressServices from '../services/address/address-services';
+import { addressHandler } from './address-handler';
+import { getUserID } from './get-userID';
+
 export const processRequest = async(request, services, types) => {
   let passed = false;
+  let userID = await getUserID();
 
   request['seconds'] = 0;
   for (let j=0; j<services.length; j++){
     
-    if(request.typeID == services[j].typeID){
+    if(request.typeID == services[j].typeID && services[j].serviceEnabled == 1){
       request['serviceID'] = services[j].serviceID;
 
       for(let k=0; k<types.length; k++)
@@ -14,6 +21,16 @@ export const processRequest = async(request, services, types) => {
       passed = true; break;
     }
   }
+
+  request['box'] = styles.normal;
+  if(request.referencedID) {
+    if(request.referencedID != userID) {
+      passed = false;
+    } 
+    request['box'] = styles.special;
+    request['specific'] = 'Only for You!';
+  } 
+
 
   if (!passed) {
    return null;
@@ -48,5 +65,30 @@ export const processRequest = async(request, services, types) => {
   else if (request.typeName == 'Manicurists') request['icon'] = 'hand-clap';
   else if (request.typeName == 'Hair Dresser') request['icon'] = 'face-woman-shimmer';
 
+  let { body: address } = await AddressServices.getAddressByID(request.addressID);
+  request['referencedID'] = addressHandler(address);
+
   return request;
 }
+
+
+const styles = StyleSheet.create({
+  normal: {
+    borderRadius: 10,
+    height: 160,
+    backgroundColor: '#E9E9E9',
+    marginTop: -3,
+    paddingVertical: 20,
+    paddingHorizontal: 30,
+  },
+  special: {
+    borderRadius: 10,
+    height: 160,
+    backgroundColor: '#F6CEFC',
+    marginTop: -3,
+    paddingVertical: 20,
+    paddingHorizontal: 30,
+    borderWidth: 1.2,
+    borderColor: '#9D54C5'
+  },
+})
