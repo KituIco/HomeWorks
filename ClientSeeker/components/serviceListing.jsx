@@ -1,4 +1,4 @@
-import { StyleSheet, View, Text, Image, Dimensions } from 'react-native';
+import { StyleSheet, View, Text, Image, Dimensions, TouchableWithoutFeedback } from 'react-native';
 import { MaterialCommunityIcons  } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 
@@ -10,17 +10,28 @@ export default function Listing( props ) {
   let shadow = styles.shadow;
   let sectioning = styles.sections;
   let color = ['rgba(0,0,0,0.3)','rgba(0,0,0,0.12)'];
+  
+  let navigateTo = async(data) => {
+    data['minServiceCost'] = data.initialCost;
+    props.navigation.navigate('RequestStack', { data });
+  } 
 
   if (props.solo) {
     listing = styles.sololist;
     sectioning = styles.solosection;
     shadow = styles.hide;
     color = ['rgba(0,0,0,0)','rgba(0,0,0,0)'];
+
+    navigateTo = async(data) => {
+      props.navigation.navigate('ProviderStack', { screen:'ServicePage', 
+            params: { serviceID:data.serviceID } });
+    }   
   }
 
   const providersList = data => {
     return (
       <LinearGradient colors={color} start={{ x:0, y:0.95 }} end={{ x:0, y:0.98 }} style={shadow} key={data.serviceID}>
+      <TouchableWithoutFeedback onPress={() => navigateTo(data)}>
       <View style={listing}>
         { data.src.uri && <Image style={styles.image} source={data.src} />}
         { data.src.uri && <View style={styles.minicon}><MaterialCommunityIcons name={data.icon} size={20} color={'#000000'}/></View>}
@@ -53,6 +64,7 @@ export default function Listing( props ) {
           
         </View>
       </View>
+      </TouchableWithoutFeedback>
       </LinearGradient>
     );
   };

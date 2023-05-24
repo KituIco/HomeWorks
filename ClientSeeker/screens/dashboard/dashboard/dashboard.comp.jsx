@@ -1,3 +1,4 @@
+import { MaterialCommunityIcons  } from '@expo/vector-icons';
 import { View, Text,  ScrollView } from 'react-native';
 import { EvilIcons  } from '@expo/vector-icons';
 import { StatusBar } from 'expo-status-bar';
@@ -34,11 +35,22 @@ export default function Dashboard({ navigation }) {
         <Header title={'Service'} screen={'ServiceList'} listings={services} navigation={navigation}/>
         <Grid listings={services.slice(0,6)} navigation={navigation}/>
       </View>
-
+      
       <Header title={'Featured'} screen={'ProviderFeatured'} navigation={navigation}/>
+      { featured.length > 0 &&
       <View style={styles.sections}>
-        <Listing listings={featured}/>
+        <Listing listings={featured} navigation={navigation}/>
       </View>
+      }
+      
+      { featured.length == 0 &&
+      <View style={{alignItems:'center', marginTop:10,}}>
+        <MaterialCommunityIcons name={'vector-polyline-remove'} size={80} color={'#9C54D5'}/>
+        <Text style={{fontFamily:'lexend', textAlign:'center', lineHeight:14, fontSize:14, marginTop:18,}}>No Featured Providers at the Moment</Text>
+        <Text style={{fontFamily:'quicksand', textAlign:'center', lineHeight:11, fontSize:11, marginTop:4,}}>Make sure to Allow Location Permission for HomeWorks</Text>
+      </View>
+      }
+      
 
       {/* <Header title={'Explore'} screen={'ProviderExplore'} navigation={navigation}/>
       <View style={styles.sections}>

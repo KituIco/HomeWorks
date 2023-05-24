@@ -25,7 +25,7 @@ export default function Listing( props ) {
   const fetchReviews = async() => {
     if(!done){
       let { body: newReviews } = await ReviewServices.getServiceReviews(serviceID, page, 3);
-      if (newReviews.length < 0) setDone(true);
+      if (newReviews.length < 3) setDone(true);
       setPage(page+1);
       
       for (let i=0; i<newReviews.length; i++) {

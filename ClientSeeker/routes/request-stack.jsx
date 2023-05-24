@@ -7,7 +7,7 @@ import RequestMatch from '../screens/request/request-match/request-match.comp';
 const Stack = createStackNavigator();
 
 
-export default function RequesttStack({ route }) {
+export default function RequestStack({ route }) {
   const { data } = route.params;
 
   const header = {

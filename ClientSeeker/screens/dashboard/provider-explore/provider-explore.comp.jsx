@@ -6,7 +6,7 @@ import ListHeader from '../../../components/listheader';
 import styles from './provider-explore.style';
 import hook from './provider-explore.hook';
 
-export default function ProviderExplore() {
+export default function ProviderExplore({ navigation }) {
   const { explore } = hook();
 
   return (
@@ -14,7 +14,7 @@ export default function ProviderExplore() {
       <ListHeader title={"Explore"}/>
       <ScrollView>
         <View style={styles.container}>
-          <Listing listings={explore}/>
+          <Listing listings={explore} navigation={navigation}/>
         </View>
       </ScrollView>
     </View>

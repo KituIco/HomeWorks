@@ -10,7 +10,7 @@ import { getUserID } from '../../../utils/get-userID';
 
 
 export default ( navigation, route ) => {
-  const { typeName, icon, minServiceCost } = route.params.data;
+  const { typeName, icon, minServiceCost, serviceID } = route.params.data;
   const [processing, setProcessing] = useState(true);
   const [waiting, setWaiting] = useState(false);
 
@@ -20,6 +20,7 @@ export default ( navigation, route ) => {
 
   const [open, setOpen] = useState(false);
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
+  const [list, setList] = useState();
 
   const [region, setRegion] = useState({
     latitude: 14.6487, longitude: 121.0687,
@@ -39,7 +40,6 @@ export default ( navigation, route ) => {
         navigation.goBack();
         return;
       }
-      
       let { coords } = await Location.getCurrentPositionAsync({});
       let { latitude, longitude } = coords
       let response = await Location.reverseGeocodeAsync({
@@ -49,6 +49,8 @@ export default ( navigation, route ) => {
       let currentID = await getUserID();
       let provider = await SeekerServices.getSeeker(currentID);
       let credentials = await  CredentialsServices.getUserCredentials(currentID);
+
+      if(serviceID) setList([route.params.data])
 
       setUserFullName(`${provider.body.firstName} ${provider.body.lastName}`);
       setUserNum(credentials.body.phoneNumber);
@@ -104,6 +106,7 @@ export default ( navigation, route ) => {
     
     isKeyboardVisible, setKeyboardVisible,
     region, setRegion,
+    list, setList,
 
     regionChange,
     fromChild,

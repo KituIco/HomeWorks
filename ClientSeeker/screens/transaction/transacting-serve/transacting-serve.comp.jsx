@@ -30,7 +30,7 @@ export default function TransactingServe({ route, navigation }) {
         </View>
         
         <Text style={styles.heading}>Your Service Provider</Text>
-        <Listing listings={list} solo={true}/>
+        <Listing listings={list} solo={true} navigation={navigation}/>
 
         <Text style={styles.heading}>Service Payment</Text>
         <View style={styles.subheading}>
