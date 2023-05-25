@@ -20,7 +20,7 @@ class PayoutRepo {
                 providerID,
                 ammount,
                 dateTimestamp,
-                payoutStatus
+                payoutStatus,
             ]);
         } catch (error) {
             throw error;
@@ -43,7 +43,7 @@ class PayoutRepo {
                 providerID,
                 ammount,
                 dateTimestamp,
-                payoutStatus
+                payoutStatus,
             ]);
         } catch (error) {
             throw error;
@@ -62,7 +62,7 @@ class PayoutRepo {
     getPayouts = async () => {
         try {
             let sqlQuery = `CALL get_payouts()`;
-            let [rows] = await this.db.query(sqlQuery);
+            let [rows, _] = await this.db.query(sqlQuery);
             return rows[0];
         } catch (error) {
             throw error;
@@ -72,7 +72,7 @@ class PayoutRepo {
     getSeekerPayouts = async (seekerID) => {
         try {
             let sqlQuery = `CALL get_seeker_payouts(?)`;
-            let [rows] = await this.db.query(sqlQuery, [seekerID]);
+            let [rows, _] = await this.db.query(sqlQuery, [seekerID]);
             return rows[0];
         } catch (error) {
             throw error;
@@ -82,7 +82,7 @@ class PayoutRepo {
     getProviderPayouts = async (providerID) => {
         try {
             let sqlQuery = `CALL get_provider_payouts(?)`;
-            let [rows] = await this.db.query(sqlQuery, [providerID]);
+            let [rows, _] = await this.db.query(sqlQuery, [providerID]);
             return rows[0];
         } catch (error) {
             throw error;
@@ -92,8 +92,8 @@ class PayoutRepo {
     getPayoutByID = async (payoutID) => {
         try {
             let sqlQuery = `CALL get_payout_by_id(?)`;
-            let [rows] = await this.db.query(sqlQuery, [payoutID]);
-            return rows[0];
+            let [rows, _] = await this.db.query(sqlQuery, [payoutID]);
+            return rows[0][0];
         } catch (error) {
             throw error;
         }
