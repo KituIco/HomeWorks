@@ -22,7 +22,7 @@ export const requestHelper = async(requests, services, types) => {
         requests[i]['minServiceCost'] = services[j].initialCost;
 
         for(let k=0; k<types.length; k++)
-          if(requests[i].typeID == types[k].typeID && !requests[i].referencedID)
+          if(requests[i].typeID == types[k].typeID && requests[i].referencedID == "none")
             requests[i]['minServiceCost'] = types[k].minServiceCost
 
         passed = true; break;
@@ -30,7 +30,7 @@ export const requestHelper = async(requests, services, types) => {
     }
 
     requests[i]['box'] = styles.normal;
-    if(requests[i].referencedID) {
+    if(requests[i].referencedID != "none") {
       if(requests[i].referencedID != userID) {
         passed = false;
       } 

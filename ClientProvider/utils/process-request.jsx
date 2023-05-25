@@ -15,7 +15,7 @@ export const processRequest = async(request, services, types) => {
       request['minServiceCost'] = services[j].initialCost;
 
       for(let k=0; k<types.length; k++)
-        if(request.typeID == types[k].typeID && !request.referencedID)
+        if(request.typeID == types[k].typeID && request.referencedID == "none")
           request['minServiceCost'] = types[k].minServiceCost
 
       passed = true; break;
@@ -23,7 +23,7 @@ export const processRequest = async(request, services, types) => {
   }
 
   request['box'] = styles.normal;
-  if(request.referencedID) {
+  if(request.referencedID != "none") {
     if(request.referencedID != userID) {
       passed = false;
     } 

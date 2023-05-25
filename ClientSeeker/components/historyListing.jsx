@@ -70,19 +70,19 @@ export default function Listing( props ) {
       let images = JSON.parse(data.images);
 
       for (let i=0; i<serviceTypes.length; i++) {
-        if (serviceTypes[i].typeName == data.typeName && !data.referencedID) {
+        if (serviceTypes[i].typeName == data.typeName) {
           setPrice(serviceTypes[i].minServiceCost);
         }
       }
 
-      if(data.referencedID) {
+      try {
         let { body: services } = await ServiceServices.getProviderServices(data.referencedID);
         for (let i=0; i<services.length; i++) {
           if (services[i].typeName == data.typeName) {
             setPrice(services[i].initialCost);
           }
         }
-      }
+      } catch (err) { }
 
       if(images.length > 0) setNoImage(false);
       else setNoImage(true);

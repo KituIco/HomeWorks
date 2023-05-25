@@ -88,6 +88,7 @@ export default ( navigation, route ) => {
     setOpen(!open);
 
     let referencedID = providerID;
+    if(!providerID) referencedID = "none";
     let addressID = res.body.addressID;
     let { icon, minServiceCost, typeID, typeName } = route.params.data;
 
