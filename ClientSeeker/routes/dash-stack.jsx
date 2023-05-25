@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 
 import Dashboard from '../screens/dashboard/dashboard/dashboard.comp';
 import ServiceList from '../screens/dashboard/services-list/services-list.comp';
+import ServicesLook from '../screens/dashboard/services-look/services-look.comp';
 import ProviderFeatured from '../screens/dashboard/provider-featured/provider-featured.comp';
 import ProviderExplore from '../screens/dashboard/provider-explore/provider-explore.comp';
 
@@ -91,6 +92,12 @@ export default function DashStack({ navigation }) {
       name='ServiceList' 
       component={ServiceList}
       options={() => header}
+    />
+
+    <Stack.Screen 
+      name='ServicesLook' 
+      component={ServicesLook}
+      options={{headerShown: false}}
     />
 
     <Stack.Screen 

@@ -76,10 +76,12 @@ export default function RequestAddress({ route, navigation }) {
         <View style={[styles.details, {marginBottom:30}]}>
           <View style={{width: '80%',  marginTop: -2}}> 
             <Text style={styles.content}>We will grant you one of the best and the nearest service provider in your area!</Text>
-            <View style={{flexDirection: 'row' }}>
-              <Text  style={styles.content}>Want a specific service provider? </Text>
-              <Text  style={[styles.content, {textDecorationLine: 'underline', fontFamily: 'quicksand-bold'}]}>Search</Text>
-            </View>
+            <TouchableWithoutFeedback onPress={() => navigation.navigate('ServicesLook')}>
+              <View style={{flexDirection: 'row' }}>
+                <Text  style={styles.content}>Want a specific service provider? </Text>
+                <Text  style={[styles.content, {textDecorationLine: 'underline', fontFamily: 'quicksand-bold'}]}>Search</Text>
+              </View>
+            </TouchableWithoutFeedback>
           </View>
           <MaterialCommunityIcons name={'account-search-outline'} size={70} color="#9C54D5" style={{marginTop:-16}}/>
         </View>

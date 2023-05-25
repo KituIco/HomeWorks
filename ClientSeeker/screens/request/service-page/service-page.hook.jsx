@@ -5,7 +5,6 @@ import ServiceServices from '../../../services/service/service-services';
 import AddressServices from '../../../services/address/address-services';
 import ProviderServices from '../../../services/provider/provider-services';
 
-import { getUserID } from '../../../utils/get-userID';
 import { getImageURL } from '../../../utils/get-imageURL';
 import { addressHandler } from '../../../utils/address-handler';
 
@@ -35,7 +34,6 @@ export default ({ route }) => {
   useEffect(() => {
     ( async() => {
       try {
-        let userID = await getUserID();
         let { body: service } = await ServiceServices.getService(serviceID);
         let { body: provider } = await ProviderServices.getProvider(service.providerID);
         let { body: address } = await AddressServices.getAllAddressOfUser(service.providerID);

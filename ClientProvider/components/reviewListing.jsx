@@ -103,7 +103,7 @@ export default function Listing( props ) {
         </View>          
         }
       onEndReached={fetchReviews}
-      onEndReachedThreshold={0.9}
+      onEndReachedThreshold={0.1}
       >
     </FlatList>
   )

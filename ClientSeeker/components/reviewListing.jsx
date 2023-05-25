@@ -1,4 +1,4 @@
-import { StyleSheet, View, Text, Animated, Easing, Alert, Image, ScrollView, FlatList } from 'react-native';
+import { StyleSheet, View, Text, Animated, Easing, Alert, Image, FlatList } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useState, useEffect } from 'react';
 
@@ -103,7 +103,7 @@ export default function Listing( props ) {
         </View>          
         }
       onEndReached={fetchReviews}
-      onEndReachedThreshold={0.9}
+      onEndReachedThreshold={0.1}
       >
     </FlatList>
   )

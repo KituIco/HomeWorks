@@ -1,5 +1,5 @@
 import { MaterialCommunityIcons  } from '@expo/vector-icons';
-import { View, Text,  ScrollView } from 'react-native';
+import { View, Text,  ScrollView, Touchable, TouchableWithoutFeedback } from 'react-native';
 import { EvilIcons  } from '@expo/vector-icons';
 import { StatusBar } from 'expo-status-bar';
 
@@ -24,10 +24,12 @@ export default function Dashboard({ navigation }) {
     <ScrollView style={styles.container}>
       <Back navigation={navigation}/>
       <View style={styles.search}>
+        <TouchableWithoutFeedback onPress={() => navigation.navigate('ServicesLook')}>
         <View style={styles.searchbar}>
           <EvilIcons name='search' color='#616161' size={32}/>
           <Text style={styles.searchtext}>Search for services</Text>
         </View>
+        </TouchableWithoutFeedback>
       </View>
       
 

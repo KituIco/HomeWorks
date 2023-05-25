@@ -8,6 +8,7 @@ import MapView, {Marker} from 'react-native-maps';
 
 import ServiceTypesServices from '../services/service-types/service-types-services';
 import ServiceSpecsServices from '../services/service-specs/service-specs-services';
+import ServiceServices from '../services/service/service-services';
 import AddressServices from '../services/address/address-services';
 import socketService from '../services/sockets/sockets-services';
 
@@ -69,8 +70,17 @@ export default function Listing( props ) {
       let images = JSON.parse(data.images);
 
       for (let i=0; i<serviceTypes.length; i++) {
-        if (serviceTypes[i].typeName == data.typeName) {
+        if (serviceTypes[i].typeName == data.typeName && !data.referencedID) {
           setPrice(serviceTypes[i].minServiceCost);
+        }
+      }
+
+      if(data.referencedID) {
+        let { body: services } = await ServiceServices.getProviderServices(data.referencedID);
+        for (let i=0; i<services.length; i++) {
+          if (services[i].typeName == data.typeName) {
+            setPrice(services[i].initialCost);
+          }
         }
       }
 

@@ -15,13 +15,14 @@ export const requestHelper = async(requests, services, types) => {
       if(time - requests[i].specsTimestamp > 900000 || requests[i].specsStatus!=1) {
         break;
       }
-       
+      
       if(requests[i].typeID == services[j].typeID && services[j].serviceEnabled == 1){
         requests[i]['seconds'] = (time - requests[i].specsTimestamp)/1000;
         requests[i]['serviceID'] = services[j].serviceID;
+        requests[i]['minServiceCost'] = services[j].initialCost;
 
         for(let k=0; k<types.length; k++)
-          if(requests[i].typeID == types[k].typeID)
+          if(requests[i].typeID == types[k].typeID && !requests[i].referencedID)
             requests[i]['minServiceCost'] = types[k].minServiceCost
 
         passed = true; break;

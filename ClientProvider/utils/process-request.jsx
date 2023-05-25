@@ -10,12 +10,12 @@ export const processRequest = async(request, services, types) => {
 
   request['seconds'] = 0;
   for (let j=0; j<services.length; j++){
-    
     if(request.typeID == services[j].typeID && services[j].serviceEnabled == 1){
       request['serviceID'] = services[j].serviceID;
+      request['minServiceCost'] = services[j].initialCost;
 
       for(let k=0; k<types.length; k++)
-        if(request.typeID == types[k].typeID)
+        if(request.typeID == types[k].typeID && !request.referencedID)
           request['minServiceCost'] = types[k].minServiceCost
 
       passed = true; break;
