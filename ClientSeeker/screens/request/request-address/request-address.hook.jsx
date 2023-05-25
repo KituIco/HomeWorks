@@ -10,7 +10,7 @@ import { getUserID } from '../../../utils/get-userID';
 
 
 export default ( navigation, route ) => {
-  const { typeName, icon, minServiceCost, serviceID } = route.params.data;
+  const { typeName, icon, minServiceCost, serviceID, providerID } = route.params.data;
   const [processing, setProcessing] = useState(true);
   const [waiting, setWaiting] = useState(false);
 
@@ -31,6 +31,7 @@ export default ( navigation, route ) => {
 
   useEffect(() => {
     (async () => {
+      
       let { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== 'granted') {
         Alert.alert('Permission Denied', 
@@ -85,8 +86,8 @@ export default ( navigation, route ) => {
   const fromChild = async(address, res) => {
     setKeyboardVisible(false);
     setOpen(!open);
-    
-    let referencedID = address;
+
+    let referencedID = providerID;
     let addressID = res.body.addressID;
     let { icon, minServiceCost, typeID, typeName } = route.params.data;
 

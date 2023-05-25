@@ -23,7 +23,7 @@ export default () => {
 
   const getRequests = async() => {
     let userID = await getUserID();
-    let allService = await ServiceSpecsServices.getAllServiceSpecs();
+    let allService = await ServiceSpecsServices.getSpecsByStatus(1);
     let serviceTypes = await ServiceTypesServices.getServiceTypes()
 
     let myServices = await ServiceServices.getProviderServices(userID);

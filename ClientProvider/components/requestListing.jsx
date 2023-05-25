@@ -15,14 +15,18 @@ export default function Listing( props ) {
   const servicesList = data => {
     return (
       <LinearGradient colors={['rgba(0,0,0,0.3)','rgba(0,0,0,0.12)'  ]} start={{ x:0, y:0.95 }} end={{ x:0, y:0.98 }} style={styles.shadow} key={data.specsID}>
-        <View style={styles.box}>
+        <View style={data.box}>
 
           <View style={styles.content}>
             <MaterialCommunityIcons name={data.icon} size={60}/>
             <View style={styles.texts}>
               <View style={styles.top}>
                 <Text style={styles.service}>{data.typeName}</Text>
-                <Text style={styles.time}>{(data.seconds/60).toFixed(0)}m ago</Text>
+                <View style={{alignItems:'flex-end'}}>
+                  { data.specific && <Text style={[styles.time, {fontSize:10, lineHeight:10, color:'black'}]}>{data.specific}</Text> }
+                  <Text style={styles.time}>{(data.seconds/60).toFixed(0)}m ago</Text>
+                </View>
+                
               </View>
               <Text style={styles.address} numberOfLines={2} ellipsizeMode='tail'>{ data.referencedID }</Text>
             </View>
@@ -89,7 +93,8 @@ const styles = StyleSheet.create({
   time: {
     fontFamily: 'quicksand',
     color: '#9C54D5',
-    fontSize: 13,
+    fontSize: 11,
+    lineHeight: 11
   },
   address: {
     fontFamily: 'quicksand',

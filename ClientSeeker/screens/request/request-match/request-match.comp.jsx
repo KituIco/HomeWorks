@@ -10,7 +10,7 @@ import hook from './request-match.hook';
 
 export default function RequestMatch({ route, navigation }) {
   const {
-    referencedID, minServiceCost, typeName, icon, spin, onCancel,
+    referencedID, minServiceCost, typeName, icon, spin, location, onCancel,
   } = hook ( navigation, route );
 
   return (
@@ -42,8 +42,9 @@ export default function RequestMatch({ route, navigation }) {
           <View style={styles.ghost}/>
         </TouchableWithoutFeedback>
       </View>
-        
-      <Next navigation={navigation} price={minServiceCost} address={referencedID} title={'Cancel Request'} screen={'Dashboard'}/>
+      { location &&
+        <Next navigation={navigation} price={minServiceCost} address={location} title={'Cancel Request'} screen={'Dashboard'}/>
+      }     
     </View>
   );
 }
