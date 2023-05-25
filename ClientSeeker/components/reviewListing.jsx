@@ -15,7 +15,7 @@ export default function Listing( props ) {
   useEffect(() => {
     ( async() => {  
       try {
-        fetchReviews()
+        fetchReviews();
       } catch (err) {
         Alert.alert('Error', err+'.', [ {text: 'OK'} ]);
       }

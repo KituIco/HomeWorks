@@ -15,7 +15,7 @@ import hook from './dashboard.hook';
 
 export default function Dashboard({ navigation }) {
   const {
-    processing, services, featured, explore,
+    processing, services, featured, explore, latitude, longitude
   } = hook();
 
   if (processing) return <Loading/>
@@ -38,7 +38,7 @@ export default function Dashboard({ navigation }) {
         <Grid listings={services.slice(0,6)} navigation={navigation}/>
       </View>
       
-      <Header title={'Featured'} screen={'ProviderFeatured'} navigation={navigation}/>
+      <Header title={'Featured'} screen={'ProviderFeatured'} latitude={latitude} longitude={longitude} navigation={navigation}/>
       { featured.length > 0 &&
       <View style={styles.sections}>
         <Listing listings={featured} navigation={navigation}/>

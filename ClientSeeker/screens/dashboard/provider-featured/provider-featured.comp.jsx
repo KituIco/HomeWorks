@@ -6,15 +6,15 @@ import ListHeader from '../../../components/listheader';
 import styles from './provider-featured.style';
 import hook from './provider-featured.hook';
 
-export default function ProviderFeatured({ navigation }) {
-  const { lat, lon } = hook();
+export default function ProviderFeatured({ navigation, route }) {
+  const { latitude, longitude } = hook({ route });
 
   return (
     <View style={{justifyContent: 'flex-end', backgroundColor: '#FFFFFF', flex:1}}>
       <ListHeader title={"Featured"}/>
         <View style={styles.container}>
-          { lon &&
-            <Listing latitude={lat} longitude={lon} navigation={navigation}/>
+          { longitude &&
+            <Listing latitude={latitude} longitude={longitude} navigation={navigation}/>
           }
           
         </View>

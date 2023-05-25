@@ -21,6 +21,10 @@ export default function Listing( props ) {
   } 
 
   useEffect(() => {
+    fetchServices();
+  }, []);
+
+  useEffect(() => {
     setDone(false)
     setServices([])
   }, [search]);
@@ -97,7 +101,7 @@ export default function Listing( props ) {
   return (
     <FlatList 
       data={services} 
-      keyExtractor={service => service.servicesID}
+      keyExtractor={service => service.serviceID}
       renderItem={renderList}
       style={{marginVertical:1, paddingVertical:20, paddingHorizontal:8}}
       ListFooterComponent={ 
