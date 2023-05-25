@@ -22,7 +22,7 @@ class PaymentRepository {
                 serviceID,
                 paymentMethod,
                 ammount,
-                paymentStatus
+                paymentStatus,
             ]);
         } catch (error) {
             // TODO: Handle SQL error
@@ -48,7 +48,7 @@ class PaymentRepository {
                 serviceID,
                 paymentMethod,
                 ammount,
-                paymentStatus
+                paymentStatus,
             ]);
         } catch (error) {
             // TODO: Handle SQL error
@@ -104,7 +104,7 @@ class PaymentRepository {
             let sqlQuery = `CALL get_seeker_payments_by_status(?, ?)`;
             let [result, _] = await this.db.query(sqlQuery, [
                 seekerID,
-                paymentStatus
+                paymentStatus,
             ]);
             return result[0];
         } catch (error) {
@@ -129,7 +129,7 @@ class PaymentRepository {
             let sqlQuery = `CALL get_provider_payments_by_status(?, ?)`;
             let [result, _] = await this.db.query(sqlQuery, [
                 providerID,
-                paymentStatus
+                paymentStatus,
             ]);
             return result[0];
         } catch (error) {
@@ -140,7 +140,7 @@ class PaymentRepository {
 
     getPaymentByMethod = async (paymentMethod) => {
         try {
-            let sqlQuery = `CALL get_payment_by_method(?)`;
+            let sqlQuery = `CALL get_payments_by_method(?)`;
             let [result, _] = await this.db.query(sqlQuery, [paymentMethod]);
             return result[0];
         } catch (error) {
