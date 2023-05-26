@@ -261,7 +261,10 @@ END;
 -- Get Services given a keyword
 DROP PROCEDURE IF EXISTS `get_services_by_keyword`;
 CREATE PROCEDURE `get_services_by_keyword`(
-    IN `search_key` VARCHAR(255)
+    IN `search_key` VARCHAR(255),
+    IN `offset` INT,
+    IN `return_size` INT
+
 )
 BEGIN
     SELECT
@@ -288,7 +291,8 @@ BEGIN
     WHERE
         st.type_name LIKE CONCAT('%', search_key, '%')
         OR st.type_desc LIKE CONCAT('%', search_key, '%')
-        OR p.provider_name LIKE CONCAT('%', search_key, '%');
+        OR p.provider_name LIKE CONCAT('%', search_key, '%')
+    LIMIT offset, return_size;
 END;
 
 

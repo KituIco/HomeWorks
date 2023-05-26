@@ -147,10 +147,14 @@ class ServiceRepository {
         }
     };
 
-    getServicesByKeyword = async (keyword) => {
+    getServicesByKeyword = async (keyword, offsetMultiplier, sizeLimit) => {
         try {
-            let sqlQuery = `CALL get_services_by_keyword(?)`;
-            let [result, _] = await this.db.query(sqlQuery, [keyword]);
+            let sqlQuery = `CALL get_services_by_keyword(?, ?, ?)`;
+            let [result, _] = await this.db.query(sqlQuery, [
+                keyword,
+                offsetMultiplier,
+                sizeLimit,
+            ]);
             return result[0];
         } catch (error) {
             throw error;

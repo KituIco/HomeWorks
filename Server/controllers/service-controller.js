@@ -339,18 +339,22 @@ class ServiceController {
         }
     };
 
-    // GET: "/search?searchKey="
+    // GET: "/search?searchKey=&offsetMultiplier=&sizeLimit="
     getServicesByKeyword = async (req, res, next) => {
         try {
-            let { searchKey } = req.query;
+            let { searchKey, offsetMultiplier, sizeLimit } = req.query;
 
             // validate if searchKey is not null
             this.serviceValidator.checkRequiredQueryParameters(req.query, [
                 'searchKey',
+                'offsetMultiplier',
+                'sizeLimit',
             ]);
 
             let services = await this.serviceRepo.getServicesByKeyword(
-                searchKey
+                searchKey,
+                offsetMultiplier,
+                sizeLimit
             );
 
             res.status(200).json({
