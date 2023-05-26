@@ -1,10 +1,5 @@
 class ServiceController {
-    constructor(
-        serviceRepo,
-        clientErrors,
-        serviceValidator,
-        nanoid
-    ) {
+    constructor(serviceRepo, clientErrors, serviceValidator, nanoid) {
         this.serviceRepo = serviceRepo;
         this.clientErrors = clientErrors;
         this.serviceValidator = serviceValidator;
@@ -14,20 +9,22 @@ class ServiceController {
     // POST: ""
     createService = async (req, res, next) => {
         try {
-            let {
-                providerID,
-                typeID,
-                typeName,
-                initialCost,
-                serviceRating
-            } = req.body;
+            let { providerID, typeID, typeName, initialCost, serviceRating } =
+                req.body;
 
             // TODO: Pre-query validation
-                // validate if necessary fields are not null
-            this.serviceValidator.validateCreatePayload(req.body, ['providerID', 'typeID', 'typeName']);
-                // validate if providerID exists in the database
-            await this.serviceValidator.validateExistence(providerID, 'provider');
-                // validate if typeID exists in the database
+            // validate if necessary fields are not null
+            this.serviceValidator.validateCreatePayload(req.body, [
+                'providerID',
+                'typeID',
+                'typeName',
+            ]);
+            // validate if providerID exists in the database
+            await this.serviceValidator.validateExistence(
+                providerID,
+                'provider'
+            );
+            // validate if typeID exists in the database
             await this.serviceValidator.validateExistence(typeID, 'type');
 
             let serviceID = this.nanoid(14);
@@ -43,13 +40,13 @@ class ServiceController {
 
             let createdService = {
                 ...req.body,
-            }
+            };
 
             createdService.serviceID = serviceID;
 
             res.status(201).json({
-                message: "Service created successfully",
-                body: createdService
+                message: 'Service created successfully',
+                body: createdService,
             });
         } catch (error) {
             // TODO: Implement error handling
@@ -73,22 +70,29 @@ class ServiceController {
                 fourStar,
                 threeStar,
                 twoStar,
-                oneStar
+                oneStar,
             } = req.body;
 
-            let {serviceID} = req.params;
+            let { serviceID } = req.params;
 
             // TODO: Pre-query validation
-                // validate if serviceID is not null
-            this.serviceValidator.checkRequiredParameters(req.params, ['serviceID']);
-                // validate if serviceID exists
+            // validate if serviceID is not null
+            this.serviceValidator.checkRequiredParameters(req.params, [
+                'serviceID',
+            ]);
+            // validate if serviceID exists
             await this.serviceValidator.validateExistence(serviceID, 'service');
-                // validate if necessary fields are not null
+            // validate if necessary fields are not null
             this.serviceValidator.validatePatchPayload(req.body);
-                // validate if providerID exists in the database
-            providerID != null && await this.serviceValidator.validateExistence(providerID, 'provider');
-                // validate if typeID exists in the database
-            typeID != null && await this.serviceValidator.validateExistence(typeID, 'type');
+            // validate if providerID exists in the database
+            providerID != null &&
+                (await this.serviceValidator.validateExistence(
+                    providerID,
+                    'provider'
+                ));
+            // validate if typeID exists in the database
+            typeID != null &&
+                (await this.serviceValidator.validateExistence(typeID, 'type'));
 
             await this.serviceRepo.patchService(
                 serviceID,
@@ -109,13 +113,13 @@ class ServiceController {
 
             let patchedService = {
                 ...req.body,
-            }
+            };
 
             patchedService.serviceID = serviceID;
 
             res.status(200).json({
                 message: `Service with ID ${serviceID} patched successfully`,
-                body: patchedService
+                body: patchedService,
             });
         } catch (error) {
             // TODO: Implement error handling
@@ -126,14 +130,16 @@ class ServiceController {
     // DELETE: "/:serviceID"
     deleteService = async (req, res, next) => {
         try {
-            let {serviceID} = req.params;
+            let { serviceID } = req.params;
 
             // TODO: Pre-query validation
-                // validate if serviceID is not null
-            this.serviceValidator.checkRequiredParameters(req.params, ['serviceID']);
-                // validate if serviceID exists
+            // validate if serviceID is not null
+            this.serviceValidator.checkRequiredParameters(req.params, [
+                'serviceID',
+            ]);
+            // validate if serviceID exists
             await this.serviceValidator.validateExistence(serviceID, 'service');
-            
+
             await this.serviceRepo.deleteService(serviceID);
 
             res.status(204);
@@ -149,8 +155,8 @@ class ServiceController {
             let services = await this.serviceRepo.getAllServices();
 
             res.status(200).json({
-                message: "All services retrieved successfully",
-                body: services
+                message: 'All services retrieved successfully',
+                body: services,
             });
         } catch (error) {
             // TODO: Implement error handling
@@ -165,10 +171,15 @@ class ServiceController {
             let { searchKey, sorted } = req.query;
 
             // TODO: Pre-query validation
-                // validate if providerID is not null
-            this.serviceValidator.checkRequiredParameters(req.params, ['providerID']);
-                // validate if providerID exists
-            await this.serviceValidator.validateExistence(providerID, 'provider');
+            // validate if providerID is not null
+            this.serviceValidator.checkRequiredParameters(req.params, [
+                'providerID',
+            ]);
+            // validate if providerID exists
+            await this.serviceValidator.validateExistence(
+                providerID,
+                'provider'
+            );
 
             if (searchKey == null) {
                 return next();
@@ -176,17 +187,20 @@ class ServiceController {
 
             // TODO: Validate if sorted is not null otherwise throw error
 
-            let services = await this.serviceRepo.getProviderServiceByKeyword(providerID, searchKey);
+            let services = await this.serviceRepo.getProviderServiceByKeyword(
+                providerID,
+                searchKey
+            );
 
             res.status(200).json({
                 message: `Services of provider ${providerID} retrieved successfully fitlered by keyword ${searchKey}`,
-                body: services
+                body: services,
             });
         } catch (error) {
             // TODO: Implement error handling
             next();
         }
-    }
+    };
 
     // GET: "/provider/:providerID?sorted="
     getProviderServicesSorted = async (req, res, next) => {
@@ -195,10 +209,15 @@ class ServiceController {
             let { sorted } = req.query;
 
             // TODO: Pre-query validation
-                // validate if providerID is not null
-            this.serviceValidator.checkRequiredParameters(req.params, ['providerID']);
-                // validate if providerID exists
-            await this.serviceValidator.validateExistence(providerID, 'provider');
+            // validate if providerID is not null
+            this.serviceValidator.checkRequiredParameters(req.params, [
+                'providerID',
+            ]);
+            // validate if providerID exists
+            await this.serviceValidator.validateExistence(
+                providerID,
+                'provider'
+            );
 
             if (sorted == null) {
                 return next();
@@ -206,14 +225,18 @@ class ServiceController {
 
             let services = null;
             if (sorted === 'asc') {
-                services = await this.serviceRepo.getProviderServicesAsc(providerID);
+                services = await this.serviceRepo.getProviderServicesAsc(
+                    providerID
+                );
             } else if (sorted === 'desc') {
-                services = await this.serviceRepo.getProviderServicesDesc(providerID);
+                services = await this.serviceRepo.getProviderServicesDesc(
+                    providerID
+                );
             }
 
             res.status(200).json({
                 message: `Services of provider ${providerID} retrieved successfully sorted in ${sorted} order`,
-                body: services
+                body: services,
             });
         } catch (error) {
             // TODO: Implement error handling
@@ -225,18 +248,25 @@ class ServiceController {
     getProviderServices = async (req, res, next) => {
         try {
             let { providerID } = req.params;
-            
+
             // TODO: Pre-query validation
-                // validate if providerID is not null
-            this.serviceValidator.checkRequiredParameters(req.params, ['providerID']);
-                // validate if providerID exists
-            await this.serviceValidator.validateExistence(providerID, 'provider');
-            
-            let services = await this.serviceRepo.getProviderServices(providerID);
+            // validate if providerID is not null
+            this.serviceValidator.checkRequiredParameters(req.params, [
+                'providerID',
+            ]);
+            // validate if providerID exists
+            await this.serviceValidator.validateExistence(
+                providerID,
+                'provider'
+            );
+
+            let services = await this.serviceRepo.getProviderServices(
+                providerID
+            );
 
             res.status(200).json({
                 message: `Services of provider ${providerID} retrieved successfully`,
-                body: services
+                body: services,
             });
         } catch (error) {
             // TODO: Implement error handling
@@ -253,7 +283,7 @@ class ServiceController {
                 innerRadius,
                 outerRadius,
                 offsetMultiplier,
-                sizeLimit
+                sizeLimit,
             } = req.query;
 
             this.serviceValidator.checkRequiredQueryParameters(req.query, [
@@ -262,7 +292,7 @@ class ServiceController {
                 'innerRadius',
                 'outerRadius',
                 'offsetMultiplier',
-                'sizeLimit'
+                'sizeLimit',
             ]);
 
             let services = await this.serviceRepo.getServiceRecommendations(
@@ -270,13 +300,13 @@ class ServiceController {
                 longitude,
                 innerRadius,
                 outerRadius,
-                offsetMultiplier*sizeLimit,
+                offsetMultiplier * sizeLimit,
                 sizeLimit
             );
 
             res.status(200).json({
                 message: `Recommended services retrieved successfully`,
-                body: services
+                body: services,
             });
         } catch (error) {
             next(error);
@@ -289,20 +319,45 @@ class ServiceController {
             let { serviceID } = req.params;
 
             // TODO: Pre-query validation
-                // validate if serviceID is not null
-            this.serviceValidator.checkRequiredParameters(req.params, ['serviceID']);
-            
+            // validate if serviceID is not null
+            this.serviceValidator.checkRequiredParameters(req.params, [
+                'serviceID',
+            ]);
+
             let service = await this.serviceRepo.getService(serviceID);
 
             // TODO: Post-query validation
-                // validate if serviceID exists
-            
+            // validate if serviceID exists
+
             res.status(200).json({
                 message: `Service with ID ${serviceID} retrieved successfully`,
-                body: service
+                body: service,
             });
         } catch (error) {
             // TODO: Implement error handling
+            next(error);
+        }
+    };
+
+    // GET: "/search?searchKey="
+    getServicesByKeyword = async (req, res, next) => {
+        try {
+            let { searchKey } = req.query;
+
+            // validate if searchKey is not null
+            this.serviceValidator.checkRequiredQueryParameters(req.query, [
+                'searchKey',
+            ]);
+
+            let services = await this.serviceRepo.getServicesByKeyword(
+                searchKey
+            );
+
+            res.status(200).json({
+                message: `Services retrieved successfully filtered by keyword ${searchKey}`,
+                body: services,
+            });
+        } catch (error) {
             next(error);
         }
     };

@@ -20,7 +20,7 @@ class ServiceRepository {
                 typeID,
                 typeName,
                 initialCost,
-                serviceRating
+                serviceRating,
             ]);
         } catch (error) {
             // TODO: Handle SQL error
@@ -60,7 +60,7 @@ class ServiceRepository {
                 fourStar,
                 threeStar,
                 twoStar,
-                oneStar
+                oneStar,
             ]);
         } catch (error) {
             // TODO: Handle SQL error
@@ -125,7 +125,10 @@ class ServiceRepository {
     getProviderServiceByKeyword = async (providerID, keyword) => {
         try {
             let sqlQuery = `CALL get_provider_service_by_keyword(?, ?)`;
-            let [result, _] = await this.db.query(sqlQuery, [providerID, keyword]);
+            let [result, _] = await this.db.query(sqlQuery, [
+                providerID,
+                keyword,
+            ]);
             return result[0];
         } catch (error) {
             // TODO: Handle SQL error
@@ -140,6 +143,16 @@ class ServiceRepository {
             return result[0][0];
         } catch (error) {
             // TODO: Handle SQL error
+            throw error;
+        }
+    };
+
+    getServicesByKeyword = async (keyword) => {
+        try {
+            let sqlQuery = `CALL get_services_by_keyword(?)`;
+            let [result, _] = await this.db.query(sqlQuery, [keyword]);
+            return result[0];
+        } catch (error) {
             throw error;
         }
     };
@@ -160,7 +173,7 @@ class ServiceRepository {
                 innerRadius,
                 outerRadius,
                 offsetMultiplier,
-                sizeLimit
+                sizeLimit,
             ]);
             return result[0];
         } catch (error) {

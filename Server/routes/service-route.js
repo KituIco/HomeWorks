@@ -14,9 +14,9 @@ var serviceRepo = new ServiceRepo(db);
 var providerRepo = new ProviderRepo(db);
 var serviceTypeRepo = new ServiceTypeRepo(db);
 var serviceValidator = new ServiceValidator(
-    clientErrors, 
-    serviceRepo, 
-    providerRepo, 
+    clientErrors,
+    serviceRepo,
+    providerRepo,
     serviceTypeRepo
 );
 
@@ -30,12 +30,33 @@ var serviceController = new ServiceController(
 var cookieJwtAuth = require('../middlewares/cookie-jwt-auth.js');
 var errorHandler = require('../middlewares/error-handler.js');
 
-router.post('', [cookieJwtAuth], [serviceController.createService, errorHandler]);
-router.patch('/:serviceID', [cookieJwtAuth], [serviceController.patchService, errorHandler]);
-router.delete('/:serviceID', [cookieJwtAuth], [serviceController.deleteService, errorHandler]);
+router.post(
+    '',
+    [cookieJwtAuth],
+    [serviceController.createService, errorHandler]
+);
+router.patch(
+    '/:serviceID',
+    [cookieJwtAuth],
+    [serviceController.patchService, errorHandler]
+);
+router.delete(
+    '/:serviceID',
+    [cookieJwtAuth],
+    [serviceController.deleteService, errorHandler]
+);
 router.get('', [serviceController.getAllServices, errorHandler]);
-router.get('/provider/:providerID', [serviceController.getProviderServiceByKeyword, serviceController.getProviderServicesSorted, serviceController.getProviderServices, errorHandler]);
-router.get('/recommended', [serviceController.getServiceRecommendations, errorHandler]);
+router.get('/provider/:providerID', [
+    serviceController.getProviderServiceByKeyword,
+    serviceController.getProviderServicesSorted,
+    serviceController.getProviderServices,
+    errorHandler,
+]);
+router.get('/recommended', [
+    serviceController.getServiceRecommendations,
+    errorHandler,
+]);
 router.get('/:serviceID', [serviceController.getService, errorHandler]);
+router.get('/search', [serviceController.getServicesByKeyword, errorHandler]);
 
 module.exports = router;

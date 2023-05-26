@@ -258,6 +258,40 @@ BEGIN
         service_id = srvce_id;
 END;
 
+-- Get Services given a keyword
+DROP PROCEDURE IF EXISTS `get_services_by_keyword`;
+CREATE PROCEDURE `get_services_by_keyword`(
+    IN `search_key` VARCHAR(255)
+)
+BEGIN
+    SELECT
+        s.service_id AS serviceID,
+        s.provider_id AS providerID,
+        s.type_id AS typeID,
+        st.type_name AS typeName,
+        s.initial_cost AS initialCost,
+        s.service_enabled AS serviceEnabled,
+        s.service_rating AS serviceRating,
+        s.total_reviews AS totalReviews,
+        s.reviews_count AS reviewsCount,
+        s.five_star AS fiveStar,
+        s.four_star AS fourStar,
+        s.three_star AS threeStar,
+        s.two_star AS twoStar,
+        s.one_star AS oneStar
+    FROM
+        Service AS s
+    INNER JOIN
+        ServiceType AS st ON s.type_id = st.type_id
+    INNER JOIN
+        Provider AS p ON s.provider_id = p.provider_id
+    WHERE
+        st.type_name LIKE CONCAT('%', search_key, '%')
+        OR st.type_desc LIKE CONCAT('%', search_key, '%')
+        OR p.provider_name LIKE CONCAT('%', search_key, '%');
+END;
+
+
 -- Concurrently update service_rating, total_reviews, reviews_count, five_star, four_star, three_star, two_star, one_star
 DROP PROCEDURE IF EXISTS `concurrent_updates_service`;
 CREATE PROCEDURE `concurrent_updates_service`(
