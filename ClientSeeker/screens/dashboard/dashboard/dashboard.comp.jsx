@@ -1,5 +1,5 @@
 import { MaterialCommunityIcons  } from '@expo/vector-icons';
-import { View, Text,  ScrollView } from 'react-native';
+import { View, Text,  ScrollView, Touchable, TouchableWithoutFeedback } from 'react-native';
 import { EvilIcons  } from '@expo/vector-icons';
 import { StatusBar } from 'expo-status-bar';
 
@@ -15,7 +15,7 @@ import hook from './dashboard.hook';
 
 export default function Dashboard({ navigation }) {
   const {
-    processing, services, featured, explore,
+    processing, services, featured, explore, latitude, longitude
   } = hook();
 
   if (processing) return <Loading/>
@@ -24,10 +24,12 @@ export default function Dashboard({ navigation }) {
     <ScrollView style={styles.container}>
       <Back navigation={navigation}/>
       <View style={styles.search}>
+        <TouchableWithoutFeedback onPress={() => navigation.navigate('ServicesLook')}>
         <View style={styles.searchbar}>
           <EvilIcons name='search' color='#616161' size={32}/>
           <Text style={styles.searchtext}>Search for services</Text>
         </View>
+        </TouchableWithoutFeedback>
       </View>
       
 
@@ -36,7 +38,7 @@ export default function Dashboard({ navigation }) {
         <Grid listings={services.slice(0,6)} navigation={navigation}/>
       </View>
       
-      <Header title={'Featured'} screen={'ProviderFeatured'} navigation={navigation}/>
+      <Header title={'Featured'} screen={'ProviderFeatured'} latitude={latitude} longitude={longitude} navigation={navigation}/>
       { featured.length > 0 &&
       <View style={styles.sections}>
         <Listing listings={featured} navigation={navigation}/>

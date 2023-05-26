@@ -11,6 +11,8 @@ export default ( ) => {
   const [processing, setProcessing] = useState(true);
   const [services, setServices] = useState([]);
   const [featured, setFeatured] = useState([]);
+  const [latitude,setLatitude] = useState();
+  const [longitude,setLongitude] = useState();
 
   useEffect(() => {
     ( async() => {
@@ -32,7 +34,9 @@ export default ( ) => {
         let { coords } = await Location.getCurrentPositionAsync({});
         let { latitude, longitude } = coords;
         let recoms = await getRecommendations(latitude,longitude,0,3);
-        setFeatured(recoms)
+        setFeatured(recoms);
+        setLatitude(latitude);
+        setLongitude(longitude);
       } catch (err) {
         Alert.alert('Error', err+'.', [ {text: 'OK'} ]);
       }
@@ -49,6 +53,9 @@ export default ( ) => {
   return {
     processing, setProcessing,
     services, setServices,
+    latitude,setLatitude,
+    longitude,setLongitude,
+
     featured,
     explore,
   }

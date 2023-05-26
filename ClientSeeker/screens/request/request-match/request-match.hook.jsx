@@ -53,7 +53,7 @@ export default ( navigation, route ) => {
   }, []);
 
   const onNext = () => {
-    navigation.navigate('MatchStack', { typeName, icon, address: location, specsID })
+    navigation.navigate('MatchStack', { typeName, icon, address: referencedID, specsID })
   }
   
   const onConfirm = async() => {
