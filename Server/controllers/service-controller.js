@@ -353,7 +353,7 @@ class ServiceController {
 
             let services = await this.serviceRepo.getServicesByKeyword(
                 searchKey,
-                offsetMultiplier,
+                offsetMultiplier * sizeLimit,
                 sizeLimit
             );
 

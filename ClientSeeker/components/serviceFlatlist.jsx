@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { LinearGradient } from 'expo-linear-gradient';
 
 import { getRecommendations } from '../utils/get-recommendations';
+import { getSearch } from '../utils/get-search';
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -27,18 +28,22 @@ export default function Listing( props ) {
   useEffect(() => {
     setDone(false)
     setServices([])
+    setPage(0)
   }, [search]);
 
   const fetchServices = async() => {
     if(!done){
       if(longitude) {
-        let newServices = await getRecommendations(latitude, longitude, page, 5);
+        let newServices = await getRecommendations(latitude, longitude, page, 7);
         if (newServices.length < 5) setDone(true);
         setPage(page+1);
         setServices([...services,...newServices]);
       }
       if(search) {
-        setDone(true);
+        let newServices = await getSearch(search, page, 5);
+        if (newServices.length < 5) setDone(true);
+        setPage(page+1);
+        setServices([...services,...newServices]);
       }
     }
   }

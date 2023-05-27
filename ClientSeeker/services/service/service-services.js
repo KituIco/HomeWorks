@@ -64,6 +64,16 @@ let ServiceServices = {
             throw error;
         }
     },
+
+    getServiceByKeyword: async(keyword, page, size) => {
+        try {
+            let queryURL = `${url}/search/?searchKey=${keyword}&offsetMultiplier=${page}&sizeLimit=${size}`;
+            let res = await getAxios(queryURL);
+            return res;
+        } catch (error) {
+            throw error;
+        }
+    },
 }
 
 module.exports = ServiceServices;

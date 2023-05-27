@@ -291,7 +291,9 @@ BEGIN
     WHERE
         st.type_name LIKE CONCAT('%', search_key, '%')
         OR st.type_desc LIKE CONCAT('%', search_key, '%')
-        OR p.provider_name LIKE CONCAT('%', search_key, '%')
+        OR p.first_name LIKE CONCAT('%', search_key, '%')
+        OR p.last_name LIKE CONCAT('%', search_key, '%')
+    ORDER BY service_rating DESC
     LIMIT offset, return_size;
 END;
 

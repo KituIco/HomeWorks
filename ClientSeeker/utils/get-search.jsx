@@ -11,24 +11,26 @@ import { typeHandler } from './type-handler';
 
 export const getSearch = async(value, page, size) => {
     try {
-      let { body: recoms } = await ServiceServices.getServiceRecommendations(lat,lon,page,size);
+      let { body: services } = await ServiceServices.getServiceByKeyword(value, page, size);
+      if(!services) services = [];
+ 
       let { body: types } = await ServiceTypeServices.getServiceTypes();
       types = typeHandler(types);
-      for (let i=0; i<recoms.length; i++) {
-        let { body: provider } =  await ProviderServices.getProvider(recoms[i].providerID);
-        let { body: address } = await AddressServices.getAllAddressOfUser(recoms[i].providerID);
+      for (let i=0; i<services.length; i++) {
+        let { body: provider } =  await ProviderServices.getProvider(services[i].providerID);
+        let { body: address } = await AddressServices.getAllAddressOfUser(services[i].providerID);
         
-        recoms[i]['name'] = provider.firstName+" "+provider.lastName;
-        recoms[i]['location'] = addressHandler(address[0])
-        recoms[i]['src'] = {uri : getImageURL(provider.providerDp)};
+        services[i]['name'] = provider.firstName+" "+provider.lastName;
+        services[i]['location'] = addressHandler(address[0])
+        services[i]['src'] = {uri : getImageURL(provider.providerDp)};
 
         for (let j=0; j<types.length; j++) {
-            if (types[j].typeID == recoms[i].typeID)
-                recoms[i]['icon'] = types[j]['icon'];
+            if (types[j].typeID == services[i].typeID)
+                services[i]['icon'] = types[j]['icon'];
         }
          
       }
-      return recoms;
+      return services;
     } catch (err) {
       Alert.alert('Error', err+'.', [ {text: 'OK'} ]);
     }

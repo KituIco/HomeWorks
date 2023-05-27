@@ -56,7 +56,8 @@ router.get('/recommended', [
     serviceController.getServiceRecommendations,
     errorHandler,
 ]);
-router.get('/:serviceID', [serviceController.getService, errorHandler]);
 router.get('/search', [serviceController.getServicesByKeyword, errorHandler]);
+router.get('/:serviceID', [serviceController.getService, errorHandler]);
+
 
 module.exports = router;
