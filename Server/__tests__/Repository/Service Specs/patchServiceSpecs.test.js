@@ -54,7 +54,65 @@ describe('ServiceSpecsRepository', () => {
         await seekerRepo.deleteSeeker(seekerID);
 
         await userRepo.deleteUser(seekerID);
+
+        await db.end();
     });
 
-    describe('patchServiceSpecs', () => {});
+    describe('patchServiceSpecs', () => {
+        it('should patch a service specs given valid inputs', async () => {
+            await serviceSpecsRepo.patchServiceSpecs(
+                serviceSpecsID,
+                null,
+                '2',
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
+            );
+
+            const serviceSpecs = await serviceSpecsRepo.getSpecsByID(
+                serviceSpecsID
+            );
+
+            expect(serviceSpecs.typeID).toEqual('2');
+        });
+
+        it('should throw an error if seeker id does not exist', async () => {
+            await expect(
+                serviceSpecsRepo.patchServiceSpecs(
+                    '1',
+                    nanoid(50),
+                    '2',
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null
+                )
+            ).rejects.toThrow();
+        });
+
+        it('should not change fields that are set to null', async () => {
+            await serviceSpecsRepo.patchServiceSpecs(
+                serviceSpecsID,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
+            );
+
+            const serviceSpecs = await serviceSpecsRepo.getSpecsByID(
+                serviceSpecsID
+            );
+
+            expect(serviceSpecs.typeID).toEqual('1');
+        });
+    });
 });

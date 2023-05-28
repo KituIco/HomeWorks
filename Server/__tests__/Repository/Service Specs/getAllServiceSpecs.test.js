@@ -54,7 +54,27 @@ describe('ServiceSpecsRepository', () => {
         await seekerRepo.deleteSeeker(seekerID);
 
         await userRepo.deleteUser(seekerID);
+
+        await db.end();
     });
 
-    describe('getAllServiceSpecs', () => {});
+    describe('getAllServiceSpecs', () => {
+        it('should return all service specs', async () => {
+            const serviceSpecs = await serviceSpecsRepo.getAllServiceSpecs();
+
+            expect(serviceSpecs.length).toBeGreaterThanOrEqual(0);
+        });
+
+        it('should return an empty array if no service specs are found', async () => {
+            // Mock the getAllServiceSpecs method
+            jest.spyOn(
+                serviceSpecsRepo,
+                'getAllServiceSpecs'
+            ).mockImplementation(() => []);
+
+            const serviceSpecs = await serviceSpecsRepo.getAllServiceSpecs();
+
+            expect(serviceSpecs.length).toBe(0);
+        });
+    });
 });

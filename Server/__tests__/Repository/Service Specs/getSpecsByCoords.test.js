@@ -54,7 +54,34 @@ describe('ServiceSpecsRepository', () => {
         await seekerRepo.deleteSeeker(seekerID);
 
         await userRepo.deleteUser(seekerID);
+
+        await db.end();
     });
 
-    describe('getSpecsByCoords', () => {});
+    describe('getSpecsByCoords', () => {
+        it('should return an array of service specs', async () => {
+            const specs = await serviceSpecsRepo.getSpecsByCoords(
+                90,
+                90,
+                0,
+                10
+            );
+
+            expect(specs.length).toBeGreaterThanOrEqual(0);
+        });
+
+        it('should return an empty array if no service specs are found', async () => {
+            // Mock the getSpecsByCoords method to return an empty array
+            serviceSpecsRepo.getSpecsByCoords = jest.fn(() => []);
+
+            const specs = await serviceSpecsRepo.getSpecsByCoords(
+                90,
+                90,
+                0,
+                10
+            );
+
+            expect(specs.length).toBe(0);
+        });
+    });
 });

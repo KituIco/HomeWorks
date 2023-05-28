@@ -54,7 +54,29 @@ describe('ServiceSpecsRepository', () => {
         await seekerRepo.deleteSeeker(seekerID);
 
         await userRepo.deleteUser(seekerID);
+
+        await db.end();
     });
 
-    describe('getSeekerSpecs', () => {});
+    describe('getSeekerSpecs', () => {
+        it('should return an array of service specs given an existing and valid seekerID', async () => {
+            const result = await serviceSpecsRepo.getSeekerSpecs(seekerID);
+
+            result.forEach((serviceSpecs) => {
+                expect(serviceSpecs.seekerID).toEqual(seekerID);
+            });
+        });
+
+        it('should return an empty array given a non-existing and valid seekerID', async () => {
+            const result = await serviceSpecsRepo.getSeekerSpecs(nanoid(10));
+
+            expect(result).toEqual([]);
+        });
+
+        it('should return an error if seekerID is too long', async () => {
+            await expect(
+                serviceSpecsRepo.getSeekerSpecs(nanoid(100))
+            ).rejects.toThrow();
+        });
+    });
 });

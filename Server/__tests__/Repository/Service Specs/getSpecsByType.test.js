@@ -54,7 +54,29 @@ describe('ServiceSpecsRepository', () => {
         await seekerRepo.deleteSeeker(seekerID);
 
         await userRepo.deleteUser(seekerID);
+
+        await db.end();
     });
 
-    describe('getSpecsByType', () => {});
+    describe('getSpecsByType', () => {
+        it('should return an array of service specs', async () => {
+            const result = await serviceSpecsRepo.getSpecsByType('1');
+
+            result.forEach((serviceSpecs) => {
+                expect(serviceSpecs.typeID).toEqual('1');
+            });
+        });
+
+        it('should return an empty array if no service specs found', async () => {
+            const result = await serviceSpecsRepo.getSpecsByType('100');
+
+            expect(result).toEqual([]);
+        });
+
+        it('should throw an error if typeID is too long', async () => {
+            await expect(
+                serviceSpecsRepo.getSpecsByType('12345678910'.repeat(10))
+            ).rejects.toThrow();
+        });
+    });
 });
