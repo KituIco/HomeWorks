@@ -41,7 +41,7 @@ describe('ServiceSpecsRepository', () => {
             null,
             null,
             null,
-            null,
+            2,
             null
         );
     });
@@ -54,7 +54,36 @@ describe('ServiceSpecsRepository', () => {
         await seekerRepo.deleteSeeker(seekerID);
 
         await userRepo.deleteUser(seekerID);
+
+        await db.end();
     });
 
-    describe('getSeekerSpecsByStatus', () => {});
+    describe('getSeekerSpecsByStatus', () => {
+        it('should return an array of service specs given a valid seeker ID and status', async () => {
+            const serviceSpecs = await serviceSpecsRepo.getSeekerSpecsByStatus(
+                seekerID,
+                2
+            );
+
+            serviceSpecs.forEach((serviceSpecs) => {
+                expect(serviceSpecs.seekerID).toEqual(seekerID);
+                expect(serviceSpecs.specsStatus).toEqual(2);
+            });
+        });
+
+        it('should return an empty array given a valid seeker ID and a non existent status', async () => {
+            const serviceSpecs = await serviceSpecsRepo.getSeekerSpecsByStatus(
+                seekerID,
+                3
+            );
+
+            expect(serviceSpecs.length).toEqual(0);
+        });
+
+        it('should throw an error given an invalid seeker ID', async () => {
+            await expect(
+                serviceSpecsRepo.getSeekerSpecsByStatus('invalid'.repeat(10), 2)
+            ).rejects.toThrow();
+        });
+    });
 });

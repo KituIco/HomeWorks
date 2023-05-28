@@ -54,7 +54,31 @@ describe('ServiceSpecsRepository', () => {
         await seekerRepo.deleteSeeker(seekerID);
 
         await userRepo.deleteUser(seekerID);
+
+        await db.end();
     });
 
-    describe('getSpecsByID', () => {});
+    describe('getSpecsByID', () => {
+        it('should return a service specs given a valid id', async () => {
+            const serviceSpecs = await serviceSpecsRepo.getSpecsByID(
+                serviceSpecsID
+            );
+
+            expect(serviceSpecs).toBeDefined();
+        });
+
+        it('should return undefined given an non-existent id', async () => {
+            const serviceSpecs = await serviceSpecsRepo.getSpecsByID(
+                'non-]-id'
+            );
+
+            expect(serviceSpecs).toBeUndefined();
+        });
+
+        it('should throw an error given an invalid id where it is too long', async () => {
+            await expect(
+                serviceSpecsRepo.getSpecsByID('a'.repeat(110))
+            ).rejects.toThrow();
+        });
+    });
 });
