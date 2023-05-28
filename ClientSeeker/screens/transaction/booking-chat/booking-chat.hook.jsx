@@ -164,6 +164,7 @@ export default ( navigation, route ) => {
   }
 
   const onReject = async() => {
+    await ServiceSpecsServices.patchServiceSpecs(specsID, { specsStatus:1, referencedID:address, specsTimeStamp:Date.now() });
     Alert.alert('Provider Declined', 
       'We are sorry. The provider has declined your service request. We will search another service provider for you.', 
       [ { text: 'OK', onPress: () => onRejection(), } ]);

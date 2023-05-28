@@ -97,9 +97,6 @@ export default ( navigation, route ) => {
   
   const onConfirm = async() => {
     try {
-      await ServiceSpecsServices.patchServiceSpecs(data.specsID, 
-        { specsStatus:1, referencedID:addressHandler(data.location), specsTimeStamp:Date.now() }
-      );
       await BookingServices.patchBooking(bookingID, { bookingStatus:4, description:`You accepted a service request from ${seekerName}. However, you cancelled the booking after matching.` });
 
       socketService.rejectChat('booking-' + bookingID)
