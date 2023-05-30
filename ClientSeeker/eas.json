@@ -23,7 +23,9 @@
         "RSA_PUBLIC_KEY": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAiLUICcRVtBgYtkoloz6i+OWK+S/q32l7fjgeH/4V7JGRqBsYogYuVvLMjSYwAKATSorf5WPTNucJpwdcQl8QkR6XCzmSAm3FUt6xqpPafEs9xwOfhTvEA8JCR1LoKfMeA6MVSidBMbl7K19ajcqkxDZyWek9+X7dGMKwCpNgsWwfFlCKaCOtdkb3Y8obaZp6UXc9RvSg92+5Xm0nixDMrETMWt0mXntcznXWr9H92bG7uql5VZnylMH0YxV5vL5wNqtbD6jekO3EPquYk1z0PS410X+W3GADHFRRCvMWKP05/98s5gVnApRvEGYzv65tsxTOmU1gip9WuYzgCAw9JwIDAQAB",
         "ADYEN_API_KEY": "test_364NHQRUYVAMZDWWKRRS533WB47U2OZX",
         "ADYEN_MERCHANT_ACCOUNT": "HomeWorksOfUPDilimanECOM"
-      }
+      },
+      "developmentClient": true,
+      "distribution": "internal"
     },
     "production": {
       "env": {
