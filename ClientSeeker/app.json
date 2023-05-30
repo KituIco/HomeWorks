@@ -4,7 +4,7 @@
     "slug": "ClientSeeker",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/homeworks-splash.png",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/homeworks-splash.png",
@@ -31,7 +31,7 @@
       "package": "com.kituico.ClientSeeker"
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/homeworks-splash.png"
     },
     "plugins": [
       [
