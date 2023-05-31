@@ -22,7 +22,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/HomeWorks-Icon.pngg",
+        "foregroundImage": "./assets/HomeWorks-Icon.png",
         "backgroundColor": "#FFFFFF"
       },
       "permissions": [
