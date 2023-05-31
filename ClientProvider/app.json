@@ -4,7 +4,7 @@
     "slug": "ClientProvider",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/homeworks-splash.png",
+    "icon": "./assets/HomeWorks-Icon.png",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/homeworks-splash.png",
@@ -22,7 +22,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/HomeWorks-Icon.png",
         "backgroundColor": "#FFFFFF"
       },
       "permissions": [
@@ -31,7 +31,7 @@
       "package": "com.kituico.ClientProvider"
     },
     "web": {
-      "favicon": "./assets/homeworks-splash.png"
+      "favicon": "./assets/HomeWorks-Icon.png"
     },
     "plugins": [
       [
